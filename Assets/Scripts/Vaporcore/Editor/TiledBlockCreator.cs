@@ -11,10 +11,8 @@ public class TiledBlockCreator : MonoBehaviour {
         https://docs.unity3d.com/ScriptReference/AssetDatabase.CreateAsset.html
         https://answers.unity.com/questions/1617356/how-do-i-add-neighbor-rules-for-ruletiles-by-scrip.html
 */
-    // NB: (0, 0) is at the bottom left of a texture
-
     const int tileSize = 64;
-    const int blocksPerTile = 4;
+    const int blocksPerTile = 2;
     const int blockSize = tileSize / blocksPerTile;
 
     static string assetPath;
@@ -31,14 +29,14 @@ public class TiledBlockCreator : MonoBehaviour {
         int width = src.width;
         int height = src.height;
 
-        // first: create a 9-slice cube
         /*
-        (0, 2) (1, 2) (2, 2)
-        (0, 1) (1, 1) (2, 1)
-        (0, 0) (1, 0) (2, 0)
+        (0, 2) (1, 2) (2, 2), (3, 2)
+        (0, 1) (1, 1) (2, 1), (3, 1)
+        (0, 0) (1, 0) (2, 0), (3, 0)
         */
         dest = MakeDefaultTexture(tileSize * 3, tileSize * 3);
-
+        
+        // 1 - edge, 0 - enclosed
         // 11
         // 10
         SetWorkingTile(v(0, 2));
@@ -76,7 +74,24 @@ public class TiledBlockCreator : MonoBehaviour {
         // 00
         // 00
         SetWorkingTile(v(1, 1));
-        FillMiddle();   
+        FillMiddle();
+
+        // inner corner - top edge to side edge
+        SetWorkingTile(v(2, 2));
+        FillMiddle();
+        CopyBlock(v(5, 1), v(0, 1));
+
+        // inner corner - bottom edge to side edge
+        SetWorkingTile(v(2, 1));
+        FillMiddle();
+        CopyBlock(v(5, 0), v(0, 1));
+
+        // end cap for a 1-thick block
+        SetWorkingTile(v(2, 0));
+        TopEdge();
+        BottomEdge();
+        TopLeftCorner();
+        BottomLeftCorner();
 
         SaveOutputTexture();
     }
@@ -91,11 +106,9 @@ public class TiledBlockCreator : MonoBehaviour {
 
     static void CopyBlock(Vector2Int sourceBlock, Vector2Int destBlock) {
         /*
-        assumes a block with this structure (can extend past 4 quarters, just starts at bottom left)
-        (0, 3) (1, 3) (2, 3), (3, 3)
-        (0, 2) (1, 2) (2, 2), (3, 2)
-        (0, 1) (1, 1) (2, 1), (3, 1)
-        (0, 0) (1, 0) (2, 0), (3, 0)
+        assumes a block with this structure
+        (0, 1) (1, 1)
+        (0, 0) (1, 0)
         */
         CopyBlock(sourceBlock, v(1, 1), destBlock);
     }
@@ -109,18 +122,6 @@ public class TiledBlockCreator : MonoBehaviour {
             (destBlock.x * blockSize) + (tileSize * workingTile.x),
             (destBlock.y * blockSize) + (tileSize * workingTile.y)
         );
-    }
-
-    static void DirectCopyBlock(Vector2Int position) {
-        CopyBlock(position, position);
-    }
-
-    static void DirectCopyBlock(Vector2Int position, Vector2Int blockSize) {
-        CopyBlock(position, blockSize, position);
-    }
-
-    static void CopyPixelSquare(int sourceX, int sourceY, int blockSize, int destX, int destY) {
-        CopyPixelBlock(sourceX, sourceY, blockSize, blockSize, destX, destY);
     }
 
     static void CopyPixelBlock(int sourceX, int sourceY, int blockWidth, int blockHeight, int destX, int destY) {
@@ -142,70 +143,43 @@ public class TiledBlockCreator : MonoBehaviour {
         given a texture with four target tiles, it's mapped like this:
         (1, 0) (1, 1)
         (0, 0) (0, 1)
-        and each tiles will have 16 blocks in it
+        and each tiles will have 4 blocks in it
         */
 
         // fill the middle with the middle texture, straight copy
-        CopyBlock(v(1, 1), v(2, 2), v(1, 1));
-
-        // then tile the bottom section at the top
-        CopyBlock(v(1, 1), v(2, 1), v(1, 3));
-        // and at the bottom
-        CopyBlock(v(1, 2), v(2, 1), v(1, 0));
-
-        // then do the sides: start with left middle to right side
-        CopyBlock(v(1, 1), v(1, 2), v(3, 1));
-        // then right middle to left side
-        CopyBlock(v(2, 1), v(1, 2), v(0, 1));
-
-        // then do the corners, again repeating the tiling pattern
-        // bottom left to top right
-        CopyBlock(v(1, 1), v(3, 3));
-        // bottom right to top left
-        CopyBlock(v(2, 1), v(0, 3));
-        // top left to bottom right
-        CopyBlock(v(1, 2), v(3, 0));
-        // top right to bottom left
-        CopyBlock(v(2, 2), v(0, 0));
+        CopyBlock(v(1, 1), v(2, 2), v(0, 0));
     }
+
     static void TopEdge() {
-        DirectCopyBlock(v(1, 3), v(2, 1));
-        CopyBlock(v(2, 3), v(0, 3));
-        CopyBlock(v(1, 3), v(3, 3));
+        CopyBlock(v(1, 3), v(2, 1), v(0, 1));
     }
 
     static void RightEdge() {
-        DirectCopyBlock(v(3, 1), v(1, 2));
-        CopyBlock(v(3, 1), v(3, 3));
-        CopyBlock(v(3, 2), v(3, 0));
+        CopyBlock(v(3, 1), v(1, 2), v(1, 0));
     }
 
     static void BottomEdge() {
-        DirectCopyBlock(v(1, 0), v(2, 1));
-        CopyBlock(v(2, 0), v(0, 0));
-        CopyBlock(v(1, 0), v(3, 0));
+        CopyBlock(v(1, 0), v(2, 1), v(0, 0));
     }
 
     static void LeftEdge() {
-        DirectCopyBlock(v(0, 1), v(1, 2));
-        CopyBlock(v(0, 2), v(0, 0));
-        CopyBlock(v(0, 1), v(0, 3));
+        CopyBlock(v(0, 1), v(1, 2), v(0, 0));
     }
 
     static void TopLeftCorner() {
-        DirectCopyBlock(v(0, 3));
+        CopyBlock(v(0, 3), v(0, 1));
     }
 
     static void TopRightCorner() {
-        DirectCopyBlock(v(3, 3));
+        CopyBlock(v(3, 3), v(1, 1));
     }
 
     static void BottomRightCorner() {
-        DirectCopyBlock(v(3, 0));
+        CopyBlock(v(3, 0), v(1, 0));
     }
 
     static void BottomLeftCorner() {
-        DirectCopyBlock(v(0, 0));
+        CopyBlock(v(0, 0), v(0, 0));
     }
 
     static void PrepareBaseTexture() {
