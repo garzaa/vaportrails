@@ -14,7 +14,7 @@ public class TiledBlockCreator : MonoBehaviour {
     const int tileSize = 64;
     const int blocksPerTile = 2;
     const int blockSize = tileSize / blocksPerTile;
-    const int xTiles = 6;
+    const int xTiles = 7;
     const int yTiles = 3;
     
     public const int templateSize = 2 * tileSize;
@@ -164,6 +164,22 @@ public class TiledBlockCreator : MonoBehaviour {
         FillMiddle();
         InnerTopLeftCorner();
         InnerBottomLeftCorner();
+
+        SetWorkingTile(v(6, 2));
+        FillMiddle();
+        TopEdge();
+        InnerBottomLeftCorner();
+
+        SetWorkingTile(v(6, 1));
+        FillMiddle();
+        BottomEdge();
+        InnerTopLeftCorner();
+
+        SetWorkingTile(v(6, 0));
+        LeftEdge();
+        TopEdge();
+        TopLeftCorner();
+        InnerBottomRightCorner();
     }
 
     static Vector2Int v(int x, int y) {

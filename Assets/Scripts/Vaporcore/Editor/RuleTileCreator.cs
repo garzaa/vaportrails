@@ -45,7 +45,68 @@ public class RuleTileCreator : MonoBehaviour {
 		// sprite 12 is the no-neighbor one, they're 0-indexed
 		tile.m_DefaultColliderType = UnityEngine.Tilemaps.Tile.ColliderType.Grid;
 		tile.m_DefaultSprite = sprites[12];
+// two or more corners
+		AddSprite(15);
+		Top(true);
+		Left(true);
+		Right(true);
+		Bottom(true);
+		TopLeft(false);
+		TopRight(false);
 
+		AddSprite(16);
+		Top(true);
+		Left(true);
+		Right(true);
+		Bottom(true);
+		BottomLeft(false);
+		BottomRight(false);
+
+		AddSprite(17);
+		Top(true);
+		Left(true);
+		Right(true);
+		Bottom(true);
+		TopLeft(false);
+		BottomLeft(false);
+
+// one corner
+		AddSprite(7);
+		Top(true);
+		Left(true);
+		Right(true);
+		Bottom(true);
+		BottomLeft(false);
+
+		AddSprite(14);
+		Top(true);
+		Left(true);
+		Right(false);
+		Bottom(true);
+		TopLeft(false);
+
+		AddSprite(18);
+		Top(false);
+		Left(true);
+		Bottom(true);
+		Right(true);
+		BottomLeft(false);
+
+		AddSprite(19);
+		Top(true);
+		Left(true);
+		Bottom(false);
+		Right(true);
+		TopLeft(false);
+
+		AddSprite(20);
+		Top(false);
+		Left(false);
+		Bottom(true);
+		Right(true);
+		BottomRight(false);
+
+// basics
 		AddSprite(0);
 		Top(false);
 		Left(false);
@@ -83,12 +144,41 @@ public class RuleTileCreator : MonoBehaviour {
 		Bottom(true);
 		TopLeft(false);
 
-		AddSprite(7);
+		AddSprite(8);
+		Top(false);
+		Left(false);
+		Right(true);
+		Bottom(false);
+
+		AddSprite(9);
+		Top(false);
+		Left(false);
+		Right(false);
+		Bottom(true);
+
+		AddSprite(10);
 		Top(true);
+		Left(false);
+		Right(false);
+		Bottom(false);
+
+		AddSprite(11);
+		Top(false);
 		Left(true);
 		Right(true);
+		Bottom(false);
+
+		AddSprite(12);
+		Top(false);
+		Left(false);
+		Right(false);
+		Bottom(false);
+
+		AddSprite(13);
+		Top(true);
+		Left(false);
+		Right(false);
 		Bottom(true);
-		BottomLeft(false);
 
 		AddSprite(4);
 		Top(true);
