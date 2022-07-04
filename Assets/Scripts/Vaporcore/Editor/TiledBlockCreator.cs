@@ -1,5 +1,6 @@
 #if UNITY_EDITOR
 using System.Collections;
+using UnityEditorInternal;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
@@ -23,19 +24,33 @@ public class TiledBlockCreator : MonoBehaviour {
     [MenuItem("Assets/Create Tiled Block")]
     static void CreateTiledBlockFromTexture() {
         PrepareBaseTexture();
+        LoadBaseTexture();
+        CreateOutputTexture();
+        CreateBlocks();
+        CleanOldOutput();
+        SaveOutputTexture();
+        SliceOutputTexture();
+    }
 
-        // load the texture
+    static void CleanOldOutput() {
+        AssetDatabase.DeleteAsset(BaseToOutputName(assetPath));
+    }
+
+    static void LoadBaseTexture() {
         src = Selection.activeObject as Texture2D;
-        int width = src.width;
-        int height = src.height;
+    }
 
+    static void CreateOutputTexture() {
         /*
         (0, 2) (1, 2) (2, 2), (3, 2)
         (0, 1) (1, 1) (2, 1), (3, 1)
         (0, 0) (1, 0) (2, 0), (3, 0)
+        etc
         */
-        dest = MakeDefaultTexture(tileSize * 4, tileSize * 3);
-        
+        dest = MakeDefaultTexture(tileSize * 6, tileSize * 3);
+    }
+
+    static void CreateBlocks() {        
         // 1 - edge, 0 - enclosed
         // 11
         // 10
@@ -79,29 +94,70 @@ public class TiledBlockCreator : MonoBehaviour {
         // inner corner - top edge to side edge
         SetWorkingTile(v(2, 2));
         FillMiddle();
-        CopyBlock(v(3, 1), v(0, 1));
+        InnerTopLeftCorner();
 
         // inner corner - bottom edge to side edge
         SetWorkingTile(v(2, 1));
         FillMiddle();
-        CopyBlock(v(3, 0), v(0, 0));
+        InnerBottomLeftCorner();
 
-        // end cap for a 1-thick row
+        // end cap for a 1-high row
         SetWorkingTile(v(2, 0));
         TopEdge();
         BottomEdge();
         TopLeftCorner();
         BottomLeftCorner();
 
-        // top cap for a 1-thick column
+        // top cap for a 1-wide column
         SetWorkingTile(v(3, 2));
-        FillMiddle();
         LeftEdge();
         RightEdge();
         TopLeftCorner();
         TopRightCorner();
 
-        SaveOutputTexture();
+        // bottom cap for a 1-wide column
+        SetWorkingTile(v(3, 1));
+        LeftEdge();
+        RightEdge();
+        BottomLeftCorner();
+        BottomRightCorner();
+
+        // center for a 1-high row
+        SetWorkingTile(v(3, 0));
+        TopEdge();
+        BottomEdge();
+
+        // zero-neighbor
+        SetWorkingTile(v(4, 2));
+        TopLeftCorner();
+        TopRightCorner();
+        BottomLeftCorner();
+        BottomRightCorner();
+
+        // middle of a 1-wide column
+        SetWorkingTile(v(4, 1));
+        LeftEdge();
+        RightEdge();
+
+        SetWorkingTile(v(4, 0));
+        FillMiddle();
+        InnerTopLeftCorner();
+        RightEdge();
+
+        SetWorkingTile(v(5, 2));
+        FillMiddle();
+        InnerTopLeftCorner();
+        InnerTopRightCorner();
+
+        SetWorkingTile(v(5, 1));
+        FillMiddle();
+        InnerBottomLeftCorner();
+        InnerBottomRightCorner();
+
+        SetWorkingTile(v(5, 0));
+        FillMiddle();
+        InnerTopLeftCorner();
+        InnerBottomLeftCorner();
     }
 
     static Vector2Int v(int x, int y) {
@@ -194,6 +250,24 @@ public class TiledBlockCreator : MonoBehaviour {
         CopyBlock(v(0, 0), v(0, 0));
     }
 
+    static void InnerTopLeftCorner() {
+        CopyBlock(v(3, 1), v(0, 1));
+    }
+
+    static void InnerTopRightCorner() {
+        CopyBlock(v(3, 1), v(1, 1));
+        MirrorBlock(v(1, 1));
+    }
+
+    static void InnerBottomLeftCorner() {
+        CopyBlock(v(3, 0), v(0, 0));
+    }
+
+    static void InnerBottomRightCorner() {
+        CopyBlock(v(3, 0), v(1, 0));
+        MirrorBlock(v(1, 0));
+    }
+
     static void MirrorBlock(Vector2Int targetBlock) {
         // translate the block's origin into texture space
         // first offset by tile, then look ino the specific block
@@ -219,10 +293,10 @@ public class TiledBlockCreator : MonoBehaviour {
 
     static void PrepareBaseTexture() {
         assetPath = AssetDatabase.GetAssetPath(Selection.activeObject);
-        // the texture's asset importer setting has to be RGBA32, because that's the format of the default PNG output we create
+        // the texture's asset importer setting has to be RGBA32, because that's the format of the default PNG dest tex we create
         TextureImporter t = AssetImporter.GetAtPath(assetPath) as TextureImporter;
         TextureImporterPlatformSettings texset = t.GetDefaultPlatformTextureSettings();
-        texset.format=TextureImporterFormat.RGBA32;
+        texset.format = TextureImporterFormat.RGBA32;
         t.SetPlatformTextureSettings(texset);
         // also make sure it's readable
         t.isReadable = true;
@@ -231,15 +305,38 @@ public class TiledBlockCreator : MonoBehaviour {
     }
 
     static void SaveOutputTexture() {
+        File.WriteAllBytes(BaseToOutputName(assetPath), dest.EncodeToPNG());
+        // then refresh so the new texture shows up
+        AssetDatabase.Refresh();
+    }
+
+    static string BaseToOutputName(string baseAssetPath) {
         string[] splitPath = assetPath.Split('/');
         string originalFileName = splitPath[splitPath.Length-1];
-        splitPath[splitPath.Length-1] = "generated_" + originalFileName;
-        string outputPath = string.Join('/', splitPath);
-        byte[] bytes = dest.EncodeToPNG();
+        splitPath[splitPath.Length-1] = originalFileName.Split('.')[0]+"_generated.png";
+        return string.Join('/', splitPath);
+    }
 
-        File.WriteAllBytes(outputPath, bytes);
+    static void SliceOutputTexture() {
+        string outputPath = BaseToOutputName(assetPath);
+        TextureImporter ti = AssetImporter.GetAtPath(outputPath) as TextureImporter;
+        ti.spriteImportMode = SpriteImportMode.Multiple;
+        List<SpriteMetaData> metaData = new List<SpriteMetaData>();
+        int spriteNum = 0;
+        for (int x=0; x<dest.width; x+=tileSize) {
+            for (int y=dest.height; y>0; y-=tileSize) {
+                SpriteMetaData meta = new SpriteMetaData();
+                meta.pivot = new Vector2(0.5f, 0.5f);
+                meta.alignment = 9;
+                meta.name = spriteNum.ToString();
+                meta.rect = new Rect(x, y-tileSize, tileSize, tileSize);
+                metaData.Add(meta);
 
-        // then refresh so the new texture shows up
+                spriteNum++;
+            }
+        }
+        ti.spritesheet = metaData.ToArray();
+        AssetDatabase.ImportAsset(outputPath, ImportAssetOptions.ForceUpdate);
         AssetDatabase.Refresh();
     }
 }
