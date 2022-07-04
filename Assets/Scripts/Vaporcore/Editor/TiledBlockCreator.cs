@@ -6,11 +6,6 @@ using UnityEditor;
 using System.IO;
 
 public class TiledBlockCreator : MonoBehaviour {
-    /*
-        https://answers.unity.com/questions/949102/how-to-add-context-menu-on-assets-and-asset-folder.html
-        https://docs.unity3d.com/ScriptReference/AssetDatabase.CreateAsset.html
-        https://answers.unity.com/questions/1617356/how-do-i-add-neighbor-rules-for-ruletiles-by-scrip.html
-*/
     const int tileSize = 64;
     const int blocksPerTile = 2;
     const int blockSize = tileSize / blocksPerTile;
