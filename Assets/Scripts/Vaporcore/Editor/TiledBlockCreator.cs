@@ -1,6 +1,5 @@
 #if UNITY_EDITOR
 using System.Collections;
-using UnityEditorInternal;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
@@ -15,6 +14,12 @@ public class TiledBlockCreator : MonoBehaviour {
     const int tileSize = 64;
     const int blocksPerTile = 2;
     const int blockSize = tileSize / blocksPerTile;
+    const int xTiles = 6;
+    const int yTiles = 3;
+    
+    public const int templateSize = 2 * tileSize;
+    public const int destWidth = xTiles * tileSize;
+    public const int destHeight = yTiles * tileSize;
 
     static string assetPath;
     static Texture2D src;
@@ -23,6 +28,8 @@ public class TiledBlockCreator : MonoBehaviour {
 
     [MenuItem("Assets/Create Tiled Block")]
     static void CreateTiledBlockFromTexture() {
+        assetPath = AssetDatabase.GetAssetPath(Selection.activeObject);
+
         PrepareBaseTexture();
         LoadBaseTexture();
         CreateOutputTexture();
@@ -44,10 +51,9 @@ public class TiledBlockCreator : MonoBehaviour {
         /*
         (0, 2) (1, 2) (2, 2), (3, 2)
         (0, 1) (1, 1) (2, 1), (3, 1)
-        (0, 0) (1, 0) (2, 0), (3, 0)
-        etc
+        (0, 0) (1, 0) (2, 0), (3, 0) ... etc
         */
-        dest = MakeDefaultTexture(tileSize * 6, tileSize * 3);
+        dest = MakeDefaultTexture(tileSize * xTiles, tileSize * yTiles);
     }
 
     static void CreateBlocks() {        
@@ -198,8 +204,13 @@ public class TiledBlockCreator : MonoBehaviour {
         return output;
     }
 
+    [MenuItem("Assets/Create Tiled Block", true)]
     static bool CanMakeTiledBlock() {
-        return Selection.activeObject is Texture2D;
+        if (Selection.activeObject is Texture2D) {
+            Texture2D t = Selection.activeObject as Texture2D;
+            return t.width == templateSize && t.height == templateSize;
+        }
+        return false;
     }
 
     static void FillMiddle() {
@@ -292,7 +303,6 @@ public class TiledBlockCreator : MonoBehaviour {
     }
 
     static void PrepareBaseTexture() {
-        assetPath = AssetDatabase.GetAssetPath(Selection.activeObject);
         // the texture's asset importer setting has to be RGBA32, because that's the format of the default PNG dest tex we create
         TextureImporter t = AssetImporter.GetAtPath(assetPath) as TextureImporter;
         TextureImporterPlatformSettings texset = t.GetDefaultPlatformTextureSettings();
@@ -311,7 +321,7 @@ public class TiledBlockCreator : MonoBehaviour {
     }
 
     static string BaseToOutputName(string baseAssetPath) {
-        string[] splitPath = assetPath.Split('/');
+        string[] splitPath = baseAssetPath.Split('/');
         string originalFileName = splitPath[splitPath.Length-1];
         splitPath[splitPath.Length-1] = originalFileName.Split('.')[0]+"_generated.png";
         return string.Join('/', splitPath);
