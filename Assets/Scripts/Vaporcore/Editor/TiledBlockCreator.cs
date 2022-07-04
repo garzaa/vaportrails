@@ -34,7 +34,7 @@ public class TiledBlockCreator : MonoBehaviour {
         (0, 1) (1, 1) (2, 1), (3, 1)
         (0, 0) (1, 0) (2, 0), (3, 0)
         */
-        dest = MakeDefaultTexture(tileSize * 3, tileSize * 3);
+        dest = MakeDefaultTexture(tileSize * 4, tileSize * 3);
         
         // 1 - edge, 0 - enclosed
         // 11
@@ -79,19 +79,27 @@ public class TiledBlockCreator : MonoBehaviour {
         // inner corner - top edge to side edge
         SetWorkingTile(v(2, 2));
         FillMiddle();
-        CopyBlock(v(5, 1), v(0, 1));
+        CopyBlock(v(3, 1), v(0, 1));
 
         // inner corner - bottom edge to side edge
         SetWorkingTile(v(2, 1));
         FillMiddle();
-        CopyBlock(v(5, 0), v(0, 1));
+        CopyBlock(v(3, 0), v(0, 0));
 
-        // end cap for a 1-thick block
+        // end cap for a 1-thick row
         SetWorkingTile(v(2, 0));
         TopEdge();
         BottomEdge();
         TopLeftCorner();
         BottomLeftCorner();
+
+        // top cap for a 1-thick column
+        SetWorkingTile(v(3, 2));
+        FillMiddle();
+        LeftEdge();
+        RightEdge();
+        TopLeftCorner();
+        TopRightCorner();
 
         SaveOutputTexture();
     }
@@ -143,7 +151,7 @@ public class TiledBlockCreator : MonoBehaviour {
         given a texture with four target tiles, it's mapped like this:
         (1, 0) (1, 1)
         (0, 0) (0, 1)
-        and each tiles will have 4 blocks in it
+        and each tile will have 4 blocks in it
         */
 
         // fill the middle with the middle texture, straight copy
@@ -155,7 +163,9 @@ public class TiledBlockCreator : MonoBehaviour {
     }
 
     static void RightEdge() {
-        CopyBlock(v(3, 1), v(1, 2), v(1, 0));
+        CopyBlock(v(0, 1), v(1, 2), v(1, 0));
+        MirrorBlock(v(1, 0));
+        MirrorBlock(v(1, 1));
     }
 
     static void BottomEdge() {
@@ -171,15 +181,40 @@ public class TiledBlockCreator : MonoBehaviour {
     }
 
     static void TopRightCorner() {
-        CopyBlock(v(3, 3), v(1, 1));
+        CopyBlock(v(0, 3), v(1, 1));
+        MirrorBlock(v(1, 1));
     }
 
     static void BottomRightCorner() {
-        CopyBlock(v(3, 0), v(1, 0));
+        CopyBlock(v(0, 0), v(1, 0));
+        MirrorBlock(v(1, 0));
     }
 
     static void BottomLeftCorner() {
         CopyBlock(v(0, 0), v(0, 0));
+    }
+
+    static void MirrorBlock(Vector2Int targetBlock) {
+        // translate the block's origin into texture space
+        // first offset by tile, then look ino the specific block
+        Vector2Int origin = (tileSize * workingTile) + (targetBlock * blockSize);
+        Color[] pixels = dest.GetPixels(origin.x, origin.y, blockSize, blockSize);
+
+        // then go and flip each row, swap the first element with the nth, second with n-1, etc
+        int diff;
+        Color other;        
+        // swap pixels in the left half with the right half
+        for (int i=0; i<pixels.Length; i++) {
+            diff = (blockSize - (i%blockSize)*2 - 1);
+            if (i%blockSize < blockSize/2) {
+                other = pixels[i + diff];
+                pixels[i + diff] = pixels[i];
+                pixels[i] = other;
+            }
+        }
+        dest.SetPixels(origin.x, origin.y, blockSize, blockSize, pixels);
+
+        dest.Apply();
     }
 
     static void PrepareBaseTexture() {
