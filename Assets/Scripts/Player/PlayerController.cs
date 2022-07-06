@@ -22,6 +22,7 @@ public class PlayerController : Entity {
 	bool justWalkedOffCliff;
 	bool bufferedJump;
 	float inputX;
+	float timeSinceLanding = 1;
 
 	void Start() {
 
@@ -133,6 +134,12 @@ public class PlayerController : Entity {
         if (frozeInputs) {
             animator.SetBool("XInput", false);
         }
+
+		if (groundData.hitGround) {
+			timeSinceLanding = 0;
+		}
+		timeSinceLanding = Mathf.MoveTowards(timeSinceLanding, 1, 4f * Time.deltaTime);
+		animator.SetFloat("TimeSinceLanding", timeSinceLanding);
     }
 
 	void CheckFlip() {
