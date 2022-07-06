@@ -15,6 +15,7 @@ public class Entity : MonoBehaviour {
 	protected bool facingRight;
 	protected GroundData groundData;
 	protected Collider2D groundColliderLastFrame;
+
 	
 	GroundCheck groundCheck;
 	AudioResource currentFootfall;
@@ -30,6 +31,9 @@ public class Entity : MonoBehaviour {
 
 	protected virtual void Update() {
 		UpdateFootfallSound();
+		if (groundData.hitGround) {
+			FootfallSound();
+		}
 	}
 
 	void UpdateFootfallSound() {
@@ -45,7 +49,7 @@ public class Entity : MonoBehaviour {
     }
 
 	public void FootfallSound() {
-
+		currentFootfall.PlayFrom(this.gameObject);
 	}
 
 	public void Flip() {

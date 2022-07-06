@@ -6,14 +6,16 @@ public class PlayerController : Entity {
 
 	#pragma warning disable 0649
 	[SerializeField] GameObject playerRig;
+	[SerializeField] AudioResource jumpNoise;
+	[SerializeField] AudioResource landNoise;
 	#pragma warning restore 0649
 
-	public float runSpeed = 4.5f;
-    public float groundAcceleration = 175;
-    public float airAcceleration = 100;
-    public float jumpCutoffVelocity = 2f;
-    public float jumpForce = 8;
-    public float airFriction = 0.7f;
+	const float runSpeed = 4.5f;
+    const float groundAcceleration = 175;
+    const float airAcceleration = 100;
+    const float jumpCutoffVelocity = 2f;
+    const float jumpForce = 8;
+    const float airFriction = 0.7f;
     const float slideFrictionMod = 0.05f;
     const float bufferDuration = 0.2f;
 
@@ -57,6 +59,10 @@ public class PlayerController : Entity {
                 WaitAndExecute(() => justWalkedOffCliff = false, bufferDuration);
             }
         }
+
+		if (groundData.hitGround) {
+			landNoise.PlayFrom(this.gameObject);
+		}
 	}
 
 	void ApplyMovement() {
@@ -119,8 +125,6 @@ public class PlayerController : Entity {
         }
 
 		if (InputManager.ButtonUp(Buttons.JUMP) && rb2d.velocity.y > jumpCutoffVelocity) {
-			//if the jump button is released
-			//then decrease the y velocity to the jump cutoff
 			rb2d.velocity = new Vector2(rb2d.velocity.x, jumpCutoffVelocity);
 		}
 	}
@@ -134,8 +138,9 @@ public class PlayerController : Entity {
             animator.SetBool("XInput", false);
 			animator.SetBool("MovingForward", false);
         } else {
-        	animator.SetBool("XInput", Mathf.Abs(Input.GetAxisRaw("Horizontal")) > 0);
-			// animator.SetBool("MovingForward");
+        	animator.SetBool("XInput", Mathf.Abs(InputManager.HorizontalInput()) > 0);
+			bool movingForward = InputManager.HasHorizontalInput() && ((facingRight && rb2d.velocity.x > 0) || (!facingRight && rb2d.velocity.x < 0));
+			animator.SetBool("MovingForward", movingForward);
 		}
 
 		if (groundData.hitGround) {
@@ -146,6 +151,11 @@ public class PlayerController : Entity {
     }
 
 	void CheckFlip() {
+		// if moving, and moving AGAINST the facing direction, don't flip
+		if (Mathf.Abs(rb2d.velocity.x) > 0) {
+			// if ()
+		}
+		
         if (facingRight && inputX<0) {
             Flip();
         } else if (!facingRight && inputX>0) {

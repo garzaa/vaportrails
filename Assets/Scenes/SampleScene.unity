@@ -515,14 +515,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47018dd80a1a36745b2a036051e5cc9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultFootfall: {fileID: 0}
+  defaultFootfall: {fileID: 11400000, guid: 65d56a11957ef4844955d8edad2bd588, type: 2}
   playerRig: {fileID: 2001344628}
-  runSpeed: 4.5
-  groundAcceleration: 175
-  airAcceleration: 100
-  jumpCutoffVelocity: 2
-  jumpForce: 8
-  airFriction: 0.7
+  jumpNoise: {fileID: 0}
+  landNoise: {fileID: 11400000, guid: 89a19030a9e3cdf4e962dbcf79005481, type: 2}
 --- !u!50 &152597314
 Rigidbody2D:
   serializedVersion: 4
@@ -4138,7 +4134,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6253d8441cdaa574ba5dc690001bada0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sound: {fileID: 0}
+  sound: {fileID: 11400000, guid: 65d56a11957ef4844955d8edad2bd588, type: 2}
 --- !u!1 &1750915649
 GameObject:
   m_ObjectHideFlags: 0
