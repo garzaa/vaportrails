@@ -129,11 +129,14 @@ public class PlayerController : Entity {
         animator.SetBool("Grounded", groundData.grounded);
         animator.SetFloat("YSpeed", rb2d.velocity.y);
         animator.SetFloat("XSpeedMagnitude", Mathf.Abs(rb2d.velocity.x));
-        animator.SetBool("XInput", Mathf.Abs(Input.GetAxisRaw("Horizontal")) > 0);
 
         if (frozeInputs) {
             animator.SetBool("XInput", false);
-        }
+			animator.SetBool("MovingForward", false);
+        } else {
+        	animator.SetBool("XInput", Mathf.Abs(Input.GetAxisRaw("Horizontal")) > 0);
+			// animator.SetBool("MovingForward");
+		}
 
 		if (groundData.hitGround) {
 			timeSinceLanding = 0;
