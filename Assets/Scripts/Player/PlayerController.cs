@@ -21,10 +21,12 @@ public class PlayerController : Entity {
 
 	bool frozeInputs;
 	bool justJumped;
+	bool inputBackwards;
+	bool movingBackwards;
 	bool justWalkedOffCliff;
 	bool bufferedJump;
 	float inputX;
-	float timeSinceLanding = 1;
+	float landingRecovery = 1;
 
 	void Start() {
 
@@ -44,9 +46,15 @@ public class PlayerController : Entity {
 
 	void Move() {
 		inputX = InputManager.HorizontalInput();
+		inputBackwards = InputManager.HasHorizontalInput()
+				&& Mathf.Abs(rb2d.velocity.x) > 0
+				&& InputManager.HorizontalInput()*rb2d.velocity.x < 0;
+		movingBackwards = rb2d.velocity.x > 0
+							&& rb2d.velocity.x * -transform.localScale.x < 0;
 
 		if (frozeInputs) {
 			inputX = 0;
+			inputBackwards = false;
 		}
 
 		if (groundData.leftGround) {
@@ -100,6 +108,7 @@ public class PlayerController : Entity {
 		if (frozeInputs) return;
 
 		void ExecuteJump() {
+			jumpNoise.PlayFrom(this.gameObject);
             animator.SetTrigger("Jump");
             rb2d.velocity = new Vector2(rb2d.velocity.x, Mathf.Max(0, rb2d.velocity.y));
             rb2d.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
@@ -133,28 +142,28 @@ public class PlayerController : Entity {
         animator.SetBool("Grounded", groundData.grounded);
         animator.SetFloat("YSpeed", rb2d.velocity.y);
         animator.SetFloat("XSpeedMagnitude", Mathf.Abs(rb2d.velocity.x));
+		animator.SetBool("MovingBackward", inputBackwards);
 
         if (frozeInputs) {
-            animator.SetBool("XInput", false);
 			animator.SetBool("MovingForward", false);
+			animator.SetFloat("XInputMagnitude", 0);
+			animator.SetFloat("RelativeXInput", 0);
         } else {
-        	animator.SetBool("XInput", Mathf.Abs(InputManager.HorizontalInput()) > 0);
 			bool movingForward = InputManager.HasHorizontalInput() && ((facingRight && rb2d.velocity.x > 0) || (!facingRight && rb2d.velocity.x < 0));
 			animator.SetBool("MovingForward", movingForward);
+			animator.SetFloat("XInputMagnitude", Mathf.Abs(InputManager.HorizontalInput()));
+			animator.SetFloat("RelativeXInput", InputManager.HorizontalInput() * -transform.localScale.x);
 		}
 
 		if (groundData.hitGround) {
-			timeSinceLanding = 0;
+			landingRecovery = -1;
 		}
-		timeSinceLanding = Mathf.MoveTowards(timeSinceLanding, 1, 4f * Time.deltaTime);
-		animator.SetFloat("TimeSinceLanding", timeSinceLanding);
+		landingRecovery = Mathf.MoveTowards(landingRecovery, 0, 4f * Time.deltaTime);
+		animator.SetFloat("LandingRecovery", landingRecovery);
     }
 
 	void CheckFlip() {
-		// if moving, and moving AGAINST the facing direction, don't flip
-		if (Mathf.Abs(rb2d.velocity.x) > 0) {
-			// if ()
-		}
+		if (inputBackwards || !groundData.grounded) return;
 		
         if (facingRight && inputX<0) {
             Flip();
