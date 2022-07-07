@@ -15,10 +15,11 @@ public class Entity : MonoBehaviour {
 	protected bool facingRight;
 	protected GroundData groundData;
 	protected Collider2D groundColliderLastFrame;
-
 	
 	GroundCheck groundCheck;
 	AudioResource currentFootfall;
+
+	static GameObject jumpDust;
 
 	protected virtual void Awake() {
 		animator = GetComponent<Animator>();
@@ -27,6 +28,15 @@ public class Entity : MonoBehaviour {
         collider2d = GetComponent<Collider2D>();
         groundCheck = GetComponent<GroundCheck>();
         groundData = groundCheck.groundData;
+		if (!jumpDust) jumpDust = Resources.Load<GameObject>("Runtime/JumpDust");
+	}
+
+	public void JumpDust() {
+		Vector2 pos = new Vector2(
+			transform.position.x,
+			collider2d.bounds.min.y
+		);
+		Instantiate(jumpDust, pos, Quaternion.identity, null);
 	}
 
 	protected virtual void Update() {

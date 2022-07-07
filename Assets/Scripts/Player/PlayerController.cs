@@ -118,7 +118,7 @@ public class PlayerController : Entity {
 	void Jump() {
 		if (frozeInputs) return;
 
-		void ExecuteJump() {
+		void GroundJump() {
 			jumpNoise.PlayFrom(this.gameObject);
 			// backflip can flip on the same frame...how to deal with this
             if (inputBackwards || movingBackwards) {
@@ -126,13 +126,14 @@ public class PlayerController : Entity {
 			} else {
 				animator.SetTrigger("Jump");
 			}
+			JumpDust();
             rb2d.velocity = new Vector2(rb2d.velocity.x, Mathf.Max(0, rb2d.velocity.y));
             rb2d.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
         }
 
 		if (groundData.hitGround && bufferedJump) {
             bufferedJump = false;
-            ExecuteJump();
+            GroundJump();
             return;
         }
 
@@ -142,7 +143,7 @@ public class PlayerController : Entity {
 					DropThroughPlatforms(groundData.platforms);
 					return;
 				}
-                ExecuteJump();
+                GroundJump();
             } else {
                 bufferedJump = true;
                 WaitAndExecute(() => bufferedJump = false, bufferDuration);
