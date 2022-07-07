@@ -18,6 +18,7 @@ public class PlayerController : Entity {
     const float airFriction = 0.5f;
     const float slideFrictionMod = 0.05f;
     const float bufferDuration = 0.2f;
+	public float dashForce = 8;
 
 	bool frozeInputs;
 	bool justJumped;
@@ -39,6 +40,7 @@ public class PlayerController : Entity {
 		base.Update();
 		CheckFlip();
 		Move();
+		Dash();
 		Jump();
 		UpdateAnimator();
 	}
@@ -104,6 +106,13 @@ public class PlayerController : Entity {
         if (Mathf.Abs(rb2d.velocity.x) > runSpeed) {
             SlowOnFriction();
         }
+	}
+
+	void Dash() {
+		if (frozeInputs) return;
+		if (InputManager.ButtonDown(Buttons.SPECIAL)) {
+			rb2d.AddForce(Vector2.right * InputManager.HorizontalInput() * dashForce, ForceMode2D.Impulse);
+		}
 	}
 
 	void Jump() {
