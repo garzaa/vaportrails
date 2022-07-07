@@ -20,7 +20,7 @@ public class Entity : MonoBehaviour {
 	GroundCheck groundCheck;
 	AudioResource currentFootfall;
 
-	void Awake() {
+	protected virtual void Awake() {
 		animator = GetComponent<Animator>();
         rb2d = GetComponent<Rigidbody2D>();
         groundMask = 1 << LayerMask.NameToLayer(Layers.Ground);

@@ -12,10 +12,10 @@ public class PlayerController : Entity {
 
 	const float runSpeed = 4.5f;
     const float groundAcceleration = 175;
-    const float airAcceleration = 100;
+    const float airAcceleration = 80;
     const float jumpCutoffVelocity = 2f;
     const float jumpForce = 8;
-    const float airFriction = 0.7f;
+    const float airFriction = 0.5f;
     const float slideFrictionMod = 0.05f;
     const float bufferDuration = 0.2f;
 
@@ -28,16 +28,19 @@ public class PlayerController : Entity {
 	float inputX;
 	float landingRecovery = 1;
 
-	void Start() {
+	ToonMotion toonMotion;
 
+	override protected void Awake() {
+		base.Awake();
+		toonMotion = GetComponentInChildren<ToonMotion>();
 	}
 
 	override protected void Update() {
 		base.Update();
+		CheckFlip();
 		Move();
 		Jump();
 		UpdateAnimator();
-		CheckFlip();
 	}
 
 	void FixedUpdate() {
@@ -49,8 +52,7 @@ public class PlayerController : Entity {
 		inputBackwards = InputManager.HasHorizontalInput()
 				&& Mathf.Abs(rb2d.velocity.x) > 0
 				&& InputManager.HorizontalInput()*rb2d.velocity.x < 0;
-		movingBackwards = rb2d.velocity.x > 0
-							&& rb2d.velocity.x * -transform.localScale.x < 0;
+		movingBackwards = Mathf.Abs(rb2d.velocity.x) > 0.01 && rb2d.velocity.x * -transform.localScale.x < 0;
 
 		if (frozeInputs) {
 			inputX = 0;
@@ -109,7 +111,12 @@ public class PlayerController : Entity {
 
 		void ExecuteJump() {
 			jumpNoise.PlayFrom(this.gameObject);
-            animator.SetTrigger("Jump");
+			// backflip can flip on the same frame...how to deal with this
+            if (inputBackwards || movingBackwards) {
+				animator.SetTrigger("Backflip");
+			} else {
+				animator.SetTrigger("Jump");
+			}
             rb2d.velocity = new Vector2(rb2d.velocity.x, Mathf.Max(0, rb2d.velocity.y));
             rb2d.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
         }
@@ -156,6 +163,7 @@ public class PlayerController : Entity {
 		}
 
 		if (groundData.hitGround) {
+			toonMotion.ForceUpdate();
 			landingRecovery = -1;
 		}
 		landingRecovery = Mathf.MoveTowards(landingRecovery, 0, 4f * Time.deltaTime);
