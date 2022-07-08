@@ -5,7 +5,7 @@ using UnityEngine;
 public class WallCheck : MonoBehaviour {
 
 	#pragma warning disable 0649
-	[SerializeField] Collider2D targetCollider;
+	Collider2D targetCollider;
 	[SerializeField] float groundGap = 0.06f;
 	#pragma warning restore 0649
 	const bool drawDebug = true;
@@ -14,9 +14,11 @@ public class WallCheck : MonoBehaviour {
 
 	int layerMask;
 	const float extendDistance = 0.02f;
+	bool touchingWallLastFrame = false;
 
 	void Start() {		
 		layerMask = 1 << LayerMask.NameToLayer(Layers.Ground);
+		targetCollider = GetComponent<Collider2D>();
 	}
 
 	void Update() {
@@ -26,6 +28,7 @@ public class WallCheck : MonoBehaviour {
 		Vector2 actualSize = new Vector2(targetCollider.bounds.size.x, targetCollider.bounds.size.y-(2*groundGap));
 
 		float distance = targetCollider.bounds.size.x/2f + extendDistance;
+		bool touchingwallThisFrame = false;
 
 		Vector2 topStart = startPoint+(Vector2.up*actualSize.y*0.5f);
 		Vector2 bottomStart = startPoint+(Vector2.down*actualSize.y*0.5f);
@@ -46,9 +49,8 @@ public class WallCheck : MonoBehaviour {
 		Debug.DrawLine(topStart, topStart+(Vector2.left*distance), Color.cyan);
 		Debug.DrawLine(bottomStart, bottomStart+(Vector2.left*distance), Color.cyan);
 		if (topHit.collider!=null || bottomHit.collider!=null) {
-			wallData.distance = Vector2.Distance(startPoint, topHit.point);
 			wallData.direction = -1;
-			wallData.touchingWall = true;
+			touchingwallThisFrame = true;
 		}
 
 		// cast right
@@ -65,28 +67,27 @@ public class WallCheck : MonoBehaviour {
 			layerMask: layerMask
 		);
 		if (topHit.collider!=null || bottomHit.collider!=null) {
-			wallData.distance = Vector2.Distance(startPoint, topHit.point);
 			wallData.direction = 1;
-			wallData.touchingWall = true;
+			touchingwallThisFrame = true;
 		}
+
+		if (!touchingWallLastFrame && touchingwallThisFrame) {
+			wallData.hitWall = true;
+		}
+		wallData.touchingWall = touchingwallThisFrame;
+		touchingWallLastFrame = touchingwallThisFrame;
 	}
 
 	void RefreshWallData(WallCheckData data) {
-		data.distance = 99;
 		data.direction = 0;
 		data.touchingWall = false;
+		data.hitWall = false;
 	}
 }
 
 [System.Serializable]
 public class WallCheckData {
-	public float distance;
 	public int direction;
 	public bool touchingWall;
-
-	public WallCheckData() {
-		distance = 99;
-		direction = 0;
-		touchingWall = false;
-	}
+	public bool hitWall;
 }

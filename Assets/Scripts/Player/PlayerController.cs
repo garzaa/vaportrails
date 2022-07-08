@@ -17,11 +17,11 @@ public class PlayerController : Entity {
     const float jumpForce = 8;
     const float airFriction = 0.3f;
     const float slideFrictionMod = 0.05f;
-    const float bufferDuration = 0.2f;
-	public float dashForce = 8;
+    const float bufferDuration = 0.1f;
+	const float maxFallSpeed = -8f;
+	float dashForce = 8;
 
 	bool frozeInputs;
-	bool justJumped;
 	bool inputBackwards;
 	bool movingBackwards;
 	bool justWalkedOffCliff;
@@ -32,10 +32,12 @@ public class PlayerController : Entity {
 	float landingRecovery = 1;
 
 	ToonMotion toonMotion;
+	WallCheckData wallData;
 
 	override protected void Awake() {
 		base.Awake();
 		toonMotion = GetComponentInChildren<ToonMotion>();
+		wallData = GetComponent<WallCheck>().wallData;
 	}
 
 	override protected void Update() {
@@ -65,11 +67,7 @@ public class PlayerController : Entity {
 		}
 
 		if (groundData.leftGround) {
-            // due to physics updating, run this here and make it velocity based
-            if (rb2d.velocity.y > 0) {
-                justJumped = true;
-                WaitAndExecute(() => justJumped = false, bufferDuration);
-            } else {
+            if (rb2d.velocity.y <= 0) {
                 justWalkedOffCliff = true;
                 WaitAndExecute(() => justWalkedOffCliff = false, bufferDuration);
             }
@@ -78,6 +76,15 @@ public class PlayerController : Entity {
 		if (groundData.hitGround) {
 			landNoise.PlayFrom(this.gameObject);
 		}
+
+		if (wallData.hitWall) {
+			OnWallHit();
+		}
+	}
+
+	void OnWallHit() {
+		// play the hit sound, flip to the wall
+		landNoise.PlayFrom(this.gameObject);
 	}
 
 	void ApplyMovement() {
@@ -91,7 +98,7 @@ public class PlayerController : Entity {
         if (inputX!=0) {
 			if (!speeding || inputBackwards) {
 				if (groundData.grounded) {
-						// if ground is a gnashable platform that's been gnashed/destroyed
+						// if ground is a platform that's been destroyed/disabled
 						float f = groundData.groundCollider != null ? groundData.groundCollider.friction : airFriction;
 						rb2d.AddForce(Vector2.right * rb2d.mass * groundAcceleration * inputX * f*f);
 				} else {	
@@ -112,6 +119,10 @@ public class PlayerController : Entity {
         if (speeding) {
             SlowOnFriction();
         }
+
+		if (rb2d.velocity.y < maxFallSpeed) {
+			rb2d.velocity = new Vector2(rb2d.velocity.x, maxFallSpeed);
+		}
 	}
 
 	void Dash() {
@@ -126,11 +137,12 @@ public class PlayerController : Entity {
 
 		void GroundJump() {
 			jumpNoise.PlayFrom(this.gameObject);
-			// backflip can flip on the same frame...how to deal with this
-            if (inputBackwards || movingBackwards) {
-				animator.SetTrigger("Backflip");
-			} else {
-				animator.SetTrigger("Jump");
+			if (!wallData.touchingWall) {
+				if (inputBackwards || movingBackwards) {
+					animator.SetTrigger("Backflip");
+				} else {
+					animator.SetTrigger("Jump");
+				}
 			}
 			JumpDust();
             rb2d.velocity = new Vector2(rb2d.velocity.x, Mathf.Max(0, rb2d.velocity.y));
@@ -171,10 +183,12 @@ public class PlayerController : Entity {
 			animator.SetBool("MovingForward", false);
 			animator.SetFloat("XInputMagnitude", 0);
 			animator.SetFloat("RelativeXInput", 0);
+			animator.SetBool("Wallsliding", false);
         } else {
 			animator.SetBool("MovingForward", movingForward);
 			animator.SetFloat("XInputMagnitude", Mathf.Abs(InputManager.HorizontalInput()));
 			animator.SetFloat("RelativeXInput", InputManager.HorizontalInput() * -transform.localScale.x);
+			animator.SetBool("Wallsliding", wallData.touchingWall);
 		}
 
 		if (groundData.hitGround) {
