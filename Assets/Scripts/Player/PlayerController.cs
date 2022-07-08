@@ -15,7 +15,7 @@ public class PlayerController : Entity {
     const float airAcceleration = 80;
     const float jumpCutoffVelocity = 2f;
     const float jumpForce = 8;
-    const float airFriction = 0.5f;
+    const float airFriction = 0.3f;
     const float slideFrictionMod = 0.05f;
     const float bufferDuration = 0.2f;
 	public float dashForce = 8;
@@ -26,6 +26,8 @@ public class PlayerController : Entity {
 	bool movingBackwards;
 	bool justWalkedOffCliff;
 	bool bufferedJump;
+	bool movingForward;
+	bool speeding;
 	float inputX;
 	float landingRecovery = 1;
 
@@ -55,6 +57,7 @@ public class PlayerController : Entity {
 				&& Mathf.Abs(rb2d.velocity.x) > 0
 				&& InputManager.HorizontalInput()*rb2d.velocity.x < 0;
 		movingBackwards = Mathf.Abs(rb2d.velocity.x) > 0.01 && rb2d.velocity.x * -transform.localScale.x < 0;
+		movingForward = InputManager.HasHorizontalInput() && ((facingRight && rb2d.velocity.x > 0) || (!facingRight && rb2d.velocity.x < 0));
 
 		if (frozeInputs) {
 			inputX = 0;
@@ -78,19 +81,23 @@ public class PlayerController : Entity {
 	}
 
 	void ApplyMovement() {
+		speeding = Mathf.Abs(rb2d.velocity.x) > runSpeed;
+
 		void SlowOnFriction() {
             float f = groundData.grounded ? groundData.groundCollider.friction : airFriction;
             rb2d.velocity = new Vector2(rb2d.velocity.x * (1 - (f*f)), rb2d.velocity.y);
         }
 
         if (inputX!=0) {
-            if (groundData.grounded) {
-                // if ground is a gnashable platform that's been gnashed/destroyed
-                float f = groundData.groundCollider != null ? groundData.groundCollider.friction : airFriction;
-                rb2d.AddForce(Vector2.right * rb2d.mass * groundAcceleration * inputX * f*f);
-            } else {
-                rb2d.AddForce(Vector2.right * rb2d.mass * airAcceleration * inputX);
-            }
+			if (!speeding || inputBackwards) {
+				if (groundData.grounded) {
+						// if ground is a gnashable platform that's been gnashed/destroyed
+						float f = groundData.groundCollider != null ? groundData.groundCollider.friction : airFriction;
+						rb2d.AddForce(Vector2.right * rb2d.mass * groundAcceleration * inputX * f*f);
+				} else {	
+					rb2d.AddForce(Vector2.right * rb2d.mass * airAcceleration * inputX);
+				}
+			}
         } else {
             // if no input, slow player
             if (groundData.grounded) {
@@ -102,8 +109,7 @@ public class PlayerController : Entity {
             }
         }
 
-        // reduce speed if speeding
-        if (Mathf.Abs(rb2d.velocity.x) > runSpeed) {
+        if (speeding) {
             SlowOnFriction();
         }
 	}
@@ -166,7 +172,6 @@ public class PlayerController : Entity {
 			animator.SetFloat("XInputMagnitude", 0);
 			animator.SetFloat("RelativeXInput", 0);
         } else {
-			bool movingForward = InputManager.HasHorizontalInput() && ((facingRight && rb2d.velocity.x > 0) || (!facingRight && rb2d.velocity.x < 0));
 			animator.SetBool("MovingForward", movingForward);
 			animator.SetFloat("XInputMagnitude", Mathf.Abs(InputManager.HorizontalInput()));
 			animator.SetFloat("RelativeXInput", InputManager.HorizontalInput() * -transform.localScale.x);
