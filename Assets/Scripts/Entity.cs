@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 
+[RequireComponent(typeof(EntityShader))]
 public class Entity : MonoBehaviour {
 	#pragma warning disable 0649
 	[SerializeField] AudioResource defaultFootfall;
@@ -15,6 +16,7 @@ public class Entity : MonoBehaviour {
 	protected bool facingRight;
 	protected GroundData groundData;
 	protected Collider2D groundColliderLastFrame;
+	protected EntityShader entityShader;
 	
 	GroundCheck groundCheck;
 	AudioResource currentFootfall;
@@ -28,6 +30,7 @@ public class Entity : MonoBehaviour {
 	protected virtual void Awake() {
 		animator = GetComponent<Animator>();
         rb2d = GetComponent<Rigidbody2D>();
+		entityShader = GetComponent<EntityShader>();
         groundMask = 1 << LayerMask.NameToLayer(Layers.Ground);
         collider2d = GetComponent<Collider2D>();
         groundCheck = GetComponent<GroundCheck>();

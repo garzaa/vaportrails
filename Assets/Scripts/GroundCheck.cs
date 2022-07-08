@@ -4,6 +4,8 @@ using System.Collections;
 
 public class GroundCheck : MonoBehaviour {
     public GroundData groundData = new GroundData();
+    public bool skipFirstLanding = true;
+    bool firstLanding = true;
     [SerializeField] bool detecting = true;
     
     Collider2D col;
@@ -44,6 +46,11 @@ public class GroundCheck : MonoBehaviour {
             groundData.leftGround = true;
         } else if (!groundData.grounded && grounded) {
             groundData.hitGround = true;
+            if (skipFirstLanding && firstLanding) {
+                firstLanding = false;
+                skipFirstLanding = false;
+                groundData.hitGround = false;
+            }
         }
 
         if (!groundData.onLedge && onLedge) {

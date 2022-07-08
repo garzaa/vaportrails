@@ -20,13 +20,8 @@ public class AsyncTexture {
 	}
 
 	public Color GetPixel(int x, int y) {
-		// if it's within bounds, then return x and y
-		// otherwise, return a clamped value
-
-		if (x>=width) x = width-1;
-		else if (x<0) x = 0;
-		if (y>=height) y = height-1;
-		else if (y<0) y = 0;
+		x = Mathf.Clamp(x, 0, width-1);
+		y = Mathf.Clamp(y, 0, height-1);
 
 		// origin is at the bottom left
 		return pixels[y*width + x];

@@ -29,8 +29,6 @@ public class RuleTileCreator : MonoBehaviour {
         string assetPath = AssetDatabase.GetAssetPath(Selection.activeObject);
         string ruleTilePath = BaseToOutputName(assetPath);
 
-        // check if it's present first
-        // true is not working, it's never loaded
         bool saveNew = false;
         tile = AssetDatabase.LoadAssetAtPath(ruleTilePath, typeof(RuleTile)) as RuleTile;
         if(tile == null) {
