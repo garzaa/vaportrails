@@ -20,6 +20,8 @@ public class Entity : MonoBehaviour {
 	AudioResource currentFootfall;
 
 	static GameObject jumpDust;
+	static GameObject landDust;
+	static GameObject footfallDust;
 
 	protected virtual void Awake() {
 		animator = GetComponent<Animator>();
@@ -29,6 +31,8 @@ public class Entity : MonoBehaviour {
         groundCheck = GetComponent<GroundCheck>();
         groundData = groundCheck.groundData;
 		if (!jumpDust) jumpDust = Resources.Load<GameObject>("Runtime/JumpDust");
+		if (!landDust) landDust = Resources.Load<GameObject>("Runtime/LandDust");
+		if (!footfallDust) footfallDust = Resources.Load<GameObject>("Runtime/FootfallDust");
 	}
 
 	public void JumpDust() {
@@ -39,10 +43,29 @@ public class Entity : MonoBehaviour {
 		Instantiate(jumpDust, pos, Quaternion.identity, null);
 	}
 
+	public void LandDust() {
+		Vector2 pos = new Vector2(
+			transform.position.x,
+			collider2d.bounds.min.y
+		);
+		Instantiate(landDust, pos, Quaternion.identity, null);
+	}
+
+	public void FootfallDust() {
+		Vector2 pos = new Vector2(
+			transform.position.x,
+			collider2d.bounds.min.y
+		);
+		GameObject d = Instantiate(footfallDust, pos, Quaternion.identity, null);
+		// keep track of facing left/right
+		d.transform.localScale = transform.localScale;
+	}
+
 	protected virtual void Update() {
 		UpdateFootfallSound();
 		if (groundData.hitGround) {
 			FootfallSound();
+			LandDust();
 		}
 	}
 

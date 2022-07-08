@@ -173,12 +173,22 @@ public class PlayerController : Entity {
 		}
 
 		if (groundData.hitGround) {
-			toonMotion.ForceUpdate();
+			StartCoroutine(UpdateToonMotion());
 			landingRecovery = -1;
 		}
+
+		if (groundData.grounded) {
+			animator.SetBool("FallInterrupt", true);
+		}
+
 		landingRecovery = Mathf.MoveTowards(landingRecovery, 0, 4f * Time.deltaTime);
 		animator.SetFloat("LandingRecovery", landingRecovery);
     }
+	
+	IEnumerator UpdateToonMotion() {
+		yield return new WaitForEndOfFrame();
+		toonMotion.ForceUpdate();
+	}
 
 	void CheckFlip() {
 		if (inputBackwards || !groundData.grounded) return;
