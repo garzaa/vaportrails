@@ -40,6 +40,12 @@ public class WallCheck : MonoBehaviour {
 			distance: distance,
 			layerMask: layerMask
 		);
+		RaycastHit2D midHit = Physics2D.Raycast(
+			origin: startPoint,
+			direction: Vector2.left,
+			distance: distance,
+			layerMask: layerMask
+		);
 		RaycastHit2D bottomHit = Physics2D.Raycast(
 			origin: bottomStart,
 			direction: Vector2.left,
@@ -48,7 +54,7 @@ public class WallCheck : MonoBehaviour {
 		);
 		Debug.DrawLine(topStart, topStart+(Vector2.left*distance), Color.cyan);
 		Debug.DrawLine(bottomStart, bottomStart+(Vector2.left*distance), Color.cyan);
-		if (topHit.collider!=null || bottomHit.collider!=null) {
+		if (topHit.collider!=null || bottomHit.collider!=null || midHit.collider!=null) {
 			wallData.direction = -1;
 			touchingwallThisFrame = true;
 		}
@@ -60,13 +66,19 @@ public class WallCheck : MonoBehaviour {
 			distance: distance,
 			layerMask: layerMask
 		);
+		midHit = Physics2D.Raycast(
+			origin: startPoint,
+			direction: Vector2.right,
+			distance: distance,
+			layerMask: layerMask
+		);
 		bottomHit = Physics2D.Raycast(
 			origin: startPoint+(Vector2.down*actualSize.y*0.5f),
 			direction: Vector2.right,
 			distance: distance,
 			layerMask: layerMask
 		);
-		if (topHit.collider!=null || bottomHit.collider!=null) {
+		if (topHit.collider!=null || bottomHit.collider!=null || midHit.collider!=null) {
 			wallData.direction = 1;
 			touchingwallThisFrame = true;
 		}
@@ -74,6 +86,11 @@ public class WallCheck : MonoBehaviour {
 		if (!touchingWallLastFrame && touchingwallThisFrame) {
 			wallData.hitWall = true;
 		}
+
+		if (touchingWallLastFrame && !touchingwallThisFrame) {
+			wallData.leftWall = true;
+		}
+
 		wallData.touchingWall = touchingwallThisFrame;
 		touchingWallLastFrame = touchingwallThisFrame;
 	}
@@ -82,6 +99,7 @@ public class WallCheck : MonoBehaviour {
 		data.direction = 0;
 		data.touchingWall = false;
 		data.hitWall = false;
+		data.leftWall = false;
 	}
 }
 
@@ -90,4 +108,5 @@ public class WallCheckData {
 	public int direction;
 	public bool touchingWall;
 	public bool hitWall;
+	public bool leftWall;
 }

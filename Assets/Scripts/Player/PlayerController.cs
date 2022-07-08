@@ -19,12 +19,15 @@ public class PlayerController : Entity {
     const float slideFrictionMod = 0.05f;
     const float bufferDuration = 0.1f;
 	const float maxFallSpeed = -8f;
+	const float maxWallSlideSpeed = -4f;
 	float dashForce = 8;
+	float airControlMod = 1;
 
 	bool frozeInputs;
 	bool inputBackwards;
 	bool movingBackwards;
 	bool justWalkedOffCliff;
+	bool justLeftWall;
 	bool bufferedJump;
 	bool movingForward;
 	bool speeding;
@@ -33,11 +36,13 @@ public class PlayerController : Entity {
 
 	ToonMotion toonMotion;
 	WallCheckData wallData;
+	GameObject wallJumpDust;
 
 	override protected void Awake() {
 		base.Awake();
 		toonMotion = GetComponentInChildren<ToonMotion>();
 		wallData = GetComponent<WallCheck>().wallData;
+		wallJumpDust = Resources.Load<GameObject>("Runtime/WallJumpDust");
 	}
 
 	override protected void Update() {
@@ -60,6 +65,7 @@ public class PlayerController : Entity {
 				&& InputManager.HorizontalInput()*rb2d.velocity.x < 0;
 		movingBackwards = Mathf.Abs(rb2d.velocity.x) > 0.01 && rb2d.velocity.x * -transform.localScale.x < 0;
 		movingForward = InputManager.HasHorizontalInput() && ((facingRight && rb2d.velocity.x > 0) || (!facingRight && rb2d.velocity.x < 0));
+		airControlMod = Mathf.MoveTowards(airControlMod, 1, 1f * Time.deltaTime);
 
 		if (frozeInputs) {
 			inputX = 0;
@@ -71,6 +77,12 @@ public class PlayerController : Entity {
                 justWalkedOffCliff = true;
                 WaitAndExecute(() => justWalkedOffCliff = false, bufferDuration);
             }
+
+			// the player can initiate walltouch on the ground
+			// and ground movement can override the wallflip
+			if (wallData.touchingWall) {
+				FlipToWall();
+			}
         }
 
 		if (groundData.hitGround) {
@@ -83,8 +95,24 @@ public class PlayerController : Entity {
 	}
 
 	void OnWallHit() {
-		// play the hit sound, flip to the wall
+		// play the hit sound
 		landNoise.PlayFrom(this.gameObject);
+		// add the dust effect for hitting the wall
+		GameObject g = Instantiate(landDust);
+		float x = facingRight ? collider2d.bounds.max.x : collider2d.bounds.min.x;
+		g.transform.position = new Vector2(x, transform.position.y);
+		g.transform.eulerAngles = new Vector3(0, 0, facingRight ? 90 : -90);
+		FlipToWall();
+	}
+
+	void FlipToWall() {
+		// flip to the wall
+		if (facingRight && wallData.direction>0) {
+			Flip();
+		} else if (!facingRight && wallData.direction<0) {
+			Flip();
+		}
+		toonMotion.ForceUpdate();
 	}
 
 	void ApplyMovement() {
@@ -98,11 +126,11 @@ public class PlayerController : Entity {
         if (inputX!=0) {
 			if (!speeding || inputBackwards) {
 				if (groundData.grounded) {
-						// if ground is a platform that's been destroyed/disabled
-						float f = groundData.groundCollider != null ? groundData.groundCollider.friction : airFriction;
-						rb2d.AddForce(Vector2.right * rb2d.mass * groundAcceleration * inputX * f*f);
+					// if ground is a platform that's been destroyed/disabled
+					float f = groundData.groundCollider != null ? groundData.groundCollider.friction : airFriction;
+					rb2d.AddForce(Vector2.right * rb2d.mass * groundAcceleration * inputX * f*f);
 				} else {	
-					rb2d.AddForce(Vector2.right * rb2d.mass * airAcceleration * inputX);
+					rb2d.AddForce(Vector2.right * rb2d.mass * airAcceleration * inputX * airControlMod);
 				}
 			}
         } else {
@@ -122,6 +150,15 @@ public class PlayerController : Entity {
 
 		if (rb2d.velocity.y < maxFallSpeed) {
 			rb2d.velocity = new Vector2(rb2d.velocity.x, maxFallSpeed);
+		}
+
+		if (wallData.touchingWall && rb2d.velocity.y < maxWallSlideSpeed) {
+			rb2d.velocity = new Vector2(rb2d.velocity.x, maxWallSlideSpeed);
+		}
+
+		if (wallData.leftWall) {
+			justLeftWall = true;
+			WaitAndExecute(()=>justLeftWall=false, bufferDuration);
 		}
 	}
 
@@ -149,11 +186,30 @@ public class PlayerController : Entity {
             rb2d.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
         }
 
+		void WallJump() {
+			// assume player is facing the wall and needs to be flipped away from it
+			jumpNoise.PlayFrom(this.gameObject);
+			rb2d.velocity = new Vector2(rb2d.velocity.x, Mathf.Max(0, rb2d.velocity.y));
+            rb2d.AddForce(
+				new Vector2(facingRight ? jumpForce : -jumpForce, jumpForce),
+				ForceMode2D.Impulse
+			);
+			airControlMod = 0;
+			GameObject w = Instantiate(wallJumpDust);
+			w.transform.position = new Vector2(facingRight ? collider2d.bounds.min.x : collider2d.bounds.max.x, transform.position.y);
+			w.transform.localScale = new Vector3(facingRight ? 1 : -1, 1, 1);
+			WaitAndExecute(() => animator.SetTrigger("WallJump"), 0.1f);
+		}
+
 		if (groundData.hitGround && bufferedJump) {
             bufferedJump = false;
             GroundJump();
             return;
-        }
+        } else if (wallData.hitWall && bufferedJump) {
+			bufferedJump = false;
+			WallJump();
+			return;
+		}
 
 		if (InputManager.ButtonDown(Buttons.JUMP)) {
             if (groundData.grounded || justWalkedOffCliff) {
@@ -162,7 +218,9 @@ public class PlayerController : Entity {
 					return;
 				}
                 GroundJump();
-            } else {
+            } else if (wallData.touchingWall || justLeftWall) {
+				WallJump();
+			} else {
                 bufferedJump = true;
                 WaitAndExecute(() => bufferedJump = false, bufferDuration);
             }

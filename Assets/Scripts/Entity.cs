@@ -20,8 +20,10 @@ public class Entity : MonoBehaviour {
 	AudioResource currentFootfall;
 
 	static GameObject jumpDust;
-	static GameObject landDust;
+	protected static GameObject landDust;
 	static GameObject footfallDust;
+	
+	bool canGroundHitEffect = true;
 
 	protected virtual void Awake() {
 		animator = GetComponent<Animator>();
@@ -52,6 +54,8 @@ public class Entity : MonoBehaviour {
 	}
 
 	public void FootfallDust() {
+		// when transitioning into a falling animation
+		if (!groundData.grounded) return;
 		Vector2 pos = new Vector2(
 			transform.position.x,
 			collider2d.bounds.min.y
@@ -63,9 +67,11 @@ public class Entity : MonoBehaviour {
 
 	protected virtual void Update() {
 		UpdateFootfallSound();
-		if (groundData.hitGround) {
+		if (groundData.hitGround && canGroundHitEffect) {
 			FootfallSound();
 			LandDust();
+			canGroundHitEffect = false;
+			WaitAndExecute(() => canGroundHitEffect=true, 0.1f);
 		}
 	}
 
