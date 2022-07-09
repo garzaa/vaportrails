@@ -186,7 +186,7 @@ public class PlayerController : Entity {
 
 		if (frozeInputs) return;
 
-		if (InputManager.ButtonDown(Buttons.SPECIAL) && canDash) {
+		if (InputManager.ButtonDown(Buttons.SPECIAL) && canDash && InputManager.HasHorizontalInput()) {
 			animator.SetTrigger(inputBackwards ? "BackDash" : "Dash");
 			entityShader.FlashWhite();
 			canDash = false;
