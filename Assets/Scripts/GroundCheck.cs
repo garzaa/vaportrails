@@ -25,6 +25,9 @@ public class GroundCheck : MonoBehaviour {
     List<RaycastHit2D>platforms = new List<RaycastHit2D>();
     List<RaycastHit2D> nonPlatforms = new List<RaycastHit2D>();
 
+    // TODO: add distance
+    // TODO: add fall distance
+
     void Awake() {
         col = GetComponent<Collider2D>();
         defaultLayerMask = 1 << LayerMask.NameToLayer(Layers.Ground);

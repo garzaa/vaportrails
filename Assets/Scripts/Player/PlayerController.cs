@@ -21,10 +21,10 @@ public class PlayerController : Entity {
 	const float maxFallSpeed = -10f;
 	const float maxWallSlideSpeed = -4f;
 	const float dashCooldown = 0.7f;
-	float dashForce = 8;
+	const float dashSpeed = 6f;
 	float airControlMod = 1;
 	float fMod = 1;
-	float fModRecoveryRate = 2;
+	float fModRecoveryRate = 1;
 
 	bool frozeInputs;
 	bool inputBackwards;
@@ -35,6 +35,7 @@ public class PlayerController : Entity {
 	bool movingForward;
 	bool speeding;
 	bool canDash = true;
+	bool dashing;
 	float inputX;
 	float landingRecovery = 1;
 
@@ -66,7 +67,7 @@ public class PlayerController : Entity {
 		inputX = InputManager.HorizontalInput();
 		inputBackwards = InputManager.HasHorizontalInput()
 				&& Mathf.Abs(rb2d.velocity.x) > 0
-				&& InputManager.HorizontalInput()*rb2d.velocity.x < 0;
+				&& InputManager.HorizontalInput()*(facingRight ? 1 : -1) < 0;
 		movingBackwards = Mathf.Abs(rb2d.velocity.x) > 0.01 && rb2d.velocity.x * -transform.localScale.x < 0;
 		movingForward = InputManager.HasHorizontalInput() && ((facingRight && rb2d.velocity.x > 0) || (!facingRight && rb2d.velocity.x < 0));
 		airControlMod = Mathf.MoveTowards(airControlMod, 1, 1f * Time.deltaTime);
@@ -91,10 +92,16 @@ public class PlayerController : Entity {
 
 		if (groundData.hitGround) {
 			landNoise.PlayFrom(this.gameObject);
+			if (movingBackwards) Flip();
 		}
 
 		if (wallData.hitWall) {
 			OnWallHit();
+		}
+
+		if (wallData.leftWall) {
+			justLeftWall = true;
+			WaitAndExecute(()=>justLeftWall=false, bufferDuration*2);
 		}
 	}
 
@@ -102,6 +109,7 @@ public class PlayerController : Entity {
 		// play the hit sound
 		landNoise.PlayFrom(this.gameObject);
 		FlipToWall();
+		fMod = 1;
 		// add the dust effect for hitting the wall
 		GameObject g = Instantiate(landDust);
 		float x = facingRight ? collider2d.bounds.min.x : collider2d.bounds.max.x;
@@ -127,8 +135,14 @@ public class PlayerController : Entity {
             rb2d.velocity = new Vector2(rb2d.velocity.x * (1 - (f*f*fMod)), rb2d.velocity.y);
         }
 
+		if (dashing) {
+			float magnitude = Mathf.Max(Mathf.Abs(rb2d.velocity.x), dashSpeed);
+			rb2d.velocity = new Vector2(magnitude * Mathf.Sign(rb2d.velocity.x), Mathf.Max(rb2d.velocity.y, 0));
+			return;
+		}
+
         if (inputX!=0) {
-			if (!speeding || inputBackwards) {
+			if (!speeding || (inputBackwards && !movingBackwards)) {
 				if (groundData.grounded) {
 					// if ground is a platform that's been destroyed/disabled
 					float f = groundData.groundCollider != null ? groundData.groundCollider.friction : airFriction;
@@ -160,12 +174,7 @@ public class PlayerController : Entity {
 			rb2d.velocity = new Vector2(rb2d.velocity.x, maxWallSlideSpeed);
 		}
 
-		if (wallData.leftWall) {
-			justLeftWall = true;
-			WaitAndExecute(()=>justLeftWall=false, bufferDuration*2);
-		}
-
-		Mathf.MoveTowards(fMod, 1, (1f/fModRecoveryRate) * Time.fixedDeltaTime);
+		fMod = Mathf.MoveTowards(fMod, 1, (1f/fModRecoveryRate) * Time.fixedDeltaTime);
 	}
 
 	void Dash() {
@@ -176,13 +185,25 @@ public class PlayerController : Entity {
 		}
 
 		if (frozeInputs) return;
+
 		if (InputManager.ButtonDown(Buttons.SPECIAL) && canDash) {
-			rb2d.AddForce(Vector2.right * InputManager.HorizontalInput() * dashForce, ForceMode2D.Impulse);
-			animator.SetTrigger("Dash");
+			animator.SetTrigger(inputBackwards ? "BackDash" : "Dash");
 			entityShader.FlashWhite();
 			canDash = false;
+			dashing = true;
+			fMod = 0;
+			// dash at the max direction indicated by the stick
+			rb2d.velocity = new Vector2(
+				(InputManager.HorizontalInput() > 0 ? 1 : -1) * (runSpeed + dashSpeed),
+				Mathf.Max(rb2d.velocity.y, 0)
+			);
 			WaitAndExecute(EndDashCooldown, dashCooldown);
 		}
+	}
+
+	public void StopDashAnimation() {
+		dashing = false;
+		if (groundData.grounded && movingBackwards) Flip();
 	}
 
 	void Jump() {
@@ -283,7 +304,7 @@ public class PlayerController : Entity {
 	}
 
 	void CheckFlip() {
-		if (inputBackwards || !groundData.grounded) return;
+		if ((inputBackwards && !movingBackwards) || !groundData.grounded || dashing) return;
 		
         if (facingRight && inputX<0) {
             Flip();
