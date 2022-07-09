@@ -107,4 +107,11 @@ public class Entity : MonoBehaviour {
         yield return new WaitForSeconds(timeout);
         action();
     }
+
+	public Vector2Int Forward() {
+		return new Vector2Int(
+            facingRight ? 1 : -1,
+            1
+        );
+	}
 }

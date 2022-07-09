@@ -18,16 +18,17 @@ public class PlayerController : Entity {
     const float airFriction = 0.3f;
     const float slideFrictionMod = 0.05f;
     const float bufferDuration = 0.1f;
-	const float maxFallSpeed = -10f;
+	const float maxFallSpeed = -14f;
 	const float maxWallSlideSpeed = -4f;
 	const float dashCooldown = 0.6f;
 	const float dashSpeed = 6f;
 	float airControlMod = 1;
 	float fMod = 1;
-	float fModRecoveryRate = 1;
+	float fModRecoveryTime = 1.5f;
 
 	bool frozeInputs;
 	bool inputBackwards;
+	bool inputForwards;
 	bool movingBackwards;
 	bool justWalkedOffCliff;
 	bool justLeftWall;
@@ -36,6 +37,8 @@ public class PlayerController : Entity {
 	bool speeding;
 	bool canDash = true;
 	bool dashing;
+	bool groundJumped;
+	bool inAttack;	
 	float inputX;
 	float landingRecovery = 1;
 
@@ -68,8 +71,8 @@ public class PlayerController : Entity {
 	void Move() {
 		inputX = InputManager.HorizontalInput();
 		inputBackwards = InputManager.HasHorizontalInput()
-				&& Mathf.Abs(rb2d.velocity.x) > 0
 				&& InputManager.HorizontalInput()*(facingRight ? 1 : -1) < 0;
+		inputForwards = InputManager.HasHorizontalInput() && !inputBackwards;
 		movingBackwards = Mathf.Abs(rb2d.velocity.x) > 0.01 && rb2d.velocity.x * -transform.localScale.x < 0;
 		movingForward = InputManager.HasHorizontalInput() && ((facingRight && rb2d.velocity.x > 0) || (!facingRight && rb2d.velocity.x < 0));
 		airControlMod = Mathf.MoveTowards(airControlMod, 1, 1f * Time.deltaTime);
@@ -94,7 +97,6 @@ public class PlayerController : Entity {
 
 		if (groundData.hitGround) {
 			landNoise.PlayFrom(this.gameObject);
-			if (movingBackwards) Flip();
 		}
 
 		if (wallData.hitWall) {
@@ -144,7 +146,7 @@ public class PlayerController : Entity {
 		}
 
         if (inputX!=0) {
-			if (!speeding || (inputBackwards && !movingBackwards)) {
+			if (!speeding || (movingForward && inputBackwards) || (movingBackwards && inputForwards)) {
 				if (groundData.grounded) {
 					// if ground is a platform that's been destroyed/disabled
 					float f = groundData.groundCollider != null ? groundData.groundCollider.friction : airFriction;
@@ -176,7 +178,7 @@ public class PlayerController : Entity {
 			rb2d.velocity = new Vector2(rb2d.velocity.x, maxWallSlideSpeed);
 		}
 
-		fMod = Mathf.MoveTowards(fMod, 1, (1f/fModRecoveryRate) * Time.fixedDeltaTime);
+		fMod = Mathf.MoveTowards(fMod, 1, (1f/fModRecoveryTime) * Time.fixedDeltaTime);
 	}
 
 	void Dash() {
@@ -194,7 +196,6 @@ public class PlayerController : Entity {
 			entityShader.FlashWhite();
 			canDash = false;
 			dashing = true;
-			fMod = 0;
 			// dash at the max direction indicated by the stick
 			rb2d.velocity = new Vector2(
 				(InputManager.HorizontalInput() > 0 ? 1 : -1) * (runSpeed + dashSpeed),
@@ -205,11 +206,16 @@ public class PlayerController : Entity {
 	}
 
 	public void StopDashAnimation() {
+		// this is responsible for setting the super walljump bug if you dash into a wall and buffer a jump
+		fMod = 0;
 		dashing = false;
-		if (groundData.grounded && movingBackwards) Flip();
 	}
 
 	void Jump() {
+		if (inAttack && InputManager.ButtonDown(Buttons.JUMP)) {
+			BufferJump();
+		}
+
 		if (frozeInputs) return;
 
 		void GroundJump() {
@@ -221,6 +227,7 @@ public class PlayerController : Entity {
 					animator.SetTrigger("Jump");
 				}
 			}
+			groundJumped = true;
 			JumpDust();
             rb2d.velocity = new Vector2(rb2d.velocity.x, Mathf.Max(0, rb2d.velocity.y));
             rb2d.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
@@ -239,6 +246,12 @@ public class PlayerController : Entity {
 			w.transform.position = new Vector2(facingRight ? collider2d.bounds.min.x : collider2d.bounds.max.x, transform.position.y);
 			w.transform.localScale = new Vector3(facingRight ? 1 : -1, 1, 1);
 			WaitAndExecute(() => animator.SetTrigger("WallJump"), 0.1f);
+			groundJumped = false;
+		}
+
+		void BufferJump() {
+			bufferedJump = true;
+			WaitAndExecute(() => bufferedJump = false, bufferDuration);
 		}
 
 		if (groundData.hitGround && bufferedJump) {
@@ -261,12 +274,11 @@ public class PlayerController : Entity {
             } else if (wallData.touchingWall || (justLeftWall && rb2d.velocity.y<=0)) {
 				WallJump();
 			} else {
-                bufferedJump = true;
-                WaitAndExecute(() => bufferedJump = false, bufferDuration);
+                BufferJump();
             }
         }
 
-		if (InputManager.ButtonUp(Buttons.JUMP) && rb2d.velocity.y > jumpCutoffVelocity) {
+		if (InputManager.ButtonUp(Buttons.JUMP) && rb2d.velocity.y > jumpCutoffVelocity && groundJumped) {
 			rb2d.velocity = new Vector2(rb2d.velocity.x, jumpCutoffVelocity);
 		}
 	}
@@ -275,8 +287,9 @@ public class PlayerController : Entity {
         animator.SetBool("Grounded", groundData.grounded);
         animator.SetFloat("YSpeed", rb2d.velocity.y);
         animator.SetFloat("XSpeedMagnitude", Mathf.Abs(rb2d.velocity.x));
-		animator.SetBool("MovingBackward", inputBackwards);
+		animator.SetBool("MovingBackward", movingBackwards);
 		animator.SetBool("Wallsliding", wallData.touchingWall);
+		animator.SetFloat("RelativeXSpeed", rb2d.velocity.x * Forward().x);
 
         if (frozeInputs) {
 			animator.SetBool("MovingForward", false);
@@ -323,5 +336,25 @@ public class PlayerController : Entity {
 			platform.enabled = false;
             WaitAndExecute(() => platform.enabled = true, 0.5f);
 		}
+	}
+
+	public void OnAttackNodeEnter() {
+		if (facingRight && inputX<0) {
+            Flip();
+        } else if (!facingRight && inputX>0) {
+            Flip();
+        }
+		frozeInputs = true;
+		inAttack = true;
+	}
+
+	public void OnAttackNodeExit() {
+		Debug.Log("player exiting attack graph");
+		frozeInputs = false;
+		inAttack = false;
+	}
+
+	public void SetFmod(float f) {
+		fMod = f;
 	}
 }

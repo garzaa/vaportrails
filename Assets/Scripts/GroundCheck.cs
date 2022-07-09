@@ -22,11 +22,14 @@ public class GroundCheck : MonoBehaviour {
     Vector2 overlapBoxSize;
     GameObject currentGround;
 
-    List<RaycastHit2D>platforms = new List<RaycastHit2D>();
+    List<RaycastHit2D> platforms = new List<RaycastHit2D>();
     List<RaycastHit2D> nonPlatforms = new List<RaycastHit2D>();
 
+    // avoid physics jank
+    const float minHitInterval = 0.3f;
+    float lastHitTime = 0f;
+
     // TODO: add distance
-    // TODO: add fall distance
 
     void Awake() {
         col = GetComponent<Collider2D>();
@@ -48,7 +51,10 @@ public class GroundCheck : MonoBehaviour {
         if (groundData.grounded && !grounded) {
             groundData.leftGround = true;
         } else if (!groundData.grounded && grounded) {
-            groundData.hitGround = true;
+            if (Time.time-lastHitTime > minHitInterval) {
+                groundData.hitGround = true;
+                lastHitTime = Time.time;
+            }
             if (skipFirstLanding && firstLanding) {
                 firstLanding = false;
                 skipFirstLanding = false;

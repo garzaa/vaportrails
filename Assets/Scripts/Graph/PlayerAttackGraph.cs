@@ -1,0 +1,112 @@
+using UnityEngine;
+using XNode;
+
+[CreateAssetMenu]
+public class PlayerAttackGraph : NodeGraph {
+    const int attackFramerate = 16;
+
+    float clipTime;
+    float clipLength;
+
+    int currentFrame;
+	bool enteredCurrentNode = false;
+
+    // expose these to nodes
+    public Rigidbody2D rb2d;
+    public Animator animator;
+    public AttackBuffer buffer;
+    public AirAttackTracker airAttackTracker;
+    public PlayerCombatController combatController;
+
+    CombatNode currentNode = null;
+    public string exitNodeName = "Idle";
+
+    public void Initialize(PlayerCombatController combatController, Animator anim, AttackBuffer buffer, Rigidbody2D rb, AirAttackTracker airAttackTracker) {
+        this.animator = anim;
+        this.buffer = buffer;
+        this.rb2d = rb;
+        this.airAttackTracker = airAttackTracker;
+        this.combatController = combatController;
+    }
+
+    public void EnterGraph(Node entryNode=null) {
+		Debug.Log("Entering graph");
+		enteredCurrentNode = false;
+        currentNode = (entryNode == null) ? GetRootNode() : entryNode as CombatNode;
+        currentNode.OnNodeEnter();
+		enteredCurrentNode = true;
+    }
+
+    public void ExitGraph(bool quiet=false) {
+        if (currentNode != null) {
+            currentNode.OnNodeExit();
+        }
+		Debug.Log("Exiting graph");
+        currentNode = null;
+		combatController.OnGraphExit();
+        if (!quiet) {
+			// crossfades can't be interrupted by next state transitions (e.g. from idle to run) so it'll play the skid during the fade
+			if (!InputManager.HasHorizontalInput()) animator.CrossFadeInFixedTime(exitNodeName, 0.2f, 0);
+			else animator.Play(exitNodeName, 0);
+		}
+    }
+
+    public void Update() {
+        // assume there aren't any blend states on the animator
+        AnimatorClipInfo[] clipInfo = animator.GetCurrentAnimatorClipInfo(layerIndex:0);
+
+        // if the current state has no animation clip in it
+		if (clipInfo.Length==0) {
+			return;
+		}
+		string clipName = clipInfo[0].clip.name;
+        clipLength = clipInfo[0].clip.length;
+        clipTime = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+
+        currentFrame = (int) ((clipTime * clipLength) * 16f);
+
+		if (!clipName.Equals(currentNode.name) && !enteredCurrentNode) {
+			// wait for animator state to actually propagate
+			if (!enteredCurrentNode) {
+				return;
+			} else {
+				// otherwise we've entered the current node and it's been interrupted
+				// like by falling off a ledge/getting hit or something
+				ExitGraph(quiet: true);
+			}
+			Debug.Log("clip "+clipName+" is not equal to node "+currentNode.name);
+			return;
+		} else {
+			enteredCurrentNode = true;
+		}
+        currentNode.NodeUpdate(currentFrame, clipTime, buffer);
+    }
+
+    public void MoveNode(CombatNode node) {
+        currentNode.OnNodeExit();
+        currentNode = node;
+        currentNode.OnNodeEnter();
+    }
+    
+    int GetStateHash() {
+        return animator.GetCurrentAnimatorStateInfo(layerIndex:0).fullPathHash;
+    }
+
+    CombatNode GetRootNode() {
+        foreach (Node i in nodes) {
+            if (i is InitialBranchNode) return i as CombatNode;
+        }
+        return null;
+    }
+
+    public void OnAttackLand() {
+        currentNode.OnAttackLand();
+    }
+
+    public void OnGroundHit() {
+        if (currentNode != null) {
+            currentNode.OnGroundHit();
+        }
+    }
+
+}
