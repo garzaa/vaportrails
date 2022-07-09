@@ -20,7 +20,7 @@ public class PlayerController : Entity {
     const float bufferDuration = 0.1f;
 	const float maxFallSpeed = -10f;
 	const float maxWallSlideSpeed = -4f;
-	const float dashCooldown = 0.7f;
+	const float dashCooldown = 0.6f;
 	const float dashSpeed = 6f;
 	float airControlMod = 1;
 	float fMod = 1;
@@ -42,12 +42,14 @@ public class PlayerController : Entity {
 	ToonMotion toonMotion;
 	WallCheckData wallData;
 	GameObject wallJumpDust;
+	AudioResource dashSound;
 
 	override protected void Awake() {
 		base.Awake();
 		toonMotion = GetComponentInChildren<ToonMotion>();
 		wallData = GetComponent<WallCheck>().wallData;
 		wallJumpDust = Resources.Load<GameObject>("Runtime/WallJumpDust");
+		dashSound = Resources.Load<AudioResource>("Runtime/DashSound");
 	}
 
 	override protected void Update() {
@@ -187,6 +189,7 @@ public class PlayerController : Entity {
 		if (frozeInputs) return;
 
 		if (InputManager.ButtonDown(Buttons.SPECIAL) && canDash && InputManager.HasHorizontalInput()) {
+			dashSound.PlayFrom(gameObject);
 			animator.SetTrigger(inputBackwards ? "BackDash" : "Dash");
 			entityShader.FlashWhite();
 			canDash = false;
@@ -255,7 +258,7 @@ public class PlayerController : Entity {
 					return;
 				}
                 GroundJump();
-            } else if (wallData.touchingWall || justLeftWall) {
+            } else if (wallData.touchingWall || (justLeftWall && rb2d.velocity.y<=0)) {
 				WallJump();
 			} else {
                 bufferedJump = true;
