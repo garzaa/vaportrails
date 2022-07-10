@@ -2,8 +2,6 @@ using UnityEngine;
 using XNode;
 
 public class InitialBranchNode : AttackNode {
-    public float speedBarrier;
-
     [Output(dynamicPortList=true, connectionType=ConnectionType.Override)]
     public AttackLink[] speedLinks;
 
@@ -20,7 +18,7 @@ public class InitialBranchNode : AttackNode {
     override public CombatNode GetNextNode(AttackBuffer buffer) {
         CombatNode next = null;
 
-        if (speedBarrier > 0 && (Mathf.Abs(attackGraph.rb2d.velocity.x) >= speedBarrier)) {
+        if (attackGraph.combatController.IsSpeeding()) {
             next = MatchAttackNode(buffer, speedLinks, portListName:"speedLinks");
         }
 

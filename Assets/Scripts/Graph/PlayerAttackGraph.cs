@@ -12,7 +12,6 @@ public class PlayerAttackGraph : NodeGraph {
 	bool enteredCurrentNode = false;
 
     // expose these to nodes
-    public Rigidbody2D rb2d;
     public Animator animator;
     public AttackBuffer buffer;
     public AirAttackTracker airAttackTracker;
@@ -21,10 +20,9 @@ public class PlayerAttackGraph : NodeGraph {
     CombatNode currentNode = null;
     public string exitNodeName = "Idle";
 
-    public void Initialize(PlayerCombatController combatController, Animator anim, AttackBuffer buffer, Rigidbody2D rb, AirAttackTracker airAttackTracker) {
+    public void Initialize(PlayerCombatController combatController, Animator anim, AttackBuffer buffer, AirAttackTracker airAttackTracker) {
         this.animator = anim;
         this.buffer = buffer;
-        this.rb2d = rb;
         this.airAttackTracker = airAttackTracker;
         this.combatController = combatController;
     }
@@ -41,14 +39,10 @@ public class PlayerAttackGraph : NodeGraph {
         if (currentNode != null) {
             currentNode.OnNodeExit();
         }
+		animator.SetBool("Actionable", true);
 		Debug.Log("Exiting graph");
-        currentNode = null;
 		combatController.OnGraphExit();
-        if (!quiet) {
-			// crossfades can't be interrupted by next state transitions (e.g. from idle to run) so it'll play the skid during the fade
-			if (!InputManager.HasHorizontalInput()) animator.CrossFadeInFixedTime(exitNodeName, 0.2f, 0);
-			else animator.Play(exitNodeName, 0);
-		}
+        currentNode = null;
     }
 
     public void Update() {

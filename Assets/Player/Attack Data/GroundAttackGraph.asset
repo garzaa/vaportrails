@@ -62,12 +62,59 @@ MonoBehaviour:
   nodes:
   - {fileID: 7367564331834169068}
   - {fileID: -2496123809670740237}
-  rb2d: {fileID: 0}
+  - {fileID: 6225885635047150608}
   animator: {fileID: 0}
   buffer: {fileID: 0}
   airAttackTracker: {fileID: 0}
   combatController: {fileID: 0}
   exitNodeName: Idle
+--- !u!114 &6225885635047150608
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93af5be29414da440814eeb14596c6e5, type: 3}
+  m_Name: Shoulder Tackle
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 136, y: 56}
+  ports:
+    keys:
+    - input
+    - links
+    values:
+    - _fieldName: input
+      _node: {fileID: 6225885635047150608}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: speedLinks 0
+        node: {fileID: 7367564331834169068}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: links
+      _node: {fileID: 6225885635047150608}
+      _typeQualifiedName: AttackLink[], Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+  IASA: 7
+  attackData: {fileID: 11400000, guid: f1bf5a448a9f9994983bb647f0befcb2, type: 2}
+  input:
+    type: 0
+    direction: 0
+  links: []
+  timeOffset: 0
 --- !u!114 &7367564331834169068
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -88,6 +135,7 @@ MonoBehaviour:
     - input
     - links
     - links 0
+    - speedLinks 0
     values:
     - _fieldName: speedLinks
       _node: {fileID: 7367564331834169068}
@@ -128,6 +176,18 @@ MonoBehaviour:
       _connectionType: 1
       _typeConstraint: 0
       _dynamic: 1
+    - _fieldName: speedLinks 0
+      _node: {fileID: 7367564331834169068}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: input
+        node: {fileID: 6225885635047150608}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 1
   IASA: 7
   attackData: {fileID: 0}
   input:
@@ -137,5 +197,7 @@ MonoBehaviour:
   - type: 1
     direction: 0
   timeOffset: 0
-  speedBarrier: 0
-  speedLinks: []
+  speedBarrier: 8
+  speedLinks:
+  - type: 1
+    direction: 0

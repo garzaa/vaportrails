@@ -33,8 +33,8 @@ public class PlayerController : Entity {
 	bool justWalkedOffCliff;
 	bool justLeftWall;
 	bool bufferedJump;
-	bool movingForward;
-	bool speeding;
+	bool movingForwards;
+	public bool speeding;
 	bool canDash = true;
 	bool dashing;
 	bool groundJumped;
@@ -74,7 +74,7 @@ public class PlayerController : Entity {
 				&& InputManager.HorizontalInput()*(facingRight ? 1 : -1) < 0;
 		inputForwards = InputManager.HasHorizontalInput() && !inputBackwards;
 		movingBackwards = Mathf.Abs(rb2d.velocity.x) > 0.01 && rb2d.velocity.x * -transform.localScale.x < 0;
-		movingForward = InputManager.HasHorizontalInput() && ((facingRight && rb2d.velocity.x > 0) || (!facingRight && rb2d.velocity.x < 0));
+		movingForwards = InputManager.HasHorizontalInput() && ((facingRight && rb2d.velocity.x > 0) || (!facingRight && rb2d.velocity.x < 0));
 		airControlMod = Mathf.MoveTowards(airControlMod, 1, 1f * Time.deltaTime);
 
 		if (frozeInputs) {
@@ -146,7 +146,7 @@ public class PlayerController : Entity {
 		}
 
         if (inputX!=0) {
-			if (!speeding || (movingForward && inputBackwards) || (movingBackwards && inputForwards)) {
+			if (!speeding || (movingForwards && inputBackwards) || (movingBackwards && inputForwards)) {
 				if (groundData.grounded) {
 					// if ground is a platform that's been destroyed/disabled
 					float f = groundData.groundCollider != null ? groundData.groundCollider.friction : airFriction;
@@ -188,7 +188,7 @@ public class PlayerController : Entity {
 			canDash = true;
 		}
 
-		if (frozeInputs) return;
+		if (frozeInputs && !inAttack) return;
 
 		if (InputManager.ButtonDown(Buttons.SPECIAL) && canDash && InputManager.HasHorizontalInput()) {
 			dashSound.PlayFrom(gameObject);
@@ -196,9 +196,15 @@ public class PlayerController : Entity {
 			entityShader.FlashWhite();
 			canDash = false;
 			dashing = true;
+			fMod = 0;
 			// dash at the max direction indicated by the stick
+			float speed = dashSpeed + Mathf.Abs(rb2d.velocity.x);
+			// if already moving in that way, make it additive
+			if ((inputForwards && movingForwards) || (inputBackwards && movingBackwards)) {
+				speed = Mathf.Max(Mathf.Abs(rb2d.velocity.x)+dashSpeed, speed);
+			}
 			rb2d.velocity = new Vector2(
-				(InputManager.HorizontalInput() > 0 ? 1 : -1) * (runSpeed + dashSpeed),
+				speed * Mathf.Sign(InputManager.HorizontalInput()),
 				Mathf.Max(rb2d.velocity.y, 0)
 			);
 			WaitAndExecute(EndDashCooldown, dashCooldown);
@@ -206,7 +212,6 @@ public class PlayerController : Entity {
 	}
 
 	public void StopDashAnimation() {
-		// this is responsible for setting the super walljump bug if you dash into a wall and buffer a jump
 		fMod = 0;
 		dashing = false;
 	}
@@ -296,7 +301,7 @@ public class PlayerController : Entity {
 			animator.SetFloat("XInputMagnitude", 0);
 			animator.SetFloat("RelativeXInput", 0);
         } else {
-			animator.SetBool("MovingForward", movingForward);
+			animator.SetBool("MovingForward", movingForwards);
 			animator.SetFloat("XInputMagnitude", Mathf.Abs(InputManager.HorizontalInput()));
 			animator.SetFloat("RelativeXInput", InputManager.HorizontalInput() * -transform.localScale.x);
 		}
@@ -338,6 +343,16 @@ public class PlayerController : Entity {
 		}
 	}
 
+	public void OnAttackGraphEnter() {
+		if (dashing) StopDashAnimation();
+	}
+
+	public void OnAttackGraphExit() {
+		Debug.Log("player exiting attack graph");
+		frozeInputs = false;
+		inAttack = false;
+	}
+
 	public void OnAttackNodeEnter() {
 		if (facingRight && inputX<0) {
             Flip();
@@ -349,9 +364,11 @@ public class PlayerController : Entity {
 	}
 
 	public void OnAttackNodeExit() {
-		Debug.Log("player exiting attack graph");
-		frozeInputs = false;
-		inAttack = false;
+		
+	}
+
+	public bool IsSpeeding() {
+		return Mathf.Abs(rb2d.velocity.x) > runSpeed + 1;
 	}
 
 	public void SetFmod(float f) {

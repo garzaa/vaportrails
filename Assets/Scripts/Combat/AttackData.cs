@@ -4,6 +4,8 @@ using System.Collections.Generic;
 [CreateAssetMenu(menuName = "Data/AttackData")]
 public class AttackData : ScriptableObject {
 	public int damage;
+	public int IASA;
+	public float minSpeed;
 	public GameObject hitmarker;
 	public AudioResource hitSound;
 

@@ -5,7 +5,6 @@ using XNode;
 
 [NodeWidth(270)]
 public class AttackNode : CombatNode {
-    public int IASA = 7;
 	public AttackData attackData;
 
     [Input(backingValue=ShowBackingValue.Never)] 
@@ -23,18 +22,21 @@ public class AttackNode : CombatNode {
 
     override public void NodeUpdate(int currentFrame, float clipTime, AttackBuffer buffer) {
         if (impulses.ContainsKey(currentFrame)) {
-            attackGraph.rb2d.AddForce(impulses[currentFrame], ForceMode2D.Impulse);
+            attackGraph.combatController.AddImpulse(impulses[currentFrame]);
             impulses.Remove(currentFrame);
         }
 
         if (attackData != null) {
-            if (attackData.continuousFriction) {
+            if (attackData.setFriction && attackData.continuousFriction) {
                 attackGraph.combatController.SetFriction(attackData.friction);
             }
+            attackGraph.combatController.SetMinSpeed(attackData.minSpeed);
         }
 
-        if (buffer.Ready() && (cancelable || currentFrame>=IASA)) {
-            if (currentFrame>=IASA) {
+        attackGraph.animator.SetBool("Actionable", currentFrame>=attackData.IASA);
+
+        if (buffer.Ready() && (cancelable || currentFrame>=attackData.IASA)) {
+            if (currentFrame>=attackData.IASA) {
                 MoveNextNode(buffer, allowReEntry: true);
                 return;
             } else if (cancelable) {
@@ -43,8 +45,8 @@ public class AttackNode : CombatNode {
             }
         }
         
-        if (currentFrame>=IASA && InputManager.HasHorizontalInput()) {
-            Debug.Log("iasa, exiting");
+        if (currentFrame>=attackData.IASA && InputManager.HasHorizontalInput()) {
+            Debug.Log("actionable on frame " + currentFrame +  ", exiting");
             attackGraph.ExitGraph();
             return;
         }
