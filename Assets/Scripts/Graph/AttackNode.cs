@@ -44,7 +44,6 @@ public class AttackNode : CombatNode {
             if (attackData.setFriction && attackData.continuousFriction) {
                 attackGraph.combatController.SetFriction(attackData.friction);
             }
-            attackGraph.combatController.SetMinSpeed(attackData.minSpeed);
         }
 
         attackGraph.animator.SetBool("Actionable", currentFrame>=attackData.IASA);

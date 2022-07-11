@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class AttackData : ScriptableObject {
 	public int damage;
 	public int IASA;
-	public float minSpeed;
+	public bool jumpCancelable;
 	public GameObject hitmarker;
 	public AudioResource hitSound;
 

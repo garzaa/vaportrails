@@ -28,7 +28,6 @@ public class PlayerController : Entity {
 	float fModRecoveryTime = 1.5f;
 
 	public bool frozeInputs;
-	public bool inAttack;	
 	bool inputBackwards;
 	bool inputForwards;
 	bool movingBackwards;
@@ -42,11 +41,15 @@ public class PlayerController : Entity {
 	bool groundJumped;
 	float inputX;
 	float landingRecovery = 1;
+	int airDashes = 1;
+	int airJumps = 1;
+	float jumpSpeed;
 
 	ToonMotion toonMotion;
 	WallCheckData wallData;
 	GameObject wallJumpDust;
 	AudioResource dashSound;
+	AttackData currentAttack;
 
 	override protected void Awake() {
 		base.Awake();
@@ -54,6 +57,8 @@ public class PlayerController : Entity {
 		wallData = GetComponent<WallCheck>().wallData;
 		wallJumpDust = Resources.Load<GameObject>("Runtime/WallJumpDust");
 		dashSound = Resources.Load<AudioResource>("Runtime/DashSound");
+		// p = mv
+		jumpSpeed = jumpForce / rb2d.mass;
 	}
 
 	override protected void Update() {
@@ -95,17 +100,14 @@ public class PlayerController : Entity {
 			if (wallData.touchingWall) {
 				FlipToWall();
 			}
-        }
-
-		if (groundData.hitGround) {
+        } else if (groundData.hitGround) {
 			landNoise.PlayFrom(this.gameObject);
+			RefreshAirMovement();
 		}
 
 		if (wallData.hitWall) {
 			OnWallHit();
-		}
-
-		if (wallData.leftWall) {
+		} else if (wallData.leftWall) {
 			justLeftWall = true;
 			WaitAndExecute(()=>justLeftWall=false, bufferDuration*2);
 		}
@@ -121,6 +123,7 @@ public class PlayerController : Entity {
 		float x = facingRight ? collider2d.bounds.min.x : collider2d.bounds.max.x;
 		g.transform.position = new Vector2(x, transform.position.y);
 		g.transform.eulerAngles = new Vector3(0, 0, facingRight ? -90 : 90);
+		RefreshAirMovement();
 	}
 
 	void FlipToWall() {
@@ -190,9 +193,10 @@ public class PlayerController : Entity {
 			canDash = true;
 		}
 
-		if (frozeInputs && !inAttack) return;
+		if (frozeInputs && !currentAttack) return;
 
 		if (InputManager.ButtonDown(Buttons.SPECIAL) && canDash && InputManager.HasHorizontalInput()) {
+			if (!groundData.grounded && airDashes <= 0) return;
 			dashSound.PlayFrom(gameObject);
 			animator.SetTrigger(inputBackwards ? "BackDash" : "Dash");
 			entityShader.FlashWhite();
@@ -209,6 +213,7 @@ public class PlayerController : Entity {
 				speed * Mathf.Sign(InputManager.HorizontalInput()),
 				Mathf.Max(rb2d.velocity.y, 0)
 			);
+			if (!groundData.grounded) airDashes--;
 			WaitAndExecute(EndDashCooldown, dashCooldown);
 		}
 	}
@@ -219,11 +224,11 @@ public class PlayerController : Entity {
 	}
 
 	void Jump(bool executeIfBuffered=false) {
-		if (inAttack && InputManager.ButtonDown(Buttons.JUMP)) {
+		if ((currentAttack && !currentAttack.jumpCancelable) && InputManager.ButtonDown(Buttons.JUMP)) {
 			BufferJump();
 		}
 
-		if (frozeInputs) return;
+		if (frozeInputs || (currentAttack && !currentAttack.jumpCancelable)) return;
 
 		void GroundJump() {
 			bufferedJump = false;
@@ -237,8 +242,7 @@ public class PlayerController : Entity {
 			}
 			groundJumped = true;
 			JumpDust();
-            rb2d.velocity = new Vector2(rb2d.velocity.x, Mathf.Max(0, rb2d.velocity.y));
-            rb2d.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+            rb2d.velocity = new Vector2(rb2d.velocity.x, Mathf.Max(jumpSpeed, rb2d.velocity.y));
         }
 
 		void WallJump() {
@@ -254,9 +258,18 @@ public class PlayerController : Entity {
 			GameObject w = Instantiate(wallJumpDust);
 			w.transform.position = new Vector2(facingRight ? collider2d.bounds.min.x : collider2d.bounds.max.x, transform.position.y);
 			w.transform.localScale = new Vector3(facingRight ? 1 : -1, 1, 1);
-			// WaitAndExecute(() => animator.SetTrigger("WallJump"), 0.1f);
 			animator.SetTrigger("WallJump");
 			groundJumped = false;
+		}
+
+		// we do not want air jumps to be additive. too bad!
+		void AirJump() {
+			airJumps--;
+			rb2d.velocity = new Vector2(rb2d.velocity.x, Mathf.Max(jumpSpeed, rb2d.velocity.y));
+			JumpDust();
+			animator.SetTrigger("Jump");
+			jumpNoise.PlayFrom(this.gameObject);
+			airControlMod = 1;
 		}
 
 		void BufferJump() {
@@ -281,8 +294,8 @@ public class PlayerController : Entity {
                 GroundJump();
             } else if (wallData.touchingWall || (justLeftWall && rb2d.velocity.y<=0)) {
 				WallJump();
-			} else {
-                BufferJump();
+			} else if (!groundData.grounded && airJumps > 0) {
+				AirJump();
             }
         }
 
@@ -354,12 +367,13 @@ public class PlayerController : Entity {
 	public void OnAttackGraphExit() {
 		Debug.Log("player exiting attack graph");
 		frozeInputs = false;
-		inAttack = false;
+		currentAttack = null;
 		Jump(executeIfBuffered: true);
 	}
 
-	public void OnAttackNodeEnter() {
+	public void OnAttackNodeEnter(AttackData attackData) {
 		Debug.Log("player entering attack node");
+		currentAttack = attackData;
 		if (facingRight && inputX<0) {
             Flip();
         } else if (!facingRight && inputX>0) {
@@ -367,11 +381,10 @@ public class PlayerController : Entity {
         }
 		Debug.Log("animator actionable now: " + animator.GetBool("Actionable"));
 		frozeInputs = true;
-		inAttack = true;
 	}
 
 	public void OnAttackNodeExit() {
-		
+	
 	}
 
 	public bool IsSpeeding() {
@@ -384,6 +397,12 @@ public class PlayerController : Entity {
 	}
 
 	public void OnLedgePop() {
-        //RefreshAirMovement();
+        RefreshAirMovement();
     }
+
+	public void RefreshAirMovement() {
+		print("refrehsing air movement");
+		airDashes = 1;
+		airJumps = 1;
+	}
 }

@@ -1,5 +1,51 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-5152714321913037071
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93af5be29414da440814eeb14596c6e5, type: 3}
+  m_Name: Boost Slide
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 136, y: 248}
+  ports:
+    keys:
+    - input
+    - links
+    values:
+    - _fieldName: input
+      _node: {fileID: -5152714321913037071}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: speedLinks 1
+        node: {fileID: 7367564331834169068}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: links
+      _node: {fileID: -5152714321913037071}
+      _typeQualifiedName: AttackLink[], Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+  attackData: {fileID: 11400000, guid: e3aa699e28ce6bf4cbe470fc1bfb9a20, type: 2}
+  input:
+    type: 0
+    direction: 0
+  links: []
+  timeOffset: 0
 --- !u!114 &-2496123809670740237
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -40,7 +86,6 @@ MonoBehaviour:
       _connectionType: 1
       _typeConstraint: 0
       _dynamic: 0
-  IASA: 3
   attackData: {fileID: 11400000, guid: f9d0a995cc0ef204b81d00e741d479c5, type: 2}
   input:
     type: 0
@@ -63,6 +108,7 @@ MonoBehaviour:
   - {fileID: 7367564331834169068}
   - {fileID: -2496123809670740237}
   - {fileID: 6225885635047150608}
+  - {fileID: -5152714321913037071}
   animator: {fileID: 0}
   buffer: {fileID: 0}
   airAttackTracker: {fileID: 0}
@@ -108,7 +154,6 @@ MonoBehaviour:
       _connectionType: 1
       _typeConstraint: 0
       _dynamic: 0
-  IASA: 7
   attackData: {fileID: 11400000, guid: f1bf5a448a9f9994983bb647f0befcb2, type: 2}
   input:
     type: 0
@@ -136,6 +181,7 @@ MonoBehaviour:
     - links
     - links 0
     - speedLinks 0
+    - speedLinks 1
     values:
     - _fieldName: speedLinks
       _node: {fileID: 7367564331834169068}
@@ -188,7 +234,18 @@ MonoBehaviour:
       _connectionType: 1
       _typeConstraint: 0
       _dynamic: 1
-  IASA: 7
+    - _fieldName: speedLinks 1
+      _node: {fileID: 7367564331834169068}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: input
+        node: {fileID: -5152714321913037071}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 1
   attackData: {fileID: 0}
   input:
     type: 0
@@ -197,7 +254,8 @@ MonoBehaviour:
   - type: 1
     direction: 0
   timeOffset: 0
-  speedBarrier: 8
   speedLinks:
   - type: 1
     direction: 0
+  - type: 2
+    direction: -2

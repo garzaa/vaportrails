@@ -52,7 +52,11 @@ public class PlayerCombatController : MonoBehaviour {
 	}
 
 	public void OnAttackNodeEnter(CombatNode combatNode) {
-		player.OnAttackNodeEnter();
+		if (combatNode is AttackNode) {
+			player.OnAttackNodeEnter((combatNode as AttackNode).attackData);
+		} else {
+			player.OnAttackNodeEnter(null);
+		}
 	}
 
 	public void OnAttackNodeExit() {
@@ -74,13 +78,6 @@ public class PlayerCombatController : MonoBehaviour {
 
 	public float GetSpeed() {
 		return Mathf.Abs(rb2d.velocity.x);
-	}
-
-	public void SetMinSpeed(float minSpeed) {
-		rb2d.velocity = new Vector2(
-			Mathf.Max(Mathf.Abs(rb2d.velocity.x), minSpeed) * Mathf.Sign(rb2d.velocity.x),
-			rb2d.velocity.y
-		);
 	}
 
 	public bool IsSpeeding() {

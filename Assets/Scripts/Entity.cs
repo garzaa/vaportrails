@@ -110,8 +110,12 @@ public class Entity : MonoBehaviour {
 
 	public Vector2Int Forward() {
 		return new Vector2Int(
-            facingRight ? 1 : -1,
+            ForwardScalar(),
             1
         );
+	}
+
+	public int ForwardScalar() {
+		return facingRight ? 1 : -1;
 	}
 }
