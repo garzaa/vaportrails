@@ -8,6 +8,7 @@ public class PlayerController : Entity {
 	[SerializeField] GameObject playerRig;
 	[SerializeField] AudioResource jumpNoise;
 	[SerializeField] AudioResource landNoise;
+	[SerializeField] GameObject speedDust;
 	#pragma warning restore 0649
 
 	const float runSpeed = 4.5f;
@@ -35,7 +36,7 @@ public class PlayerController : Entity {
 	bool justLeftWall;
 	bool bufferedJump;
 	bool movingForwards;
-	public bool speeding;
+	bool speeding;
 	bool canDash = true;
 	bool dashing;
 	bool groundJumped;
@@ -62,6 +63,7 @@ public class PlayerController : Entity {
 		Dash();
 		Jump();
 		UpdateAnimator();
+		UpdateEffects();
 	}
 
 	void FixedUpdate() {
@@ -252,7 +254,8 @@ public class PlayerController : Entity {
 			GameObject w = Instantiate(wallJumpDust);
 			w.transform.position = new Vector2(facingRight ? collider2d.bounds.min.x : collider2d.bounds.max.x, transform.position.y);
 			w.transform.localScale = new Vector3(facingRight ? 1 : -1, 1, 1);
-			WaitAndExecute(() => animator.SetTrigger("WallJump"), 0.1f);
+			// WaitAndExecute(() => animator.SetTrigger("WallJump"), 0.1f);
+			animator.SetTrigger("WallJump");
 			groundJumped = false;
 		}
 
@@ -320,8 +323,12 @@ public class PlayerController : Entity {
 		toonMotion.ForceUpdate();
 	}
 
+	void UpdateEffects() {
+		speedDust.gameObject.SetActive(IsSpeeding());
+	}
+
 	void CheckFlip() {
-		if ((inputBackwards && !movingBackwards) || !groundData.grounded || dashing) return;
+		if ((inputBackwards && !movingBackwards) || !groundData.grounded || dashing || rb2d.velocity.y>0) return;
 		
         if (facingRight && inputX<0) {
             Flip();
@@ -368,10 +375,15 @@ public class PlayerController : Entity {
 	}
 
 	public bool IsSpeeding() {
-		return Mathf.Abs(rb2d.velocity.x) > runSpeed + 1;
+		// this can jitter due to fixed update stuff
+		return Mathf.Abs(rb2d.velocity.x) > runSpeed + 1.5f;
 	}
 
 	public void SetFmod(float f) {
 		fMod = f;
 	}
+
+	public void OnLedgePop() {
+        //RefreshAirMovement();
+    }
 }
