@@ -227,7 +227,7 @@ public class PlayerController : Entity {
 			bufferedJump = false;
 			jumpNoise.PlayFrom(this.gameObject);
 			if (!wallData.touchingWall) {
-				if (inputBackwards || movingBackwards) {
+				if ((movingForwards && inputBackwards) || (movingBackwards && !inputForwards)) {
 					animator.SetTrigger("Backflip");
 				} else {
 					animator.SetTrigger("Jump");
@@ -309,10 +309,6 @@ public class PlayerController : Entity {
 		if (groundData.hitGround) {
 			StartCoroutine(UpdateToonMotion());
 			landingRecovery = -1;
-		}
-
-		if (groundData.grounded) {
-			animator.SetBool("FallInterrupt", true);
 		}
 
 		landingRecovery = Mathf.MoveTowards(landingRecovery, 0, 4f * Time.deltaTime);

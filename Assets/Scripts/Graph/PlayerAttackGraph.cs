@@ -40,10 +40,9 @@ public class PlayerAttackGraph : NodeGraph {
         if (currentNode != null) {
             currentNode.OnNodeExit();
         }
+		combatController.OnGraphExit();
 		animator.SetBool("Actionable", true);
 		Debug.Log("Exiting graph");
-		combatController.OnGraphExit();
-		animator.Play("Idle");
         currentNode = null;
     }
 

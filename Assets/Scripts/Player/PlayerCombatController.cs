@@ -2,11 +2,15 @@ using UnityEngine;
 using System.Collections.Generic;
 
 public class PlayerCombatController : MonoBehaviour {
+	const float combatStanceLength = 4f;
+	float combatLayerWeight = 0f;
+
 	PlayerController player;
 	GroundData groundData;
 	PlayerAttackGraph currentGraph;
 	Rigidbody2D rb2d;
 	WallCheckData wallData;
+	Animator animator;
 
 	public PlayerAttackGraph groundAttackGraph;
 
@@ -15,9 +19,10 @@ public class PlayerCombatController : MonoBehaviour {
 		groundData = GetComponent<GroundCheck>().groundData;
 		rb2d = GetComponent<Rigidbody2D>();
 		wallData = GetComponent<WallCheck>().wallData;
+		animator = GetComponent<Animator>();
 		groundAttackGraph.Initialize(
 			this,
-			GetComponent<Animator>(),
+			animator,
 			GetComponent<AttackBuffer>(),
 			GetComponent<AirAttackTracker>()
 		);
@@ -29,6 +34,7 @@ public class PlayerCombatController : MonoBehaviour {
 				if (groundData.grounded) {
 					player.OnAttackGraphEnter();
 					currentGraph = groundAttackGraph;
+					StartAttackStance();
 					groundAttackGraph.EnterGraph();
 				}
 			}
@@ -38,6 +44,10 @@ public class PlayerCombatController : MonoBehaviour {
 			if (wallData.hitWall) {
 				if (currentGraph != null) currentGraph.ExitGraph();
 			}
+		}
+
+		if (combatLayerWeight == 0) {
+			animator.SetLayerWeight(1, Mathf.MoveTowards(animator.GetLayerWeight(1), combatLayerWeight, 4*Time.deltaTime));
 		}
 	}
 
@@ -75,5 +85,18 @@ public class PlayerCombatController : MonoBehaviour {
 
 	public bool IsSpeeding() {
 		return player.IsSpeeding();
+	}
+
+	void StartAttackStance() {
+		combatLayerWeight = 1;
+		animator.SetLayerWeight(1, 1);
+		if (IsInvoking(nameof(DisableAttackStance))) {
+			CancelInvoke(nameof(DisableAttackStance));
+		}
+		Invoke(nameof(DisableAttackStance), combatStanceLength);
+	}
+
+	void DisableAttackStance() {
+		combatLayerWeight = 0;
 	}
 }
