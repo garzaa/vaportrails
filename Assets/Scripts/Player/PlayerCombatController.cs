@@ -27,9 +27,9 @@ public class PlayerCombatController : MonoBehaviour {
 		if (currentGraph == null) {
 			if (InputManager.ButtonDown(Buttons.PUNCH) || InputManager.ButtonDown(Buttons.KICK)) {
 				if (groundData.grounded) {
-					groundAttackGraph.EnterGraph();
 					player.OnAttackGraphEnter();
 					currentGraph = groundAttackGraph;
+					groundAttackGraph.EnterGraph();
 				}
 			}
 		}
@@ -50,7 +50,7 @@ public class PlayerCombatController : MonoBehaviour {
 	}
 
 	public void OnGraphExit() {
-		// wait for the animation to finish to give the player back control
+		player.OnAttackGraphExit();
 		currentGraph = null;
 	}
 

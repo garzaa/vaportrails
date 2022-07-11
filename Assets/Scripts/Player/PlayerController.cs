@@ -26,7 +26,8 @@ public class PlayerController : Entity {
 	float fMod = 1;
 	float fModRecoveryTime = 1.5f;
 
-	bool frozeInputs;
+	public bool frozeInputs;
+	public bool inAttack;	
 	bool inputBackwards;
 	bool inputForwards;
 	bool movingBackwards;
@@ -38,7 +39,6 @@ public class PlayerController : Entity {
 	bool canDash = true;
 	bool dashing;
 	bool groundJumped;
-	bool inAttack;	
 	float inputX;
 	float landingRecovery = 1;
 
@@ -198,8 +198,8 @@ public class PlayerController : Entity {
 			dashing = true;
 			fMod = 0;
 			// dash at the max direction indicated by the stick
-			float speed = dashSpeed + Mathf.Abs(rb2d.velocity.x);
 			// if already moving in that way, make it additive
+			float speed = runSpeed+dashSpeed;
 			if ((inputForwards && movingForwards) || (inputBackwards && movingBackwards)) {
 				speed = Mathf.Max(Mathf.Abs(rb2d.velocity.x)+dashSpeed, speed);
 			}
@@ -216,7 +216,7 @@ public class PlayerController : Entity {
 		dashing = false;
 	}
 
-	void Jump() {
+	void Jump(bool executeIfBuffered=false) {
 		if (inAttack && InputManager.ButtonDown(Buttons.JUMP)) {
 			BufferJump();
 		}
@@ -224,6 +224,7 @@ public class PlayerController : Entity {
 		if (frozeInputs) return;
 
 		void GroundJump() {
+			bufferedJump = false;
 			jumpNoise.PlayFrom(this.gameObject);
 			if (!wallData.touchingWall) {
 				if (inputBackwards || movingBackwards) {
@@ -239,6 +240,7 @@ public class PlayerController : Entity {
         }
 
 		void WallJump() {
+            bufferedJump = false;
 			// assume player is facing the wall and needs to be flipped away from it
 			jumpNoise.PlayFrom(this.gameObject);
 			rb2d.velocity = new Vector2(rb2d.velocity.x, Mathf.Max(0, rb2d.velocity.y));
@@ -260,16 +262,14 @@ public class PlayerController : Entity {
 		}
 
 		if (groundData.hitGround && bufferedJump) {
-            bufferedJump = false;
             GroundJump();
             return;
         } else if (wallData.hitWall && bufferedJump) {
-			bufferedJump = false;
 			WallJump();
 			return;
 		}
 
-		if (InputManager.ButtonDown(Buttons.JUMP)) {
+		if (InputManager.ButtonDown(Buttons.JUMP) || (executeIfBuffered && bufferedJump)) {
             if (groundData.grounded || justWalkedOffCliff) {
                 if (groundData.platforms.Count > 0 && Input.GetAxisRaw("Vertical") < -0.8f) {
 					DropThroughPlatforms(groundData.platforms);
@@ -344,6 +344,7 @@ public class PlayerController : Entity {
 	}
 
 	public void OnAttackGraphEnter() {
+		Debug.Log("player entering attack graph");
 		if (dashing) StopDashAnimation();
 	}
 
@@ -351,14 +352,17 @@ public class PlayerController : Entity {
 		Debug.Log("player exiting attack graph");
 		frozeInputs = false;
 		inAttack = false;
+		Jump(executeIfBuffered: true);
 	}
 
 	public void OnAttackNodeEnter() {
+		Debug.Log("player entering attack node");
 		if (facingRight && inputX<0) {
             Flip();
         } else if (!facingRight && inputX>0) {
             Flip();
         }
+		Debug.Log("animator actionable now: " + animator.GetBool("Actionable"));
 		frozeInputs = true;
 		inAttack = true;
 	}

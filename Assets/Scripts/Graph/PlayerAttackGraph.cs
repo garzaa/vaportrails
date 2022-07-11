@@ -30,9 +30,10 @@ public class PlayerAttackGraph : NodeGraph {
     public void EnterGraph(Node entryNode=null) {
 		Debug.Log("Entering graph");
 		enteredCurrentNode = false;
+		animator.SetBool("Actionable", false);
         currentNode = (entryNode == null) ? GetRootNode() : entryNode as CombatNode;
         currentNode.OnNodeEnter();
-		enteredCurrentNode = true;
+		enteredCurrentNode = false;
     }
 
     public void ExitGraph(bool quiet=false) {
@@ -42,6 +43,7 @@ public class PlayerAttackGraph : NodeGraph {
 		animator.SetBool("Actionable", true);
 		Debug.Log("Exiting graph");
 		combatController.OnGraphExit();
+		animator.Play("Idle");
         currentNode = null;
     }
 
@@ -54,26 +56,34 @@ public class PlayerAttackGraph : NodeGraph {
 			return;
 		}
 		string clipName = clipInfo[0].clip.name;
-        clipLength = clipInfo[0].clip.length;
-        clipTime = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
 
-        currentFrame = (int) ((clipTime * clipLength) * 16f);
+		bool nameCorresponds = clipName.Equals(currentNode.name);
 
-		if (!clipName.Equals(currentNode.name) && !enteredCurrentNode) {
+		if (!nameCorresponds && !enteredCurrentNode) {
 			// wait for animator state to actually propagate
-			if (!enteredCurrentNode) {
-				return;
-			} else {
-				// otherwise we've entered the current node and it's been interrupted
-				// like by falling off a ledge/getting hit or something
-				ExitGraph(quiet: true);
-			}
-			Debug.Log("clip "+clipName+" is not equal to node "+currentNode.name);
+			Debug.Log("clip "+clipName+" is not equal to node "+currentNode.name+", but not entered yet, so waiting");
 			return;
-		} else {
+		}
+		
+		if (nameCorresponds && !enteredCurrentNode) {
+			Debug.Log("animator entered current node "+currentNode.name);
 			enteredCurrentNode = true;
 		}
-        currentNode.NodeUpdate(currentFrame, clipTime, buffer);
+
+		if (!nameCorresponds && enteredCurrentNode) {
+			// otherwise we've entered the current node and it's been interrupted
+			// like by falling off a ledge/getting hit or something
+			Debug.Log("current node interrupted early, exiting graph");
+			ExitGraph(quiet: true);
+		}
+
+		if (nameCorresponds) {
+			clipLength = clipInfo[0].clip.length;
+			clipTime = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+			currentFrame = (int) ((clipTime * clipLength) * 16f);
+			Debug.Log("Locked in, updating current node at frame "+currentFrame);
+			currentNode.NodeUpdate(currentFrame, clipTime, buffer);
+		}
     }
 
     public void MoveNode(CombatNode node) {

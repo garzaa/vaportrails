@@ -20,6 +20,20 @@ public class AttackNode : CombatNode {
     [HideInInspector]
     public float timeOffset = 0;
 
+    override public void OnNodeEnter() {
+        base.OnNodeEnter();
+        if (attackData != null) {
+            attackGraph.animator.Play(attackData.name, layer:0, normalizedTime:timeOffset);
+            foreach (AttackData.TimedImpulse ti in attackData.impulses) {
+                impulses[ti.frame] = ti.impulse;
+            }
+            if (attackData.setFriction) {
+                attackGraph.combatController.SetFriction(attackData.friction);
+            }
+        }
+        timeOffset = 0;
+    }
+
     override public void NodeUpdate(int currentFrame, float clipTime, AttackBuffer buffer) {
         if (impulses.ContainsKey(currentFrame)) {
             attackGraph.combatController.AddImpulse(impulses[currentFrame]);
@@ -50,12 +64,12 @@ public class AttackNode : CombatNode {
             attackGraph.ExitGraph();
             return;
         }
-        
-        if (clipTime >= 0.9) {
-            Debug.Log("clip time > 0.9, exiting");
-            attackGraph.ExitGraph();
-            return;
-        }
+    }
+
+    override public void OnNodeExit() {
+        base.OnNodeExit();
+        timeOffset = 0;
+        impulses.Clear();
     }
  
     protected void MoveNextNode(AttackBuffer buffer, bool allowReEntry=false) {
@@ -114,26 +128,6 @@ public class AttackNode : CombatNode {
 
     void Awake() {
 		if (attackData != null) name = attackData.name;
-    }
-
-    override public void OnNodeEnter() {
-        base.OnNodeEnter();
-        if (attackData != null) {
-            attackGraph.animator.Play(attackData.name, layer:0, normalizedTime:timeOffset);
-            foreach (AttackData.TimedImpulse ti in attackData.impulses) {
-                impulses[ti.frame] = ti.impulse;
-            }
-            if (attackData.setFriction) {
-                attackGraph.combatController.SetFriction(attackData.friction);
-            }
-        }
-        timeOffset = 0;
-    }
-
-    override public void OnNodeExit() {
-        base.OnNodeExit();
-        timeOffset = 0;
-        impulses.Clear();
     }
 }
 
