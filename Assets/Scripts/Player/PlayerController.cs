@@ -271,7 +271,11 @@ public class PlayerController : Entity {
 			airJumps--;
 			rb2d.velocity = new Vector2(rb2d.velocity.x, Mathf.Max(jumpSpeed, rb2d.velocity.y));
 			JumpDust();
-			animator.SetTrigger("WallJump");
+			if (movingBackwards || inputBackwards) {
+				animator.SetTrigger("Backflip");
+			} else {
+				animator.SetTrigger("WallJump");
+			}
 			jumpNoise.PlayFrom(this.gameObject);
 			airControlMod = 1;
 			groundJumped = false;
