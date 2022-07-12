@@ -74,6 +74,7 @@ public class GroundCheck : MonoBehaviour {
         currentNormal = GetGroundNormal();
         groundData.normal = currentNormal;
         groundData.normalRotation = Vector2.SignedAngle(Vector2.up, currentNormal);
+        groundData.distance = GetGroundDistance();
 
         if (groundCollider != null) {
             groundData.groundObject = groundCollider.gameObject;
@@ -141,6 +142,7 @@ public class GroundCheck : MonoBehaviour {
         groundData.leftGround = false;
         groundData.hitGround = false;
         groundData.ledgeStep = false;
+        groundData.distance = 99;
     }
 
     Vector2 GetGroundNormal() {
@@ -174,6 +176,11 @@ public class GroundCheck : MonoBehaviour {
         );
     }
 
+    float GetGroundDistance() {
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 99, defaultLayerMask);
+        return hit.transform ? hit.distance : 99;
+    }
+
     public void DisableFor(float seconds) {
         StartCoroutine(WaitAndEnable(seconds));
     }
@@ -197,4 +204,5 @@ public class GroundData {
     public GameObject groundObject;
     public List<RaycastHit2D> platforms;
     public Collider2D groundCollider;
+    public float distance = 99;
 }

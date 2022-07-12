@@ -2,70 +2,69 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ToonMotion : MonoBehaviour 
-{
-    private class Snapshot
-    {
-        public Transform transform;
-        public Vector3 localPosition;
-        public Quaternion localRotation;
-
-        public Snapshot(Transform transform)
-        {
-            this.transform = transform;
-            this.Update();
-        }
-
-        public void Update()
-        {
-            this.localPosition = this.transform.localPosition;
-            this.localRotation = this.transform.localRotation;
-        }
-    }
-
-    private Dictionary<int, Snapshot> snapshots = new Dictionary<int, Snapshot>();
-    private float updateTime = 0f;
+public class ToonMotion : MonoBehaviour  {
 
     public int fps = 20;
+    public List<GameObject> ignoreGameobjects;
 
+    float lastUpdateTime = 0f;
     bool forceUpdateThisFrame = false;
+    List<Snapshot> snapshots = new List<Snapshot>();
 
-    private void LateUpdate()
-    {
-        if (forceUpdateThisFrame || Time.unscaledTime - this.updateTime > 1f/this.fps)
-        {
-            this.SaveSnapshot(transform);
-            this.updateTime = Time.unscaledTime;
-        }
-
-        foreach(KeyValuePair<int, Snapshot> item in this.snapshots)
-        {
-            if (item.Value.transform != null)
-            {
-                item.Value.transform.localPosition = item.Value.localPosition;
-                item.Value.transform.localRotation = item.Value.localRotation;
-            }
-        }
-
-        forceUpdateThisFrame = false;
+    void Start() {
+        CreateTargetList(this.transform);
     }
 
-    private void SaveSnapshot(Transform parent)
-    {
+    void CreateTargetList(Transform parent) {
         if (parent == null) return;
         int childrenCount = parent.childCount;
 
-        for (int i = 0; i < childrenCount; ++i)
-        {
+        for (int i = 0; i < childrenCount; i++) {
             Transform target = parent.GetChild(i);
-            int uid = target.GetInstanceID();
+            // yeah this is slow. too bad, it runs once at startup
+            if (!ignoreGameobjects.Contains(target.gameObject)) {
+                snapshots.Add(new Snapshot(target));
+            }
+            CreateTargetList(target);
+        }
+    }
 
-            this.snapshots[uid] = new Snapshot(target);
-            this.SaveSnapshot(target);
+    void LateUpdate() {
+        if (forceUpdateThisFrame || Time.unscaledTime - lastUpdateTime > 1f/this.fps) {
+            foreach (Snapshot s in snapshots) {
+                s.UpdateSelf();
+            }
+            this.lastUpdateTime = Time.unscaledTime;
+            forceUpdateThisFrame = false;
+        } else {
+            foreach (Snapshot snapshot in snapshots) {
+                snapshot.Maintain();
+            }
         }
     }
 
     public void ForceUpdate() {
         forceUpdateThisFrame = true;
+    }
+
+    private class Snapshot {
+        public Transform transform;
+        public Vector3 position;
+        public Quaternion rotation;
+
+        public Snapshot(Transform transform) {
+            this.transform = transform;
+            this.UpdateSelf();
+        }
+
+        public void UpdateSelf() {
+            position = transform.localPosition;
+            rotation = transform.localRotation;
+        }
+
+        public void Maintain() {
+            transform.localPosition = position;
+            transform.localRotation = rotation;
+        }
     }
 }

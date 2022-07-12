@@ -22,7 +22,9 @@ public class GroundPinner : MonoBehaviour {
 			target.transform.position = hit.point;
 		} else {
 			if (disableIfMiss) target.SetActive(false);
-			target.transform.localPosition = (((Vector3) direction.normalized.Rotate(transform.eulerAngles.z)) * maxDistance);
+			else {
+				target.transform.localPosition = (((Vector3) direction.normalized.Rotate(transform.eulerAngles.z)) * maxDistance);
+			}
 		}
 	}
 }

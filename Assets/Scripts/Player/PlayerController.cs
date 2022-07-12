@@ -88,7 +88,6 @@ public class PlayerController : Entity {
 
 		if (frozeInputs) {
 			inputX = 0;
-			inputBackwards = false;
 		}
 
 		if (groundData.leftGround) {
@@ -274,7 +273,7 @@ public class PlayerController : Entity {
 			if (movingBackwards || inputBackwards) {
 				animator.SetTrigger("Backflip");
 			} else {
-				animator.SetTrigger("WallJump");
+				animator.SetTrigger("Jump");
 			}
 			jumpNoise.PlayFrom(this.gameObject);
 			airControlMod = 1;
@@ -320,6 +319,7 @@ public class PlayerController : Entity {
 		animator.SetBool("MovingBackward", movingBackwards);
 		animator.SetBool("Wallsliding", wallData.touchingWall);
 		animator.SetFloat("RelativeXSpeed", rb2d.velocity.x * Forward().x);
+		animator.SetFloat("GroundDistance", groundData.distance);
 
         if (frozeInputs) {
 			animator.SetBool("MovingForward", false);
