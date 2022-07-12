@@ -25,6 +25,10 @@ public class AirAttackNode : AttackNode {
     }
 
     override public void OnGroundHit() {
-        if (GetPort("onLand").ConnectionCount>0) attackGraph.MoveNode(GetPort("onLand").Connection.node as CombatNode);
+        if (GetPort("onLand").ConnectionCount>0) {
+            attackGraph.MoveNode(GetPort("onLand").Connection.node as CombatNode);
+        } else {
+            attackGraph.ExitGraph();
+        }
     }    
 }

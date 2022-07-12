@@ -18,7 +18,6 @@ public class PlayerAttackGraph : NodeGraph {
     public PlayerCombatController combatController;
 
     CombatNode currentNode = null;
-    public string exitNodeName = "Idle";
 
     public void Initialize(PlayerCombatController combatController, Animator anim, AttackBuffer buffer, AirAttackTracker airAttackTracker) {
         this.animator = anim;
@@ -27,11 +26,11 @@ public class PlayerAttackGraph : NodeGraph {
         this.combatController = combatController;
     }
 
-    public void EnterGraph(Node entryNode=null) {
-		Debug.Log("Entering graph");
+    public void EnterGraph(CombatNode entryNode=null) {
+        Debug.Log("Entering graph");
 		enteredCurrentNode = false;
 		animator.SetBool("Actionable", false);
-        currentNode = (entryNode == null) ? GetRootNode() : entryNode as CombatNode;
+        currentNode = (entryNode == null) ? GetRootNode() : entryNode;
         currentNode.OnNodeEnter();
 		enteredCurrentNode = false;
     }
@@ -72,7 +71,7 @@ public class PlayerAttackGraph : NodeGraph {
 		if (!nameCorresponds && enteredCurrentNode) {
 			// otherwise we've entered the current node and it's been interrupted
 			// like by falling off a ledge/getting hit or something
-			Debug.Log("current node interrupted early, exiting graph");
+			Debug.Log("current node interrupted early by state "+clipName+", exiting graph");
 			ExitGraph(quiet: true);
 		}
 

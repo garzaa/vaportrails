@@ -6,7 +6,7 @@ using UnityEngine;
 public class GroundPinner : MonoBehaviour {
 
 	public GameObject target;
-	public Vector2 direction;
+	public Vector2 direction = new Vector2(0, -1);
 	public float maxDistance = 10;
 	public bool disableIfMiss = true;
 

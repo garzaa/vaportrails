@@ -18,7 +18,7 @@ public class InitialBranchNode : AttackNode {
     override public CombatNode GetNextNode(AttackBuffer buffer) {
         CombatNode next = null;
 
-        if (attackGraph.combatController.IsSpeeding()) {
+    if (attackGraph.combatController.IsSpeeding() && speedLinks.Length > 0) {
             next = MatchAttackNode(buffer, speedLinks, portListName:"speedLinks");
         }
 

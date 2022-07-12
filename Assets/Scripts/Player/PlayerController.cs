@@ -44,6 +44,8 @@ public class PlayerController : Entity {
 	int airDashes = 1;
 	int airJumps = 1;
 	float jumpSpeed;
+	float fallStart;
+	float ySpeedLastFrame;
 
 	ToonMotion toonMotion;
 	WallCheckData wallData;
@@ -101,7 +103,7 @@ public class PlayerController : Entity {
 				FlipToWall();
 			}
         } else if (groundData.hitGround) {
-			landNoise.PlayFrom(this.gameObject);
+			if (fallStart-transform.position.y > 1) landNoise.PlayFrom(this.gameObject);
 			RefreshAirMovement();
 		}
 
@@ -111,6 +113,11 @@ public class PlayerController : Entity {
 			justLeftWall = true;
 			WaitAndExecute(()=>justLeftWall=false, bufferDuration*2);
 		}
+
+		if (ySpeedLastFrame>=0 && rb2d.velocity.y<0) {
+			fallStart = transform.position.y;
+		} 
+		ySpeedLastFrame = rb2d.velocity.y;
 	}
 
 	void OnWallHit() {
@@ -228,7 +235,7 @@ public class PlayerController : Entity {
 			BufferJump();
 		}
 
-		if (frozeInputs || (currentAttack && !currentAttack.jumpCancelable)) return;
+		if ((!currentAttack && frozeInputs) || (currentAttack && !currentAttack.jumpCancelable)) return;
 
 		void GroundJump() {
 			bufferedJump = false;
@@ -246,14 +253,11 @@ public class PlayerController : Entity {
         }
 
 		void WallJump() {
+			Debug.Log("wall jump");
             bufferedJump = false;
 			// assume player is facing the wall and needs to be flipped away from it
 			jumpNoise.PlayFrom(this.gameObject);
-			rb2d.velocity = new Vector2(rb2d.velocity.x, Mathf.Max(0, rb2d.velocity.y));
-            rb2d.AddForce(
-				new Vector2((facingRight ? jumpForce : -jumpForce)*1.3f, jumpForce),
-				ForceMode2D.Impulse
-			);
+			rb2d.velocity = new Vector2((facingRight ? jumpSpeed : -jumpSpeed)*1.3f, Mathf.Max(jumpSpeed, rb2d.velocity.y));
 			airControlMod = 0;
 			GameObject w = Instantiate(wallJumpDust);
 			w.transform.position = new Vector2(facingRight ? collider2d.bounds.min.x : collider2d.bounds.max.x, transform.position.y);
@@ -262,14 +266,15 @@ public class PlayerController : Entity {
 			groundJumped = false;
 		}
 
-		// we do not want air jumps to be additive. too bad!
 		void AirJump() {
+			BufferJump(); // in case about to hit a wall
 			airJumps--;
 			rb2d.velocity = new Vector2(rb2d.velocity.x, Mathf.Max(jumpSpeed, rb2d.velocity.y));
 			JumpDust();
-			animator.SetTrigger("Jump");
+			animator.SetTrigger("WallJump");
 			jumpNoise.PlayFrom(this.gameObject);
 			airControlMod = 1;
+			groundJumped = false;
 		}
 
 		void BufferJump() {
@@ -294,7 +299,7 @@ public class PlayerController : Entity {
                 GroundJump();
             } else if (wallData.touchingWall || (justLeftWall && rb2d.velocity.y<=0)) {
 				WallJump();
-			} else if (!groundData.grounded && airJumps > 0) {
+			} else if (!wallData.touchingWall && !groundData.grounded && airJumps > 0) {
 				AirJump();
             }
         }
@@ -401,7 +406,6 @@ public class PlayerController : Entity {
     }
 
 	public void RefreshAirMovement() {
-		print("refrehsing air movement");
 		airDashes = 1;
 		airJumps = 1;
 	}

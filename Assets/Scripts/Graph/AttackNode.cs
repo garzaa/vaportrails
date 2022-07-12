@@ -22,6 +22,7 @@ public class AttackNode : CombatNode {
 
     override public void OnNodeEnter() {
         base.OnNodeEnter();
+        Debug.Log("entering node "+this.name);
         if (attackData != null) {
             attackGraph.animator.Play(attackData.name, layer:0, normalizedTime:timeOffset);
             foreach (AttackData.TimedImpulse ti in attackData.impulses) {
@@ -97,6 +98,8 @@ public class AttackNode : CombatNode {
 		while (buffer.Ready() && !consumedAttack) {
             Debug.Log("looking at the top of the current buffer");
 			BufferedAttack attack = buffer.Consume();
+            Debug.Log("consumed attack with direction any: "+attack.HasDirection(AttackDirection.ANY));
+            if (attackLinks.Length==0) Debug.Log("current node has no links!");
 			for (int i=0; i<attackLinks.Length; i++) {
 				AttackLink link = attackLinks[i];
 				if (link.type==attack.type && attack.HasDirection(link.direction)) {

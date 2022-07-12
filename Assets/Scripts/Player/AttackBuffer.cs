@@ -73,6 +73,9 @@ public class BufferedAttack {
 	}
 	
     public bool HasDirection(AttackDirection d) {
+        Debug.Log("attack with direction "+attackDirection+" checking for AttackDirection "+d);
+        Debug.Log("direction x: "+(AttackDirection)attackDirection.x);
+        Debug.Log("direction y: "+(AttackDirection)attackDirection.y);
         if (d == AttackDirection.ANY) return true;
         return (d==(AttackDirection)attackDirection.x || d==(AttackDirection)attackDirection.y);
     }

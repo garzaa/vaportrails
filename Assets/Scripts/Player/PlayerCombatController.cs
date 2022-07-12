@@ -13,6 +13,7 @@ public class PlayerCombatController : MonoBehaviour {
 	Animator animator;
 
 	public PlayerAttackGraph groundAttackGraph;
+	public PlayerAttackGraph airAttackGraph;
 
 	void Start() {
 		player = GetComponent<PlayerController>();
@@ -26,29 +27,45 @@ public class PlayerCombatController : MonoBehaviour {
 			GetComponent<AttackBuffer>(),
 			GetComponent<AirAttackTracker>()
 		);
+		airAttackGraph.Initialize(
+			this,
+			animator,
+			GetComponent<AttackBuffer>(),
+			GetComponent<AirAttackTracker>()
+		);
 	}
 
 	void Update() {
 		if (currentGraph == null) {
 			if (InputManager.ButtonDown(Buttons.PUNCH) || InputManager.ButtonDown(Buttons.KICK)) {
 				if (groundData.grounded) {
-					player.OnAttackGraphEnter();
-					currentGraph = groundAttackGraph;
-					StartAttackStance();
-					groundAttackGraph.EnterGraph();
+					EnterAttackGraph(groundAttackGraph);
+				} else {
+					EnterAttackGraph(airAttackGraph);
 				}
 			}
 		}
 		if (currentGraph != null) {
 			currentGraph.Update();
 			if (wallData.hitWall) {
-				if (currentGraph != null) currentGraph.ExitGraph();
+				currentGraph.ExitGraph();
+			}
+			if (groundData.hitGround) {
+				currentGraph.OnGroundHit();
 			}
 		}
 
 		if (combatLayerWeight == 0) {
 			animator.SetLayerWeight(1, Mathf.MoveTowards(animator.GetLayerWeight(1), combatLayerWeight, 4*Time.deltaTime));
 		}
+	}
+
+	public void EnterAttackGraph(PlayerAttackGraph graph, CombatNode entryNode=null) {
+		Debug.Log("entering graph "+graph.name);
+		player.OnAttackGraphEnter();
+		currentGraph = graph;
+		StartAttackStance();
+		graph.EnterGraph(entryNode);
 	}
 
 	public void OnAttackNodeEnter(CombatNode combatNode) {
