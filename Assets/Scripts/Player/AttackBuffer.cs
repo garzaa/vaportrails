@@ -92,5 +92,6 @@ public enum AttackDirection {
 public enum AttackType {
     NONE = 0,
     PUNCH = 1,
-    KICK = 2
+    KICK = 2,
+    VAPOR = 3,
 }

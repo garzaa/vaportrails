@@ -8,7 +8,7 @@ public class PlayerController : Entity {
 	[SerializeField] GameObject playerRig;
 	[SerializeField] AudioResource jumpNoise;
 	[SerializeField] AudioResource landNoise;
-	[SerializeField] GameObject speedDust;
+	[SerializeField] ParticleSystem speedDust;
 	#pragma warning restore 0649
 
 	const float runSpeed = 4.5f;
@@ -27,7 +27,7 @@ public class PlayerController : Entity {
 	float fMod = 1;
 	float fModRecoveryTime = 1.5f;
 
-	public bool frozeInputs;
+	public bool frozeInputs { get; private set; }
 	bool inputBackwards;
 	bool inputForwards;
 	bool movingBackwards;
@@ -38,12 +38,12 @@ public class PlayerController : Entity {
 	bool speeding;
 	bool canDash = true;
 	bool dashing;
-	bool groundJumped;
+	bool canShortHop;
 	float inputX;
 	float landingRecovery = 1;
 	int airDashes = 1;
 	int airJumps = 1;
-	float jumpSpeed;
+	public float jumpSpeed { get; private set; }
 	float fallStart;
 	float ySpeedLastFrame;
 
@@ -201,7 +201,7 @@ public class PlayerController : Entity {
 
 		if (frozeInputs && !currentAttack) return;
 
-		if (InputManager.ButtonDown(Buttons.SPECIAL) && canDash && InputManager.HasHorizontalInput()) {
+		if (InputManager.ButtonDown(Buttons.SPECIAL) && canDash && InputManager.HasHorizontalInput() && InputManager.VerticalInput()<0.5) {
 			if (!groundData.grounded && airDashes <= 0) return;
 			dashSound.PlayFrom(gameObject);
 			animator.SetTrigger(inputBackwards ? "BackDash" : "Dash");
@@ -229,6 +229,10 @@ public class PlayerController : Entity {
 		dashing = false;
 	}
 
+	public void DisableShortHop() {
+		canShortHop = false;
+	}
+
 	void Jump(bool executeIfBuffered=false) {
 		if ((currentAttack && !currentAttack.jumpCancelable) && InputManager.ButtonDown(Buttons.JUMP)) {
 			BufferJump();
@@ -246,7 +250,7 @@ public class PlayerController : Entity {
 					animator.SetTrigger("Jump");
 				}
 			}
-			groundJumped = true;
+			canShortHop = true;
 			JumpDust();
             rb2d.velocity = new Vector2(rb2d.velocity.x, Mathf.Max(jumpSpeed, rb2d.velocity.y));
         }
@@ -262,7 +266,7 @@ public class PlayerController : Entity {
 			w.transform.position = new Vector2(facingRight ? collider2d.bounds.min.x : collider2d.bounds.max.x, transform.position.y);
 			w.transform.localScale = new Vector3(facingRight ? 1 : -1, 1, 1);
 			animator.SetTrigger("WallJump");
-			groundJumped = false;
+			canShortHop = false;
 		}
 
 		void AirJump() {
@@ -273,11 +277,11 @@ public class PlayerController : Entity {
 			if (movingBackwards || inputBackwards) {
 				animator.SetTrigger("Backflip");
 			} else {
-				animator.SetTrigger("Jump");
+				animator.SetTrigger("WallJump");
 			}
 			jumpNoise.PlayFrom(this.gameObject);
 			airControlMod = 1;
-			groundJumped = false;
+			canShortHop = false;
 		}
 
 		void BufferJump() {
@@ -307,7 +311,7 @@ public class PlayerController : Entity {
             }
         }
 
-		if (InputManager.ButtonUp(Buttons.JUMP) && rb2d.velocity.y > jumpCutoffVelocity && groundJumped) {
+		if (InputManager.ButtonUp(Buttons.JUMP) && rb2d.velocity.y > jumpCutoffVelocity && canShortHop) {
 			rb2d.velocity = new Vector2(rb2d.velocity.x, jumpCutoffVelocity);
 		}
 	}
@@ -346,7 +350,8 @@ public class PlayerController : Entity {
 	}
 
 	void UpdateEffects() {
-		speedDust.gameObject.SetActive(IsSpeeding());
+		ParticleSystem.EmissionModule emission = speedDust.emission;
+		emission.rateOverDistance = IsSpeeding() ? 1.5f : 0;
 	}
 
 	void CheckFlip() {

@@ -69,8 +69,6 @@ public class PlayerAttackGraph : NodeGraph {
 		}
 
 		if (!nameCorresponds && enteredCurrentNode) {
-			// otherwise we've entered the current node and it's been interrupted
-			// like by falling off a ledge/getting hit or something
 			Debug.Log("current node interrupted early by state "+clipName+", exiting graph");
 			ExitGraph(quiet: true);
 		}

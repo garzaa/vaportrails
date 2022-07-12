@@ -43,6 +43,18 @@ public class PlayerCombatController : MonoBehaviour {
 				} else {
 					EnterAttackGraph(airAttackGraph);
 				}
+			} else if (
+				(!player.frozeInputs || currentGraph!=null)
+				&& InputManager.ButtonDown(Buttons.SPECIAL)
+			) {
+				// dash should take priority over everything else
+				// then orca flip only if there's a sizeable up input
+				// TODO: once per jump please
+				if (InputManager.VerticalInput() > 0.5) {
+					FlipKick();
+				}
+
+				// then meteor only if there's barely any down input
 			}
 		}
 		if (currentGraph != null) {
@@ -57,6 +69,15 @@ public class PlayerCombatController : MonoBehaviour {
 
 		if (combatLayerWeight == 0) {
 			animator.SetLayerWeight(1, Mathf.MoveTowards(animator.GetLayerWeight(1), combatLayerWeight, 4*Time.deltaTime));
+		}
+	}
+
+	public void FlipKick() {
+		if (!groundData.grounded) {
+			player.DisableShortHop();
+			// just enter the ground attack graph at the orca flip node? h mmm...need that impulse
+			rb2d.velocity = new Vector2(rb2d.velocity.x, Mathf.Max(rb2d.velocity.y, player.jumpSpeed));
+			animator.Play("OrcaFlip");
 		}
 	}
 
