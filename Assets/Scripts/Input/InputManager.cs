@@ -103,7 +103,7 @@ public class InputManager : MonoBehaviour {
     }
 
     public static float GetInputBufferDuration() {
-		return 1f/16f;
+		return 2f/10f;
         // return SaveManager.save.options.inputBuffer * (1f/16f);
     }
 }

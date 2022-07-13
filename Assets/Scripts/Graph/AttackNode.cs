@@ -28,9 +28,6 @@ public class AttackNode : CombatNode {
             foreach (AttackData.TimedImpulse ti in attackData.impulses) {
                 impulses[ti.frame] = ti.impulse;
             }
-            if (attackData.setFriction) {
-                attackGraph.combatController.SetFriction(attackData.friction);
-            }
         }
         timeOffset = 0;
     }
@@ -39,12 +36,6 @@ public class AttackNode : CombatNode {
         if (impulses.ContainsKey(currentFrame)) {
             attackGraph.combatController.AddImpulse(impulses[currentFrame]);
             impulses.Remove(currentFrame);
-        }
-
-        if (attackData != null) {
-            if (attackData.setFriction && attackData.continuousFriction) {
-                attackGraph.combatController.SetFriction(attackData.friction);
-            }
         }
 
         attackGraph.animator.SetBool("Actionable", currentFrame>=attackData.IASA);

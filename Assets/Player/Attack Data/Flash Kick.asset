@@ -9,10 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a2e9467664d71b48aabfc4b76830d30, type: 3}
-  m_Name: Multiswish
+  m_Script: {fileID: 11500000, guid: 81ff14a31c87f084ebc55d0cdbaf2d17, type: 3}
+  m_Name: Flash Kick
   m_EditorClassIdentifier: 
-  sounds:
-  - {fileID: 8300000, guid: bdea8d1ced688024a954b11cbeb0792a, type: 3}
-  volume: 0.7
-  outputGroup: {fileID: 6148399298927349144, guid: f1bfa512c739c0a449af9a57a2c553de, type: 2}
+  damage: 4
+  IASA: 7
+  jumpCancelable: 0
+  hitmarker: {fileID: 0}
+  hitSound: {fileID: 0}
+  impulses:
+  - frame: 1
+    impulse: {x: -8, y: 0}

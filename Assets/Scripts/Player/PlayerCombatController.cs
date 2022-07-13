@@ -15,6 +15,8 @@ public class PlayerCombatController : MonoBehaviour {
 	public PlayerAttackGraph groundAttackGraph;
 	public PlayerAttackGraph airAttackGraph;
 
+	bool canFlipKick = true;
+
 	void Start() {
 		player = GetComponent<PlayerController>();
 		groundData = GetComponent<GroundCheck>().groundData;
@@ -40,16 +42,16 @@ public class PlayerCombatController : MonoBehaviour {
 			if (InputManager.ButtonDown(Buttons.PUNCH) || InputManager.ButtonDown(Buttons.KICK)) {
 				if (groundData.grounded) {
 					EnterAttackGraph(groundAttackGraph);
-				} else {
+				} else if (!wallData.touchingWall) {
 					EnterAttackGraph(airAttackGraph);
 				}
 			} else if (
 				(!player.frozeInputs || currentGraph!=null)
 				&& InputManager.ButtonDown(Buttons.SPECIAL)
+				&& !wallData.touchingWall
 			) {
 				// dash should take priority over everything else
 				// then orca flip only if there's a sizeable up input
-				// TODO: once per jump please
 				if (InputManager.VerticalInput() > 0.5) {
 					FlipKick();
 				}
@@ -57,14 +59,19 @@ public class PlayerCombatController : MonoBehaviour {
 				// then meteor only if there's barely any down input
 			}
 		}
+
 		if (currentGraph != null) {
 			currentGraph.Update();
 			if (wallData.hitWall) {
 				currentGraph.ExitGraph();
 			}
 			if (groundData.hitGround) {
-				currentGraph.OnGroundHit();
+				RefreshAirAttacks();
 			}
+		}
+
+		if (groundData.hitGround || wallData.hitWall) {
+			RefreshAirAttacks();
 		}
 
 		if (combatLayerWeight == 0) {
@@ -74,6 +81,8 @@ public class PlayerCombatController : MonoBehaviour {
 
 	public void FlipKick() {
 		if (!groundData.grounded) {
+			if (!canFlipKick) return;
+			canFlipKick = false;
 			player.DisableShortHop();
 			// just enter the ground attack graph at the orca flip node? h mmm...need that impulse
 			rb2d.velocity = new Vector2(rb2d.velocity.x, Mathf.Max(rb2d.velocity.y, player.jumpSpeed));
@@ -106,10 +115,6 @@ public class PlayerCombatController : MonoBehaviour {
 		currentGraph = null;
 	}
 
-	public void SetFriction(float f) {
-		player.SetFmod(f);
-	}
-
 	public void AddImpulse(Vector2 impulse) {
 		rb2d.AddForce(impulse * player.Forward(), ForceMode2D.Impulse);
 	}
@@ -133,5 +138,9 @@ public class PlayerCombatController : MonoBehaviour {
 
 	void DisableAttackStance() {
 		combatLayerWeight = 0;
+	}
+
+	public void RefreshAirAttacks() {
+		canFlipKick = true;
 	}
 }

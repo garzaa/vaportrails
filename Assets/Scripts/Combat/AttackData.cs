@@ -9,11 +9,6 @@ public class AttackData : ScriptableObject {
 	public GameObject hitmarker;
 	public AudioResource hitSound;
 
-	[Header("Friction")]
-	public float friction = 1;
-	public bool setFriction = false;
-	public bool continuousFriction = false;
-
 	public List<TimedImpulse> impulses;
 
 	[System.Serializable]
