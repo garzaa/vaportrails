@@ -270,6 +270,11 @@ public class PlayerController : Entity {
 		}
 
 		void AirJump() {
+			if (groundData.distance<0.3f) {
+				// if player is falling and about to hit ground, don't buffer an airjump
+				GroundJump();
+				return;
+			}
 			BufferJump(); // in case about to hit a wall
 			airJumps--;
 			rb2d.velocity = new Vector2(rb2d.velocity.x, Mathf.Max(jumpSpeed, rb2d.velocity.y));
@@ -388,9 +393,10 @@ public class PlayerController : Entity {
 	public void OnAttackNodeEnter(AttackData attackData) {
 		Debug.Log("player entering attack node");
 		currentAttack = attackData;
-		if (facingRight && inputX<0) {
+		float actualInputX = InputManager.HorizontalInput();
+		if (facingRight && actualInputX<0) {
             Flip();
-        } else if (!facingRight && inputX>0) {
+        } else if (!facingRight && actualInputX>0) {
             Flip();
         }
 		Debug.Log("animator actionable now: " + animator.GetBool("Actionable"));

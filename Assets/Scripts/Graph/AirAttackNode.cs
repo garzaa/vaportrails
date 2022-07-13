@@ -21,10 +21,12 @@ public class AirAttackNode : AttackNode {
             MoveNextNode(buffer);
         } else if (clipTime >= 1) {
             attackGraph.ExitGraph();
+        } else if (attackGraph.grounded) {
+            OnGrounded();
         }
     }
 
-    override public void OnGroundHit() {
+    override public void OnGrounded() {
         if (GetPort("onLand").ConnectionCount>0) {
             attackGraph.MoveNode(GetPort("onLand").Connection.node as CombatNode);
         } else {

@@ -16,6 +16,7 @@ public class PlayerAttackGraph : NodeGraph {
     public AttackBuffer buffer;
     public AirAttackTracker airAttackTracker;
     public PlayerCombatController combatController;
+    public bool grounded;
 
     CombatNode currentNode = null;
 
@@ -103,10 +104,8 @@ public class PlayerAttackGraph : NodeGraph {
         currentNode.OnAttackLand();
     }
 
-    public void OnGroundHit() {
-        if (currentNode != null) {
-            currentNode.OnGroundHit();
-        }
+    public void UpdateGrounded(bool g) {
+        grounded = g;
     }
 
 }

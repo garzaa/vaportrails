@@ -61,6 +61,7 @@ public class PlayerCombatController : MonoBehaviour {
 		}
 
 		if (currentGraph != null) {
+			currentGraph.UpdateGrounded(groundData.grounded);
 			currentGraph.Update();
 			if (wallData.hitWall) {
 				currentGraph.ExitGraph();

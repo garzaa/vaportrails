@@ -30,7 +30,7 @@ public class CombatNode : Node {
         return true;
     }
 
-    virtual public void OnGroundHit() {
+    virtual public void OnGrounded() {
 
     }
 
