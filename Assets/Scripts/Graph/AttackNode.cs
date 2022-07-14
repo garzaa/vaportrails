@@ -13,6 +13,8 @@ public class AttackNode : CombatNode {
     [Output(dynamicPortList=true, connectionType=ConnectionType.Override)]
     public AttackLink[] links;
 
+    // TODO: add a time-based nextAttack link
+
     List<Tuple<AttackLink, CombatNode>> directionalLinks = new List<Tuple<AttackLink, CombatNode>>();
     CombatNode anyDirectionNode = null;
     Dictionary<int, Vector2> impulses = new Dictionary<int, Vector2>();
