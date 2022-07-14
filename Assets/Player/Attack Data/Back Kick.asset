@@ -12,9 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81ff14a31c87f084ebc55d0cdbaf2d17, type: 3}
   m_Name: Back Kick
   m_EditorClassIdentifier: 
-  damage: 0
-  IASA: 0
+  damage: 2
+  IASA: 8
   jumpCancelable: 0
   hitmarker: {fileID: 0}
   hitSound: {fileID: 0}
-  impulses: []
+  impulses:
+  - frame: 3
+    impulse: {x: 16, y: 0}
