@@ -16,7 +16,6 @@ public class WorldPointCanvas : MonoBehaviour {
     void Start() {
         camera = Camera.main;
         r = GetComponent<RectTransform>();
-        Debug.Log(camera);
         if (optionalAnchor) {
             rb2d = optionalAnchor.GetComponent<Rigidbody2D>();
         }

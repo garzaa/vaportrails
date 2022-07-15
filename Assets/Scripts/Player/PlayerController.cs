@@ -84,7 +84,8 @@ public class PlayerController : Entity {
 		movingForwards = InputManager.HasHorizontalInput() && ((facingRight && rb2d.velocity.x > 0) || (!facingRight && rb2d.velocity.x < 0));
 		airControlMod = Mathf.MoveTowards(airControlMod, 1, 1f * Time.deltaTime);
 
-		if (frozeInputs) {
+		// allow moving during air attacks
+		if (frozeInputs && !(currentAttack!=null && !groundData.grounded)) {
 			inputX = 0;
 		}
 
@@ -254,7 +255,6 @@ public class PlayerController : Entity {
         }
 
 		void WallJump() {
-			Debug.Log("wall jump");
             bufferedJump = false;
 			// assume player is facing the wall and needs to be flipped away from it
 			jumpNoise.PlayFrom(this.gameObject);
@@ -377,19 +377,16 @@ public class PlayerController : Entity {
 	}
 
 	public void OnAttackGraphEnter() {
-		Debug.Log("player entering attack graph");
 		if (dashing) StopDashAnimation();
 	}
 
 	public void OnAttackGraphExit() {
-		Debug.Log("player exiting attack graph");
 		frozeInputs = false;
 		currentAttack = null;
 		Jump(executeIfBuffered: true);
 	}
 
 	public void OnAttackNodeEnter(AttackData attackData) {
-		Debug.Log("player entering attack node");
 		currentAttack = attackData;
 		float actualInputX = InputManager.HorizontalInput();
 		if (facingRight && actualInputX<0) {
@@ -397,7 +394,6 @@ public class PlayerController : Entity {
         } else if (!facingRight && actualInputX>0) {
             Flip();
         }
-		Debug.Log("animator actionable now: " + animator.GetBool("Actionable"));
 		frozeInputs = true;
 	}
 

@@ -26,12 +26,6 @@ public class InitialBranchNode : AttackNode {
             next = MatchAttackNode(buffer, links);
         }
 
-        if (next != null) {
-            Debug.Log("Found node "+next.name+", moving to it");
-        } else {
-            Debug.Log("found no next node");
-        }
-
         return next;
     }
 }

@@ -92,7 +92,6 @@ public class PlayerCombatController : MonoBehaviour {
 	}
 
 	public void EnterAttackGraph(PlayerAttackGraph graph, CombatNode entryNode=null) {
-		Debug.Log("entering graph "+graph.name);
 		player.OnAttackGraphEnter();
 		currentGraph = graph;
 		StartAttackStance();

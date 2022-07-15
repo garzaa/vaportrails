@@ -28,7 +28,6 @@ public class PlayerAttackGraph : NodeGraph {
     }
 
     public void EnterGraph(CombatNode entryNode=null) {
-        Debug.Log("Entering graph");
 		enteredCurrentNode = false;
 		animator.SetBool("Actionable", false);
         currentNode = (entryNode == null) ? GetRootNode() : entryNode;
@@ -42,7 +41,6 @@ public class PlayerAttackGraph : NodeGraph {
         }
 		animator.SetBool("Actionable", true);
 		combatController.OnGraphExit();
-		Debug.Log("Exiting graph");
         currentNode = null;
     }
 
@@ -60,17 +58,14 @@ public class PlayerAttackGraph : NodeGraph {
 
 		if (!nameCorresponds && !enteredCurrentNode) {
 			// wait for animator state to actually propagate
-			Debug.Log("clip "+clipName+" is not equal to node "+currentNode.name+", but not entered yet, so waiting");
 			return;
 		}
 		
 		if (nameCorresponds && !enteredCurrentNode) {
-			Debug.Log("animator entered current node "+currentNode.name);
 			enteredCurrentNode = true;
 		}
 
 		if (!nameCorresponds && enteredCurrentNode) {
-			Debug.Log("current node interrupted early by state "+clipName+", exiting graph");
 			ExitGraph(quiet: true);
 		}
 
@@ -78,7 +73,6 @@ public class PlayerAttackGraph : NodeGraph {
 			clipLength = clipInfo[0].clip.length;
 			clipTime = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
 			currentFrame = (int) ((clipTime * clipLength) * 12f);
-			Debug.Log("Locked in, updating current node at frame "+currentFrame);
 			currentNode.NodeUpdate(currentFrame, clipTime, buffer);
 		}
     }

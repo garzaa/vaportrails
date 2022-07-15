@@ -15,14 +15,11 @@ public class Impulses : StateMachineBehaviour {
 	Dictionary<int, Vector2> impulses = new Dictionary<int, Vector2>();
 	Entity entity;
 
-	void Awake() {
+	public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
+		if (!entity) entity = animator.GetComponent<Entity>();
 		foreach (TimedImpulse ti in frameImpulses) {
 			impulses[ti.frame] = ti.impulse;
 		}
-	}
-
-	public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
-		if (!entity) entity = animator.GetComponent<Entity>();
 	}
 
 	public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
