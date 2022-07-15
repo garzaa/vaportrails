@@ -17,7 +17,6 @@ public class AttackNode : CombatNode {
 
     List<Tuple<AttackLink, CombatNode>> directionalLinks = new List<Tuple<AttackLink, CombatNode>>();
     CombatNode anyDirectionNode = null;
-    Dictionary<int, Vector2> impulses = new Dictionary<int, Vector2>();
 
     [HideInInspector]
     public float timeOffset = 0;
@@ -27,19 +26,11 @@ public class AttackNode : CombatNode {
         Debug.Log("entering node "+this.name);
         if (attackData != null) {
             attackGraph.animator.Play(attackData.name, layer:0, normalizedTime:timeOffset);
-            foreach (AttackData.TimedImpulse ti in attackData.impulses) {
-                impulses[ti.frame] = ti.impulse;
-            }
         }
         timeOffset = 0;
     }
 
     override public void NodeUpdate(int currentFrame, float clipTime, AttackBuffer buffer) {
-        if (impulses.ContainsKey(currentFrame)) {
-            attackGraph.combatController.AddImpulse(impulses[currentFrame]);
-            impulses.Remove(currentFrame);
-        }
-
         attackGraph.animator.SetBool("Actionable", currentFrame>=attackData.IASA);
 
         if (buffer.Ready() && (cancelable || currentFrame>=attackData.IASA)) {
@@ -62,7 +53,6 @@ public class AttackNode : CombatNode {
     override public void OnNodeExit() {
         base.OnNodeExit();
         timeOffset = 0;
-        impulses.Clear();
     }
  
     protected void MoveNextNode(AttackBuffer buffer, bool allowReEntry=false) {

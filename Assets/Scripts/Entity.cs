@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(EntityShader))]
 public class Entity : MonoBehaviour {
@@ -15,6 +16,7 @@ public class Entity : MonoBehaviour {
 	protected Collider2D collider2d;
 	protected bool facingRight;
 	protected GroundData groundData;
+	protected WallCheckData wallData;
 	protected Collider2D groundColliderLastFrame;
 	protected EntityShader entityShader;
 	
@@ -35,6 +37,7 @@ public class Entity : MonoBehaviour {
         collider2d = GetComponent<Collider2D>();
         groundCheck = GetComponent<GroundCheck>();
         groundData = groundCheck.groundData;
+		wallData = GetComponent<WallCheck>().wallData;
 		if (!jumpDust) jumpDust = Resources.Load<GameObject>("Runtime/JumpDust");
 		if (!landDust) landDust = Resources.Load<GameObject>("Runtime/LandDust");
 		if (!footfallDust) footfallDust = Resources.Load<GameObject>("Runtime/FootfallDust");
@@ -117,5 +120,9 @@ public class Entity : MonoBehaviour {
 
 	public int ForwardScalar() {
 		return facingRight ? 1 : -1;
+	}
+
+	public void AddAttackImpulse(Vector2 impulse) {
+		rb2d.AddForce(impulse * Forward(), ForceMode2D.Impulse);
 	}
 }

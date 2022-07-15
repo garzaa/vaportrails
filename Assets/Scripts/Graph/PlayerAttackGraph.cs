@@ -40,8 +40,8 @@ public class PlayerAttackGraph : NodeGraph {
         if (currentNode != null) {
             currentNode.OnNodeExit();
         }
-		combatController.OnGraphExit();
 		animator.SetBool("Actionable", true);
+		combatController.OnGraphExit();
 		Debug.Log("Exiting graph");
         currentNode = null;
     }
@@ -77,7 +77,7 @@ public class PlayerAttackGraph : NodeGraph {
 		if (nameCorresponds) {
 			clipLength = clipInfo[0].clip.length;
 			clipTime = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
-			currentFrame = (int) ((clipTime * clipLength) * 16f);
+			currentFrame = (int) ((clipTime * clipLength) * 12f);
 			Debug.Log("Locked in, updating current node at frame "+currentFrame);
 			currentNode.NodeUpdate(currentFrame, clipTime, buffer);
 		}

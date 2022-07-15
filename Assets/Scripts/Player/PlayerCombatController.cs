@@ -116,10 +116,6 @@ public class PlayerCombatController : MonoBehaviour {
 		currentGraph = null;
 	}
 
-	public void AddImpulse(Vector2 impulse) {
-		rb2d.AddForce(impulse * player.Forward(), ForceMode2D.Impulse);
-	}
-
 	public float GetSpeed() {
 		return Mathf.Abs(rb2d.velocity.x);
 	}

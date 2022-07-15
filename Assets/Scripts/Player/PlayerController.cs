@@ -48,7 +48,6 @@ public class PlayerController : Entity {
 	float ySpeedLastFrame;
 
 	ToonMotion toonMotion;
-	WallCheckData wallData;
 	GameObject wallJumpDust;
 	AudioResource dashSound;
 	AttackData currentAttack;
@@ -56,7 +55,6 @@ public class PlayerController : Entity {
 	override protected void Awake() {
 		base.Awake();
 		toonMotion = GetComponentInChildren<ToonMotion>();
-		wallData = GetComponent<WallCheck>().wallData;
 		wallJumpDust = Resources.Load<GameObject>("Runtime/WallJumpDust");
 		dashSound = Resources.Load<AudioResource>("Runtime/DashSound");
 		// p = mv

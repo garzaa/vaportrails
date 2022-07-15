@@ -169,12 +169,13 @@ MonoBehaviour:
   m_Name: High Kick
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 136, y: -376}
+  position: {x: 136, y: -472}
   ports:
     keys:
     - input
     - links
     - links 0
+    - links 1
     values:
     - _fieldName: input
       _node: {fileID: -2182646159027362593}
@@ -203,6 +204,18 @@ MonoBehaviour:
         PublicKeyToken=null
       connections:
       - fieldName: input
+        node: {fileID: 2295136725489853279}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 1
+    - _fieldName: links 1
+      _node: {fileID: -2182646159027362593}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: input
         node: {fileID: 8333533718961233585}
         reroutePoints: []
       _direction: 1
@@ -214,6 +227,8 @@ MonoBehaviour:
     type: 0
     direction: 0
   links:
+  - type: 2
+    direction: -2
   - type: 2
     direction: 0
   timeOffset: 0
@@ -288,11 +303,58 @@ MonoBehaviour:
   - {fileID: -7836476412415192413}
   - {fileID: 5149676047783924878}
   - {fileID: 6106788391044239856}
+  - {fileID: 2295136725489853279}
   animator: {fileID: 0}
   buffer: {fileID: 0}
   airAttackTracker: {fileID: 0}
   combatController: {fileID: 0}
-  grounded: 1
+  grounded: 0
+--- !u!114 &2295136725489853279
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93af5be29414da440814eeb14596c6e5, type: 3}
+  m_Name: Axe Kick
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 456, y: -376}
+  ports:
+    keys:
+    - input
+    - links
+    values:
+    - _fieldName: input
+      _node: {fileID: 2295136725489853279}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: links 0
+        node: {fileID: -2182646159027362593}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: links
+      _node: {fileID: 2295136725489853279}
+      _typeQualifiedName: AttackLink[], Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+  attackData: {fileID: 11400000, guid: 6836478d6013d414a9c70780427b3354, type: 2}
+  input:
+    type: 0
+    direction: 0
+  links: []
+  timeOffset: 0
 --- !u!114 &5149676047783924878
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -649,7 +711,7 @@ MonoBehaviour:
   m_Name: Flash Kick
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 440, y: -376}
+  position: {x: 456, y: -552}
   ports:
     keys:
     - input
@@ -660,7 +722,7 @@ MonoBehaviour:
       _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
       connections:
-      - fieldName: links 0
+      - fieldName: links 1
         node: {fileID: -2182646159027362593}
         reroutePoints: []
       _direction: 0
