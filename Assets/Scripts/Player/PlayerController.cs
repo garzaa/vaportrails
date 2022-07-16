@@ -382,6 +382,12 @@ public class PlayerController : Entity, IAttackLandListener {
 
 	public void OnAttackGraphEnter() {
 		if (dashing) StopDashAnimation();
+		float actualInputX = InputManager.HorizontalInput();
+		if (facingRight && actualInputX<0) {
+            Flip();
+        } else if (!facingRight && actualInputX>0) {
+            Flip();
+        }
 	}
 
 	public void OnAttackGraphExit() {
@@ -392,12 +398,6 @@ public class PlayerController : Entity, IAttackLandListener {
 
 	public void OnAttackNodeEnter(AttackData attackData) {
 		currentAttack = attackData;
-		float actualInputX = InputManager.HorizontalInput();
-		if (facingRight && actualInputX<0) {
-            Flip();
-        } else if (!facingRight && actualInputX>0) {
-            Flip();
-        }
 		frozeInputs = true;
 	}
 

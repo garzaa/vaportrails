@@ -45,9 +45,6 @@ MonoBehaviour:
     type: 0
     direction: 0
   links: []
-  nextNode:
-    type: 0
-    direction: 0
   timeOffset: 0
 --- !u!114 &-5152714321913037071
 MonoBehaviour:
@@ -97,9 +94,6 @@ MonoBehaviour:
     type: 0
     direction: 0
   links: []
-  nextNode:
-    type: 0
-    direction: 0
   timeOffset: 0
 --- !u!114 &-2496123809670740237
 MonoBehaviour:
@@ -160,9 +154,6 @@ MonoBehaviour:
     direction: 0
   links:
   - type: 1
-    direction: 0
-  nextNode:
-    type: 0
     direction: 0
   timeOffset: 0
 --- !u!114 &-2182646159027362593
@@ -239,10 +230,7 @@ MonoBehaviour:
   - type: 2
     direction: -2
   - type: 2
-    direction: 0
-  nextNode:
-    type: 0
-    direction: 0
+    direction: -1
   timeOffset: 0
 --- !u!114 &-783924786998265801
 MonoBehaviour:
@@ -320,7 +308,7 @@ MonoBehaviour:
   buffer: {fileID: 0}
   airAttackTracker: {fileID: 0}
   combatController: {fileID: 0}
-  grounded: 0
+  grounded: 1
 --- !u!114 &2295136725489853279
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -366,9 +354,6 @@ MonoBehaviour:
     type: 0
     direction: 0
   links: []
-  nextNode:
-    type: 0
-    direction: 0
   timeOffset: 0
 --- !u!114 &5149676047783924878
 MonoBehaviour:
@@ -430,9 +415,6 @@ MonoBehaviour:
   links:
   - type: 2
     direction: 0
-  nextNode:
-    type: 0
-    direction: 0
   timeOffset: 0
 --- !u!114 &6106788391044239856
 MonoBehaviour:
@@ -447,7 +429,7 @@ MonoBehaviour:
   m_Name: Back Kick
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 456, y: -40}
+  position: {x: 440, y: -8}
   ports:
     keys:
     - input
@@ -479,9 +461,6 @@ MonoBehaviour:
     type: 0
     direction: 0
   links: []
-  nextNode:
-    type: 0
-    direction: 0
   timeOffset: 0
 --- !u!114 &6225885635047150608
 MonoBehaviour:
@@ -528,9 +507,6 @@ MonoBehaviour:
     type: 0
     direction: 0
   links: []
-  nextNode:
-    type: 0
-    direction: 0
   timeOffset: 0
 --- !u!114 &6332814915573547029
 MonoBehaviour:
@@ -591,9 +567,6 @@ MonoBehaviour:
     direction: 0
   links:
   - type: 1
-    direction: 0
-  nextNode:
-    type: 0
     direction: 0
   timeOffset: 0
 --- !u!114 &7367564331834169068
@@ -719,9 +692,6 @@ MonoBehaviour:
     direction: 0
   - type: 2
     direction: 0
-  nextNode:
-    type: 0
-    direction: 0
   timeOffset: 0
   speedLinks:
   - type: 1
@@ -773,7 +743,4 @@ MonoBehaviour:
     type: 0
     direction: 0
   links: []
-  nextNode:
-    type: 0
-    direction: 0
   timeOffset: 0

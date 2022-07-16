@@ -70,7 +70,7 @@ public class PlayerCombatController : MonoBehaviour, IAttackLandListener {
 			currentGraph.UpdateGrounded(groundData.grounded);
 			currentGraph.Update();
 			if (wallData.hitWall) {
-				currentGraph.ExitGraph();
+				if (currentGraph) currentGraph.ExitGraph();
 			}
 			if (groundData.hitGround) {
 				RefreshAirAttacks();
