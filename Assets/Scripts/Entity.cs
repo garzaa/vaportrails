@@ -4,8 +4,10 @@ using System.Collections.Generic;
 using System;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(WallCheck))]
+[RequireComponent(typeof(GroundCheck))]
 [RequireComponent(typeof(EntityShader))]
-public class Entity : MonoBehaviour {
+public class Entity : MonoBehaviour, IHitListener {
 	#pragma warning disable 0649
 	[SerializeField] AudioResource defaultFootfall;
 	#pragma warning restore 0649
@@ -28,6 +30,7 @@ public class Entity : MonoBehaviour {
 	static GameObject footfallDust;
 	
 	bool canGroundHitEffect = true;
+	public bool staggerable = true;
 
 	protected virtual void Awake() {
 		animator = GetComponent<Animator>();
@@ -69,6 +72,22 @@ public class Entity : MonoBehaviour {
 		GameObject d = Instantiate(footfallDust, pos, Quaternion.identity, null);
 		// keep track of facing left/right
 		d.transform.localScale = transform.localScale;
+	}
+
+	public void OnHit(AttackHitbox attack) { 
+		if (staggerable) {
+			Vector2 v = attack.data.knockback;
+			float attackX = attack.transform.position.x;
+			v.x *= attackX > transform.position.x ? -1 : 1;
+			// heavier people get knocked back less
+			rb2d.velocity = v * (1f/rb2d.mass);
+			// flip to attack
+			if (facingRight && attackX<transform.position.x) {
+				Flip();
+			} else if (!facingRight && attackX>transform.position.x) {
+				Flip();
+			}
+		}
 	}
 
 	protected virtual void Update() {

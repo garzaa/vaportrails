@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class PlayerCombatController : MonoBehaviour {
+public class PlayerCombatController : MonoBehaviour, IAttackLandListener {
 	const float combatStanceLength = 4f;
 	float combatLayerWeight = 0f;
 
@@ -11,6 +11,7 @@ public class PlayerCombatController : MonoBehaviour {
 	Rigidbody2D rb2d;
 	WallCheckData wallData;
 	Animator animator;
+	AttackHitbox attackHitbox;
 
 	public PlayerAttackGraph groundAttackGraph;
 	public PlayerAttackGraph airAttackGraph;
@@ -23,6 +24,7 @@ public class PlayerCombatController : MonoBehaviour {
 		rb2d = GetComponent<Rigidbody2D>();
 		wallData = GetComponent<WallCheck>().wallData;
 		animator = GetComponent<Animator>();
+		attackHitbox = GetComponentInChildren<AttackHitbox>();
 		groundAttackGraph.Initialize(
 			this,
 			animator,
@@ -35,6 +37,10 @@ public class PlayerCombatController : MonoBehaviour {
 			GetComponent<AttackBuffer>(),
 			GetComponent<AirAttackTracker>()
 		);
+	}
+
+	public void OnAttackLand(Hurtbox hurtbox) {
+		if (currentGraph) currentGraph.OnAttackLand();
 	}
 
 	void Update() {
@@ -100,7 +106,9 @@ public class PlayerCombatController : MonoBehaviour {
 
 	public void OnAttackNodeEnter(CombatNode combatNode) {
 		if (combatNode is AttackNode) {
-			player.OnAttackNodeEnter((combatNode as AttackNode).attackData);
+			AttackNode attackNode = combatNode as AttackNode;
+			player.OnAttackNodeEnter(attackNode.attackData);
+			attackHitbox.data = attackNode.attackData;
 		} else {
 			player.OnAttackNodeEnter(null);
 		}

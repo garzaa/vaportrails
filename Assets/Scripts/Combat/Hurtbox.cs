@@ -1,13 +1,22 @@
 using UnityEngine;
+using UnityEngine.Events;
+using System.Collections;
+using System.Collections.Generic;
 
 public class Hurtbox : MonoBehaviour {
 	public AudioResource hitSoundOverride;
+	public UnityEvent hitEvent;
+	IHitListener[] hitListeners;
 
 	void Start() {
 		gameObject.layer = LayerMask.NameToLayer(Layers.Hitboxes);
+		hitListeners = GetComponentsInParent<IHitListener>();
 	}
 
-	// verification method for an attack wanting to hit
-
-	// and then logic for propagating the hit back to the parent entity
+	public void OnAttackLand(AttackHitbox attack) {
+		foreach (IHitListener hitListener in hitListeners) {
+			hitListener.OnHit(attack);
+		}
+		hitEvent.Invoke();
+	}
 }

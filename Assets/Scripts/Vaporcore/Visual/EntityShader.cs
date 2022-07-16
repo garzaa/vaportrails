@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 
-public class EntityShader : MonoBehaviour {
+public class EntityShader : MonoBehaviour, IHitListener {
 	List<Renderer> renderers = new List<Renderer>();
 	List<MaterialPropertyBlock> propertyBlocks = new List<MaterialPropertyBlock>();
 
@@ -34,5 +34,9 @@ public class EntityShader : MonoBehaviour {
 			action(propertyBlocks[i]);
 			renderers[i].SetPropertyBlock(propertyBlocks[i]);
 		}
+	}
+
+	public void OnHit(AttackHitbox attack) {
+		FlashWhite();
 	}
 }
