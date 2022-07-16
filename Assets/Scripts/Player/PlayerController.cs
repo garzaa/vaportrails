@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class PlayerController : Entity {
+public class PlayerController : Entity, IAttackLandListener {
 
 	#pragma warning disable 0649
 	[SerializeField] GameObject playerRig;
@@ -230,6 +230,10 @@ public class PlayerController : Entity {
 
 	public void DisableShortHop() {
 		canShortHop = false;
+	}
+
+	public void OnAttackLand(Hurtbox hurtbox) {
+		UpdateToonMotion();
 	}
 
 	void Jump(bool executeIfBuffered=false) {

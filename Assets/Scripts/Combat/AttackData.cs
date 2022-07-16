@@ -8,6 +8,7 @@ public class AttackData : ScriptableObject {
 	public int IASA;
 	public bool jumpCancelable;
 	public float stunLength = 0.2f;
+	public float hitstop = 0.05f;
 	public Vector2 knockback = Vector2.one;
 	public GameObject hitmarker;
 	public AudioResource hitSound;

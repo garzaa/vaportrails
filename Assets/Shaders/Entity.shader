@@ -67,6 +67,7 @@ Shader "Custom2D/Entity"
 			float _AlphaSplitEnabled;
 			float whiteFlashTime;
 			float cyanFlashTime;
+			float _UnscaledTime;
 
 			fixed4 SampleSpriteTexture (float2 uv)
 			{
@@ -81,12 +82,12 @@ Shader "Custom2D/Entity"
 			}
 
 			fixed4 WhiteFlash(fixed4 c) {
-				c.rgb = lerp(fixed3(1, 1, 1), c.rgb, saturate((_Time.y - whiteFlashTime) * 10));
+				c.rgb = lerp(fixed3(1, 1, 1), c.rgb, saturate((_UnscaledTime - whiteFlashTime) * 5));
 				return c;
 			}
 
 			fixed4 CyanFlash(fixed4 c) {
-				c.rgb = lerp(fixed3(0, 1, 1), c.rgb, saturate((_Time.y - cyanFlashTime) * 10));
+				c.rgb = lerp(fixed3(0, 1, 1), c.rgb, saturate((_UnscaledTime - cyanFlashTime) * 5));
 				return c;
 			}
 

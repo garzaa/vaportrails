@@ -21,11 +21,11 @@ public class EntityShader : MonoBehaviour, IHitListener {
 	}
 
 	public void FlashWhite() {
-		ExecuteChange(block => block.SetFloat("whiteFlashTime", Time.time));
+		ExecuteChange(block => block.SetFloat("whiteFlashTime", Time.unscaledTime));
 	}
 
 	public void FlashCyan() {
-		ExecuteChange(block => block.SetFloat("cyanFlashTime", Time.time));
+		ExecuteChange(block => block.SetFloat("cyanFlashTime", Time.unscaledTime));
 	}
 
 	void ExecuteChange(Action<MaterialPropertyBlock> action) {

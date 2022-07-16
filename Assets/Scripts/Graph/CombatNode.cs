@@ -2,7 +2,7 @@ using UnityEngine;
 using XNode;
 using System.Collections.Generic;
      
-public class CombatNode : Node {
+abstract public class CombatNode : Node {
     [HideInInspector]
     bool active;
 
