@@ -12,12 +12,11 @@ public class WallCheck : MonoBehaviour {
 
 	public WallCheckData wallData = new WallCheckData();
 
-	int layerMask;
+	int layerMask = Layers.GroundMask;
 	const float extendDistance = 0.02f;
 	bool touchingWallLastFrame = false;
 
 	void Start() {		
-		layerMask = 1 << LayerMask.NameToLayer(Layers.Ground);
 		targetCollider = GetComponent<Collider2D>();
 	}
 

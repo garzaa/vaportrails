@@ -37,6 +37,8 @@ public class Entity : MonoBehaviour, IHitListener {
 	bool canGroundHitEffect = true;
 	public bool staggerable = true;
 
+	Collider2D[] overlapResults;
+
 	protected virtual void Awake() {
 		animator = GetComponent<Animator>();
         rb2d = GetComponent<Rigidbody2D>();
@@ -142,6 +144,27 @@ public class Entity : MonoBehaviour, IHitListener {
 			g.transform.position = new Vector2(x, transform.position.y);
 			g.transform.eulerAngles = new Vector3(0, 0, wallRight ? 90 : -90);
 			OnWallHit();
+		}
+		RectifyEntityCollision();
+	}
+
+	void RectifyEntityCollision() {
+		// push away if standing on top of someone
+		overlapResults = Physics2D.OverlapBoxAll(
+			transform.position,
+			collider2d.bounds.size / 2f,
+			0,
+			Layers.EnemyCollidersMask | Layers.PlayerMask
+		);
+		Collider2D overlapping = null;
+		for (int i=0; i<overlapResults.Length; i++) {
+			if (overlapResults[i] != collider2d) {
+				overlapping = overlapResults[i];
+				break;
+			}
+		}
+		if (overlapping) {
+			rb2d.AddForce(Vector3.Project((transform.position - overlapping.transform.position), Vector3.right).normalized * 8f);
 		}
 	}
 

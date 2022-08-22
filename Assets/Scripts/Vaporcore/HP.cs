@@ -12,15 +12,15 @@ public class HP : MonoBehaviour, IHitListener {
 	public float verticalOffset = 0.8f;
 
 	void Start() {
-		max.Initialize();
-		current.Initialize();
-
 		if (renderHealthbar) {
 			BarUI barUI = Instantiate(Resources.Load<GameObject>("Runtime/MiniHealthBar"), this.transform).GetComponent<BarUI>();
 			current.OnChange.AddListener(barUI.SetCurrent);
 			max.OnChange.AddListener(barUI.SetMax);
 			barUI.GetComponent<RectTransform>().localPosition = Vector2.up * 0.64f;
 		}
+
+		max.Initialize();
+		current.Initialize();
 	}
 
 	void CheckEvents() {

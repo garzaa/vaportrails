@@ -31,7 +31,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8649947065790046101}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -107,7 +107,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8649947065790046101}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -183,11 +183,11 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8649947065790046101}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -32, y: -0.0000076293945}
+  m_AnchoredPosition: {x: -32, y: -0}
   m_SizeDelta: {x: 64, y: 16}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &8649947065642427197
@@ -262,9 +262,9 @@ RectTransform:
   m_LocalScale: {x: 0.015625, y: 0.015625, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 8649947065642427199}
   - {fileID: 8649947064438681212}
   - {fileID: 8649947065146175074}
-  - {fileID: 8649947065642427199}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -316,7 +316,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 64
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &8649947065790046100
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -354,6 +354,8 @@ MonoBehaviour:
   normalizeSize: 1
   size: 64
   disappearAfterDelta: 1
+  _max: 0
+  _current: 0
 --- !u!114 &8649947065790046104
 MonoBehaviour:
   m_ObjectHideFlags: 0

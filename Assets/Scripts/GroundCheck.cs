@@ -10,7 +10,7 @@ public class GroundCheck : MonoBehaviour {
     
     Collider2D col;
 
-    int defaultLayerMask;
+    int defaultLayerMask = Layers.GroundMask;
 
     RaycastHit2D leftGrounded;
     RaycastHit2D rightGrounded;
@@ -33,7 +33,6 @@ public class GroundCheck : MonoBehaviour {
 
     void Awake() {
         col = GetComponent<Collider2D>();
-        defaultLayerMask = 1 << LayerMask.NameToLayer(Layers.Ground);
         overlapBoxSize = new Vector2();
         // 1 pixel down from the bottom of the player collider
         overlapBoxSize.y = 1f/16f;

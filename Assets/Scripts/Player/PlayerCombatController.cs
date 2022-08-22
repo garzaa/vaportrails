@@ -16,6 +16,9 @@ public class PlayerCombatController : MonoBehaviour, IAttackLandListener {
 	public PlayerAttackGraph groundAttackGraph;
 	public PlayerAttackGraph airAttackGraph;
 
+	[SerializeField] SubscriptableInt currentEP;
+	[SerializeField] SubscriptableInt maxEP;
+
 	bool canFlipKick = true;
 
 	void Start() {
@@ -37,6 +40,8 @@ public class PlayerCombatController : MonoBehaviour, IAttackLandListener {
 			GetComponent<AttackBuffer>(),
 			GetComponent<AirAttackTracker>()
 		);
+		currentEP.Initialize();
+		maxEP.Initialize();
 	}
 
 	public void OnAttackLand(Hurtbox hurtbox) {
@@ -64,6 +69,10 @@ public class PlayerCombatController : MonoBehaviour, IAttackLandListener {
 
 				// then meteor only if there's barely any down input
 			}
+		}
+
+		if (InputManager.ButtonDown(Buttons.PROJECTILE)) {
+			LoseEnergy(1);
 		}
 
 		if (currentGraph != null) {
@@ -146,5 +155,13 @@ public class PlayerCombatController : MonoBehaviour, IAttackLandListener {
 
 	public void RefreshAirAttacks() {
 		canFlipKick = true;
+	}
+
+	public void GainEnergy() {
+		currentEP.Set(Mathf.Max(maxEP.Get(), currentEP.Get()+1));
+	}
+
+	public void LoseEnergy(int amount) {
+		currentEP.Set(Mathf.Max(0, currentEP.Get()-amount));
 	}
 }

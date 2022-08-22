@@ -16,8 +16,8 @@ public class BarUI : MonoBehaviour {
 	public bool disappearAfterDelta = false;
 	const float disappearDelay = 3f;
 
-    int _max;
-    int _current;
+    public int _max;
+    public int _current;
     
     readonly float deltaDelay = 0.5f;
     readonly float deltaMoveSpeed = 20f;
@@ -41,11 +41,7 @@ public class BarUI : MonoBehaviour {
         get { return _current; }
 	}
 
-    public void SetBarColor(Color color) {
-        indicator.color = color;
-    }
-
-    void RedrawUI() {
+    void Redraw() {
 		if (normalizeSize && max > 0) pixelsPerUnit = size / max;
 
         if (background) ScaleImage(background, max);
@@ -63,7 +59,7 @@ public class BarUI : MonoBehaviour {
 
 		_current = value;
 		changeTime = Time.time;
-		RedrawUI();
+		Redraw();
 	}
 
 	public void SetMax(int value) {
@@ -74,7 +70,7 @@ public class BarUI : MonoBehaviour {
 			ScaleImage(deltaIndicator, max);
 			currentDelta=max;
 		}
-		RedrawUI();
+		Redraw();
 	}
 
     void Update() {

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -9,6 +10,8 @@ public class AttackHitbox : MonoBehaviour {
 	Collider2D[] colliders;
 	HashSet<Hurtbox> hitThisActive = new HashSet<Hurtbox>();
 	bool hitboxOutLastFrame = false;
+
+	public UnityEvent OnAttackLand;
 
 	void Start() {
 		gameObject.layer = LayerMask.NameToLayer(Layers.Hitboxes);
@@ -60,6 +63,7 @@ public class AttackHitbox : MonoBehaviour {
 				}
 			}
 			hurtbox.OnAttackLand(this);
+			OnAttackLand.Invoke();
 		}
 	}
 }
