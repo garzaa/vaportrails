@@ -7,7 +7,6 @@ public class PlayerController : Entity, IAttackLandListener {
 	#pragma warning disable 0649
 	[SerializeField] GameObject playerRig;
 	[SerializeField] AudioResource jumpNoise;
-	[SerializeField] AudioResource landNoise;
 	[SerializeField] ParticleSystem speedDust;
 	#pragma warning restore 0649
 
@@ -51,6 +50,7 @@ public class PlayerController : Entity, IAttackLandListener {
 	GameObject wallJumpDust;
 	AudioResource dashSound;
 	AttackData currentAttack;
+	HP hp;
 
 	override protected void Awake() {
 		base.Awake();
@@ -118,16 +118,9 @@ public class PlayerController : Entity, IAttackLandListener {
 		ySpeedLastFrame = rb2d.velocity.y;
 	}
 
-	void OnWallHit() {
-		// play the hit sound
-		landNoise.PlayFrom(this.gameObject);
+	override protected void OnWallHit() {
 		FlipToWall();
 		fMod = 1;
-		// add the dust effect for hitting the wall
-		GameObject g = Instantiate(landDust);
-		float x = facingRight ? collider2d.bounds.min.x : collider2d.bounds.max.x;
-		g.transform.position = new Vector2(x, transform.position.y);
-		g.transform.eulerAngles = new Vector3(0, 0, facingRight ? -90 : 90);
 		RefreshAirMovement();
 	}
 
@@ -345,6 +338,7 @@ public class PlayerController : Entity, IAttackLandListener {
 		if (groundData.hitGround) {
 			StartCoroutine(UpdateToonMotion());
 			landingRecovery = -1;
+			HairForwards();
 		}
 
 		landingRecovery = Mathf.MoveTowards(landingRecovery, 0, 4f * Time.deltaTime);
@@ -421,5 +415,21 @@ public class PlayerController : Entity, IAttackLandListener {
 	public void RefreshAirMovement() {
 		airDashes = 1;
 		airJumps = 1;
+	}
+
+	public void HairBackwards() {
+		animator.SetTrigger("HairBackwards");
+	}
+
+	public void HairForwards() {
+		animator.SetTrigger("HairForwards");
+	}
+
+	public void FreezeInputs() {
+		frozeInputs = true;
+	}
+
+	public void UnfreezeInputs() {
+		frozeInputs = false;
 	}
 }

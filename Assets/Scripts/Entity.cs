@@ -10,6 +10,7 @@ using UnityEngine.UI;
 public class Entity : MonoBehaviour, IHitListener {
 	#pragma warning disable 0649
 	[SerializeField] AudioResource defaultFootfall;
+	[SerializeField] protected AudioResource landNoise;
 	#pragma warning restore 0649
 
 	protected Animator animator;
@@ -21,13 +22,17 @@ public class Entity : MonoBehaviour, IHitListener {
 	protected WallCheckData wallData;
 	protected Collider2D groundColliderLastFrame;
 	protected EntityShader entityShader;
+	protected bool stunned = false;
 	
 	GroundCheck groundCheck;
 	AudioResource currentFootfall;
+	PhysicsMaterial2D defaultMaterial;
 
 	static GameObject jumpDust;
 	protected static GameObject landDust;
+	protected static PhysicsMaterial2D stunMaterial;
 	static GameObject footfallDust;
+	ParticleSystem stunSmoke;
 	
 	bool canGroundHitEffect = true;
 	public bool staggerable = true;
@@ -44,6 +49,11 @@ public class Entity : MonoBehaviour, IHitListener {
 		if (!jumpDust) jumpDust = Resources.Load<GameObject>("Runtime/JumpDust");
 		if (!landDust) landDust = Resources.Load<GameObject>("Runtime/LandDust");
 		if (!footfallDust) footfallDust = Resources.Load<GameObject>("Runtime/FootfallDust");
+		if (!stunMaterial) stunMaterial = Resources.Load<PhysicsMaterial2D>("Runtime/BounceEntity");
+		defaultMaterial = rb2d.sharedMaterial;
+		stunSmoke = Instantiate(Resources.Load<GameObject>("Runtime/StunSmoke"), this.transform).GetComponent<ParticleSystem>();
+		stunSmoke.transform.localPosition = Vector3.zero;
+		stunSmoke.Stop();
 	}
 
 	public void JumpDust() {
@@ -76,6 +86,8 @@ public class Entity : MonoBehaviour, IHitListener {
 
 	public void OnHit(AttackHitbox attack) { 
 		if (staggerable) {
+			// TODO: alter knockback vector based on hurtbox point distance from line of attack center + knockback vector
+			// https://answers.unity.com/questions/263308/projection-of-a-point-on-a-line.html
 			Vector2 v = attack.data.knockback;
 			float attackX = attack.transform.position.x;
 			v.x *= attackX > transform.position.x ? -1 : 1;
@@ -87,7 +99,31 @@ public class Entity : MonoBehaviour, IHitListener {
 			} else if (!facingRight && attackX>transform.position.x) {
 				Flip();
 			}
+			StunFor(attack.data.stunLength);
 		}
+	}
+
+	void StunFor(float seconds) {
+		CancelStun();
+		stunned = true;
+		rb2d.sharedMaterial = stunMaterial;
+		stunSmoke.Play();
+		Invoke(nameof(UnStun), seconds);
+	}
+
+	protected void CancelStun() {
+		if (IsInvoking(nameof(UnStun))) {
+			CancelInvoke(nameof(UnStun));
+		}
+		rb2d.sharedMaterial = defaultMaterial;
+		stunned = false;
+		stunSmoke.Stop();
+	}
+
+	void UnStun() {
+		rb2d.sharedMaterial = defaultMaterial;
+		stunned = false;
+		stunSmoke.Stop();
 	}
 
 	protected virtual void Update() {
@@ -98,6 +134,19 @@ public class Entity : MonoBehaviour, IHitListener {
 			canGroundHitEffect = false;
 			WaitAndExecute(() => canGroundHitEffect=true, 0.1f);
 		}
+		if (wallData.hitWall) {
+			landNoise.PlayFrom(this.gameObject);
+			GameObject g = Instantiate(landDust);
+			bool wallRight = wallData.direction > 0;
+			float x = wallRight ? collider2d.bounds.max.x : collider2d.bounds.min.x;
+			g.transform.position = new Vector2(x, transform.position.y);
+			g.transform.eulerAngles = new Vector3(0, 0, wallRight ? 90 : -90);
+			OnWallHit();
+		}
+	}
+
+	protected virtual void OnWallHit() {
+
 	}
 
 	void UpdateFootfallSound() {

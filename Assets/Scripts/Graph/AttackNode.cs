@@ -88,6 +88,7 @@ public class AttackNode : CombatNode {
 							anyDirectionNode = next;
 						}
 					}
+                    break;
 				}
 			}
 		}
