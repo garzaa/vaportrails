@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 
 public class PlayerCombatController : MonoBehaviour, IAttackLandListener {
@@ -12,6 +13,7 @@ public class PlayerCombatController : MonoBehaviour, IAttackLandListener {
 	WallCheckData wallData;
 	Animator animator;
 	AttackHitbox attackHitbox;
+	Gun gunEyes;
 
 	public PlayerAttackGraph groundAttackGraph;
 	public PlayerAttackGraph airAttackGraph;
@@ -28,6 +30,7 @@ public class PlayerCombatController : MonoBehaviour, IAttackLandListener {
 		wallData = GetComponent<WallCheck>().wallData;
 		animator = GetComponent<Animator>();
 		attackHitbox = GetComponentInChildren<AttackHitbox>();
+		gunEyes = GetComponentInChildren<Gun>();
 		groundAttackGraph.Initialize(
 			this,
 			animator,
@@ -71,10 +74,6 @@ public class PlayerCombatController : MonoBehaviour, IAttackLandListener {
 			}
 		}
 
-		if (InputManager.ButtonDown(Buttons.PROJECTILE)) {
-			LoseEnergy(1);
-		}
-
 		if (currentGraph != null) {
 			currentGraph.UpdateGrounded(groundData.grounded);
 			currentGraph.Update();
@@ -92,6 +91,19 @@ public class PlayerCombatController : MonoBehaviour, IAttackLandListener {
 
 		if (combatLayerWeight == 0) {
 			animator.SetLayerWeight(1, Mathf.MoveTowards(animator.GetLayerWeight(1), combatLayerWeight, 4*Time.deltaTime));
+		}
+
+		Shoot();
+	}
+
+	void Shoot() {
+		if (player.frozeInputs && currentGraph==null) return;
+
+		if (InputManager.ButtonDown(Buttons.PROJECTILE)) {
+			animator.SetBool("WhiteEyes", true);
+			this.WaitAndExecute(() => animator.SetBool("WhiteEyes", false), 2);
+			gunEyes.Fire();
+			LoseEnergy(1);
 		}
 	}
 
@@ -158,7 +170,7 @@ public class PlayerCombatController : MonoBehaviour, IAttackLandListener {
 	}
 
 	public void GainEnergy() {
-		currentEP.Set(Mathf.Max(maxEP.Get(), currentEP.Get()+1));
+		currentEP.Set(Mathf.Min(maxEP.Get(), currentEP.Get()+1));
 	}
 
 	public void LoseEnergy(int amount) {

@@ -92,7 +92,7 @@ public class PlayerController : Entity, IAttackLandListener {
 		if (groundData.leftGround) {
             if (rb2d.velocity.y <= 0) {
                 justWalkedOffCliff = true;
-                WaitAndExecute(() => justWalkedOffCliff = false, bufferDuration);
+                this.WaitAndExecute(() => justWalkedOffCliff = false, bufferDuration);
             }
 
 			// the player can initiate walltouch on the ground
@@ -109,13 +109,17 @@ public class PlayerController : Entity, IAttackLandListener {
 			OnWallHit();
 		} else if (wallData.leftWall) {
 			justLeftWall = true;
-			WaitAndExecute(()=>justLeftWall=false, bufferDuration*2);
+			this.WaitAndExecute(()=>justLeftWall=false, bufferDuration*2);
 		}
 
 		if (ySpeedLastFrame>=0 && rb2d.velocity.y<0) {
 			fallStart = transform.position.y;
 		} 
 		ySpeedLastFrame = rb2d.velocity.y;
+
+		if (groundData.ledgeStep && !speeding && !movingForwards) {
+			rb2d.velocity = new Vector2(0, rb2d.velocity.y);
+		}
 	}
 
 	override protected void OnWallHit() {
@@ -212,7 +216,7 @@ public class PlayerController : Entity, IAttackLandListener {
 				Mathf.Max(rb2d.velocity.y, 0)
 			);
 			if (!groundData.grounded) airDashes--;
-			WaitAndExecute(EndDashCooldown, dashCooldown);
+			this.WaitAndExecute(EndDashCooldown, dashCooldown);
 		}
 	}
 
@@ -286,7 +290,7 @@ public class PlayerController : Entity, IAttackLandListener {
 
 		void BufferJump() {
 			bufferedJump = true;
-			WaitAndExecute(() => bufferedJump = false, bufferDuration);
+			this.WaitAndExecute(() => bufferedJump = false, bufferDuration);
 		}
 
 		if (groundData.hitGround && bufferedJump) {
@@ -370,7 +374,7 @@ public class PlayerController : Entity, IAttackLandListener {
 			EdgeCollider2D platform = hit.collider.GetComponent<EdgeCollider2D>();
 			if (platform == null) continue;
 			platform.enabled = false;
-            WaitAndExecute(() => platform.enabled = true, 0.5f);
+            this.WaitAndExecute(() => platform.enabled = true, 0.5f);
 		}
 	}
 

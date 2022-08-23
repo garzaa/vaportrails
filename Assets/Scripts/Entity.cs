@@ -134,7 +134,7 @@ public class Entity : MonoBehaviour, IHitListener {
 			FootfallSound();
 			LandDust();
 			canGroundHitEffect = false;
-			WaitAndExecute(() => canGroundHitEffect=true, 0.1f);
+			this.WaitAndExecute(() => canGroundHitEffect=true, 0.1f);
 		}
 		if (wallData.hitWall) {
 			landNoise.PlayFrom(this.gameObject);
@@ -164,7 +164,7 @@ public class Entity : MonoBehaviour, IHitListener {
 			}
 		}
 		if (overlapping) {
-			rb2d.AddForce(Vector3.Project((transform.position - overlapping.transform.position), Vector3.right).normalized * 8f);
+			rb2d.AddForce(Vector3.Project((transform.position - overlapping.transform.position), Vector3.right).normalized * 4f);
 		}
 	}
 
@@ -191,15 +191,6 @@ public class Entity : MonoBehaviour, IHitListener {
 	public void Flip() {
         facingRight = !facingRight;
         transform.localScale = Vector3.Scale(transform.localScale, new Vector3(-1, 1, 1));
-    }
-
-	protected void WaitAndExecute(Action action, float timeout) {
-        StartCoroutine(_WaitAndExecute(action, timeout));
-    }
-
-    IEnumerator _WaitAndExecute(Action action, float timeout) {
-        yield return new WaitForSeconds(timeout);
-        action();
     }
 
 	public Vector2Int Forward() {

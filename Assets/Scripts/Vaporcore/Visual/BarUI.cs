@@ -31,6 +31,7 @@ public class BarUI : MonoBehaviour {
     }
 
 	void Awake() {
+        if (!disappearAfterDelta) return;
 		canvasGroup = GetComponent<CanvasGroup>();
 	}
 
@@ -47,7 +48,11 @@ public class BarUI : MonoBehaviour {
         if (background) ScaleImage(background, max);
         ScaleImage(container, max, mod:1);
         ScaleImage(indicator, current);
-		if (disappearAfterDelta) canvasGroup.alpha = 1;
+		if (disappearAfterDelta && current!=max) {
+            canvasGroup.alpha = 1;
+        } else if (disappearAfterDelta) {
+            canvasGroup.alpha = 0;
+        }
     }
 
     void ScaleImage(Image i, float val, int mod=0) {
@@ -55,16 +60,12 @@ public class BarUI : MonoBehaviour {
     }
 
 	public void SetCurrent(int value) {
-		if (_current == value) return;
-
 		_current = value;
 		changeTime = Time.time;
 		Redraw();
 	}
 
 	public void SetMax(int value) {
-		if (_max == value) return;
-
 		_max = value;
 		if (deltaIndicator != null ) {
 			ScaleImage(deltaIndicator, max);
@@ -91,7 +92,7 @@ public class BarUI : MonoBehaviour {
 
         ScaleImage(deltaIndicator, currentDelta);
 		
-		if (disappearAfterDelta && Time.time > changeTime+disappearDelay && current!=max) {
+		if (disappearAfterDelta && Time.time > changeTime+disappearDelay) {
 			canvasGroup.alpha = Mathf.Lerp(canvasGroup.alpha, 0, 0.1f);
 		}
     }
