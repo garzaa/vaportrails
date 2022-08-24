@@ -6,6 +6,7 @@ using System.Collections.Generic;
 public class Hurtbox : MonoBehaviour {
 	public AudioResource hitSoundOverride;
 	public UnityEvent hitEvent;
+	public bool useParentTargetingPosition;
 	IHitListener[] hitListeners;
 
 	void Start() {
@@ -18,5 +19,10 @@ public class Hurtbox : MonoBehaviour {
 			hitListener.OnHit(attack);
 		}
 		hitEvent.Invoke();
+	}
+
+	public GameObject GetTargetPosition() {
+		if (useParentTargetingPosition) return gameObject;
+		else return transform.parent.gameObject;
 	}
 }

@@ -10,14 +10,16 @@ public class Projectile : MonoBehaviour {
 
 	Rigidbody2D rb2d;
 
+	bool impacted = false;
+
 	void Awake() {
 		rb2d = GetComponent<Rigidbody2D>();
 		attackHitbox = GetComponent<AttackHitbox>();
 	}
 
 	void OnTriggerEnter2D(Collider2D other) {
-		if (impact) {
-			if (attackHitbox && !attackHitbox.attacksPlayer) {
+		if (impact && !impacted) {
+			if (!attackHitbox.attacksPlayer) {
 				if (other.gameObject.CompareTag(Tags.Player)) {
 					return;
 				}
@@ -26,6 +28,11 @@ public class Projectile : MonoBehaviour {
 					return;
 				}
 			}
+			
+			// if it's just a random trigger, do nothing
+			if (!other.GetComponent<Hurtbox>() && other.isTrigger) return;
+
+			impacted = true;
 			GameObject i = Instantiate(impact, transform.position, Quaternion.identity, null);
 			if (randomImpactRotation) {
 				i.transform.rotation = Quaternion.Euler(0, 0, Random.Range(0f, 360f));

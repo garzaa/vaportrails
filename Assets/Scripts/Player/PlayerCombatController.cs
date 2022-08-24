@@ -14,12 +14,18 @@ public class PlayerCombatController : MonoBehaviour, IAttackLandListener {
 	Animator animator;
 	AttackHitbox attackHitbox;
 	Gun gunEyes;
+	PlayerTargetingSystem targetingSystem;
 
 	public PlayerAttackGraph groundAttackGraph;
 	public PlayerAttackGraph airAttackGraph;
 
-	[SerializeField] SubscriptableInt currentEP;
-	[SerializeField] SubscriptableInt maxEP;
+	public SubscriptableInt currentEP;
+	public SubscriptableInt maxEP;
+
+	#pragma warning disable 0649
+	[SerializeField] GameObject fullChargeIndicator;
+	[SerializeField] AudioResource fullChargeSound;
+	#pragma warning restore 0649
 
 	bool canFlipKick = true;
 
@@ -31,6 +37,7 @@ public class PlayerCombatController : MonoBehaviour, IAttackLandListener {
 		animator = GetComponent<Animator>();
 		attackHitbox = GetComponentInChildren<AttackHitbox>();
 		gunEyes = GetComponentInChildren<Gun>();
+		targetingSystem = GetComponentInChildren<PlayerTargetingSystem>();
 		groundAttackGraph.Initialize(
 			this,
 			animator,
@@ -44,11 +51,22 @@ public class PlayerCombatController : MonoBehaviour, IAttackLandListener {
 			GetComponent<AirAttackTracker>()
 		);
 		currentEP.Initialize();
+		currentEP.OnChange.AddListener(OnEnergyChange);
 		maxEP.Initialize();
+		fullChargeIndicator.SetActive(false);
 	}
 
 	public void OnAttackLand(Hurtbox hurtbox) {
 		if (currentGraph) currentGraph.OnAttackLand();
+	}
+
+	public void OnEnergyChange(int energy) {
+		targetingSystem.enabled = (energy > 0);
+		if (energy == maxEP.Get()) {
+			fullChargeIndicator.SetActive(false);
+			fullChargeIndicator.SetActive(true);
+			fullChargeSound.PlayFrom(gameObject);
+		}
 	}
 
 	void Update() {
@@ -99,7 +117,7 @@ public class PlayerCombatController : MonoBehaviour, IAttackLandListener {
 	void Shoot() {
 		if (player.frozeInputs && currentGraph==null) return;
 
-		if (InputManager.ButtonDown(Buttons.PROJECTILE)) {
+		if (InputManager.ButtonDown(Buttons.PROJECTILE) && currentEP.Get() > 0) {
 			animator.SetBool("WhiteEyes", true);
 			this.WaitAndExecute(() => animator.SetBool("WhiteEyes", false), 2);
 			gunEyes.Fire();
@@ -170,7 +188,9 @@ public class PlayerCombatController : MonoBehaviour, IAttackLandListener {
 	}
 
 	public void GainEnergy() {
-		currentEP.Set(Mathf.Min(maxEP.Get(), currentEP.Get()+1));
+		if (currentEP.Get() != maxEP.Get()) {
+			currentEP.Set(Mathf.Min(maxEP.Get(), currentEP.Get()+1));
+		}
 	}
 
 	public void LoseEnergy(int amount) {
