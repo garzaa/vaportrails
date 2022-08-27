@@ -26,7 +26,16 @@ public class PlayerController : Entity, IAttackLandListener {
 	float fMod = 1;
 	float fModRecoveryTime = 1.5f;
 
-	public bool frozeInputs { get; private set; }
+	public bool frozeInputs { 
+		get {
+			return _frozeInputs || stunned;
+		} 
+		private set {
+			_frozeInputs = value;
+		}
+	}
+	private bool _frozeInputs;
+
 	bool inputBackwards;
 	bool inputForwards;
 	bool movingBackwards;
@@ -45,6 +54,7 @@ public class PlayerController : Entity, IAttackLandListener {
 	public float jumpSpeed { get; private set; }
 	float fallStart;
 	float ySpeedLastFrame;
+	bool stickDownLastFrame;
 
 	ToonMotion toonMotion;
 	GameObject wallJumpDust;
@@ -189,14 +199,22 @@ public class PlayerController : Entity, IAttackLandListener {
 
 		// fast fall
 		if (!groundData.grounded
+			&& !frozeInputs
 			&& !wallData.touchingWall
 			&& InputManager.VerticalInput() == -1f
 			&& rb2d.velocity.y<0
-			&& rb2d.velocity.y > maxFallSpeed*0.75f	
+			&& rb2d.velocity.y > maxFallSpeed*0.75f
+			&& !stickDownLastFrame
 		) {
 			Vector3 offset = ((Vector3) Random.insideUnitCircle + Vector3.down) * 0.5f;
 			Instantiate(fastfallSpark, transform.position + offset, Quaternion.identity);
 			rb2d.velocity = new Vector2(rb2d.velocity.x, maxFallSpeed * 0.75f);
+		}
+
+		if (!frozeInputs) {
+			stickDownLastFrame = InputManager.LeftStick().y == -1;
+		} else {
+			stickDownLastFrame = false;
 		}
 
 		fMod = Mathf.MoveTowards(fMod, 1, (1f/fModRecoveryTime) * Time.fixedDeltaTime);

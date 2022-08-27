@@ -7,6 +7,7 @@ public class AttackHitbox : MonoBehaviour {
 	public bool attacksPlayer;
 	public AttackData data;
 	public bool spawnHitmarkerAtCenter;
+	public bool singleHitPerActive = true;
 	IAttackLandListener[] attackLandListeners;
 	Collider2D[] colliders;
 	HashSet<Hurtbox> hitThisActive = new HashSet<Hurtbox>();
@@ -54,7 +55,7 @@ public class AttackHitbox : MonoBehaviour {
 			Hitstop.Run(data.hitstop);
 
 			foreach (Hurtbox h in hurtbox.transform.root.GetComponentsInChildren<Hurtbox>()) {
-				hitThisActive.Add(h);
+				if (singleHitPerActive) hitThisActive.Add(h);
 			}
 
 			Collider2D currentActiveCollider = colliders[0];

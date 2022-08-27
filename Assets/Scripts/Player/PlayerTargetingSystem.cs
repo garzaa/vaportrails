@@ -39,6 +39,8 @@ public class PlayerTargetingSystem : MonoBehaviour {
 			OnDetarget.Invoke();
 		} else if (closest != currentTarget) {
 			OnTarget.Invoke();
+		} else if (!closest && !currentTarget) {
+			OnDetarget.Invoke();
 		}
 
 		currentTarget = closest;

@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
-public class PlayerCombatController : MonoBehaviour, IAttackLandListener {
+public class PlayerCombatController : MonoBehaviour, IAttackLandListener, IHitListener {
 	const float combatStanceLength = 4f;
 	float combatLayerWeight = 0f;
 
@@ -31,6 +31,8 @@ public class PlayerCombatController : MonoBehaviour, IAttackLandListener {
 
 	const string fullMessage = "FULLY CHARGED";
 	const string emptyMessage = "SOLENOID EMPTY";
+
+	public float diStrength = 3f;
 
 	bool canFlipKick = true;
 
@@ -112,6 +114,11 @@ public class PlayerCombatController : MonoBehaviour, IAttackLandListener {
 		}
 
 		Shoot();
+
+		Vector2 leftStick = InputManager.LeftStick();
+		Vector2 selfKnockback = Vector2.up;
+		float angle = Vector2.Angle(selfKnockback, leftStick);
+		float diMagnitude = (Mathf.Sin((2 * angle * Mathf.Deg2Rad) - (Mathf.PI/2f)) * 0.4f) + 0.6f;
 	}
 
 	void Shoot() {
@@ -123,6 +130,17 @@ public class PlayerCombatController : MonoBehaviour, IAttackLandListener {
 			gunEyes.Fire();
 			LoseEnergy(1);
 		}
+	}
+
+	public void OnHit(AttackHitbox attack) {
+		// sideways DI is stronger than towards/away
+		// (sin(2x - (1/4 circle))) * 0.4 + 0.6
+		// ↑ this is a sinewave between 0.2 and 1.0 that peaks at (1, 0) and (-1, 0)
+		Vector2 selfKnockback = player.GetKnockback(attack);
+		Vector2 leftStick = InputManager.LeftStick();
+		float angle = Vector2.SignedAngle(selfKnockback, leftStick);
+		float diMagnitude = (Mathf.Cos(angle * Mathf.Deg2Rad)* 0.4f) + 0.6f;
+		rb2d.velocity += leftStick * diMagnitude * diStrength;
 	}
 
 	public void FlipKick() {
