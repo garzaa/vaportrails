@@ -31,7 +31,7 @@ public class AttackData : ScriptableObject {
 	}
 
 	int FramesOut() {
-		return Mathf.FloorToInt((Time.time - enableTime) / 12f) + 1;
+		return Mathf.Max(1, Mathf.FloorToInt((Time.time - enableTime) * 12f));
 	}
 
 	public void OnHitboxOut() {

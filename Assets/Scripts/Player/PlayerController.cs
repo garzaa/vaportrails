@@ -51,12 +51,14 @@ public class PlayerController : Entity, IAttackLandListener {
 	AudioResource dashSound;
 	AttackData currentAttack;
 	HP hp;
+	GameObject fastfallSpark;
 
 	override protected void Awake() {
 		base.Awake();
 		toonMotion = GetComponentInChildren<ToonMotion>();
 		wallJumpDust = Resources.Load<GameObject>("Runtime/WallJumpDust");
 		dashSound = Resources.Load<AudioResource>("Runtime/DashSound");
+		fastfallSpark = Resources.Load<GameObject>("Runtime/FastfallSpark");
 		// p = mv
 		jumpSpeed = jumpForce / rb2d.mass;
 	}
@@ -183,6 +185,18 @@ public class PlayerController : Entity, IAttackLandListener {
 
 		if (wallData.touchingWall && rb2d.velocity.y < maxWallSlideSpeed) {
 			rb2d.velocity = new Vector2(rb2d.velocity.x, maxWallSlideSpeed);
+		}
+
+		// fast fall
+		if (!groundData.grounded
+			&& !wallData.touchingWall
+			&& InputManager.VerticalInput() == -1f
+			&& rb2d.velocity.y<0
+			&& rb2d.velocity.y > maxFallSpeed*0.75f	
+		) {
+			Vector3 offset = ((Vector3) Random.insideUnitCircle + Vector3.down) * 0.5f;
+			Instantiate(fastfallSpark, transform.position + offset, Quaternion.identity);
+			rb2d.velocity = new Vector2(rb2d.velocity.x, maxFallSpeed * 0.75f);
 		}
 
 		fMod = Mathf.MoveTowards(fMod, 1, (1f/fModRecoveryTime) * Time.fixedDeltaTime);
@@ -380,14 +394,6 @@ public class PlayerController : Entity, IAttackLandListener {
 
 	public void OnAttackGraphEnter() {
 		if (dashing) StopDashAnimation();
-		float actualInputX = InputManager.HorizontalInput();
-		if (groundData.grounded) {
-			if (facingRight && actualInputX<0) {
-				Flip();
-			} else if (!facingRight && actualInputX>0) {
-				Flip();
-			}
-		}
 	}
 
 	public void OnAttackGraphExit() {
@@ -399,6 +405,14 @@ public class PlayerController : Entity, IAttackLandListener {
 	public void OnAttackNodeEnter(AttackData attackData) {
 		currentAttack = attackData;
 		frozeInputs = true;
+		if (groundData.grounded) {
+			float actualInputX = InputManager.HorizontalInput();
+			if (facingRight && actualInputX<0) {
+				Flip();
+			} else if (!facingRight && actualInputX>0) {
+				Flip();
+			}
+		}
 	}
 
 	public void OnAttackNodeExit() {

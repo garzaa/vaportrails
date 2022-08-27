@@ -29,15 +29,16 @@ public class AttackHitbox : MonoBehaviour {
 			}
 		}
 
-		if (!hitboxOut && hitboxOutLastFrame) {
+		if (!hitboxOutLastFrame && hitboxOut) {
 			OnHitboxOut();
+		} else if (!hitboxOut && hitboxOutLastFrame) {
+			hitThisActive.Clear();
 		}
 
 		hitboxOutLastFrame = hitboxOut;
 	}
 
 	public void OnHitboxOut() {
-		hitThisActive.Clear();
 		data.OnHitboxOut();
 	}
 
