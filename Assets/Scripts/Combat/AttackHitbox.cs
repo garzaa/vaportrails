@@ -6,6 +6,7 @@ using System.Collections.Generic;
 public class AttackHitbox : MonoBehaviour {
 	public bool attacksPlayer;
 	public AttackData data;
+	public bool spawnHitmarkerAtCenter;
 	IAttackLandListener[] attackLandListeners;
 	Collider2D[] colliders;
 	HashSet<Hurtbox> hitThisActive = new HashSet<Hurtbox>();
@@ -29,10 +30,15 @@ public class AttackHitbox : MonoBehaviour {
 		}
 
 		if (!hitboxOut && hitboxOutLastFrame) {
-			hitThisActive.Clear();
+			OnHitboxOut();
 		}
 
 		hitboxOutLastFrame = hitboxOut;
+	}
+
+	public void OnHitboxOut() {
+		hitThisActive.Clear();
+		data.OnHitboxOut();
 	}
 
 	protected virtual bool CanHit(Hurtbox hurtbox) {
@@ -57,7 +63,9 @@ public class AttackHitbox : MonoBehaviour {
 
 			if (data.hitSound) data.hitSound.PlayFrom(gameObject);
 			if (data.hitmarker) {
-				Instantiate(data.hitmarker, currentActiveCollider.ClosestPoint(other.transform.position), Quaternion.identity);
+				if (spawnHitmarkerAtCenter) Instantiate(data.hitmarker, transform.position, Quaternion.identity);
+				else Instantiate(data.hitmarker, currentActiveCollider.ClosestPoint(other.transform.position), Quaternion.identity);
+				
 				foreach (IAttackLandListener attackLandListener in attackLandListeners) {
 					attackLandListener.OnAttackLand(hurtbox);
 				}

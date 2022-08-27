@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -23,9 +24,13 @@ public class PlayerCombatController : MonoBehaviour, IAttackLandListener {
 	public SubscriptableInt maxEP;
 
 	#pragma warning disable 0649
-	[SerializeField] GameObject fullChargeIndicator;
+	[SerializeField] GameObject chargeIndicator;
 	[SerializeField] AudioResource fullChargeSound;
+	[SerializeField] AudioResource emptyChargeSound;
 	#pragma warning restore 0649
+
+	const string fullMessage = "FULLY CHARGED";
+	const string emptyMessage = "SOLENOID EMPTY";
 
 	bool canFlipKick = true;
 
@@ -53,7 +58,7 @@ public class PlayerCombatController : MonoBehaviour, IAttackLandListener {
 		currentEP.Initialize();
 		currentEP.OnChange.AddListener(OnEnergyChange);
 		maxEP.Initialize();
-		fullChargeIndicator.SetActive(false);
+		chargeIndicator.SetActive(false);
 	}
 
 	public void OnAttackLand(Hurtbox hurtbox) {
@@ -62,11 +67,6 @@ public class PlayerCombatController : MonoBehaviour, IAttackLandListener {
 
 	public void OnEnergyChange(int energy) {
 		targetingSystem.enabled = (energy > 0);
-		if (energy == maxEP.Get()) {
-			fullChargeIndicator.SetActive(false);
-			fullChargeIndicator.SetActive(true);
-			fullChargeSound.PlayFrom(gameObject);
-		}
 	}
 
 	void Update() {
@@ -188,12 +188,24 @@ public class PlayerCombatController : MonoBehaviour, IAttackLandListener {
 	}
 
 	public void GainEnergy() {
-		if (currentEP.Get() != maxEP.Get()) {
-			currentEP.Set(Mathf.Min(maxEP.Get(), currentEP.Get()+1));
+		bool wasFull = currentEP.Get()==maxEP.Get();
+		currentEP.Set(Mathf.Min(maxEP.Get(), currentEP.Get()+1));
+		if (currentEP.Get()==maxEP.Get() && !wasFull) {
+			chargeIndicator.SetActive(false);
+			chargeIndicator.GetComponentInChildren<Text>().text = fullMessage;
+			chargeIndicator.SetActive(true);
+			fullChargeSound.PlayFrom(gameObject);
 		}
 	}
 
 	public void LoseEnergy(int amount) {
+		bool wasEmpty = currentEP.Get()==0;
 		currentEP.Set(Mathf.Max(0, currentEP.Get()-amount));
+		if (currentEP.Get()==0 && !wasEmpty) {
+			chargeIndicator.SetActive(false);
+			chargeIndicator.GetComponentInChildren<Text>().text = emptyMessage;
+			chargeIndicator.SetActive(true);
+			emptyChargeSound.PlayFrom(gameObject);
+		}
 	}
 }

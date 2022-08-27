@@ -90,7 +90,7 @@ public class Entity : MonoBehaviour, IHitListener {
 		if (staggerable) {
 			// TODO: alter knockback vector based on hurtbox point distance from line of attack center + knockback vector
 			// https://answers.unity.com/questions/263308/projection-of-a-point-on-a-line.html
-			Vector2 v = attack.data.knockback;
+			Vector2 v = attack.data.GetKnockback();
 			float attackX = attack.transform.position.x;
 			v.x *= attackX > transform.position.x ? -1 : 1;
 			// heavier people get knocked back less
@@ -101,7 +101,7 @@ public class Entity : MonoBehaviour, IHitListener {
 			} else if (!facingRight && attackX>transform.position.x) {
 				Flip();
 			}
-			StunFor(attack.data.stunLength);
+			if (attack.data.stunLength > 0) StunFor(attack.data.stunLength);
 		}
 	}
 

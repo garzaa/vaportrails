@@ -518,6 +518,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attacksPlayer: 0
   data: {fileID: 0}
+  spawnHitmarkerAtCenter: 0
   OnAttackLand:
     m_PersistentCalls:
       m_Calls:
@@ -852,7 +853,7 @@ MonoBehaviour:
   groundAttackGraph: {fileID: 11400000, guid: c1fde87b57147bf49b5b770fe780baff, type: 2}
   airAttackGraph: {fileID: 11400000, guid: b29d7a88575b1e345a97e5107aa7510f, type: 2}
   currentEP:
-    value: 16
+    value: 8
     OnChange:
       m_PersistentCalls:
         m_Calls:
@@ -869,7 +870,7 @@ MonoBehaviour:
             m_BoolArgument: 0
           m_CallState: 2
   maxEP:
-    value: 16
+    value: 8
     OnChange:
       m_PersistentCalls:
         m_Calls:
@@ -885,8 +886,9 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-  fullChargeIndicator: {fileID: 1873356325}
-  fullChargeSound: {fileID: 11400000, guid: f3f5a9f58d970c34fbc81a5fda0252ed, type: 2}
+  chargeIndicator: {fileID: 1873356325}
+  fullChargeSound: {fileID: 11400000, guid: a1911110d957a974bacf7a8e06e6e6f1, type: 2}
+  emptyChargeSound: {fileID: 11400000, guid: 6e8975a9b4edfd64985d6a207dc47bf0, type: 2}
 --- !u!114 &152597320
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2635,7 +2637,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 890445360}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -25.25, y: 5.5703125, z: -0.7071724}
+  m_LocalPosition: {x: -25.25, y: 5.5703125, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2970,7 +2972,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.04705882, g: 0.945098, b: 1, a: 1}
+  m_Color: {r: 0.04705882, g: 0.945098, b: 1, a: 0.19607843}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2990,7 +2992,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 
+  m_Text: FULLY CHARGED
 --- !u!222 &941626691
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3062,6 +3064,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attacksPlayer: 0
   data: {fileID: 11400000, guid: 946bbb747f219bd499b9b3e9911cc32c, type: 2}
+  spawnHitmarkerAtCenter: 0
   OnAttackLand:
     m_PersistentCalls:
       m_Calls: []
@@ -9907,6 +9910,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1542125801}
   - component: {fileID: 1542125802}
+  - component: {fileID: 1542125803}
   m_Layer: 0
   m_Name: Front Thigh
   m_TagString: Untagged
@@ -9982,6 +9986,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1542125803
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1542125800}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e531e7646e10e834d8dffffb9319ee0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1581631385
 GameObject:
   m_ObjectHideFlags: 0
@@ -16111,6 +16127,7 @@ GameObject:
   - component: {fileID: 1873356328}
   - component: {fileID: 1873356327}
   - component: {fileID: 1873356330}
+  - component: {fileID: 1873356331}
   m_Layer: 0
   m_Name: FullChargeUI
   m_TagString: Untagged
@@ -16221,6 +16238,20 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1873356331
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1873356325}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c81b085500e75664e99d763612279165, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  multiplier: 1
+  minimumScale: 1
 --- !u!1 &1892740063
 GameObject:
   m_ObjectHideFlags: 0

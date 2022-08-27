@@ -46,7 +46,7 @@ public class BarUI : MonoBehaviour {
 		if (normalizeSize && max > 0) pixelsPerUnit = size / max;
 
         if (background) ScaleImage(background, max);
-        ScaleImage(container, max, mod:1);
+        ScaleImage(container, max);
         ScaleImage(indicator, current);
 		if (disappearAfterDelta && current!=max) {
             canvasGroup.alpha = 1;

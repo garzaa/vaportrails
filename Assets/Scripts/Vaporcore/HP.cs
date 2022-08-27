@@ -48,7 +48,7 @@ public class HP : MonoBehaviour, IHitListener {
 	}
 
 	public void OnHit(AttackHitbox attack) {
-		AdjustCurrent(-attack.data.damage);
+		AdjustCurrent(-attack.data.GetDamage());
 	}
 
 	public void FullHeal() {
