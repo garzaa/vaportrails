@@ -17,14 +17,16 @@ public class PlayerAttackGraph : NodeGraph {
     public AirAttackTracker airAttackTracker;
     public PlayerCombatController combatController;
     public bool grounded;
+    public PlayerInput inputManager;
 
     CombatNode currentNode = null;
 
-    public void Initialize(PlayerCombatController combatController, Animator anim, AttackBuffer buffer, AirAttackTracker airAttackTracker) {
+    public void Initialize(PlayerCombatController combatController, Animator anim, AttackBuffer buffer, AirAttackTracker airAttackTracker, PlayerInput inputManager) {
         this.animator = anim;
         this.buffer = buffer;
         this.airAttackTracker = airAttackTracker;
         this.combatController = combatController;
+        this.inputManager = inputManager;
     }
 
     public void EnterGraph(CombatNode entryNode=null) {

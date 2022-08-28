@@ -40,7 +40,7 @@ public class AttackNode : CombatNode {
             }
         }
         
-        if (currentFrame>=attackData.IASA && InputManager.HasHorizontalInput()) {
+        if (currentFrame>=attackData.IASA && attackGraph.inputManager.HasHorizontalInput()) {
             attackGraph.ExitGraph();
             return;
         }

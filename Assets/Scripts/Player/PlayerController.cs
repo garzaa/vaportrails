@@ -61,10 +61,12 @@ public class PlayerController : Entity, IAttackLandListener {
 	AudioResource dashSound;
 	AttackData currentAttack;
 	HP hp;
+	PlayerInput input;
 	GameObject fastfallSpark;
 
 	override protected void Awake() {
 		base.Awake();
+		input = GetComponent<PlayerInput>();
 		toonMotion = GetComponentInChildren<ToonMotion>();
 		wallJumpDust = Resources.Load<GameObject>("Runtime/WallJumpDust");
 		dashSound = Resources.Load<AudioResource>("Runtime/DashSound");
@@ -88,12 +90,12 @@ public class PlayerController : Entity, IAttackLandListener {
 	}
 
 	void Move() {
-		inputX = InputManager.HorizontalInput();
-		inputBackwards = InputManager.HasHorizontalInput()
-				&& InputManager.HorizontalInput()*(facingRight ? 1 : -1) < 0;
-		inputForwards = InputManager.HasHorizontalInput() && !inputBackwards;
+		inputX = input.HorizontalInput();
+		inputBackwards = input.HasHorizontalInput()
+				&& input.HorizontalInput()*(facingRight ? 1 : -1) < 0;
+		inputForwards = input.HasHorizontalInput() && !inputBackwards;
 		movingBackwards = Mathf.Abs(rb2d.velocity.x) > 0.01 && rb2d.velocity.x * -transform.localScale.x < 0;
-		movingForwards = InputManager.HasHorizontalInput() && ((facingRight && rb2d.velocity.x > 0) || (!facingRight && rb2d.velocity.x < 0));
+		movingForwards = input.HasHorizontalInput() && ((facingRight && rb2d.velocity.x > 0) || (!facingRight && rb2d.velocity.x < 0));
 		airControlMod = Mathf.MoveTowards(airControlMod, 1, 1f * Time.deltaTime);
 
 		// allow moving during air attacks
@@ -201,7 +203,7 @@ public class PlayerController : Entity, IAttackLandListener {
 		if (!groundData.grounded
 			&& !frozeInputs
 			&& !wallData.touchingWall
-			&& InputManager.VerticalInput() == -1f
+			&& input.VerticalInput() == -1f
 			&& rb2d.velocity.y<0
 			&& rb2d.velocity.y > maxFallSpeed*0.75f
 			&& !stickDownLastFrame
@@ -212,7 +214,7 @@ public class PlayerController : Entity, IAttackLandListener {
 		}
 
 		if (!frozeInputs) {
-			stickDownLastFrame = InputManager.LeftStick().y == -1;
+			stickDownLastFrame = input.LeftStick().y == -1;
 		} else {
 			stickDownLastFrame = false;
 		}
@@ -229,7 +231,7 @@ public class PlayerController : Entity, IAttackLandListener {
 
 		if (frozeInputs && !currentAttack) return;
 
-		if (InputManager.ButtonDown(Buttons.SPECIAL) && canDash && InputManager.HasHorizontalInput() && InputManager.VerticalInput()<0.5) {
+		if (input.ButtonDown(Buttons.SPECIAL) && canDash && input.HasHorizontalInput() && input.VerticalInput()<0.5) {
 			if (!groundData.grounded && airDashes <= 0) return;
 			dashSound.PlayFrom(gameObject);
 			animator.SetTrigger(inputBackwards ? "BackDash" : "Dash");
@@ -244,7 +246,7 @@ public class PlayerController : Entity, IAttackLandListener {
 				speed = Mathf.Max(Mathf.Abs(rb2d.velocity.x)+dashSpeed, speed);
 			}
 			rb2d.velocity = new Vector2(
-				speed * Mathf.Sign(InputManager.HorizontalInput()),
+				speed * Mathf.Sign(input.HorizontalInput()),
 				Mathf.Max(rb2d.velocity.y, 0)
 			);
 			if (!groundData.grounded) airDashes--;
@@ -266,7 +268,7 @@ public class PlayerController : Entity, IAttackLandListener {
 	}
 
 	void Jump(bool executeIfBuffered=false) {
-		if ((currentAttack && !currentAttack.jumpCancelable) && InputManager.ButtonDown(Buttons.JUMP)) {
+		if ((currentAttack && !currentAttack.jumpCancelable) && input.ButtonDown(Buttons.JUMP)) {
 			BufferJump();
 		}
 
@@ -333,7 +335,7 @@ public class PlayerController : Entity, IAttackLandListener {
 			return;
 		}
 
-		if (InputManager.ButtonDown(Buttons.JUMP) || (executeIfBuffered && bufferedJump)) {
+		if (input.ButtonDown(Buttons.JUMP) || (executeIfBuffered && bufferedJump)) {
             if (groundData.grounded || justWalkedOffCliff) {
                 if (groundData.platforms.Count > 0 && Input.GetAxisRaw("Vertical") < -0.8f) {
 					DropThroughPlatforms(groundData.platforms);
@@ -347,7 +349,7 @@ public class PlayerController : Entity, IAttackLandListener {
             }
         }
 
-		if (InputManager.ButtonUp(Buttons.JUMP) && rb2d.velocity.y > jumpCutoffVelocity && canShortHop) {
+		if (input.ButtonUp(Buttons.JUMP) && rb2d.velocity.y > jumpCutoffVelocity && canShortHop) {
 			rb2d.velocity = new Vector2(rb2d.velocity.x, jumpCutoffVelocity);
 		}
 	}
@@ -367,8 +369,8 @@ public class PlayerController : Entity, IAttackLandListener {
 			animator.SetFloat("RelativeXInput", 0);
         } else {
 			animator.SetBool("MovingForward", movingForwards);
-			animator.SetFloat("XInputMagnitude", Mathf.Abs(InputManager.HorizontalInput()));
-			animator.SetFloat("RelativeXInput", InputManager.HorizontalInput() * -transform.localScale.x);
+			animator.SetFloat("XInputMagnitude", Mathf.Abs(input.HorizontalInput()));
+			animator.SetFloat("RelativeXInput", input.HorizontalInput() * -transform.localScale.x);
 		}
 
 		if (groundData.hitGround) {
@@ -424,7 +426,7 @@ public class PlayerController : Entity, IAttackLandListener {
 		currentAttack = attackData;
 		frozeInputs = true;
 		if (groundData.grounded) {
-			float actualInputX = InputManager.HorizontalInput();
+			float actualInputX = input.HorizontalInput();
 			if (facingRight && actualInputX<0) {
 				Flip();
 			} else if (!facingRight && actualInputX>0) {

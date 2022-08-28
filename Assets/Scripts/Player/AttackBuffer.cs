@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class AttackBuffer : MonoBehaviour {
 
 	PlayerController player;
+    PlayerInput inputManager;
 
 	// treat it as sort-of a queue
     List<BufferedAttack> bufferedAttacks = new List<BufferedAttack>();
@@ -14,11 +15,12 @@ public class AttackBuffer : MonoBehaviour {
 
 	void Start() {
 		player = GetComponent<PlayerController>();
+        inputManager = GetComponent<PlayerInput>();
 	}
 
     void Update() {
-        punch = InputManager.ButtonDown(Buttons.PUNCH);
-        kick = InputManager.ButtonDown(Buttons.KICK);
+        punch = inputManager.ButtonDown(Buttons.PUNCH);
+        kick = inputManager.ButtonDown(Buttons.KICK);
         if (punch || kick) {
 			AttackType attackType;
 			Vector2Int attackDirection;
@@ -26,7 +28,7 @@ public class AttackBuffer : MonoBehaviour {
             if (punch) attackType = AttackType.PUNCH;
             else attackType = AttackType.KICK;
 
-            Vector2 ls = InputManager.LeftStick();
+            Vector2 ls = inputManager.LeftStick();
 
             attackDirection = new Vector2Int(
                     (int) Mathf.Sign(ls.x * player.ForwardScalar()),
@@ -47,7 +49,7 @@ public class AttackBuffer : MonoBehaviour {
     }
 
     IEnumerator RemoveAction(BufferedAttack attack) {
-        yield return new WaitForSecondsRealtime(InputManager.GetInputBufferDuration());
+        yield return new WaitForSecondsRealtime(PlayerInput.GetInputBufferDuration());
 		bufferedAttacks.Remove(attack);
     }
 

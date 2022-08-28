@@ -16,6 +16,7 @@ public class PlayerCombatController : MonoBehaviour, IAttackLandListener, IHitLi
 	AttackHitbox attackHitbox;
 	Gun gunEyes;
 	PlayerTargetingSystem targetingSystem;
+	PlayerInput input;
 
 	public PlayerAttackGraph groundAttackGraph;
 	public PlayerAttackGraph airAttackGraph;
@@ -45,17 +46,20 @@ public class PlayerCombatController : MonoBehaviour, IAttackLandListener, IHitLi
 		attackHitbox = GetComponentInChildren<AttackHitbox>();
 		gunEyes = GetComponentInChildren<Gun>();
 		targetingSystem = GetComponentInChildren<PlayerTargetingSystem>();
+		input = GetComponent<PlayerInput>();
 		groundAttackGraph.Initialize(
 			this,
 			animator,
 			GetComponent<AttackBuffer>(),
-			GetComponent<AirAttackTracker>()
+			GetComponent<AirAttackTracker>(),
+			input
 		);
 		airAttackGraph.Initialize(
 			this,
 			animator,
 			GetComponent<AttackBuffer>(),
-			GetComponent<AirAttackTracker>()
+			GetComponent<AirAttackTracker>(),
+			input
 		);
 		currentEP.Initialize();
 		currentEP.OnChange.AddListener(OnEnergyChange);
@@ -72,8 +76,8 @@ public class PlayerCombatController : MonoBehaviour, IAttackLandListener, IHitLi
 	}
 
 	void Update() {
-		if (currentGraph == null) {
-			if (InputManager.ButtonDown(Buttons.PUNCH) || InputManager.ButtonDown(Buttons.KICK)) {
+		if (!player.frozeInputs && currentGraph == null) {
+			if (input.ButtonDown(Buttons.PUNCH) || input.ButtonDown(Buttons.KICK)) {
 				if (groundData.grounded) {
 					EnterAttackGraph(groundAttackGraph);
 				} else if (!wallData.touchingWall) {
@@ -81,12 +85,12 @@ public class PlayerCombatController : MonoBehaviour, IAttackLandListener, IHitLi
 				}
 			} else if (
 				(!player.frozeInputs || currentGraph!=null)
-				&& InputManager.ButtonDown(Buttons.SPECIAL)
+				&& input.ButtonDown(Buttons.SPECIAL)
 				&& !wallData.touchingWall
 			) {
 				// dash should take priority over everything else
 				// then orca flip only if there's a sizeable up input
-				if (InputManager.VerticalInput() > 0.5) {
+				if (input.VerticalInput() > 0.5) {
 					FlipKick();
 				}
 
@@ -115,7 +119,7 @@ public class PlayerCombatController : MonoBehaviour, IAttackLandListener, IHitLi
 
 		Shoot();
 
-		Vector2 leftStick = InputManager.LeftStick();
+		Vector2 leftStick = input.LeftStick();
 		Vector2 selfKnockback = Vector2.up;
 		float angle = Vector2.Angle(selfKnockback, leftStick);
 		float diMagnitude = (Mathf.Sin((2 * angle * Mathf.Deg2Rad) - (Mathf.PI/2f)) * 0.4f) + 0.6f;
@@ -124,7 +128,7 @@ public class PlayerCombatController : MonoBehaviour, IAttackLandListener, IHitLi
 	void Shoot() {
 		if (player.frozeInputs && currentGraph==null) return;
 
-		if (InputManager.ButtonDown(Buttons.PROJECTILE) && currentEP.Get() > 0) {
+		if (input.ButtonDown(Buttons.PROJECTILE) && currentEP.Get() > 0) {
 			animator.SetBool("WhiteEyes", true);
 			this.WaitAndExecute(() => animator.SetBool("WhiteEyes", false), 2);
 			gunEyes.Fire();
@@ -137,7 +141,7 @@ public class PlayerCombatController : MonoBehaviour, IAttackLandListener, IHitLi
 		// (sin(2x - (1/4 circle))) * 0.4 + 0.6
 		// ↑ this is a sinewave between 0.2 and 1.0 that peaks at (1, 0) and (-1, 0)
 		Vector2 selfKnockback = player.GetKnockback(attack);
-		Vector2 leftStick = InputManager.LeftStick();
+		Vector2 leftStick = input.LeftStick();
 		float angle = Vector2.SignedAngle(selfKnockback, leftStick);
 		float diMagnitude = (Mathf.Cos(angle * Mathf.Deg2Rad)* 0.4f) + 0.6f;
 		rb2d.velocity += leftStick * diMagnitude * diStrength;

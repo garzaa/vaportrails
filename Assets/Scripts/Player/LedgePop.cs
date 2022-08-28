@@ -11,7 +11,7 @@ public class LedgePop : MonoBehaviour {
     int layerMask;
     Vector2 boxPos;
     PlayerController player;
-
+    PlayerInput input;
     GroundCheck groundCheck;
 
     void Start() {
@@ -73,7 +73,7 @@ public class LedgePop : MonoBehaviour {
                 if (player == null) {
                     rb.velocity = new Vector2(rb.velocity.x, 0f);
                 } else {
-                    rb.velocity = new Vector2(rb.velocity.x, InputManager.Button(Buttons.JUMP) ? rb.velocity.y : 0f);
+                    rb.velocity = new Vector2(rb.velocity.x, input.Button(Buttons.JUMP) ? rb.velocity.y : 0f);
                 }
                 
             }

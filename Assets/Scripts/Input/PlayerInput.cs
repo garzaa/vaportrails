@@ -2,104 +2,102 @@ using UnityEngine;
 using System.Collections.Generic;
 using Rewired;
 
-public class InputManager : MonoBehaviour {
+public class PlayerInput : MonoBehaviour {
 
     static Player rewiredPlayer = null;
-    static InputManager im;
+    static PlayerInput im;
     static bool polling = false;
 
-    public Vector2 ls;
+    Vector2 ls;
+
+    public int playerNum = 0;
 
 	void Awake() {
         im = this;
-        rewiredPlayer = ReInput.players.GetPlayer(0);
+        rewiredPlayer = ReInput.players.GetPlayer(playerNum);
     }
 
     void Update() {
-        ls = InputManager.LeftStick();
+        ls = LeftStick();
     }
 
-    public static bool HasHorizontalInput() {
+    public bool HasHorizontalInput() {
         return HorizontalInput() != 0;
     }
 
-    public static float HorizontalInput() {
+    public float HorizontalInput() {
         return rewiredPlayer.GetAxis(Buttons.H_AXIS);
     }
 
-    public static Vector2 UINav() {
+    public Vector2 UINav() {
         return new Vector2(
             rewiredPlayer.GetAxis(Buttons.UI_X),
             rewiredPlayer.GetAxis(Buttons.UI_Y)
         );
     }
 
-    public static float VerticalInput() {
+    public float VerticalInput() {
         return rewiredPlayer.GetAxis(Buttons.V_AXIS);
     }
 
-    public static bool ButtonDown(string buttonName) {
+    public bool ButtonDown(string buttonName) {
         return !polling && rewiredPlayer.GetButtonDown(buttonName);
     }
 
-    public static bool Button(string buttonName) {
+    public bool Button(string buttonName) {
         return !polling && rewiredPlayer.GetButton(buttonName);
     }
 
-    public static bool ButtonUp(string buttonName) {
+    public bool ButtonUp(string buttonName) {
         return !polling && rewiredPlayer.GetButtonUp(buttonName);
     }
 
-    public static bool GenericContinueInput() {
+    public bool GenericContinueInput() {
         return (
             ButtonDown(Buttons.JUMP) || GenericEscapeInput() || AttackInput()
         );
     }
 
-    public static bool AttackInput() {
+    public bool AttackInput() {
         return (
             ButtonDown(Buttons.PUNCH)
             || ButtonDown(Buttons.KICK)
         );
     }
 
-    public static bool GenericEscapeInput() {
+    public bool GenericEscapeInput() {
         return (
-            InputManager.ButtonDown(Buttons.SPECIAL)
-            || InputManager.ButtonDown(Buttons.INVENTORY)
-            || InputManager.Button(Buttons.PAUSE)
-            || InputManager.ButtonDown(Buttons.UI_CANCEL)
+            ButtonDown(Buttons.SPECIAL)
+            || ButtonDown(Buttons.INVENTORY)
+            || Button(Buttons.PAUSE)
+            || ButtonDown(Buttons.UI_CANCEL)
         );
     }
 
-    public static Vector2 RightStick() {
+    public Vector2 RightStick() {
         return new Vector2(
             rewiredPlayer.GetAxis("Right-Horizontal"),
             rewiredPlayer.GetAxis("Right-Vertical")
         );
     }
 
-    public static Vector2 LeftStick() {
+    public Vector2 LeftStick() {
         return new Vector2(
             rewiredPlayer.GetAxis(Buttons.H_AXIS),
             rewiredPlayer.GetAxis(Buttons.V_AXIS)
         );
     }
 
-    public static bool TauntInput() {
-        return false;
-    }
-
-    public static Vector2 MoveVector() {
+    public Vector2 MoveVector() {
         return new Vector2(HorizontalInput(), VerticalInput());
     }
 
     public void OnButtonPollStart() {
-        InputManager.polling = true;    
+        PlayerInput.polling = true;    
     }
 
     public void OnButtonPollEnd() {
-        InputManager.polling = false;
+        PlayerInput.polling = false;
     }
 
     public static float GetInputBufferDuration() {

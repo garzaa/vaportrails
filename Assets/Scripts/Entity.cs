@@ -27,6 +27,7 @@ public class Entity : MonoBehaviour, IHitListener {
 	GroundCheck groundCheck;
 	AudioResource currentFootfall;
 	PhysicsMaterial2D defaultMaterial;
+	RotateToVelocity stunRotation;
 
 	static GameObject jumpDust;
 	protected static GameObject landDust;
@@ -56,6 +57,7 @@ public class Entity : MonoBehaviour, IHitListener {
 		stunSmoke = Instantiate(Resources.Load<GameObject>("Runtime/StunSmoke"), this.transform).GetComponent<ParticleSystem>();
 		stunSmoke.transform.localPosition = Vector3.zero;
 		stunSmoke.Stop();
+		stunRotation = GetComponentInChildren<RotateToVelocity>();
 	}
 
 	public void JumpDust() {
@@ -152,6 +154,7 @@ public class Entity : MonoBehaviour, IHitListener {
 			OnWallHit();
 		}
 		RectifyEntityCollision();
+		if (stunRotation) stunRotation.enabled = (stunned && !groundData.grounded);
 	}
 
 	void RectifyEntityCollision() {

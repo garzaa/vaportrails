@@ -1,14 +1,14 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody2D))]
 public class RotateToVelocity : MonoBehaviour {
     public Rigidbody2D rb2d;
     // this is the default if entities are normally facing up
-    public float offset = 90;
+    public float offset = -90;
 
     void Start() {
         if (rb2d == null) {
             rb2d = GetComponent<Rigidbody2D>();
+            if (!rb2d) rb2d = GetComponentInParent<Rigidbody2D>();
         }
     }
 
