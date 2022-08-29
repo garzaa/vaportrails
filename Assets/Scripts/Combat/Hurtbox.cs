@@ -7,6 +7,7 @@ public class Hurtbox : MonoBehaviour {
 	public AudioResource hitSoundOverride;
 	public UnityEvent hitEvent;
 	public bool useParentTargetingPosition;
+	public bool invisibleToTargeters = false;
 	IHitListener[] hitListeners;
 
 	void Start() {

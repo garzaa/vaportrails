@@ -37,8 +37,8 @@ public class PlayerCombatController : MonoBehaviour, IAttackLandListener, IHitLi
 
 	bool canFlipKick = true;
 
-	const float techWindow = 0.2f;
-	const float techLockoutLength = 0.3f;
+	const float techWindow = 0.3f;
+	const float techLockoutLength = 0.6f;
 	bool canTech = false;
 	bool techLockout = false;
 	GameObject techEffect;
@@ -139,14 +139,18 @@ public class PlayerCombatController : MonoBehaviour, IAttackLandListener, IHitLi
 	}
 
 	void CheckForTech() {
-		if (!techLockout && player.stunned && canTech && (groundData.hitGround || wallData.hitWall)) {
-			OnSuccessfulTech();
+		if (player.stunned && (groundData.hitGround || wallData.hitWall)) {
+			if (!techLockout && canTech) {
+				OnSuccessfulTech();
+			}
 		}
 	}
 
 	void OnSuccessfulTech() {
 		if (wallData.touchingWall) {
 			rb2d.velocity = Vector2.zero;
+			player.RefreshAirMovement();
+			RefreshAirAttacks();
 			Instantiate(
 				techEffect,
 				transform.position + new Vector3(wallData.direction * collider2d.bounds.extents.x, 0, 0),
@@ -206,7 +210,6 @@ public class PlayerCombatController : MonoBehaviour, IAttackLandListener, IHitLi
 			if (!canFlipKick) return;
 			canFlipKick = false;
 			player.DisableShortHop();
-			// just enter the ground attack graph at the orca flip node? h mmm...need that impulse
 			rb2d.velocity = new Vector2(rb2d.velocity.x, Mathf.Max(rb2d.velocity.y, player.jumpSpeed));
 			animator.Play("OrcaFlip");
 		}

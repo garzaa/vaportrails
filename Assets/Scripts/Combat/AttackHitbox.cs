@@ -66,7 +66,11 @@ public class AttackHitbox : MonoBehaviour {
 			if (data.hitSound) data.hitSound.PlayFrom(gameObject);
 			if (data.hitmarker) {
 				if (spawnHitmarkerAtCenter) Instantiate(data.hitmarker, transform.position, Quaternion.identity);
-				else Instantiate(data.hitmarker, currentActiveCollider.ClosestPoint(other.transform.position), Quaternion.identity);
+				else Instantiate(
+					data.hitmarker,
+					currentActiveCollider.ClosestPoint(other.transform.position+(Vector3)other.GetComponent<Collider2D>().offset),
+					Quaternion.identity
+				);
 				
 				foreach (IAttackLandListener attackLandListener in attackLandListeners) {
 					attackLandListener.OnAttackLand(hurtbox);

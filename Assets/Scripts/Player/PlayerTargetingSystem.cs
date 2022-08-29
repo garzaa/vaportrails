@@ -20,6 +20,7 @@ public class PlayerTargetingSystem : MonoBehaviour {
 		// if it's a player, don't add it
 		if (other.CompareTag(Tags.Player) ^ targetsPlayer) return;
 		if (!other.GetComponent<Hurtbox>()) return;
+		if (other.GetComponent<Hurtbox>().invisibleToTargeters) return;
 		targetsInRange.Add(other.gameObject);
 	}
 

@@ -272,6 +272,7 @@ public class PlayerController : Entity, IAttackLandListener {
 	}
 
 	void Jump(bool executeIfBuffered=false) {
+		if (stunned) return;
 		if ((currentAttack && !currentAttack.jumpCancelable) && input.ButtonDown(Buttons.JUMP)) {
 			BufferJump();
 		}

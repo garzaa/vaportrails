@@ -47,6 +47,7 @@ public class Entity : MonoBehaviour, IHitListener {
 	protected virtual void Awake() {
 		animator = GetComponent<Animator>();
         rb2d = GetComponent<Rigidbody2D>();
+		rb2d.interpolation = RigidbodyInterpolation2D.Extrapolate;
 		entityShader = GetComponent<EntityShader>();
         groundMask = 1 << LayerMask.NameToLayer(Layers.Ground);
         collider2d = GetComponent<Collider2D>();
@@ -162,7 +163,11 @@ public class Entity : MonoBehaviour, IHitListener {
 	protected virtual void Update() {
 		UpdateFootfallSound();
 		if (groundData.hitGround && canGroundHitEffect) {
-			FootfallSound();
+			if (!stunned) {
+				FootfallSound();
+			} else {
+				landNoise.PlayFrom(this.gameObject);
+			}
 			LandDust();
 			canGroundHitEffect = false;
 			this.WaitAndExecute(() => canGroundHitEffect=true, 0.1f);
