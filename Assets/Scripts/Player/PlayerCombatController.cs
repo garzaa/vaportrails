@@ -131,10 +131,6 @@ public class PlayerCombatController : MonoBehaviour, IAttackLandListener, IHitLi
 		if (!techLockout && player.stunned && !canTech) {
 			if (input.ButtonDown(Buttons.SPECIAL)) {
 				canTech = true;
-				this.WaitAndExecute(
-					() => canTech = false,
-					techWindow
-				);
 				Invoke(nameof(EndTechWindow), techWindow);
 			}
 		}
@@ -172,11 +168,13 @@ public class PlayerCombatController : MonoBehaviour, IAttackLandListener, IHitLi
 		animator.SetTrigger("TechSuccess");
 		GetComponent<EntityShader>().FlashCyan();
 		canTech = false;
+		CancelInvoke(nameof(EndTechWindow));
 		player.CancelStun();
 		StartAttackStance();
 	}
 
 	void EndTechWindow() {
+		canTech = false;
 		techLockout = true;
 		this.WaitAndExecute(() => techLockout = false, techLockoutLength);
 	}
