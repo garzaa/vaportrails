@@ -39,8 +39,7 @@ public class PlayerCombatController : MonoBehaviour, IAttackLandListener, IHitLi
 
 	const float techWindow = 0.2f;
 	const float techLockoutLength = 0.3f;
-	bool canWallTech = false;
-	bool canGroundTech = false;
+	bool canTech = false;
 	bool techLockout = false;
 	GameObject techEffect;
 	Collider2D collider2d;
@@ -129,23 +128,11 @@ public class PlayerCombatController : MonoBehaviour, IAttackLandListener, IHitLi
 
 		Shoot();
 
-		Vector2 leftStick = input.LeftStick();
-		Vector2 selfKnockback = Vector2.up;
-		float angle = Vector2.Angle(selfKnockback, leftStick);
-		float diMagnitude = (Mathf.Sin((2 * angle * Mathf.Deg2Rad) - (Mathf.PI/2f)) * 0.4f) + 0.6f;
-
-		if (!techLockout && player.stunned) {
-			if (input.ButtonDown(Buttons.KICK)) {
-				canWallTech = true;
+		if (!techLockout && player.stunned && !canTech) {
+			if (input.ButtonDown(Buttons.SPECIAL)) {
+				canTech = true;
 				this.WaitAndExecute(
-					() => canWallTech = false,
-					techWindow
-				);
-				Invoke(nameof(EndTechWindow), techWindow);
-			} else if (input.ButtonDown(Buttons.PUNCH)) {
-				canGroundTech = true;
-				this.WaitAndExecute(
-					() => canGroundTech = false,
+					() => canTech = false,
 					techWindow
 				);
 				Invoke(nameof(EndTechWindow), techWindow);
@@ -156,9 +143,7 @@ public class PlayerCombatController : MonoBehaviour, IAttackLandListener, IHitLi
 	}
 
 	void CheckForTech() {
-		if (canWallTech && wallData.touchingWall) {
-			OnSuccessfulTech();
-		} else if (canGroundTech && groundData.grounded) {
+		if (!techLockout && player.stunned && canTech && (groundData.hitGround || wallData.hitWall)) {
 			OnSuccessfulTech();
 		}
 	}
@@ -172,26 +157,21 @@ public class PlayerCombatController : MonoBehaviour, IAttackLandListener, IHitLi
 				Quaternion.identity,
 				null
 			);
-			canWallTech = false;
-			Debug.Log("wall tech");
 		} else if (groundData.grounded) {
-			// animator will take care of the 
 			rb2d.velocity = new Vector2(
 				PlayerController.runSpeed * Mathf.Sign(input.HorizontalInput()),
 				0
 			);
-			canGroundTech = false;
 			Instantiate(
 				techEffect,
 				transform.position + Vector3.down*collider2d.bounds.extents.y,
 				Quaternion.identity,
 				null
 			);
-			Debug.Log("ground tech");
-			animator.SetTrigger("TechSuccess");
 		}
+		animator.SetTrigger("TechSuccess");
 		GetComponent<EntityShader>().FlashCyan();
-		canWallTech = canGroundTech = false;
+		canTech = false;
 		player.CancelStun();
 		StartAttackStance();
 	}

@@ -366,15 +366,14 @@ public class PlayerController : Entity, IAttackLandListener {
 		animator.SetBool("Wallsliding", wallData.touchingWall);
 		animator.SetFloat("RelativeXSpeed", rb2d.velocity.x * Forward().x);
 		animator.SetFloat("GroundDistance", groundData.distance);
+		animator.SetFloat("RelativeXInput", input.HorizontalInput() * -transform.localScale.x);
 
         if (frozeInputs) {
 			animator.SetBool("MovingForward", false);
 			animator.SetFloat("XInputMagnitude", 0);
-			animator.SetFloat("RelativeXInput", 0);
         } else {
 			animator.SetBool("MovingForward", movingForwards);
 			animator.SetFloat("XInputMagnitude", Mathf.Abs(input.HorizontalInput()));
-			animator.SetFloat("RelativeXInput", input.HorizontalInput() * -transform.localScale.x);
 		}
 
 		if (groundData.hitGround) {

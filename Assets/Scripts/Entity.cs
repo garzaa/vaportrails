@@ -39,6 +39,8 @@ public class Entity : MonoBehaviour, IHitListener {
 	bool canGroundHitEffect = true;
 	public bool staggerable = true;
 	bool stunBounced;
+	
+	bool canFlip = true;
 
 	Collider2D[] overlapResults;
 
@@ -122,6 +124,7 @@ public class Entity : MonoBehaviour, IHitListener {
 
 	void StunFor(float seconds) {
 		CancelStun();
+		stunBounced = false;
 		stunned = true;
 		animator.SetBool("Stunned", true);
 		rb2d.sharedMaterial = stunMaterial;
@@ -146,6 +149,10 @@ public class Entity : MonoBehaviour, IHitListener {
 	}
 
 	void StunBounce() {
+		if (stunBounced) {
+			CancelStun();
+			return;
+		}
 		animator.SetBool("Tumbling", true);
 		stunBounced = true;
 		this.WaitAndExecute(() => rb2d.sharedMaterial = defaultMaterial, 0.1f);
@@ -157,10 +164,9 @@ public class Entity : MonoBehaviour, IHitListener {
 		if (groundData.hitGround && canGroundHitEffect) {
 			FootfallSound();
 			LandDust();
-			if (stunned) StunBounce();
 			canGroundHitEffect = false;
 			this.WaitAndExecute(() => canGroundHitEffect=true, 0.1f);
-			if (stunned && stunBounced) CancelStun();
+			if (stunned) StunBounce();
 		}
 		if (wallData.hitWall) {
 			landNoise.PlayFrom(this.gameObject);
@@ -169,8 +175,8 @@ public class Entity : MonoBehaviour, IHitListener {
 			float x = wallRight ? collider2d.bounds.max.x : collider2d.bounds.min.x;
 			g.transform.position = new Vector2(x, transform.position.y);
 			g.transform.eulerAngles = new Vector3(0, 0, wallRight ? 90 : -90);
-			if (stunned) StunBounce();
 			OnWallHit();
+			if (stunned) StunBounce();
 		}
 		RectifyEntityCollision();
 		if (stunRotation) {
@@ -219,10 +225,23 @@ public class Entity : MonoBehaviour, IHitListener {
 		currentFootfall.PlayFrom(this.gameObject);
 	}
 
+	public void DisableFlip() {
+		canFlip = false;
+	}
+
+	public void EnableFlip() {
+		canFlip = true;
+	}
+
 	public void Flip() {
-        facingRight = !facingRight;
-        transform.localScale = Vector3.Scale(transform.localScale, new Vector3(-1, 1, 1));
+        if (!canFlip) return;
+		_Flip();
     }
+
+	void _Flip() {
+		facingRight = !facingRight;
+        transform.localScale = Vector3.Scale(transform.localScale, new Vector3(-1, 1, 1));
+	}
 
 	public Vector2Int Forward() {
 		return new Vector2Int(
