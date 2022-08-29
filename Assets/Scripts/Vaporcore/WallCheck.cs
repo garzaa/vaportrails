@@ -13,7 +13,7 @@ public class WallCheck : MonoBehaviour {
 	public WallCheckData wallData = new WallCheckData();
 
 	int layerMask = Layers.GroundMask;
-	const float extendDistance = 0.02f;
+	const float extendDistance = .08f;
 	bool touchingWallLastFrame = false;
 
 	void Start() {		
