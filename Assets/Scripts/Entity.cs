@@ -22,12 +22,13 @@ public class Entity : MonoBehaviour, IHitListener {
 	protected WallCheckData wallData;
 	protected Collider2D groundColliderLastFrame;
 	protected EntityShader entityShader;
-	protected bool stunned = false;
+	public bool stunned { get; private set; }
 	
 	GroundCheck groundCheck;
 	AudioResource currentFootfall;
 	PhysicsMaterial2D defaultMaterial;
 	RotateToVelocity stunRotation;
+	Spinner stunSpin;
 
 	static GameObject jumpDust;
 	protected static GameObject landDust;
@@ -37,6 +38,7 @@ public class Entity : MonoBehaviour, IHitListener {
 	
 	bool canGroundHitEffect = true;
 	public bool staggerable = true;
+	bool stunBounced;
 
 	Collider2D[] overlapResults;
 
@@ -58,6 +60,11 @@ public class Entity : MonoBehaviour, IHitListener {
 		stunSmoke.transform.localPosition = Vector3.zero;
 		stunSmoke.Stop();
 		stunRotation = GetComponentInChildren<RotateToVelocity>();
+		if (stunRotation) {
+			stunSpin = stunRotation.gameObject.AddComponent<Spinner>();
+			stunSpin.rps = -1.5f;
+			stunSpin.enabled = false;
+		}
 	}
 
 	public void JumpDust() {
@@ -116,24 +123,33 @@ public class Entity : MonoBehaviour, IHitListener {
 	void StunFor(float seconds) {
 		CancelStun();
 		stunned = true;
+		animator.SetBool("Stunned", true);
 		rb2d.sharedMaterial = stunMaterial;
 		stunSmoke.Play();
 		Invoke(nameof(UnStun), seconds);
 	}
 
-	protected void CancelStun() {
+	public void CancelStun() {
 		if (IsInvoking(nameof(UnStun))) {
 			CancelInvoke(nameof(UnStun));
 		}
-		rb2d.sharedMaterial = defaultMaterial;
-		stunned = false;
-		stunSmoke.Stop();
+		UnStun();
 	}
 
 	void UnStun() {
+		animator.SetBool("Stunned", false);
+		animator.SetBool("Tumbling", false);
 		rb2d.sharedMaterial = defaultMaterial;
 		stunned = false;
+		stunBounced = false;
 		stunSmoke.Stop();
+	}
+
+	void StunBounce() {
+		animator.SetBool("Tumbling", true);
+		stunBounced = true;
+		this.WaitAndExecute(() => rb2d.sharedMaterial = defaultMaterial, 0.1f);
+		if (stunSpin) stunSpin.enabled = true;
 	}
 
 	protected virtual void Update() {
@@ -141,8 +157,10 @@ public class Entity : MonoBehaviour, IHitListener {
 		if (groundData.hitGround && canGroundHitEffect) {
 			FootfallSound();
 			LandDust();
+			if (stunned) StunBounce();
 			canGroundHitEffect = false;
 			this.WaitAndExecute(() => canGroundHitEffect=true, 0.1f);
+			if (stunned && stunBounced) CancelStun();
 		}
 		if (wallData.hitWall) {
 			landNoise.PlayFrom(this.gameObject);
@@ -151,10 +169,14 @@ public class Entity : MonoBehaviour, IHitListener {
 			float x = wallRight ? collider2d.bounds.max.x : collider2d.bounds.min.x;
 			g.transform.position = new Vector2(x, transform.position.y);
 			g.transform.eulerAngles = new Vector3(0, 0, wallRight ? 90 : -90);
+			if (stunned) StunBounce();
 			OnWallHit();
 		}
 		RectifyEntityCollision();
-		if (stunRotation) stunRotation.enabled = (stunned && !groundData.grounded);
+		if (stunRotation) {
+			stunRotation.enabled = stunned && !groundData.grounded && !stunBounced;
+			stunSpin.enabled = stunned && !groundData.grounded && stunBounced;
+		}
 	}
 
 	void RectifyEntityCollision() {

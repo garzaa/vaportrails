@@ -10,7 +10,7 @@ public class PlayerController : Entity, IAttackLandListener {
 	[SerializeField] ParticleSystem speedDust;
 	#pragma warning restore 0649
 
-	const float runSpeed = 4.5f;
+	public const float runSpeed = 4.5f;
     const float groundAcceleration = 175;
     const float airAcceleration = 80;
     const float jumpCutoffVelocity = 2f;
@@ -219,7 +219,11 @@ public class PlayerController : Entity, IAttackLandListener {
 			stickDownLastFrame = false;
 		}
 
-		fMod = Mathf.MoveTowards(fMod, 1, (1f/fModRecoveryTime) * Time.fixedDeltaTime);
+		if (!stunned) {
+			fMod = Mathf.MoveTowards(fMod, 1, (1f/fModRecoveryTime) * Time.fixedDeltaTime);
+		} else {
+			fMod = 0.1f;
+		}
 	}
 
 	void Dash() {

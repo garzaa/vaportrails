@@ -37,6 +37,14 @@ public class PlayerCombatController : MonoBehaviour, IAttackLandListener, IHitLi
 
 	bool canFlipKick = true;
 
+	const float techWindow = 0.2f;
+	const float techLockoutLength = 0.3f;
+	bool canWallTech = false;
+	bool canGroundTech = false;
+	bool techLockout = false;
+	GameObject techEffect;
+	Collider2D collider2d;
+
 	void Start() {
 		player = GetComponent<PlayerController>();
 		groundData = GetComponent<GroundCheck>().groundData;
@@ -47,6 +55,7 @@ public class PlayerCombatController : MonoBehaviour, IAttackLandListener, IHitLi
 		gunEyes = GetComponentInChildren<Gun>();
 		targetingSystem = GetComponentInChildren<PlayerTargetingSystem>();
 		input = GetComponent<PlayerInput>();
+		collider2d = GetComponent<Collider2D>();
 		groundAttackGraph.Initialize(
 			this,
 			animator,
@@ -65,6 +74,7 @@ public class PlayerCombatController : MonoBehaviour, IAttackLandListener, IHitLi
 		currentEP.OnChange.AddListener(OnEnergyChange);
 		maxEP.Initialize();
 		chargeIndicator.SetActive(false);
+		techEffect = Resources.Load<GameObject>("Runtime/TechEffect");
 	}
 
 	public void OnAttackLand(Hurtbox hurtbox) {
@@ -123,6 +133,72 @@ public class PlayerCombatController : MonoBehaviour, IAttackLandListener, IHitLi
 		Vector2 selfKnockback = Vector2.up;
 		float angle = Vector2.Angle(selfKnockback, leftStick);
 		float diMagnitude = (Mathf.Sin((2 * angle * Mathf.Deg2Rad) - (Mathf.PI/2f)) * 0.4f) + 0.6f;
+
+		if (!techLockout && player.stunned) {
+			if (input.ButtonDown(Buttons.KICK)) {
+				canWallTech = true;
+				this.WaitAndExecute(
+					() => canWallTech = false,
+					techWindow
+				);
+				Invoke(nameof(EndTechWindow), techWindow);
+			} else if (input.ButtonDown(Buttons.PUNCH)) {
+				canGroundTech = true;
+				this.WaitAndExecute(
+					() => canGroundTech = false,
+					techWindow
+				);
+				Invoke(nameof(EndTechWindow), techWindow);
+			}
+		}
+
+		CheckForTech();
+	}
+
+	void CheckForTech() {
+		if (canWallTech && wallData.touchingWall) {
+			OnSuccessfulTech();
+		} else if (canGroundTech && groundData.grounded) {
+			OnSuccessfulTech();
+		}
+	}
+
+	void OnSuccessfulTech() {
+		if (wallData.touchingWall) {
+			rb2d.velocity = Vector2.zero;
+			Instantiate(
+				techEffect,
+				transform.position + new Vector3(wallData.direction * collider2d.bounds.extents.x, 0, 0),
+				Quaternion.identity,
+				null
+			);
+			canWallTech = false;
+			Debug.Log("wall tech");
+		} else if (groundData.grounded) {
+			// animator will take care of the 
+			rb2d.velocity = new Vector2(
+				PlayerController.runSpeed * Mathf.Sign(input.HorizontalInput()),
+				0
+			);
+			canGroundTech = false;
+			Instantiate(
+				techEffect,
+				transform.position + Vector3.down*collider2d.bounds.extents.y,
+				Quaternion.identity,
+				null
+			);
+			Debug.Log("ground tech");
+			animator.SetTrigger("TechSuccess");
+		}
+		GetComponent<EntityShader>().FlashCyan();
+		canWallTech = canGroundTech = false;
+		player.CancelStun();
+		StartAttackStance();
+	}
+
+	void EndTechWindow() {
+		techLockout = true;
+		this.WaitAndExecute(() => techLockout = false, techLockoutLength);
 	}
 
 	void Shoot() {

@@ -1,8 +1,9 @@
 using UnityEngine;
 
 public class Spinner : MonoBehaviour {
-    public float speed;
+    public float rps;
     public bool unscaled;
+    public bool resetOnDisable = true;
 
     float lastUpdate = 0f;
 
@@ -11,10 +12,14 @@ public class Spinner : MonoBehaviour {
 
         if (t > lastUpdate) {
             Vector3 r = transform.localRotation.eulerAngles;
-            r.z = ((speed * t)) % 360;
+            r.z = ((rps * t * 360)) % 360;
             transform.localRotation = Quaternion.Euler(r);
 
             lastUpdate = t;
         }
+    }
+
+    void OnDisable() {
+        transform.localRotation = Quaternion.identity;
     }
 }
