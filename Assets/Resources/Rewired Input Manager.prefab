@@ -226,6 +226,34 @@ MonoBehaviour:
       _controllerMapEnablerSettings:
         _enabled: 1
         _ruleSets: []
+    - _id: 2
+      _name: Player1
+      _descriptiveName: Player1
+      _startPlaying: 1
+      _defaultJoystickMaps:
+      - _enabled: 1
+        _categoryId: 0
+        _layoutId: 0
+      _defaultMouseMaps: []
+      _defaultKeyboardMaps:
+      - _enabled: 1
+        _categoryId: 0
+        _layoutId: 0
+      _defaultCustomControllerMaps:
+      - _enabled: 1
+        _categoryId: 0
+        _layoutId: 0
+      _startingCustomControllers: []
+      _assignMouseOnStart: 0
+      _assignKeyboardOnStart: 0
+      _excludeFromControllerAutoAssignment: 0
+      _controllerMapLayoutManagerSettings:
+        _enabled: 1
+        _loadFromUserDataStore: 1
+        _ruleSets: []
+      _controllerMapEnablerSettings:
+        _enabled: 1
+        _ruleSets: []
     actions:
     - _id: 0
       _name: Horizontal
@@ -588,10 +616,18 @@ MonoBehaviour:
         _modifierKey3: 0
     mouseMaps: []
     customControllerMaps: []
-    customControllers: []
+    customControllers:
+    - _name: CustomController0
+      _descriptiveName: CustomController0
+      _id: 0
+      _typeGuidString: 572b9596-94db-4fc6-9872-aa7a0a20b400
+      _elementIdentifiers: []
+      _axes: []
+      _buttons: []
+      _elementIdentifierIdCounter: 0
     controllerMapLayoutManagerRuleSets: []
     controllerMapEnablerRuleSets: []
-    playerIdCounter: 2
+    playerIdCounter: 3
     actionIdCounter: 7
     actionCategoryIdCounter: 1
     inputBehaviorIdCounter: 3
@@ -604,7 +640,7 @@ MonoBehaviour:
     keyboardMapIdCounter: 1
     mouseMapIdCounter: 0
     customControllerMapIdCounter: 0
-    customControllerIdCounter: 0
+    customControllerIdCounter: 1
     controllerMapLayoutManagerSetIdCounter: 0
     controllerMapEnablerSetIdCounter: 0
   _controllerDataFiles: {fileID: 11400000, guid: d21d2b20df8369642b76aafbb2576ba7, type: 2}

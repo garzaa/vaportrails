@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using Rewired;
 
 public class PlayerInput : MonoBehaviour {
-
-    static Player rewiredPlayer = null;
-    static PlayerInput im;
+    Player player = null;
     static bool polling = false;
 
     Vector2 ls;
@@ -13,8 +11,21 @@ public class PlayerInput : MonoBehaviour {
     public int playerNum = 0;
 
 	void Awake() {
-        im = this;
-        rewiredPlayer = ReInput.players.GetPlayer(playerNum);
+        player = ReInput.players.GetPlayer(playerNum);
+    }
+
+    public Player GetPlayer() {
+        return player;
+    }
+
+    public void EnableHumanControl() {
+        player.controllers.hasKeyboard = true;
+        player.controllers.AddController(ControllerType.Joystick, 0, true);
+    }
+
+    public void DisableHumanControl() {
+        player.controllers.hasKeyboard = false;
+        player.controllers.RemoveController(ControllerType.Joystick, 0);
     }
 
     void Update() {
@@ -26,30 +37,30 @@ public class PlayerInput : MonoBehaviour {
     }
 
     public float HorizontalInput() {
-        return rewiredPlayer.GetAxis(Buttons.H_AXIS);
+        return player.GetAxis(Buttons.H_AXIS);
     }
 
     public Vector2 UINav() {
         return new Vector2(
-            rewiredPlayer.GetAxis(Buttons.UI_X),
-            rewiredPlayer.GetAxis(Buttons.UI_Y)
+            player.GetAxis(Buttons.UI_X),
+            player.GetAxis(Buttons.UI_Y)
         );
     }
 
     public float VerticalInput() {
-        return rewiredPlayer.GetAxis(Buttons.V_AXIS);
+        return player.GetAxis(Buttons.V_AXIS);
     }
 
     public bool ButtonDown(string buttonName) {
-        return !polling && rewiredPlayer.GetButtonDown(buttonName);
+        return !polling && player.GetButtonDown(buttonName);
     }
 
     public bool Button(string buttonName) {
-        return !polling && rewiredPlayer.GetButton(buttonName);
+        return !polling && player.GetButton(buttonName);
     }
 
     public bool ButtonUp(string buttonName) {
-        return !polling && rewiredPlayer.GetButtonUp(buttonName);
+        return !polling && player.GetButtonUp(buttonName);
     }
 
     public bool GenericContinueInput() {
@@ -76,15 +87,15 @@ public class PlayerInput : MonoBehaviour {
 
     public Vector2 RightStick() {
         return new Vector2(
-            rewiredPlayer.GetAxis("Right-Horizontal"),
-            rewiredPlayer.GetAxis("Right-Vertical")
+            player.GetAxis("Right-Horizontal"),
+            player.GetAxis("Right-Vertical")
         );
     }
 
     public Vector2 LeftStick() {
         return new Vector2(
-            rewiredPlayer.GetAxis(Buttons.H_AXIS),
-            rewiredPlayer.GetAxis(Buttons.V_AXIS)
+            player.GetAxis(Buttons.H_AXIS),
+            player.GetAxis(Buttons.V_AXIS)
         );
     }
 

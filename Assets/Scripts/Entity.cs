@@ -175,11 +175,13 @@ public class Entity : MonoBehaviour, IHitListener {
 		}
 		if (wallData.hitWall) {
 			landNoise.PlayFrom(this.gameObject);
-			GameObject g = Instantiate(landDust);
-			bool wallRight = wallData.direction > 0;
-			float x = wallRight ? collider2d.bounds.max.x : collider2d.bounds.min.x;
-			g.transform.position = new Vector2(x, transform.position.y);
-			g.transform.eulerAngles = new Vector3(0, 0, wallRight ? 90 : -90);
+			if (!groundData.hitGround) {
+				GameObject g = Instantiate(landDust);
+				bool wallRight = wallData.direction > 0;
+				float x = wallRight ? collider2d.bounds.max.x : collider2d.bounds.min.x;
+				g.transform.position = new Vector2(x, transform.position.y);
+				g.transform.eulerAngles = new Vector3(0, 0, wallRight ? 90 : -90);
+			}
 			OnWallHit();
 			if (stunned) StunBounce();
 		}

@@ -6,7 +6,7 @@ public class WallCheck : MonoBehaviour {
 
 	#pragma warning disable 0649
 	Collider2D targetCollider;
-	[SerializeField] float groundGap = 0.06f;
+	public float groundGap = 0.1f;
 	#pragma warning restore 0649
 	const bool drawDebug = true;
 
