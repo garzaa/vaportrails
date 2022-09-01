@@ -1,9 +1,13 @@
 using System.Collections;
+using Cinemachine;
+using System;
+using System.IO;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.Linq;
+using Newtonsoft.Json;
 
 public class Terminal : MonoBehaviour, IPointerDownHandler {
 
@@ -16,6 +20,7 @@ public class Terminal : MonoBehaviour, IPointerDownHandler {
     OnTerminalClose terminalClose;
 
     InputRecorder inputRecorder;
+    AIPlayer currentReplay;
 
     static Terminal t;
     const int maxScrollback = 800;
@@ -77,8 +82,8 @@ public class Terminal : MonoBehaviour, IPointerDownHandler {
     }
 
     void ParseCommand(string originalCommand) {
-        string command = originalCommand.ToLower();
-        string[] args = command.Split(' ');
+        string[] args = originalCommand.Split(' ');
+        args[0] = args[0].ToLower();
 
         if (args[0].Equals("pilot")) {
             if (args.Count() < 2) {
@@ -99,6 +104,10 @@ public class Terminal : MonoBehaviour, IPointerDownHandler {
             } else {
                 foreach (PlayerInput input in inputSources) {
                     if (input.gameObject.name.ToLower().Equals(args[1])) {
+                        CameraMainTarget(input.transform);
+                        // the way controls work here:
+                        // every PlayerInput/Entity pair corresponds to a Player in rewired
+                        // and we just swap Controller 0 between all the players
                         input.EnableHumanControl();
                     } else {
                         input.DisableHumanControl();
@@ -138,7 +147,52 @@ public class Terminal : MonoBehaviour, IPointerDownHandler {
                     }
                 }
             }
+        } else if (args[0].Equals("replay")) {
+            if (args[1].Equals("stop")) {
+                if (currentReplay || !currentReplay.IsPlaying()) {
+                    currentReplay.StopReplay();
+                    currentReplay = null;
+                } else {
+                    Log("No currently playing replay to stop.");
+                }
+                return;
+            }
+
+            // load datapath/arg1.json as a replay
+            Replay replay;
+            try {
+                replay = JsonConvert.DeserializeObject<Replay>(File.ReadAllText($"{Application.dataPath}/{args[1]}.json"));
+            } catch (System.IO.FileNotFoundException e) {
+                Log(e.Message);
+                return;
+            }
+            // for the puppet input, use arg2 or just self
+            GameObject puppet;
+            if (args.Length > 2) {
+                puppet = GameObject.Find(args[2]);
+            } else {
+                puppet = this.gameObject;
+            }
+            if (!puppet.GetComponent<PlayerInput>()) {
+                Log("No input module on "+puppet.name.ToLower()+". Try one of:");
+                Log("\n"+String.Join('\n', GameObject.FindObjectsOfType<PlayerInput>().Select(x=>x.name.ToLower()).ToList()));
+                return;
+            }
+            // add puppet input if not already there
+            AIPlayer ai = puppet.GetComponent<AIPlayer>();
+            if (!ai) {
+                ai = puppet.AddComponent<AIPlayer>();
+            }
+            // enable input on it
+            ai.PlayReplay(replay);
+            currentReplay = ai;
+            // then get the AIPlayer on it (or add it if it doesn't exist)
+            // and make it start playing this replay
         }
+    }
+
+    void CameraMainTarget(Transform t) {
+        GameObject.Find("PlayerTargetGroup").GetComponent<CinemachineTargetGroup>().m_Targets[0].target = t;
     }
 
     void ClearInput() {

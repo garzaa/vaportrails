@@ -615,16 +615,175 @@ MonoBehaviour:
         _modifierKey2: 0
         _modifierKey3: 0
     mouseMaps: []
-    customControllerMaps: []
+    customControllerMaps:
+    - id: 0
+      categoryId: 0
+      layoutId: 0
+      name: 
+      hardwareGuidString: 
+      customControllerUid: 1
+      actionElementMaps:
+      - _actionCategoryId: 0
+        _actionId: 0
+        _elementType: 0
+        _elementIdentifierId: 0
+        _axisRange: 0
+        _invert: 0
+        _axisContribution: 0
+        _keyboardKeyCode: 0
+        _modifierKey1: 0
+        _modifierKey2: 0
+        _modifierKey3: 0
+      - _actionCategoryId: 0
+        _actionId: 1
+        _elementType: 1
+        _elementIdentifierId: 1
+        _axisRange: 0
+        _invert: 0
+        _axisContribution: 0
+        _keyboardKeyCode: 0
+        _modifierKey1: 0
+        _modifierKey2: 0
+        _modifierKey3: 0
+      - _actionCategoryId: 0
+        _actionId: 4
+        _elementType: 1
+        _elementIdentifierId: 2
+        _axisRange: 0
+        _invert: 0
+        _axisContribution: 0
+        _keyboardKeyCode: 0
+        _modifierKey1: 0
+        _modifierKey2: 0
+        _modifierKey3: 0
+      - _actionCategoryId: 0
+        _actionId: 5
+        _elementType: 1
+        _elementIdentifierId: 3
+        _axisRange: 0
+        _invert: 0
+        _axisContribution: 0
+        _keyboardKeyCode: 0
+        _modifierKey1: 0
+        _modifierKey2: 0
+        _modifierKey3: 0
+      - _actionCategoryId: 0
+        _actionId: 6
+        _elementType: 1
+        _elementIdentifierId: 4
+        _axisRange: 0
+        _invert: 0
+        _axisContribution: 0
+        _keyboardKeyCode: 0
+        _modifierKey1: 0
+        _modifierKey2: 0
+        _modifierKey3: 0
+      - _actionCategoryId: 0
+        _actionId: 3
+        _elementType: 1
+        _elementIdentifierId: 5
+        _axisRange: 0
+        _invert: 0
+        _axisContribution: 0
+        _keyboardKeyCode: 0
+        _modifierKey1: 0
+        _modifierKey2: 0
+        _modifierKey3: 0
     customControllers:
-    - _name: CustomController0
-      _descriptiveName: CustomController0
-      _id: 0
-      _typeGuidString: 572b9596-94db-4fc6-9872-aa7a0a20b400
-      _elementIdentifiers: []
-      _axes: []
-      _buttons: []
-      _elementIdentifierIdCounter: 0
+    - _name: PuppetInput
+      _descriptiveName: PuppetInput
+      _id: 1
+      _typeGuidString: 4d0ffc02-5604-448d-b92f-bb3ba1844251
+      _elementIdentifiers:
+      - _id: 0
+        _name: Horizontal
+        _positiveName: 
+        _negativeName: 
+        _elementType: 0
+        _compoundElementType: 0
+      - _id: 1
+        _name: Jump
+        _positiveName: 
+        _negativeName: 
+        _elementType: 1
+        _compoundElementType: 0
+      - _id: 2
+        _name: Punch
+        _positiveName: 
+        _negativeName: 
+        _elementType: 1
+        _compoundElementType: 0
+      - _id: 3
+        _name: Kick
+        _positiveName: 
+        _negativeName: 
+        _elementType: 1
+        _compoundElementType: 0
+      - _id: 4
+        _name: Projectile
+        _positiveName: 
+        _negativeName: 
+        _elementType: 1
+        _compoundElementType: 0
+      - _id: 5
+        _name: Special
+        _positiveName: 
+        _negativeName: 
+        _elementType: 1
+        _compoundElementType: 0
+      _axes:
+      - elementIdentifierId: 0
+        name: Horizontal
+        range: 0
+        invert: 0
+        deadZone: 0
+        zero: 0
+        min: -1
+        max: 1
+        doNotCalibrateRange: 0
+        sensitivityType: 0
+        sensitivity: 1
+        sensitivityCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: -1
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        axisInfo:
+          _dataFormat: 0
+          _excludeFromPolling: 0
+          _specialAxisType: 0
+          _pollingDeadZone: -1
+      _buttons:
+      - elementIdentifierId: 1
+        name: Jump
+      - elementIdentifierId: 2
+        name: Punch
+      - elementIdentifierId: 3
+        name: Kick
+      - elementIdentifierId: 4
+        name: Projectile
+      - elementIdentifierId: 5
+        name: Special
+      _elementIdentifierIdCounter: 6
     controllerMapLayoutManagerRuleSets: []
     controllerMapEnablerRuleSets: []
     playerIdCounter: 3
@@ -639,8 +798,8 @@ MonoBehaviour:
     joystickMapIdCounter: 1
     keyboardMapIdCounter: 1
     mouseMapIdCounter: 0
-    customControllerMapIdCounter: 0
-    customControllerIdCounter: 1
+    customControllerMapIdCounter: 1
+    customControllerIdCounter: 2
     controllerMapLayoutManagerSetIdCounter: 0
     controllerMapEnablerSetIdCounter: 0
   _controllerDataFiles: {fileID: 11400000, guid: d21d2b20df8369642b76aafbb2576ba7, type: 2}

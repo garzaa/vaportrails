@@ -4,6 +4,7 @@ using System;
 using System.IO;
 using System.Collections;
 using System.Linq;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 
 public class InputRecorder : MonoBehaviour {
@@ -12,17 +13,15 @@ public class InputRecorder : MonoBehaviour {
 
 	public bool recording { get; private set; }
 	public GameObject recordingIndicator;
-	float lastPollTime;
 
 	Dictionary<int, int> axisValues = new Dictionary<int, int>();
 	HashSet<int> buttons = new HashSet<int>();
 	List<FrameInput> frameInputs = new List<FrameInput>();
 
-	Coroutine snapshotRoutine;
+	public const float pollInterval = 1f/12f;
+	float lastPollTime;
 
-	const float pollInterval = 1f/12f;
-
-	int counter = 0;
+	int recordingCounter = 0;
 
 	void Start() {
 		recordingIndicator.SetActive(false);
@@ -34,25 +33,31 @@ public class InputRecorder : MonoBehaviour {
 	}
 
 	public void StartRecording() {
-		counter++;
+		recordingCounter++;
 		lastPollTime = Time.unscaledTime;
 		recordingIndicator.SetActive(true);
+		recording = true;
 		input.GetPlayer().AddInputEventDelegate(SaveInput, Rewired.UpdateLoopType.Update);
-		snapshotRoutine = StartCoroutine(SaveSnapshot());
 	}
 
 	public void StopRecording() {
-		StopCoroutine(snapshotRoutine);
+		recording = false;
 		recordingIndicator.SetActive(false);
 		input.GetPlayer().RemoveInputEventDelegate(SaveInput);
-		string fileName = $"{Application.dataPath}/{input.name} {counter}.json";
-		Debug.Log(frameInputs.Count);
+		string fileName = $"{Application.dataPath}/{input.name}_{recordingCounter}.json";
 		File.WriteAllText(
 			fileName,
-			JsonUtility.ToJson(new FrameInputs(frameInputs), true)
+			JsonConvert.SerializeObject(new Replay(frameInputs), Formatting.Indented)
 		);
 		Terminal.Log("File saved as "+fileName);
 		frameInputs.Clear();
+	}
+
+	void Update() {
+		if (recording && (Time.unscaledTime > lastPollTime+pollInterval)) {
+			SaveSnapshot();
+			lastPollTime = Time.unscaledTime;
+		}
 	}
 
 	void SaveInput(Rewired.InputActionEventData e) {
@@ -65,31 +70,10 @@ public class InputRecorder : MonoBehaviour {
 		}
 	}
 
-	IEnumerator SaveSnapshot() {
-		yield return new WaitForSecondsRealtime(pollInterval);
+	void SaveSnapshot() {
 		FrameInput snapshot = new FrameInput(axisValues, buttons.ToList());
 		frameInputs.Add(snapshot);
-		axisValues.Clear();
-		buttons.Clear();
-		StartCoroutine(SaveSnapshot());
-	}
-}
-
-[Serializable]
-public struct FrameInput {
-	public Dictionary<int, int> axisValues;
-	public List<int> buttons;
-
-	public FrameInput(Dictionary<int, int> d, List<int> l) {
-		axisValues = d;
-		buttons = l;
-	}
-}
-
-public class FrameInputs {
-	public List<FrameInput> frameInputs;
-
-	public FrameInputs(List<FrameInput> inputs) {
-		frameInputs = inputs;
+		axisValues = new Dictionary<int, int>();
+		buttons = new HashSet<int>();
 	}
 }
