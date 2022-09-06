@@ -4,11 +4,11 @@ using System;
 
 [System.Serializable]
 public struct FrameInput {
-	public Dictionary<int, int> axisValues;
-	public List<int> buttons;
+	public Dictionary<int, int> actionIDAxes;
+	public List<int> actionIDs;
 
 	public FrameInput(Dictionary<int, int> d, List<int> l) {
-		axisValues = d;
-		buttons = l;
+		actionIDAxes = d;
+		actionIDs = l;
 	}
 }

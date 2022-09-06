@@ -214,8 +214,13 @@ MonoBehaviour:
       - _enabled: 1
         _categoryId: 0
         _layoutId: 0
-      _defaultCustomControllerMaps: []
-      _startingCustomControllers: []
+      _defaultCustomControllerMaps:
+      - _enabled: 1
+        _categoryId: 0
+        _layoutId: 0
+      _startingCustomControllers:
+      - _sourceId: 1
+        _tag: main
       _assignMouseOnStart: 1
       _assignKeyboardOnStart: 1
       _excludeFromControllerAutoAssignment: 0
@@ -690,8 +695,8 @@ MonoBehaviour:
         _modifierKey2: 0
         _modifierKey3: 0
     customControllers:
-    - _name: PuppetInput
-      _descriptiveName: PuppetInput
+    - _name: FalseInput
+      _descriptiveName: AI Input controller
       _id: 1
       _typeGuidString: 4d0ffc02-5604-448d-b92f-bb3ba1844251
       _elementIdentifiers:
@@ -799,7 +804,7 @@ MonoBehaviour:
     keyboardMapIdCounter: 1
     mouseMapIdCounter: 0
     customControllerMapIdCounter: 1
-    customControllerIdCounter: 2
+    customControllerIdCounter: 4
     controllerMapLayoutManagerSetIdCounter: 0
-    controllerMapEnablerSetIdCounter: 0
+    controllerMapEnablerSetIdCounter: 1
   _controllerDataFiles: {fileID: 11400000, guid: d21d2b20df8369642b76aafbb2576ba7, type: 2}

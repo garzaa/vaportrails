@@ -13,22 +13,30 @@ public class PuppetInput : MonoBehaviour {
 	// then give it a method for playing a replay class
 
 
-	CustomController controller;
-	Player thisPlayer;
+	public CustomController controller { get; private set; }
+	Player player;
 
 	HashSet<int> axes = new HashSet<int>();
 	HashSet<int> buttons = new HashSet<int>();
 
+	// TODO: this is something per-button, does it need to be set up?
+	// yeah take this out, unless it's possible to instantiate it for every action necessary
+	// is there a way to get it for a specific controller?
+	// do controller maps have to be added at runtime?
+	ActionElementMap actionElementMap;
+
 	void Start() {
+		Debug.Log("puppet input initializing");
 		int playerNum = GetComponent<PlayerInput>().playerNum;
-		thisPlayer = ReInput.players.GetPlayer(playerNum);
+		player = ReInput.players.GetPlayer(playerNum);
+		Debug.Log("player number "+player.id);
 	}
 
 	public void EnableInput() {
-		Terminal.Log(name + " ready for input");
-		thisPlayer.controllers.AddController(ControllerType.Custom, 0, true);
-		controller = thisPlayer.controllers.GetController<CustomController>(0);
-		Debug.Log("current controller: "+controller);
+		if (player == null) Start();
+		player.controllers.AddController(ReInput.controllers.CustomControllers[0], true);
+		controller = player.controllers.GetController<CustomController>(0);
+		Debug.Log("added custom controller: "+controller.name);
 	}
 
 	public void SetAxis(int axisId, float val) {

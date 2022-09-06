@@ -13,4 +13,8 @@ public class Replay {
 	public int length {
 		get { return frameInputs.Count; }
 	}
+
+	public static implicit operator bool(Replay instance) {
+        return instance != null;
+    }
 }

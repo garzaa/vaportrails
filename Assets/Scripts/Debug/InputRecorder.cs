@@ -14,9 +14,11 @@ public class InputRecorder : MonoBehaviour {
 	public bool recording { get; private set; }
 	public GameObject recordingIndicator;
 
-	Dictionary<int, int> axisValues = new Dictionary<int, int>();
-	HashSet<int> buttons = new HashSet<int>();
+	Dictionary<int, int> actionIDAxes = new Dictionary<int, int>();
+	HashSet<int> actionIDs = new HashSet<int>();
 	List<FrameInput> frameInputs = new List<FrameInput>();
+
+	// TODO: normalize input based on facing/not facing player (halve game state space)
 
 	public const float pollInterval = 1f/12f;
 	float lastPollTime;
@@ -63,17 +65,17 @@ public class InputRecorder : MonoBehaviour {
 	void SaveInput(Rewired.InputActionEventData e) {
 		if (Mathf.Abs(player.GetAxis(e.actionId)) > 0.3f) {
 			Debug.Log("saving axis");
-			axisValues[e.actionId] = (int) Mathf.Sign(player.GetAxis(e.actionId));
+			actionIDAxes[e.actionId] = (int) Mathf.Sign(player.GetAxis(e.actionId));
 		} else if (player.GetButtonDown(e.actionId)) {
 			Debug.Log("saving button");
-			buttons.Add(e.actionId);
+			actionIDs.Add(e.actionId);
 		}
 	}
 
 	void SaveSnapshot() {
-		FrameInput snapshot = new FrameInput(axisValues, buttons.ToList());
+		FrameInput snapshot = new FrameInput(actionIDAxes, actionIDs.ToList());
 		frameInputs.Add(snapshot);
-		axisValues = new Dictionary<int, int>();
-		buttons = new HashSet<int>();
+		actionIDAxes = new Dictionary<int, int>();
+		actionIDs = new HashSet<int>();
 	}
 }

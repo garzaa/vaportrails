@@ -8,6 +8,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.Linq;
 using Newtonsoft.Json;
+using Rewired;
 
 public class Terminal : MonoBehaviour, IPointerDownHandler {
 
@@ -16,14 +17,16 @@ public class Terminal : MonoBehaviour, IPointerDownHandler {
     public InputField input;
     public GameObject textOutputTemplate;
 
-    delegate void OnTerminalClose();
-    OnTerminalClose terminalClose;
+    delegate void TerminalCloseDelegate();
+    TerminalCloseDelegate terminalClose;
 
     InputRecorder inputRecorder;
-    AIPlayer currentReplay;
+    AIPlayer aiPlayer;
 
     static Terminal t;
     const int maxScrollback = 800;
+
+    Player currentPlayer;
 
     void Start() {
         t = this;
@@ -40,13 +43,28 @@ public class Terminal : MonoBehaviour, IPointerDownHandler {
         if (Input.GetKeyDown(KeyCode.BackQuote)) {
             terminalContainer.SetActive(!terminalContainer.activeSelf);
             if (terminalContainer.activeSelf) {
-                SelectInput();
-                ClearInput();
+                OnTerminalOpen();
             } else {
-                if (terminalClose != null) terminalClose();
-                ClearTerminalCloseListeners();
+                OnTerminalClose();
             }
         }
+    }
+
+    void OnTerminalOpen() {
+        SelectInput();
+        ClearInput();
+        foreach (PlayerInput input in GameObject.FindObjectsOfType<PlayerInput>()) {
+            if (input.GetPlayer().controllers.hasKeyboard) {
+                currentPlayer = input.GetPlayer();
+                currentPlayer.controllers.hasKeyboard = false;
+            }
+        }
+    }
+
+    void OnTerminalClose() {
+        if (terminalClose != null) terminalClose();
+        ClearTerminalCloseListeners();
+        currentPlayer.controllers.hasKeyboard = true;
     }
 
     public void OnPointerDown(PointerEventData eventData) {
@@ -73,12 +91,7 @@ public class Terminal : MonoBehaviour, IPointerDownHandler {
 		Log("<color='#c7cfdd'>"+command+"</color>");
 		ClearInput();
 		SelectInput();
-		try {
-            ParseCommand(command);
-        } catch (System.Exception e) {
-            Log(e.Message);
-            throw e;
-        } 
+		ParseCommand(command);
     }
 
     void ParseCommand(string originalCommand) {
@@ -149,9 +162,9 @@ public class Terminal : MonoBehaviour, IPointerDownHandler {
             }
         } else if (args[0].Equals("replay")) {
             if (args[1].Equals("stop")) {
-                if (currentReplay || !currentReplay.IsPlaying()) {
-                    currentReplay.StopReplay();
-                    currentReplay = null;
+                if (aiPlayer || !aiPlayer.currentReplay) {
+                    aiPlayer.StopReplay();
+                    aiPlayer = null;
                 } else {
                     Log("No currently playing replay to stop.");
                 }
@@ -185,7 +198,7 @@ public class Terminal : MonoBehaviour, IPointerDownHandler {
             }
             // enable input on it
             ai.PlayReplay(replay);
-            currentReplay = ai;
+            aiPlayer = ai;
             // then get the AIPlayer on it (or add it if it doesn't exist)
             // and make it start playing this replay
         }
