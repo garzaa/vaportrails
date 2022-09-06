@@ -171,7 +171,6 @@ public class Terminal : MonoBehaviour, IPointerDownHandler {
                 return;
             }
 
-            // load datapath/arg1.json as a replay
             Replay replay;
             try {
                 replay = JsonConvert.DeserializeObject<Replay>(File.ReadAllText($"{Application.dataPath}/{args[1]}.json"));
@@ -179,28 +178,25 @@ public class Terminal : MonoBehaviour, IPointerDownHandler {
                 Log(e.Message);
                 return;
             }
-            // for the puppet input, use arg2 or just self
+
             GameObject puppet;
             if (args.Length > 2) {
                 puppet = GameObject.Find(args[2]);
             } else {
-                puppet = this.gameObject;
-            }
-            if (!puppet.GetComponent<PlayerInput>()) {
-                Log("No input module on "+puppet.name.ToLower()+". Try one of:");
-                Log("\n"+String.Join('\n', GameObject.FindObjectsOfType<PlayerInput>().Select(x=>x.name.ToLower()).ToList()));
+                Log("replay needs a target");
                 return;
             }
-            // add puppet input if not already there
+            if (!puppet.GetComponent<PlayerInput>()) {
+                Log("No input module on "+puppet.name+". Try one of:");
+                Log("\n"+String.Join('\n', GameObject.FindObjectsOfType<PlayerInput>().Select(x=>x.name).ToList()));
+                return;
+            }
             AIPlayer ai = puppet.GetComponent<AIPlayer>();
             if (!ai) {
                 ai = puppet.AddComponent<AIPlayer>();
             }
-            // enable input on it
             ai.PlayReplay(replay);
             aiPlayer = ai;
-            // then get the AIPlayer on it (or add it if it doesn't exist)
-            // and make it start playing this replay
         }
     }
 

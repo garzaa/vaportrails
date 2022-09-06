@@ -10,6 +10,7 @@ public class PlayerController : Entity, IAttackLandListener {
 	[SerializeField] ParticleSystem speedDust;
 	#pragma warning restore 0649
 
+	// TODO: move this to a ScriptableObject?
 	public const float runSpeed = 4.5f;
     const float groundAcceleration = 175;
     const float airAcceleration = 80;

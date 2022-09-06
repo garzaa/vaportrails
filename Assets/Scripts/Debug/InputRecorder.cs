@@ -19,6 +19,9 @@ public class InputRecorder : MonoBehaviour {
 	List<FrameInput> frameInputs = new List<FrameInput>();
 
 	// TODO: normalize input based on facing/not facing player (halve game state space)
+	// TODO: combine these with the game states?
+	// or just have this
+	// maybe
 
 	public const float pollInterval = 1f/12f;
 	float lastPollTime;
