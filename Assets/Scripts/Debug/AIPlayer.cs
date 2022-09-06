@@ -29,7 +29,7 @@ public class AIPlayer : MonoBehaviour {
 	}
 
 	public void PlayReplay(Replay replay) {
-		if (!puppetInput) Start();
+		Start();
 		puppetInput.EnableInput();
 		puppetController = puppetInput.controller;
 		startTime = Time.unscaledTime;
@@ -72,14 +72,10 @@ public class AIPlayer : MonoBehaviour {
 	void AddAxisMap(int actionID) {
 		if (!axisMaps.ContainsKey(actionID)) {
 			ActionElementMap map = player.controllers.maps.GetFirstAxisMapWithAction(
-				puppetController,
+				puppetController.type,
 				actionID,
-				skipDisabledMaps: true
+				skipDisabledMaps: false
 			);
-			if (map == null) {
-				Debug.Log($"action id {actionID} is registered but doesn't have a map!");
-			}
-			Debug.Log("adding lookup table entry from action id "+actionID+" to axis "+map.elementIdentifierName);
 			axisMaps[actionID] = map.elementIdentifierId;
 		}
 	}
@@ -87,11 +83,10 @@ public class AIPlayer : MonoBehaviour {
 	void AddButtonMap(int actionID) {
 		if (!buttonMaps.ContainsKey(actionID)) {
 			ActionElementMap map = player.controllers.maps.GetFirstButtonMapWithAction(
-				puppetController,
+				puppetController.type,
 				actionID,
-				skipDisabledMaps: true
+				skipDisabledMaps: false
 			);
-			Debug.Log("adding lookup table entry from action id "+actionID+" to button "+map.elementIdentifierName);
 			buttonMaps[actionID] = map.elementIdentifierId;
 		}
 	}

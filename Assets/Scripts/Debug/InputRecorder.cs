@@ -39,7 +39,11 @@ public class InputRecorder : MonoBehaviour {
 		lastPollTime = Time.unscaledTime;
 		recordingIndicator.SetActive(true);
 		recording = true;
-		input.GetPlayer().AddInputEventDelegate(SaveInput, Rewired.UpdateLoopType.Update);
+		input.GetPlayer().AddInputEventDelegate(
+			SaveInput,
+			Rewired.UpdateLoopType.Update,
+			InputActionEventType.AxisActive
+		);
 	}
 
 	public void StopRecording() {
@@ -62,12 +66,10 @@ public class InputRecorder : MonoBehaviour {
 		}
 	}
 
-	void SaveInput(Rewired.InputActionEventData e) {
-		if (Mathf.Abs(player.GetAxis(e.actionId)) > 0.3f) {
-			Debug.Log("saving axis");
-			actionIDAxes[e.actionId] = (int) Mathf.Sign(player.GetAxis(e.actionId));
-		} else if (player.GetButtonDown(e.actionId)) {
-			Debug.Log("saving button");
+	void SaveInput(InputActionEventData e) {
+		if (ReInput.mapping.GetAction(e.actionId).type.Equals(InputActionType.Axis)) {
+			actionIDAxes[e.actionId] = (int) Mathf.Sign(e.GetAxis());
+		} else {
 			actionIDs.Add(e.actionId);
 		}
 	}

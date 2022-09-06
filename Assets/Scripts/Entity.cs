@@ -175,7 +175,7 @@ public class Entity : MonoBehaviour, IHitListener {
 		}
 		if (wallData.hitWall) {
 			landNoise.PlayFrom(this.gameObject);
-			if (!groundData.hitGround) {
+			if (groundData.distance > 0.5f) {
 				GameObject g = Instantiate(landDust);
 				bool wallRight = wallData.direction > 0;
 				float x = wallRight ? collider2d.bounds.max.x : collider2d.bounds.min.x;

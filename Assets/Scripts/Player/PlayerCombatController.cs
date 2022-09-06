@@ -55,6 +55,12 @@ public class PlayerCombatController : MonoBehaviour, IAttackLandListener, IHitLi
 		targetingSystem = GetComponentInChildren<PlayerTargetingSystem>();
 		input = GetComponent<PlayerInput>();
 		collider2d = GetComponent<Collider2D>();
+		currentEP.Initialize();
+		currentEP.OnChange.AddListener(OnEnergyChange);
+		maxEP.Initialize();
+		chargeIndicator.SetActive(false);
+		techEffect = Resources.Load<GameObject>("Runtime/TechEffect");
+
 		groundAttackGraph.Initialize(
 			this,
 			animator,
@@ -69,11 +75,6 @@ public class PlayerCombatController : MonoBehaviour, IAttackLandListener, IHitLi
 			GetComponent<AirAttackTracker>(),
 			input
 		);
-		currentEP.Initialize();
-		currentEP.OnChange.AddListener(OnEnergyChange);
-		maxEP.Initialize();
-		chargeIndicator.SetActive(false);
-		techEffect = Resources.Load<GameObject>("Runtime/TechEffect");
 	}
 
 	public void OnAttackLand(Hurtbox hurtbox) {

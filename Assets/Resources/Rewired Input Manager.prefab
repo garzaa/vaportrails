@@ -220,7 +220,7 @@ MonoBehaviour:
         _layoutId: 0
       _startingCustomControllers:
       - _sourceId: 1
-        _tag: main
+        _tag: 
       _assignMouseOnStart: 1
       _assignKeyboardOnStart: 1
       _excludeFromControllerAutoAssignment: 0
@@ -248,7 +248,9 @@ MonoBehaviour:
       - _enabled: 1
         _categoryId: 0
         _layoutId: 0
-      _startingCustomControllers: []
+      _startingCustomControllers:
+      - _sourceId: 1
+        _tag: 
       _assignMouseOnStart: 0
       _assignKeyboardOnStart: 0
       _excludeFromControllerAutoAssignment: 0
@@ -694,6 +696,17 @@ MonoBehaviour:
         _modifierKey1: 0
         _modifierKey2: 0
         _modifierKey3: 0
+      - _actionCategoryId: 0
+        _actionId: 2
+        _elementType: 0
+        _elementIdentifierId: 6
+        _axisRange: 0
+        _invert: 0
+        _axisContribution: 0
+        _keyboardKeyCode: 0
+        _modifierKey1: 0
+        _modifierKey2: 0
+        _modifierKey3: 0
     customControllers:
     - _name: FalseInput
       _descriptiveName: AI Input controller
@@ -701,44 +714,90 @@ MonoBehaviour:
       _typeGuidString: 4d0ffc02-5604-448d-b92f-bb3ba1844251
       _elementIdentifiers:
       - _id: 0
-        _name: Horizontal
+        _name: AI Horizontal
         _positiveName: 
         _negativeName: 
         _elementType: 0
         _compoundElementType: 0
       - _id: 1
-        _name: Jump
+        _name: AI Jump
         _positiveName: 
         _negativeName: 
         _elementType: 1
         _compoundElementType: 0
       - _id: 2
-        _name: Punch
+        _name: AI Punch
         _positiveName: 
         _negativeName: 
         _elementType: 1
         _compoundElementType: 0
       - _id: 3
-        _name: Kick
+        _name: AI Kick
         _positiveName: 
         _negativeName: 
         _elementType: 1
         _compoundElementType: 0
       - _id: 4
-        _name: Projectile
+        _name: AI Projectile
         _positiveName: 
         _negativeName: 
         _elementType: 1
         _compoundElementType: 0
       - _id: 5
-        _name: Special
+        _name: AI Special
         _positiveName: 
         _negativeName: 
         _elementType: 1
         _compoundElementType: 0
+      - _id: 6
+        _name: AI Vertical
+        _positiveName: 
+        _negativeName: 
+        _elementType: 0
+        _compoundElementType: 0
       _axes:
       - elementIdentifierId: 0
-        name: Horizontal
+        name: AI Horizontal
+        range: 0
+        invert: 0
+        deadZone: 0
+        zero: 0
+        min: -1
+        max: 1
+        doNotCalibrateRange: 0
+        sensitivityType: 0
+        sensitivity: 1
+        sensitivityCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: -1
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        axisInfo:
+          _dataFormat: 0
+          _excludeFromPolling: 0
+          _specialAxisType: 0
+          _pollingDeadZone: -1
+      - elementIdentifierId: 6
+        name: AI Vertical
         range: 0
         invert: 0
         deadZone: 0
@@ -779,16 +838,16 @@ MonoBehaviour:
           _pollingDeadZone: -1
       _buttons:
       - elementIdentifierId: 1
-        name: Jump
+        name: AI Jump
       - elementIdentifierId: 2
-        name: Punch
+        name: AI Punch
       - elementIdentifierId: 3
-        name: Kick
+        name: AI Kick
       - elementIdentifierId: 4
-        name: Projectile
+        name: AI Projectile
       - elementIdentifierId: 5
-        name: Special
-      _elementIdentifierIdCounter: 6
+        name: AI Special
+      _elementIdentifierIdCounter: 7
     controllerMapLayoutManagerRuleSets: []
     controllerMapEnablerRuleSets: []
     playerIdCounter: 3
