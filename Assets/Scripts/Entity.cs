@@ -171,7 +171,7 @@ public class Entity : MonoBehaviour, IHitListener {
 			LandDust();
 			canGroundHitEffect = false;
 			this.WaitAndExecute(() => canGroundHitEffect=true, 0.1f);
-			if (stunned) StunBounce();
+			if (stunned && !wallData.touchingWall) StunBounce();
 		}
 		if (wallData.hitWall) {
 			landNoise.PlayFrom(this.gameObject);
@@ -183,7 +183,7 @@ public class Entity : MonoBehaviour, IHitListener {
 				g.transform.eulerAngles = new Vector3(0, 0, wallRight ? 90 : -90);
 			}
 			OnWallHit();
-			if (stunned) StunBounce();
+			if (stunned && !groundData.grounded) StunBounce();
 		}
 		RectifyEntityCollision();
 		if (stunRotation) {

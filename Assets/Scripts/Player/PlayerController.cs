@@ -10,22 +10,15 @@ public class PlayerController : Entity, IAttackLandListener {
 	[SerializeField] ParticleSystem speedDust;
 	#pragma warning restore 0649
 
-	// TODO: move this to a ScriptableObject?
-	public const float runSpeed = 4.5f;
-    const float groundAcceleration = 175;
-    const float airAcceleration = 80;
-    const float jumpCutoffVelocity = 2f;
-    const float jumpForce = 8;
-    const float airFriction = 0.3f;
-    const float slideFrictionMod = 0.05f;
+	public MovementStats movement;
+
     const float bufferDuration = 0.1f;
-	const float maxFallSpeed = -14f;
-	const float maxWallSlideSpeed = -4f;
+    const float jumpCutoffVelocity = 2f;
 	const float dashCooldown = 0.6f;
 	const float dashSpeed = 6f;
 	float airControlMod = 1;
 	float fMod = 1;
-	float fModRecoveryTime = 1.5f;
+	const float fModRecoveryTime = 1.5f;
 
 	public bool frozeInputs { 
 		get {
@@ -73,7 +66,7 @@ public class PlayerController : Entity, IAttackLandListener {
 		dashSound = Resources.Load<AudioResource>("Runtime/DashSound");
 		fastfallSpark = Resources.Load<GameObject>("Runtime/FastfallSpark");
 		// p = mv
-		jumpSpeed = jumpForce / rb2d.mass;
+		jumpSpeed = movement.jumpForce / rb2d.mass;
 	}
 
 	override protected void Update() {
@@ -120,9 +113,7 @@ public class PlayerController : Entity, IAttackLandListener {
 			RefreshAirMovement();
 		}
 
-		if (wallData.hitWall) {
-			OnWallHit();
-		} else if (wallData.leftWall) {
+		if (wallData.leftWall) {
 			justLeftWall = true;
 			this.WaitAndExecute(()=>justLeftWall=false, bufferDuration*2);
 		}
@@ -154,10 +145,10 @@ public class PlayerController : Entity, IAttackLandListener {
 	}
 
 	void ApplyMovement() {
-		speeding = Mathf.Abs(rb2d.velocity.x) > runSpeed;
+		speeding = Mathf.Abs(rb2d.velocity.x) > movement.runSpeed;
 
 		void SlowOnFriction() {
-            float f = groundData.grounded ? groundData.groundCollider.friction : airFriction;
+            float f = groundData.grounded ? groundData.groundCollider.friction : movement.airFriction;
             rb2d.velocity = new Vector2(rb2d.velocity.x * (1 - (f*f*fMod)), rb2d.velocity.y);
         }
 
@@ -171,10 +162,10 @@ public class PlayerController : Entity, IAttackLandListener {
 			if (!speeding || (movingForwards && inputBackwards) || (movingBackwards && inputForwards)) {
 				if (groundData.grounded) {
 					// if ground is a platform that's been destroyed/disabled
-					float f = groundData.groundCollider != null ? groundData.groundCollider.friction : airFriction;
-					rb2d.AddForce(Vector2.right * rb2d.mass * groundAcceleration * inputX * f*f);
+					float f = groundData.groundCollider != null ? groundData.groundCollider.friction : movement.airFriction;
+					rb2d.AddForce(Vector2.right * rb2d.mass * movement.gndAcceleration * inputX * f*f);
 				} else {	
-					rb2d.AddForce(Vector2.right * rb2d.mass * airAcceleration * inputX * airControlMod);
+					rb2d.AddForce(Vector2.right * rb2d.mass * movement.airAcceleration * inputX * airControlMod);
 				}
 			}
         } else {
@@ -192,12 +183,12 @@ public class PlayerController : Entity, IAttackLandListener {
             SlowOnFriction();
         }
 
-		if (rb2d.velocity.y < maxFallSpeed) {
-			rb2d.velocity = new Vector2(rb2d.velocity.x, maxFallSpeed);
+		if (rb2d.velocity.y < movement.maxFallSpeed) {
+			rb2d.velocity = new Vector2(rb2d.velocity.x, movement.maxFallSpeed);
 		}
 
-		if (wallData.touchingWall && rb2d.velocity.y < maxWallSlideSpeed) {
-			rb2d.velocity = new Vector2(rb2d.velocity.x, maxWallSlideSpeed);
+		if (wallData.touchingWall && rb2d.velocity.y < movement.maxWallSlideSpeed) {
+			rb2d.velocity = new Vector2(rb2d.velocity.x, movement.maxWallSlideSpeed);
 		}
 
 		// fast fall
@@ -206,12 +197,12 @@ public class PlayerController : Entity, IAttackLandListener {
 			&& !wallData.touchingWall
 			&& input.VerticalInput() == -1f
 			&& rb2d.velocity.y<0
-			&& rb2d.velocity.y > maxFallSpeed*0.75f
+			&& rb2d.velocity.y > movement.maxFallSpeed*0.75f
 			&& !stickDownLastFrame
 		) {
 			Vector3 offset = ((Vector3) Random.insideUnitCircle + Vector3.down) * 0.5f;
 			Instantiate(fastfallSpark, transform.position + offset, Quaternion.identity);
-			rb2d.velocity = new Vector2(rb2d.velocity.x, maxFallSpeed * 0.75f);
+			rb2d.velocity = new Vector2(rb2d.velocity.x, movement.maxFallSpeed * 0.75f);
 		}
 
 		if (!frozeInputs) {
@@ -246,7 +237,7 @@ public class PlayerController : Entity, IAttackLandListener {
 			fMod = 0;
 			// dash at the max direction indicated by the stick
 			// if already moving in that way, make it additive
-			float speed = runSpeed+dashSpeed;
+			float speed = movement.runSpeed+dashSpeed;
 			if ((inputForwards && movingForwards) || (inputBackwards && movingBackwards)) {
 				speed = Mathf.Max(Mathf.Abs(rb2d.velocity.x)+dashSpeed, speed);
 			}
@@ -446,7 +437,7 @@ public class PlayerController : Entity, IAttackLandListener {
 
 	public bool IsSpeeding() {
 		// this can jitter due to fixed update stuff
-		return Mathf.Abs(rb2d.velocity.x) > runSpeed + 1.5f;
+		return Mathf.Abs(rb2d.velocity.x) > movement.runSpeed + 1.5f;
 	}
 
 	public void SetFmod(float f) {

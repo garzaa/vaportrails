@@ -111,12 +111,6 @@ public class PlayerCombatController : MonoBehaviour, IAttackLandListener, IHitLi
 		if (currentGraph != null) {
 			currentGraph.UpdateGrounded(groundData.grounded);
 			currentGraph.Update();
-			if (wallData.hitWall) {
-				if (currentGraph) currentGraph.ExitGraph();
-			}
-			if (groundData.hitGround) {
-				RefreshAirAttacks();
-			}
 		}
 
 		if (groundData.hitGround || wallData.hitWall) {
@@ -160,7 +154,7 @@ public class PlayerCombatController : MonoBehaviour, IAttackLandListener, IHitLi
 			);
 		} else if (groundData.grounded) {
 			rb2d.velocity = new Vector2(
-				PlayerController.runSpeed * Mathf.Sign(input.HorizontalInput()),
+				player.movement.runSpeed * Mathf.Sign(input.HorizontalInput()),
 				0
 			);
 			Instantiate(

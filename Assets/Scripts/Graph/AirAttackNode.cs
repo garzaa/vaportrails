@@ -17,12 +17,12 @@ public class AirAttackNode : AttackNode {
     }
 
     override public void NodeUpdate(int currentFrame, float clipTime, AttackBuffer buffer) {
-        if (buffer.Ready() && (currentFrame>=attackData.IASA || cancelable)) {
+        if (attackGraph.grounded) {
+            OnGrounded();
+        } else if (buffer.Ready() && (currentFrame>=attackData.IASA || cancelable)) {
             MoveNextNode(buffer);
         } else if (clipTime >= 1) {
             attackGraph.ExitGraph();
-        } else if (attackGraph.grounded) {
-            OnGrounded();
         }
     }
 
