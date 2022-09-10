@@ -3,26 +3,16 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
-public class PlayerCombatController : MonoBehaviour, IAttackLandListener, IHitListener {
-	const float combatStanceLength = 4f;
-	float combatLayerWeight = 0f;
-
-	EntityController player;
-	GroundData groundData;
-	PlayerAttackGraph currentGraph;
-	Rigidbody2D rb2d;
-	WallCheckData wallData;
-	Animator animator;
-	AttackHitbox attackHitbox;
-	Gun gunEyes;
-	PlayerTargetingSystem targetingSystem;
-	PlayerInput input;
-
-	public PlayerAttackGraph groundAttackGraph;
-	public PlayerAttackGraph airAttackGraph;
-
+public class PlayerCombatController : CombatController {
 	public SubscriptableInt currentEP;
 	public SubscriptableInt maxEP;
+
+	Gun gunEyes;
+	PlayerTargetingSystem targetingSystem;
+
+	const float combatStanceLength = 4f;
+	float combatLayerWeight = 0f;
+	bool canFlipKick = true;
 
 	#pragma warning disable 0649
 	[SerializeField] GameObject chargeIndicator;
@@ -33,149 +23,28 @@ public class PlayerCombatController : MonoBehaviour, IAttackLandListener, IHitLi
 	const string fullMessage = "FULLY CHARGED";
 	const string emptyMessage = "SOLENOID EMPTY";
 
-	public float diStrength = 3f;
-
-	bool canFlipKick = true;
-
-	const float techWindow = 0.3f;
-	const float techLockoutLength = 0.6f;
-	bool canTech = false;
-	bool techLockout = false;
-	GameObject techEffect;
-	Collider2D collider2d;
-
-	void Start() {
-		player = GetComponent<EntityController>();
-		groundData = GetComponent<GroundCheck>().groundData;
-		rb2d = GetComponent<Rigidbody2D>();
-		wallData = GetComponent<WallCheck>().wallData;
-		animator = GetComponent<Animator>();
-		attackHitbox = GetComponentInChildren<AttackHitbox>();
+	protected override void Start() {
+		base.Start();
 		gunEyes = GetComponentInChildren<Gun>();
 		targetingSystem = GetComponentInChildren<PlayerTargetingSystem>();
-		input = GetComponent<PlayerInput>();
-		collider2d = GetComponent<Collider2D>();
 		currentEP.Initialize();
 		currentEP.OnChange.AddListener(OnEnergyChange);
 		maxEP.Initialize();
 		chargeIndicator.SetActive(false);
-		techEffect = Resources.Load<GameObject>("Runtime/TechEffect");
-
-		groundAttackGraph.Initialize(
-			this,
-			animator,
-			GetComponent<AttackBuffer>(),
-			GetComponent<AirAttackTracker>(),
-			input
-		);
-		airAttackGraph.Initialize(
-			this,
-			animator,
-			GetComponent<AttackBuffer>(),
-			GetComponent<AirAttackTracker>(),
-			input
-		);
-	}
-
-	public void OnAttackLand(Hurtbox hurtbox) {
-		if (currentGraph) currentGraph.OnAttackLand();
 	}
 
 	public void OnEnergyChange(int energy) {
 		targetingSystem.enabled = (energy > 0);
 	}
 
-	void Update() {
-		if (!player.frozeInputs && currentGraph == null) {
-			if (input.ButtonDown(Buttons.PUNCH) || input.ButtonDown(Buttons.KICK)) {
-				if (groundData.grounded) {
-					EnterAttackGraph(groundAttackGraph);
-				} else if (!wallData.touchingWall) {
-					EnterAttackGraph(airAttackGraph);
-				}
-			} else if (
-				(!player.frozeInputs || currentGraph!=null)
-				&& input.ButtonDown(Buttons.SPECIAL)
-				&& !wallData.touchingWall
-			) {
-				// dash should take priority over everything else
-				// then orca flip only if there's a sizeable up input
-				if (input.VerticalInput() > 0.5) {
-					FlipKick();
-				}
+	protected override void Update() {
+		base.Update();
 
-				// then meteor only if there's barely any down input
-			}
-		}
-
-		if (currentGraph != null) {
-			currentGraph.UpdateGrounded(groundData.grounded);
-			currentGraph.Update();
-		}
-
-		if (groundData.hitGround || wallData.hitWall) {
-			RefreshAirAttacks();
-		}
-
+		Shoot();
+	
 		if (combatLayerWeight == 0) {
 			animator.SetLayerWeight(1, Mathf.MoveTowards(animator.GetLayerWeight(1), combatLayerWeight, 4*Time.deltaTime));
 		}
-
-		Shoot();
-
-		if (!techLockout && player.stunned && !canTech) {
-			if (input.ButtonDown(Buttons.SPECIAL)) {
-				canTech = true;
-				Invoke(nameof(EndTechWindow), techWindow);
-			}
-		}
-
-		CheckForTech();
-	}
-
-	void CheckForTech() {
-		if (player.stunned && (groundData.hitGround || wallData.hitWall)) {
-			if (!techLockout && canTech) {
-				OnSuccessfulTech();
-			}
-		}
-	}
-
-	void OnSuccessfulTech() {
-		if (wallData.touchingWall) {
-			rb2d.velocity = Vector2.zero;
-			player.RefreshAirMovement();
-			RefreshAirAttacks();
-			Instantiate(
-				techEffect,
-				transform.position + new Vector3(wallData.direction * collider2d.bounds.extents.x, 0, 0),
-				Quaternion.identity,
-				null
-			);
-		} else if (groundData.grounded) {
-			rb2d.velocity = new Vector2(
-				player.movement.runSpeed * Mathf.Sign(input.HorizontalInput()),
-				0
-			);
-			Instantiate(
-				techEffect,
-				transform.position + Vector3.down*collider2d.bounds.extents.y,
-				Quaternion.identity,
-				null
-			);
-		}
-		animator.SetTrigger("TechSuccess");
-		GetComponent<EntityShader>().FlashCyan();
-		canTech = false;
-		CancelInvoke(nameof(EndTechWindow));
-		player.CancelStun();
-		StartAttackStance();
-	}
-
-	void EndTechWindow() {
-		canTech = false;
-		techLockout = true;
-		this.WaitAndExecute(() => techLockout = false, techLockoutLength);
 	}
 
 	void Shoot() {
@@ -189,18 +58,7 @@ public class PlayerCombatController : MonoBehaviour, IAttackLandListener, IHitLi
 		}
 	}
 
-	public void OnHit(AttackHitbox attack) {
-		// sideways DI is stronger than towards/away
-		// (sin(2x - (1/4 circle))) * 0.4 + 0.6
-		// ↑ this is a sinewave between 0.2 and 1.0 that peaks at (1, 0) and (-1, 0)
-		Vector2 selfKnockback = player.GetKnockback(attack);
-		Vector2 leftStick = input.LeftStick();
-		float angle = Vector2.SignedAngle(selfKnockback, leftStick);
-		float diMagnitude = (Mathf.Cos(angle * Mathf.Deg2Rad)* 0.4f) + 0.6f;
-		rb2d.velocity += leftStick * diMagnitude * diStrength;
-	}
-
-	public void FlipKick() {
+	void FlipKick() {
 		if (!groundData.grounded) {
 			if (!canFlipKick) return;
 			canFlipKick = false;
@@ -208,40 +66,6 @@ public class PlayerCombatController : MonoBehaviour, IAttackLandListener, IHitLi
 			rb2d.velocity = new Vector2(rb2d.velocity.x, Mathf.Max(rb2d.velocity.y, player.jumpSpeed));
 			animator.Play("OrcaFlip");
 		}
-	}
-
-	public void EnterAttackGraph(PlayerAttackGraph graph, CombatNode entryNode=null) {
-		player.OnAttackGraphEnter();
-		currentGraph = graph;
-		StartAttackStance();
-		graph.EnterGraph(entryNode);
-	}
-
-	public void OnAttackNodeEnter(CombatNode combatNode) {
-		if (combatNode is AttackNode) {
-			AttackNode attackNode = combatNode as AttackNode;
-			player.OnAttackNodeEnter(attackNode.attackData);
-			attackHitbox.data = attackNode.attackData;
-		} else {
-			player.OnAttackNodeEnter(null);
-		}
-	}
-
-	public void OnAttackNodeExit() {
-		player.OnAttackNodeExit();
-	}
-
-	public void OnGraphExit() {
-		player.OnAttackGraphExit();
-		currentGraph = null;
-	}
-
-	public float GetSpeed() {
-		return Mathf.Abs(rb2d.velocity.x);
-	}
-
-	public bool IsSpeeding() {
-		return player.IsSpeeding();
 	}
 
 	void StartAttackStance() {
@@ -257,7 +81,8 @@ public class PlayerCombatController : MonoBehaviour, IAttackLandListener, IHitLi
 		combatLayerWeight = 0;
 	}
 
-	public void RefreshAirAttacks() {
+	public override void RefreshAirAttacks() {
+		base.RefreshAirAttacks();
 		canFlipKick = true;
 	}
 
@@ -282,4 +107,32 @@ public class PlayerCombatController : MonoBehaviour, IAttackLandListener, IHitLi
 			emptyChargeSound.PlayFrom(gameObject);
 		}
 	}
+
+	protected override void CheckAttackInputs() {
+		base.CheckAttackInputs();
+		if (
+			(!player.frozeInputs || currentGraph!=null)
+			&& input.ButtonDown(Buttons.SPECIAL)
+			&& !wallData.touchingWall
+		) {
+			// dash should take priority over everything else
+			// then orca flip only if there's a sizeable up input
+			if (input.VerticalInput() > 0.5) {
+				FlipKick();
+			}
+
+			// then meteor only if there's barely any down input
+		}
+	}
+
+	protected override void OnTech() {
+		base.OnTech();
+		StartAttackStance();
+	}
+
+	public override void EnterAttackGraph(PlayerAttackGraph graph, CombatNode entryNode = null) {
+		base.EnterAttackGraph(graph, entryNode);
+		StartAttackStance();
+	}
+
 }

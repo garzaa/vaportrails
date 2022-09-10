@@ -28,7 +28,7 @@ public class ValController : EntityController, IAttackLandListener {
 		if (frozeInputs && !currentAttack) return;
 
 		if (input.ButtonDown(Buttons.SPECIAL) && canDash && input.HasHorizontalInput() && input.VerticalInput()<0.5) {
-			if (!groundData.grounded && airDashes <= 0) return;
+			if (!groundData.grounded && currentAirDashes <= 0) return;
 			dashSound.PlayFrom(gameObject);
 			animator.SetTrigger(inputBackwards ? "BackDash" : "Dash");
 			entityShader.FlashWhite();
@@ -45,7 +45,7 @@ public class ValController : EntityController, IAttackLandListener {
 				speed * Mathf.Sign(input.HorizontalInput()),
 				Mathf.Max(rb2d.velocity.y, 0)
 			);
-			if (!groundData.grounded) airDashes--;
+			if (!groundData.grounded) currentAirDashes--;
 			this.WaitAndExecute(EndDashCooldown, movement.dashCooldown);
 		}
 	}

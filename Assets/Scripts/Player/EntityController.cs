@@ -14,9 +14,10 @@ public class EntityController : Entity {
 
     const float bufferDuration = 0.1f;
     const float jumpCutoffVelocity = 2f;
+	const float fModRecoveryTime = 1.5f;
+
 	float airControlMod = 1;
 	protected float fMod = 1;
-	const float fModRecoveryTime = 1.5f;
 
 	public bool frozeInputs { 
 		get {
@@ -26,6 +27,8 @@ public class EntityController : Entity {
 			_frozeInputs = value;
 		}
 	}
+	public float jumpSpeed { get; private set; }
+	
 	private bool _frozeInputs;
 
 	protected bool inputBackwards;
@@ -34,6 +37,9 @@ public class EntityController : Entity {
 	protected bool movingForwards;
 	// dash stuff is provided but it's up to the subcontroller to implement it
 	protected bool dashing;
+	protected int currentAirJumps;
+	protected int currentAirDashes;
+
 	bool justWalkedOffCliff;
 	bool justLeftWall;
 	bool bufferedJump;
@@ -41,17 +47,14 @@ public class EntityController : Entity {
 	bool canShortHop;
 	float inputX;
 	float landingRecovery = 1;
-	protected int airJumps;
-	protected int airDashes;
-	public float jumpSpeed { get; private set; }
 	float fallStart;
 	float ySpeedLastFrame;
 	bool stickDownLastFrame;
 
-	ToonMotion toonMotion;
-	GameObject wallJumpDust;
 	protected AttackData currentAttack;
 	protected PlayerInput input;
+	ToonMotion toonMotion;
+	GameObject wallJumpDust;
 	GameObject fastfallSpark;
 
 	override protected void Awake() {
@@ -266,7 +269,7 @@ public class EntityController : Entity {
 				return;
 			}
 			BufferJump(); // in case about to hit a wall
-			airJumps--;
+			currentAirJumps--;
 			rb2d.velocity = new Vector2(rb2d.velocity.x, Mathf.Max(jumpSpeed, rb2d.velocity.y));
 			JumpDust();
 			if (movingBackwards || inputBackwards) {
@@ -301,7 +304,7 @@ public class EntityController : Entity {
                 GroundJump();
             } else if (wallData.touchingWall || (justLeftWall && rb2d.velocity.y<=0)) {
 				WallJump();
-			} else if (!wallData.touchingWall && !groundData.grounded && airJumps > 0) {
+			} else if (!wallData.touchingWall && !groundData.grounded && currentAirJumps > 0) {
 				AirJump();
             }
         }
@@ -414,8 +417,8 @@ public class EntityController : Entity {
     }
 
 	public void RefreshAirMovement() {
-		airDashes = movement.maxAirDashes;
-		airJumps = movement.maxAirJumps;
+		currentAirDashes = movement.maxAirDashes;
+		currentAirJumps = movement.maxAirJumps;
 	}
 
 	public void HairBackwards() {

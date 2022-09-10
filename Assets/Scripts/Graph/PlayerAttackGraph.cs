@@ -15,13 +15,13 @@ public class PlayerAttackGraph : NodeGraph {
     public Animator animator;
     public AttackBuffer buffer;
     public AirAttackTracker airAttackTracker;
-    public PlayerCombatController combatController;
+    public CombatController combatController;
     public bool grounded;
     public PlayerInput inputManager;
 
     CombatNode currentNode = null;
 
-    public void Initialize(PlayerCombatController combatController, Animator anim, AttackBuffer buffer, AirAttackTracker airAttackTracker, PlayerInput inputManager) {
+    public void Initialize(CombatController combatController, Animator anim, AttackBuffer buffer, AirAttackTracker airAttackTracker, PlayerInput inputManager) {
         this.animator = anim;
         this.buffer = buffer;
         this.airAttackTracker = airAttackTracker;
