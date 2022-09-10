@@ -2,10 +2,10 @@ using UnityEngine;
 
 public class FModInState : StateMachineBehaviour {
 	public float fmod;
-	PlayerController player;
+	EntityController player;
 
 	public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
-		player = animator.GetComponent<PlayerController>();
+		player = animator.GetComponent<EntityController>();
 	}
 
 	public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {

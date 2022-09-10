@@ -10,7 +10,7 @@ public class LedgePop : MonoBehaviour {
     Rigidbody2D rb;
     int layerMask;
     Vector2 boxPos;
-    PlayerController player;
+    EntityController player;
     PlayerInput input;
     GroundCheck groundCheck;
 
@@ -19,7 +19,7 @@ public class LedgePop : MonoBehaviour {
         rb = GetComponent<Rigidbody2D>();
         layerMask = 1 << LayerMask.NameToLayer(Layers.Ground);
 
-        player = GetComponent<PlayerController>();
+        player = GetComponent<EntityController>();
         groundCheck = GetComponent<GroundCheck>();
     }
 

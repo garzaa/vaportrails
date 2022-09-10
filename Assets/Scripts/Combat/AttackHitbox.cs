@@ -1,16 +1,24 @@
 using UnityEngine;
 using UnityEngine.Events;
 using System.Collections;
+using Sirenix.OdinInspector;
 using System.Collections.Generic;
 
 public class AttackHitbox : MonoBehaviour {
 	public bool attacksPlayer;
+	
+	[ShowIf(nameof(attacksPlayer))] 
+	[Tooltip("Attack other enemies as well")]
+	public bool indiscriminate;
+	
 	public AttackData data;
 	public bool spawnHitmarkerAtCenter;
 	public bool singleHitPerActive = true;
 	IAttackLandListener[] attackLandListeners;
 	Collider2D[] colliders;
-	HashSet<Hurtbox> hitThisActive = new HashSet<Hurtbox>();
+	HashSet<Hurtbox> hurtboxesHitThisActive = new HashSet<Hurtbox>();
+	// for entities like Lady of the Lake who has multiple hurtboxes
+	HashSet<Entity> entitiesHitThisActive = new HashSet<Entity>();
 	bool hitboxOutLastFrame = false;
 
 	public UnityEvent OnAttackLand;
@@ -33,7 +41,8 @@ public class AttackHitbox : MonoBehaviour {
 		if (!hitboxOutLastFrame && hitboxOut) {
 			OnHitboxOut();
 		} else if (!hitboxOut && hitboxOutLastFrame) {
-			hitThisActive.Clear();
+			hurtboxesHitThisActive.Clear();
+			entitiesHitThisActive.Clear();
 		}
 
 		hitboxOutLastFrame = hitboxOut;
@@ -45,7 +54,14 @@ public class AttackHitbox : MonoBehaviour {
 
 	protected virtual bool CanHit(Hurtbox hurtbox) {
 		if (hurtbox.gameObject.CompareTag(Tags.Player) && !attacksPlayer) return false;
-		if (hitThisActive.Contains(hurtbox)) return false;
+		if (attacksPlayer && !hurtbox.gameObject.CompareTag(Tags.Player) && !indiscriminate) return false;
+
+		if (hurtboxesHitThisActive.Contains(hurtbox)) return false;
+
+		Entity e = hurtbox.GetComponentInParent<Entity>();
+		if (e && entitiesHitThisActive.Contains(e)) return false;
+		if (e && e == GetComponentInParent<Entity>()) return false;
+
 		return true;
 	}
 
@@ -55,7 +71,11 @@ public class AttackHitbox : MonoBehaviour {
 			Hitstop.Run(data.hitstop);
 
 			foreach (Hurtbox h in hurtbox.transform.root.GetComponentsInChildren<Hurtbox>()) {
-				if (singleHitPerActive) hitThisActive.Add(h);
+				if (singleHitPerActive) {
+					hurtboxesHitThisActive.Add(h);
+					Entity e = hurtbox.GetComponentInParent<Entity>();
+					if (e) entitiesHitThisActive.Add(e);
+				}
 			}
 
 			Collider2D currentActiveCollider = colliders[0];

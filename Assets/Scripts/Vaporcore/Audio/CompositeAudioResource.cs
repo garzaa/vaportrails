@@ -9,6 +9,7 @@ public class CompositeAudioResource : AudioResource {
 	#pragma warning restore 0649
 
 	override public void PlayFrom(GameObject caller) {
+		base.PlayFrom(caller);
 		foreach (AudioResource resource in compositeResources){
 			resource.PlayFrom(caller);
 		}

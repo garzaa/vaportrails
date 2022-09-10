@@ -678,6 +678,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attacksPlayer: 0
+  indiscriminate: 0
   data: {fileID: 0}
   spawnHitmarkerAtCenter: 0
   singleHitPerActive: 1
@@ -824,7 +825,7 @@ GameObject:
   - component: {fileID: 152597311}
   - component: {fileID: 152597323}
   - component: {fileID: 152597322}
-  - component: {fileID: 152597313}
+  - component: {fileID: 152597325}
   - component: {fileID: 152597319}
   - component: {fileID: 152597318}
   - component: {fileID: 152597312}
@@ -897,25 +898,6 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.2341594, y: 1.03}
   m_Direction: 0
---- !u!114 &152597313
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 152597309}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 47018dd80a1a36745b2a036051e5cc9f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  defaultFootfall: {fileID: 11400000, guid: 65d56a11957ef4844955d8edad2bd588, type: 2}
-  landNoise: {fileID: 11400000, guid: 89a19030a9e3cdf4e962dbcf79005481, type: 2}
-  staggerable: 1
-  playerRig: {fileID: 2001344628}
-  jumpNoise: {fileID: 11400000, guid: 8b27eba3fe91c8d4c9b28c89a0309a77, type: 2}
-  speedDust: {fileID: 1424645052}
-  movement: {fileID: 11400000, guid: f35f2ea0509505d40970214e05097932, type: 2}
 --- !u!50 &152597314
 Rigidbody2D:
   serializedVersion: 4
@@ -1157,6 +1139,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effectPoint: {fileID: 1741772182}
+--- !u!114 &152597325
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 152597309}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 380f4554686b8c147b814e3dc96263db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultFootfall: {fileID: 11400000, guid: 65d56a11957ef4844955d8edad2bd588, type: 2}
+  landNoise: {fileID: 11400000, guid: 89a19030a9e3cdf4e962dbcf79005481, type: 2}
+  suppressAnimatorWarnings: 0
+  staggerable: 1
+  playerRig: {fileID: 2001344628}
+  jumpNoise: {fileID: 11400000, guid: 8b27eba3fe91c8d4c9b28c89a0309a77, type: 2}
+  speedDust: {fileID: 1424645052}
+  movement: {fileID: 11400000, guid: f35f2ea0509505d40970214e05097932, type: 2}
 --- !u!1 &192314038
 GameObject:
   m_ObjectHideFlags: 0
@@ -2316,6 +2318,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attacksPlayer: 1
+  indiscriminate: 1
   data: {fileID: 11400000, guid: c49958ef07edc9745bf9956e93d88d9a, type: 2}
   spawnHitmarkerAtCenter: 0
   singleHitPerActive: 0
@@ -2982,6 +2985,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attacksPlayer: 1
+  indiscriminate: 1
   data: {fileID: 11400000, guid: c49958ef07edc9745bf9956e93d88d9a, type: 2}
   spawnHitmarkerAtCenter: 0
   singleHitPerActive: 0
@@ -3425,6 +3429,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defaultFootfall: {fileID: 11400000, guid: 89a19030a9e3cdf4e962dbcf79005481, type: 2}
   landNoise: {fileID: 11400000, guid: 89a19030a9e3cdf4e962dbcf79005481, type: 2}
+  suppressAnimatorWarnings: 1
   staggerable: 1
 --- !u!114 &890445362
 MonoBehaviour:
@@ -3892,6 +3897,7 @@ MonoBehaviour:
   textOutputContainer: {fileID: 1188401587}
   input: {fileID: 50688896}
   textOutputTemplate: {fileID: 6257516421705236790, guid: d796283e90a086d448e6f46a3f5a3001, type: 3}
+  executeOnStart: 
 --- !u!114 &948576556
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3967,6 +3973,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attacksPlayer: 0
+  indiscriminate: 0
   data: {fileID: 11400000, guid: 946bbb747f219bd499b9b3e9911cc32c, type: 2}
   spawnHitmarkerAtCenter: 0
   singleHitPerActive: 1
@@ -19007,6 +19014,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attacksPlayer: 1
+  indiscriminate: 1
   data: {fileID: 11400000, guid: c49958ef07edc9745bf9956e93d88d9a, type: 2}
   spawnHitmarkerAtCenter: 0
   singleHitPerActive: 0
@@ -19153,6 +19161,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attacksPlayer: 1
+  indiscriminate: 1
   data: {fileID: 11400000, guid: c49958ef07edc9745bf9956e93d88d9a, type: 2}
   spawnHitmarkerAtCenter: 0
   singleHitPerActive: 0

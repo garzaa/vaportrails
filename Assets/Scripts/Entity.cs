@@ -11,6 +11,7 @@ public class Entity : MonoBehaviour, IHitListener {
 	#pragma warning disable 0649
 	[SerializeField] AudioResource defaultFootfall;
 	[SerializeField] protected AudioResource landNoise;
+	[SerializeField] bool suppressAnimatorWarnings = false;
 	#pragma warning restore 0649
 
 	protected Animator animator;
@@ -46,6 +47,7 @@ public class Entity : MonoBehaviour, IHitListener {
 
 	protected virtual void Awake() {
 		animator = GetComponent<Animator>();
+		if (suppressAnimatorWarnings) animator.logWarnings = false;
         rb2d = GetComponent<Rigidbody2D>();
 		rb2d.interpolation = RigidbodyInterpolation2D.Extrapolate;
 		entityShader = GetComponent<EntityShader>();

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class AttackBuffer : MonoBehaviour {
 
-	PlayerController player;
+	EntityController player;
     PlayerInput inputManager;
 
 	// treat it as sort-of a queue
@@ -14,7 +14,7 @@ public class AttackBuffer : MonoBehaviour {
     const float inputThreshold = 0.2f;
 
 	void Start() {
-		player = GetComponent<PlayerController>();
+		player = GetComponent<EntityController>();
         inputManager = GetComponent<PlayerInput>();
 	}
 

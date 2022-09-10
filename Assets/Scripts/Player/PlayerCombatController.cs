@@ -7,7 +7,7 @@ public class PlayerCombatController : MonoBehaviour, IAttackLandListener, IHitLi
 	const float combatStanceLength = 4f;
 	float combatLayerWeight = 0f;
 
-	PlayerController player;
+	EntityController player;
 	GroundData groundData;
 	PlayerAttackGraph currentGraph;
 	Rigidbody2D rb2d;
@@ -45,7 +45,7 @@ public class PlayerCombatController : MonoBehaviour, IAttackLandListener, IHitLi
 	Collider2D collider2d;
 
 	void Start() {
-		player = GetComponent<PlayerController>();
+		player = GetComponent<EntityController>();
 		groundData = GetComponent<GroundCheck>().groundData;
 		rb2d = GetComponent<Rigidbody2D>();
 		wallData = GetComponent<WallCheck>().wallData;

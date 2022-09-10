@@ -11,6 +11,8 @@ public class AudioResource : ScriptableObject {
 	#pragma warning restore 0649
 
 	virtual public void PlayFrom(GameObject caller) {
+		if (this is CompositeAudioResource && sounds.Count==0) return;
+
 		int idx = Random.Range(0, sounds.Count);
 		AudioSource callerSource = caller.GetComponent<AudioSource>();
 		if (callerSource == null) {

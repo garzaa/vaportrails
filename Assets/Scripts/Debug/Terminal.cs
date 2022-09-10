@@ -17,6 +17,9 @@ public class Terminal : MonoBehaviour, IPointerDownHandler {
     public InputField input;
     public GameObject textOutputTemplate;
 
+    [TextArea]
+    public string executeOnStart = "";
+
     delegate void TerminalCloseDelegate();
     TerminalCloseDelegate terminalClose;
 
@@ -33,6 +36,9 @@ public class Terminal : MonoBehaviour, IPointerDownHandler {
         ClearConsole();
         terminalContainer.SetActive(false);
         inputRecorder = GameObject.FindObjectOfType<InputRecorder>();
+        foreach (String command in executeOnStart.Split("\n")) {
+            ParseCommand(command.Trim());
+        }
     }
 
     void ClearTerminalCloseListeners() {

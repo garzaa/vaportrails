@@ -1,16 +1,16 @@
 using UnityEngine;
 
 public class FreezeInputsInState : StateMachineBehaviour {
-	PlayerController playerController;
+	EntityController EntityController;
 
 	public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
-		if (playerController == null) {
-			playerController = animator.GetComponent<PlayerController>();
+		if (EntityController == null) {
+			EntityController = animator.GetComponent<EntityController>();
 		}
-		playerController.FreezeInputs();
+		EntityController.FreezeInputs();
 	}
 
 	public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
-		playerController.UnfreezeInputs();
+		EntityController.UnfreezeInputs();
 	}
 }

@@ -2,8 +2,8 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class PlayerController : Entity, IAttackLandListener {
-
+public class EntityController : Entity {
+	
 	#pragma warning disable 0649
 	[SerializeField] GameObject playerRig;
 	[SerializeField] AudioResource jumpNoise;
@@ -14,10 +14,8 @@ public class PlayerController : Entity, IAttackLandListener {
 
     const float bufferDuration = 0.1f;
     const float jumpCutoffVelocity = 2f;
-	const float dashCooldown = 0.6f;
-	const float dashSpeed = 6f;
 	float airControlMod = 1;
-	float fMod = 1;
+	protected float fMod = 1;
 	const float fModRecoveryTime = 1.5f;
 
 	public bool frozeInputs { 
@@ -30,21 +28,21 @@ public class PlayerController : Entity, IAttackLandListener {
 	}
 	private bool _frozeInputs;
 
-	bool inputBackwards;
-	bool inputForwards;
-	bool movingBackwards;
+	protected bool inputBackwards;
+	protected bool inputForwards;
+	protected bool movingBackwards;
+	protected bool movingForwards;
+	// dash stuff is provided but it's up to the subcontroller to implement it
+	protected bool dashing;
 	bool justWalkedOffCliff;
 	bool justLeftWall;
 	bool bufferedJump;
-	bool movingForwards;
 	bool speeding;
-	bool canDash = true;
-	bool dashing;
 	bool canShortHop;
 	float inputX;
 	float landingRecovery = 1;
-	int airDashes = 1;
-	int airJumps = 1;
+	protected int airJumps;
+	protected int airDashes;
 	public float jumpSpeed { get; private set; }
 	float fallStart;
 	float ySpeedLastFrame;
@@ -52,10 +50,8 @@ public class PlayerController : Entity, IAttackLandListener {
 
 	ToonMotion toonMotion;
 	GameObject wallJumpDust;
-	AudioResource dashSound;
-	AttackData currentAttack;
-	HP hp;
-	PlayerInput input;
+	protected AttackData currentAttack;
+	protected PlayerInput input;
 	GameObject fastfallSpark;
 
 	override protected void Awake() {
@@ -63,7 +59,6 @@ public class PlayerController : Entity, IAttackLandListener {
 		input = GetComponent<PlayerInput>();
 		toonMotion = GetComponentInChildren<ToonMotion>();
 		wallJumpDust = Resources.Load<GameObject>("Runtime/WallJumpDust");
-		dashSound = Resources.Load<AudioResource>("Runtime/DashSound");
 		fastfallSpark = Resources.Load<GameObject>("Runtime/FastfallSpark");
 		// p = mv
 		jumpSpeed = movement.jumpForce / rb2d.mass;
@@ -73,7 +68,7 @@ public class PlayerController : Entity, IAttackLandListener {
 		base.Update();
 		CheckFlip();
 		Move();
-		Dash();
+		
 		Jump();
 		UpdateAnimator();
 		UpdateEffects();
@@ -153,7 +148,7 @@ public class PlayerController : Entity, IAttackLandListener {
         }
 
 		if (dashing) {
-			float magnitude = Mathf.Max(Mathf.Abs(rb2d.velocity.x), dashSpeed);
+			float magnitude = Mathf.Max(Mathf.Abs(rb2d.velocity.x), movement.dashSpeed);
 			rb2d.velocity = new Vector2(magnitude * Mathf.Sign(rb2d.velocity.x), Mathf.Max(rb2d.velocity.y, 0));
 			return;
 		}
@@ -218,42 +213,7 @@ public class PlayerController : Entity, IAttackLandListener {
 		}
 	}
 
-	void Dash() {
-		void EndDashCooldown() {
-			if (canDash) return;
-			entityShader.FlashCyan();
-			canDash = true;
-		}
 
-		if (frozeInputs && !currentAttack) return;
-
-		if (input.ButtonDown(Buttons.SPECIAL) && canDash && input.HasHorizontalInput() && input.VerticalInput()<0.5) {
-			if (!groundData.grounded && airDashes <= 0) return;
-			dashSound.PlayFrom(gameObject);
-			animator.SetTrigger(inputBackwards ? "BackDash" : "Dash");
-			entityShader.FlashWhite();
-			canDash = false;
-			dashing = true;
-			fMod = 0;
-			// dash at the max direction indicated by the stick
-			// if already moving in that way, make it additive
-			float speed = movement.runSpeed+dashSpeed;
-			if ((inputForwards && movingForwards) || (inputBackwards && movingBackwards)) {
-				speed = Mathf.Max(Mathf.Abs(rb2d.velocity.x)+dashSpeed, speed);
-			}
-			rb2d.velocity = new Vector2(
-				speed * Mathf.Sign(input.HorizontalInput()),
-				Mathf.Max(rb2d.velocity.y, 0)
-			);
-			if (!groundData.grounded) airDashes--;
-			this.WaitAndExecute(EndDashCooldown, dashCooldown);
-		}
-	}
-
-	public void StopDashAnimation() {
-		fMod = 0;
-		dashing = false;
-	}
 
 	public void DisableShortHop() {
 		canShortHop = false;
@@ -399,6 +359,11 @@ public class PlayerController : Entity, IAttackLandListener {
         }
     }
 
+	public void StopDashAnimation() {
+		fMod = 0;
+		dashing = false;
+	}
+
 	void DropThroughPlatforms(List<RaycastHit2D>platforms) {
 		foreach (RaycastHit2D hit in platforms) {
 			EdgeCollider2D platform = hit.collider.GetComponent<EdgeCollider2D>();
@@ -408,7 +373,7 @@ public class PlayerController : Entity, IAttackLandListener {
 		}
 	}
 
-	public void OnAttackGraphEnter() {
+	public virtual void OnAttackGraphEnter() {
 		if (dashing) StopDashAnimation();
 	}
 
@@ -449,8 +414,8 @@ public class PlayerController : Entity, IAttackLandListener {
     }
 
 	public void RefreshAirMovement() {
-		airDashes = 1;
-		airJumps = 1;
+		airDashes = movement.maxAirDashes;
+		airJumps = movement.maxAirJumps;
 	}
 
 	public void HairBackwards() {
