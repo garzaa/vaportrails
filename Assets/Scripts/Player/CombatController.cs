@@ -11,11 +11,11 @@ public class CombatController : MonoBehaviour, IAttackLandListener, IHitListener
 	protected GroundData groundData;
 	protected EntityController player;
 	protected Animator animator;
-	protected PlayerAttackGraph currentGraph;
+	protected AttackGraph currentGraph;
 	protected PlayerInput input;
 
-	public PlayerAttackGraph groundAttackGraph;
-	public PlayerAttackGraph airAttackGraph;
+	public AttackGraph groundAttackGraph;
+	public AttackGraph airAttackGraph;
 
 	public float diStrength = 3f;
 
@@ -147,7 +147,7 @@ public class CombatController : MonoBehaviour, IAttackLandListener, IHitListener
 		rb2d.velocity += leftStick * diMagnitude * diStrength;
 	}
 
-	public virtual void EnterAttackGraph(PlayerAttackGraph graph, CombatNode entryNode=null) {
+	public virtual void EnterAttackGraph(AttackGraph graph, CombatNode entryNode=null) {
 		player.OnAttackGraphEnter();
 		currentGraph = graph;
 		graph.EnterGraph(entryNode);

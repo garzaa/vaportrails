@@ -7,7 +7,6 @@ public class EntityController : Entity {
 	#pragma warning disable 0649
 	[SerializeField] GameObject playerRig;
 	[SerializeField] AudioResource jumpNoise;
-	[SerializeField] ParticleSystem speedDust;
 	#pragma warning restore 0649
 
 	public MovementStats movement;
@@ -31,10 +30,10 @@ public class EntityController : Entity {
 	
 	private bool _frozeInputs;
 
-	protected bool inputBackwards;
-	protected bool inputForwards;
-	protected bool movingBackwards;
-	protected bool movingForwards;
+	public bool inputBackwards;
+	public bool inputForwards;
+	public bool movingBackwards;
+	public bool movingForwards;
 	// dash stuff is provided but it's up to the subcontroller to implement it
 	protected bool dashing;
 	protected int currentAirJumps;
@@ -56,6 +55,7 @@ public class EntityController : Entity {
 	ToonMotion toonMotion;
 	GameObject wallJumpDust;
 	GameObject fastfallSpark;
+	ParticleSystem speedDust;
 
 	override protected void Awake() {
 		base.Awake();
@@ -63,8 +63,11 @@ public class EntityController : Entity {
 		toonMotion = GetComponentInChildren<ToonMotion>();
 		wallJumpDust = Resources.Load<GameObject>("Runtime/WallJumpDust");
 		fastfallSpark = Resources.Load<GameObject>("Runtime/FastfallSpark");
+		speedDust = Resources.Load<GameObject>("Runtime/SpeedDust").GetComponentInChildren<ParticleSystem>();
+		GetComponentInChildren<ToonMotion>().ignoreGameobjects.Add(speedDust.transform.parent.gameObject);
 		// p = mv
 		jumpSpeed = movement.jumpForce / rb2d.mass;
+		RefreshAirMovement();
 	}
 
 	override protected void Update() {
@@ -107,7 +110,7 @@ public class EntityController : Entity {
 				FlipToWall();
 			}
         } else if (groundData.hitGround) {
-			if (fallStart-transform.position.y > 1) landNoise.PlayFrom(this.gameObject);
+			if (fallStart-transform.position.y > 1 && landNoise) landNoise.PlayFrom(this.gameObject);
 			RefreshAirMovement();
 		}
 
@@ -435,5 +438,9 @@ public class EntityController : Entity {
 
 	public void UnfreezeInputs() {
 		frozeInputs = false;
+	}
+
+	public bool HasAirJumps() {
+		return currentAirJumps > 0;
 	}
 }

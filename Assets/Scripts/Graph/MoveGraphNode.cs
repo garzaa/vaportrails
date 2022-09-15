@@ -10,7 +10,7 @@ public class MoveGraphNode : CombatNode {
     override public void OnNodeEnter() {
         base.OnNodeEnter();
         attackGraph.combatController.EnterAttackGraph(
-            targetNode.graph as PlayerAttackGraph,
+            targetNode.graph as AttackGraph,
             targetNode
         );
     }

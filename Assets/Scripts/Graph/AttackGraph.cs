@@ -2,7 +2,7 @@ using UnityEngine;
 using XNode;
 
 [CreateAssetMenu]
-public class PlayerAttackGraph : NodeGraph {
+public class AttackGraph : NodeGraph {
     const int attackFramerate = 16;
 
     float clipTime;

@@ -53,7 +53,7 @@ public class WallCheck : MonoBehaviour {
 		);
 		Debug.DrawLine(topStart, topStart+(Vector2.left*distance), Color.cyan);
 		Debug.DrawLine(bottomStart, bottomStart+(Vector2.left*distance), Color.cyan);
-		if (topHit.collider!=null || bottomHit.collider!=null || midHit.collider!=null) {
+		if ((topHit.collider!=null || bottomHit.collider!=null) && midHit.collider!=null) {
 			wallData.direction = -1;
 			touchingwallThisFrame = true;
 		}
@@ -68,7 +68,7 @@ public class WallCheck : MonoBehaviour {
 		midHit = Physics2D.Raycast(
 			origin: startPoint,
 			direction: Vector2.right,
-			distance: distance,
+		distance: distance,
 			layerMask: layerMask
 		);
 		bottomHit = Physics2D.Raycast(
@@ -77,7 +77,7 @@ public class WallCheck : MonoBehaviour {
 			distance: distance,
 			layerMask: layerMask
 		);
-		if (topHit.collider!=null || bottomHit.collider!=null || midHit.collider!=null) {
+		if ((topHit.collider!=null || bottomHit.collider!=null) && midHit.collider!=null) {
 			wallData.direction = 1;
 			touchingwallThisFrame = true;
 		}

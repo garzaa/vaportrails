@@ -8,7 +8,7 @@ public class AirAttackNode : AttackNode {
     public bool singleUse;
 
     public override bool Enabled() {
-        return base.Enabled() && !(this.graph as PlayerAttackGraph).airAttackTracker.Has(attackData.name);
+        return base.Enabled() && !(this.graph as AttackGraph).airAttackTracker.Has(attackData.name);
     }
 
     public override void OnNodeEnter() {

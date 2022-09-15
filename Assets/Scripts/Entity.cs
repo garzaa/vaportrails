@@ -166,9 +166,9 @@ public class Entity : MonoBehaviour, IHitListener {
 		UpdateFootfallSound();
 		if (groundData.hitGround && canGroundHitEffect) {
 			if (!stunned) {
-				FootfallSound();
+				if (defaultFootfall) FootfallSound();
 			} else {
-				landNoise.PlayFrom(this.gameObject);
+				landNoise?.PlayFrom(this.gameObject);
 			}
 			LandDust();
 			canGroundHitEffect = false;
@@ -176,14 +176,12 @@ public class Entity : MonoBehaviour, IHitListener {
 			if (stunned && !wallData.touchingWall) StunBounce();
 		}
 		if (wallData.hitWall) {
-			landNoise.PlayFrom(this.gameObject);
-			if (groundData.distance > 0.5f) {
-				GameObject g = Instantiate(landDust);
-				bool wallRight = wallData.direction > 0;
-				float x = wallRight ? collider2d.bounds.max.x : collider2d.bounds.min.x;
-				g.transform.position = new Vector2(x, transform.position.y);
-				g.transform.eulerAngles = new Vector3(0, 0, wallRight ? 90 : -90);
-			}
+			landNoise?.PlayFrom(this.gameObject);
+			GameObject g = Instantiate(landDust);
+			bool wallRight = wallData.direction > 0;
+			float x = wallRight ? collider2d.bounds.max.x : collider2d.bounds.min.x;
+			g.transform.position = new Vector2(x, transform.position.y);
+			g.transform.eulerAngles = new Vector3(0, 0, wallRight ? 90 : -90);
 			OnWallHit();
 			if (stunned && !groundData.grounded) StunBounce();
 		}

@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
-public class PlayerCombatController : CombatController {
+public class ValCombatController : CombatController {
 	public SubscriptableInt currentEP;
 	public SubscriptableInt maxEP;
 
@@ -130,7 +130,7 @@ public class PlayerCombatController : CombatController {
 		StartAttackStance();
 	}
 
-	public override void EnterAttackGraph(PlayerAttackGraph graph, CombatNode entryNode = null) {
+	public override void EnterAttackGraph(AttackGraph graph, CombatNode entryNode = null) {
 		base.EnterAttackGraph(graph, entryNode);
 		StartAttackStance();
 	}

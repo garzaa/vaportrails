@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ToonMotion : MonoBehaviour  {
 
-    public int fps = 20;
+    public int fps = 18;
     public List<GameObject> ignoreGameobjects;
 
     float lastUpdateTime = 0f;

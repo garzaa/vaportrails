@@ -9,10 +9,10 @@ abstract public class CombatNode : Node {
     [HideInInspector]
     protected bool cancelable;
 
-    protected PlayerAttackGraph attackGraph;
+    protected AttackGraph attackGraph;
 
     virtual public void OnNodeEnter() {
-        attackGraph = this.graph as PlayerAttackGraph;
+        attackGraph = this.graph as AttackGraph;
         active = true;
         attackGraph.combatController.OnAttackNodeEnter(this);
     }
