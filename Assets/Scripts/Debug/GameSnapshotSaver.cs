@@ -39,10 +39,11 @@ public class GameSnapshotSaver {
 			13: 	opponent stunned
 			14: 	airjump left
 			15: 	dash online
-			16-31: 	free space
+			16: 	touching wall
+			17-31: 	free space
 		*/
 
-		if (playerInfo.inAttack) i |= 1;
+		if (playerInfo.inAttack) i = 1;
 		if (enemyInfo.inAttack)  i |= 1 << 1;
 
 		float xDistance = Mathf.Abs(playerInfo.rb2d.position.x - enemyInfo.transform.position.x);
@@ -71,6 +72,8 @@ public class GameSnapshotSaver {
 		if (playerInfo.controller && playerInfo.controller.HasAirJumps()) i |= 1 << 14;
 
 		if (playerInfo.controller && playerInfo.controller.canDash) i |= 1 << 15;
+
+		if (playerInfo.wallCheck.touchingWall) i |= 1 << 16;
 
 		return i;
 	}

@@ -27,10 +27,10 @@ public class EntityController : Entity {
 	}
 	private bool _frozeInputs;
 
-	public bool inputBackwards;
-	public bool inputForwards;
-	public bool movingBackwards;
-	public bool movingForwards;
+	protected bool inputBackwards;
+	protected bool inputForwards;
+	protected bool movingBackwards;
+	protected bool movingForwards;
 	// dash stuff is provided but it's up to the subcontroller to implement it
 	protected bool dashing;
 	public bool canDash { get; protected set; }
@@ -128,7 +128,7 @@ public class EntityController : Entity {
 	}
 
 	override protected void OnWallHit() {
-		FlipToWall();
+		if (!stunned) FlipToWall();
 		fMod = 1;
 		RefreshAirMovement();
 	}
@@ -356,8 +356,8 @@ public class EntityController : Entity {
 	}
 
 	void CheckFlip() {
-		if ((inputBackwards && !movingBackwards) || !groundData.grounded || dashing || rb2d.velocity.y>0) return;
-		
+		if ((inputBackwards && !movingBackwards) || !groundData.grounded || dashing) return;
+
         if (facingRight && inputX<0) {
             Flip();
         } else if (!facingRight && inputX>0) {

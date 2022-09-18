@@ -6,6 +6,7 @@ public class AttackBuffer : MonoBehaviour {
 
 	EntityController player;
     PlayerInput inputManager;
+    CombatController combatController;
 
 	// treat it as sort-of a queue
     List<BufferedAttack> bufferedAttacks = new List<BufferedAttack>();
@@ -16,6 +17,7 @@ public class AttackBuffer : MonoBehaviour {
 	void Start() {
 		player = GetComponent<EntityController>();
         inputManager = GetComponent<PlayerInput>();
+        combatController = GetComponent<CombatController>();
 	}
 
     void Update() {
@@ -38,6 +40,8 @@ public class AttackBuffer : MonoBehaviour {
 			BufferedAttack attack = new BufferedAttack(attackType, attackDirection);
 			bufferedAttacks.Add(attack);
 			StartCoroutine(RemoveAction(attack));
+            // if it enters a graph without a buffered attack (i.e. it's read first)
+            combatController.CheckAttackInputs();
         }
     }
 

@@ -108,7 +108,7 @@ public class ValCombatController : CombatController {
 		}
 	}
 
-	protected override void CheckAttackInputs() {
+	override public void CheckAttackInputs() {
 		base.CheckAttackInputs();
 		if (
 			(!player.frozeInputs || currentGraph!=null)

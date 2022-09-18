@@ -16,7 +16,7 @@ public class ValController : EntityController, IAttackLandListener {
 		Dash();
 	}
 
-
+	// TODO: pull this out into a DashModule?
 	void Dash() {
 		void EndDashCooldown() {
 			if (canDash) return;

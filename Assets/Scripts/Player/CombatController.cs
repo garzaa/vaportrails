@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
+[RequireComponent(typeof(AttackBuffer))]
 public class CombatController : MonoBehaviour, IAttackLandListener, IHitListener {	
 	AttackHitbox attackHitbox;
 
@@ -11,7 +12,7 @@ public class CombatController : MonoBehaviour, IAttackLandListener, IHitListener
 	protected GroundData groundData;
 	protected EntityController player;
 	protected Animator animator;
-	protected AttackGraph currentGraph;
+	public AttackGraph currentGraph = null;
 	protected PlayerInput input;
 
 	public AttackGraph groundAttackGraph;
@@ -59,9 +60,7 @@ public class CombatController : MonoBehaviour, IAttackLandListener, IHitListener
 	}
 
 	protected virtual void Update() {
-		if (!player.frozeInputs && currentGraph == null) {
-			CheckAttackInputs();
-		}
+		CheckAttackInputs();
 
 		if (currentGraph != null) {
 			currentGraph.UpdateGrounded(groundData.grounded);
@@ -82,11 +81,15 @@ public class CombatController : MonoBehaviour, IAttackLandListener, IHitListener
 		CheckForTech();
 	}
 
-	protected virtual void CheckAttackInputs() {
+	public virtual void CheckAttackInputs() {
+		if (player.frozeInputs || currentGraph != null) {
+			return;
+		}
+
 		if (input.ButtonDown(Buttons.PUNCH) || input.ButtonDown(Buttons.KICK)) {
 			if (groundData.grounded) {
 				EnterAttackGraph(groundAttackGraph);
-			} else if (!wallData.touchingWall) {
+			} else if (!groundData.grounded && !wallData.touchingWall) {
 				EnterAttackGraph(airAttackGraph);
 			}
 		}
