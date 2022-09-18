@@ -8,25 +8,20 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 
 public class InputRecorder : MonoBehaviour {
-	PlayerInput input;
-	Player player;
+	protected PlayerInput input;
+	protected Player player;
 
 	public bool recording { get; private set; }
 	public GameObject recordingIndicator;
 
-	Dictionary<int, int> actionIDAxes = new Dictionary<int, int>();
-	HashSet<int> actionIDs = new HashSet<int>();
-	List<FrameInput> frameInputs = new List<FrameInput>();
-
-	// TODO: normalize input based on facing/not facing player (halve game state space)
-	// TODO: combine these with the game states?
-	// or just have this
-	// maybe
+	protected Dictionary<int, int> actionIDAxes = new Dictionary<int, int>();
+	protected HashSet<int> actionIDs = new HashSet<int>();
+	protected List<FrameInput> frameInputs = new List<FrameInput>();
 
 	public const float pollInterval = 1f/12f;
 	float lastPollTime;
 
-	int recordingCounter = 0;
+	protected int recordingCounter = 0;
 
 	void Start() {
 		recordingIndicator.SetActive(false);
@@ -50,35 +45,44 @@ public class InputRecorder : MonoBehaviour {
 	}
 
 	public void StopRecording() {
+		if (!recording) {
+			Terminal.Log("not currently recording, aborting");
+			return;
+		}
 		recording = false;
 		recordingIndicator.SetActive(false);
 		input.GetPlayer().RemoveInputEventDelegate(SaveInput);
+		SaveRecording();
+	}
+
+	protected virtual void SaveRecording() {
 		string fileName = $"{Application.dataPath}/{input.name}_{recordingCounter}.json";
 		File.WriteAllText(
 			fileName,
 			JsonConvert.SerializeObject(new Replay(frameInputs), Formatting.Indented)
 		);
-		Terminal.Log("File saved as "+fileName);
+		Terminal.Log("Replay saved as "+fileName);
 		frameInputs.Clear();
 	}
 
-	void Update() {
+	protected void Update() {
 		if (recording && (Time.unscaledTime > lastPollTime+pollInterval)) {
 			SaveSnapshot();
 			lastPollTime = Time.unscaledTime;
 		}
 	}
 
-	void SaveInput(InputActionEventData e) {
+	virtual protected void SaveInput(InputActionEventData e) {
 		if (ReInput.mapping.GetAction(e.actionId).type.Equals(InputActionType.Axis)) {
 			actionIDAxes[e.actionId] = (int) Mathf.Sign(e.GetAxis());
 		} else {
-			actionIDs.Add(e.actionId);
+			if (e.GetButtonDown()) actionIDs.Add(e.actionId);
 		}
 	}
 
-	void SaveSnapshot() {
-		FrameInput snapshot = new FrameInput(actionIDAxes, actionIDs.ToList());
+	virtual protected void SaveSnapshot() {
+		// should save these to the object and then make them public for the GhostRecorder
+		FrameInput snapshot = new FrameInput(actionIDAxes, actionIDs);
 		frameInputs.Add(snapshot);
 		actionIDAxes = new Dictionary<int, int>();
 		actionIDs = new HashSet<int>();

@@ -63,7 +63,7 @@ public class ValCombatController : CombatController {
 			if (!canFlipKick) return;
 			canFlipKick = false;
 			player.DisableShortHop();
-			rb2d.velocity = new Vector2(rb2d.velocity.x, Mathf.Max(rb2d.velocity.y, player.jumpSpeed));
+			rb2d.velocity = new Vector2(rb2d.velocity.x, Mathf.Max(rb2d.velocity.y, player.movement.jumpSpeed));
 			animator.Play("OrcaFlip");
 		}
 	}

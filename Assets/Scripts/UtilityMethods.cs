@@ -3,7 +3,7 @@
  using System.Collections.Generic;
  using UnityEngine.SceneManagement;
  using System.Collections;
- 
+
  static class UtilityMethods {
     public static Vector3 Round(this Vector3 vector3, int decimalPlaces = 2) {
         float multiplier = 1;

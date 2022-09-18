@@ -12,7 +12,6 @@ public class EntityController : Entity {
 	public MovementStats movement;
 
     const float bufferDuration = 0.1f;
-    const float jumpCutoffVelocity = 2f;
 	const float fModRecoveryTime = 1.5f;
 
 	float airControlMod = 1;
@@ -26,8 +25,6 @@ public class EntityController : Entity {
 			_frozeInputs = value;
 		}
 	}
-	public float jumpSpeed { get; private set; }
-	
 	private bool _frozeInputs;
 
 	public bool inputBackwards;
@@ -36,6 +33,7 @@ public class EntityController : Entity {
 	public bool movingForwards;
 	// dash stuff is provided but it's up to the subcontroller to implement it
 	protected bool dashing;
+	public bool canDash { get; protected set; }
 	protected int currentAirJumps;
 	protected int currentAirDashes;
 
@@ -66,8 +64,8 @@ public class EntityController : Entity {
 		speedDust = Resources.Load<GameObject>("Runtime/SpeedDust").GetComponentInChildren<ParticleSystem>();
 		GetComponentInChildren<ToonMotion>().ignoreGameobjects.Add(speedDust.transform.parent.gameObject);
 		// p = mv
-		jumpSpeed = movement.jumpForce / rb2d.mass;
 		RefreshAirMovement();
+		canDash = true;
 	}
 
 	override protected void Update() {
@@ -231,6 +229,11 @@ public class EntityController : Entity {
 
 	void Jump(bool executeIfBuffered=false) {
 		if (stunned) return;
+
+		if (input.ButtonUp(Buttons.JUMP) && rb2d.velocity.y > movement.shortHopCutoffVelocity && canShortHop) {
+			rb2d.velocity = new Vector2(rb2d.velocity.x, movement.shortHopCutoffVelocity);
+		}
+
 		if ((currentAttack && !currentAttack.jumpCancelable) && input.ButtonDown(Buttons.JUMP)) {
 			BufferJump();
 		}
@@ -249,14 +252,15 @@ public class EntityController : Entity {
 			}
 			canShortHop = true;
 			JumpDust();
-            rb2d.velocity = new Vector2(rb2d.velocity.x, Mathf.Max(jumpSpeed, rb2d.velocity.y));
+            rb2d.velocity = new Vector2(rb2d.velocity.x, Mathf.Max(movement.jumpSpeed, rb2d.velocity.y));
         }
 
 		void WallJump() {
             bufferedJump = false;
 			// assume player is facing the wall and needs to be flipped away from it
 			jumpNoise.PlayFrom(this.gameObject);
-			rb2d.velocity = new Vector2((facingRight ? jumpSpeed : -jumpSpeed)*1.3f, Mathf.Max(jumpSpeed, rb2d.velocity.y));
+			float v = movement.jumpSpeed;
+			rb2d.velocity = new Vector2((facingRight ? v : -v)*1.3f, Mathf.Max(v, rb2d.velocity.y));
 			airControlMod = 0;
 			GameObject w = Instantiate(wallJumpDust);
 			w.transform.position = new Vector2(facingRight ? collider2d.bounds.min.x : collider2d.bounds.max.x, transform.position.y);
@@ -273,7 +277,7 @@ public class EntityController : Entity {
 			}
 			BufferJump(); // in case about to hit a wall
 			currentAirJumps--;
-			rb2d.velocity = new Vector2(rb2d.velocity.x, Mathf.Max(jumpSpeed, rb2d.velocity.y));
+			rb2d.velocity = new Vector2(rb2d.velocity.x, Mathf.Max(movement.jumpSpeed, rb2d.velocity.y));
 			JumpDust();
 			if (movingBackwards || inputBackwards) {
 				animator.SetTrigger("Backflip");
@@ -311,10 +315,6 @@ public class EntityController : Entity {
 				AirJump();
             }
         }
-
-		if (input.ButtonUp(Buttons.JUMP) && rb2d.velocity.y > jumpCutoffVelocity && canShortHop) {
-			rb2d.velocity = new Vector2(rb2d.velocity.x, jumpCutoffVelocity);
-		}
 	}
 
 	void UpdateAnimator() {

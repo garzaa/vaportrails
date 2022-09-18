@@ -115,6 +115,12 @@ public class PlayerInput : MonoBehaviour {
 		return 2f/10f;
         // return SaveManager.save.options.inputBuffer * (1f/16f);
     }
+
+    public static bool IsHorizontal(int actionID) {
+		return actionID == HorizontalAxisID;
+	}
+
+    public const int HorizontalAxisID = 0;
 }
 
 public static class Buttons {

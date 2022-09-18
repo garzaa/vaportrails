@@ -8,7 +8,7 @@ public class MovementStats : ScriptableObject {
 	[SerializeField] float _runSpeed = 4.5f;
 	[SerializeField] float _gndAcceleration = 175;
 	[SerializeField] float _airAcceleration = 80;
-	[SerializeField] float _jumpForce = 8f;
+	[SerializeField] float _jumpSpeed = 8f;
 	[SerializeField] float _airFriction = 0.3f;
 	[SerializeField] float _maxFallSpeed = -14f;
 	[SerializeField] float _maxWallSlideSpeed = -4f;
@@ -16,11 +16,12 @@ public class MovementStats : ScriptableObject {
 	[SerializeField] int _maxAirDashes = 1;
 	[SerializeField] float _dashSpeed = 6f;
 	[SerializeField] float _dashCooldown = 0.6f;
+	[SerializeField] float _shortHopCutoffVelocity = 2f;
 
 	public float runSpeed => _runSpeed;
 	public float gndAcceleration => _gndAcceleration;
 	public float airAcceleration => _airAcceleration;
-	public float jumpForce => _jumpForce;
+	public float jumpSpeed => _jumpSpeed;
 	public float airFriction => _airFriction;
 	public float maxFallSpeed => _maxFallSpeed;
 	public float maxWallSlideSpeed => _maxWallSlideSpeed;
@@ -28,4 +29,5 @@ public class MovementStats : ScriptableObject {
 	public int maxAirDashes => _maxAirDashes;
 	public float dashSpeed => _dashSpeed;
 	public float dashCooldown => _dashCooldown;
+	public float shortHopCutoffVelocity => _shortHopCutoffVelocity;
 }

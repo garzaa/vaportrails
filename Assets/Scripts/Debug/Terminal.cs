@@ -24,6 +24,7 @@ public class Terminal : MonoBehaviour, IPointerDownHandler {
     TerminalCloseDelegate terminalClose;
 
     InputRecorder inputRecorder;
+    GhostRecorder ghostRecorder;
     AIPlayer aiPlayer;
 
     static Terminal t;
@@ -36,6 +37,7 @@ public class Terminal : MonoBehaviour, IPointerDownHandler {
         ClearConsole();
         terminalContainer.SetActive(false);
         inputRecorder = GameObject.FindObjectOfType<InputRecorder>();
+        ghostRecorder = GameObject.FindObjectOfType<GhostRecorder>();
         foreach (String command in executeOnStart.Split("\n")) {
             ParseCommand(command.Trim());
         }
@@ -114,20 +116,21 @@ public class Terminal : MonoBehaviour, IPointerDownHandler {
             PlayerInput[] inputSources = GameObject.FindObjectsOfType<PlayerInput>();
             bool foundTarget = false;
             foreach (PlayerInput input in inputSources) {
-                if (input.gameObject.name.ToLower().Equals(args[1])) {
+                if (input.gameObject.name.Equals(args[1])) {
                     foundTarget = true;
                 }
             }
             if (!foundTarget) {
-                Log("no target named "+args[1]+" found. try one of: \n"+string.Join('\n', inputSources.Select(x => x.name.ToLower()).ToArray()));
+                Log("no target named "+args[1]+" found. try one of: \n"+string.Join('\n', inputSources.Select(x => x.name).ToArray()));
             } else {
                 foreach (PlayerInput input in inputSources) {
-                    if (input.gameObject.name.ToLower().Equals(args[1])) {
+                    if (input.gameObject.name.Equals(args[1])) {
                         CameraMainTarget(input.transform);
                         // the way controls work here:
                         // every PlayerInput/Entity pair corresponds to a Player in rewired
                         // and we just swap Controller 0 between all the players
                         input.EnableHumanControl();
+                        currentPlayer = input.GetPlayer();
                     } else {
                         input.DisableHumanControl();
                     }
@@ -141,30 +144,16 @@ public class Terminal : MonoBehaviour, IPointerDownHandler {
             }
 
             if (args[1].Equals("stop")) {
-                Log("stopped recording");
                 inputRecorder.StopRecording();
                 return;
             }
 
             // get gameobjects with playerinput, match on name
-            PlayerInput[] inputSources = GameObject.FindObjectsOfType<PlayerInput>();
-            bool foundTarget = false;
-            foreach (PlayerInput input in inputSources) {
-                if (input.gameObject.name.ToLower().Equals(args[1])) {
-                    foundTarget = true;
-                }
-            }
-            if (!foundTarget) {
-                Log("no target named "+args[1]+" found. try one of: \n"+string.Join('\n', inputSources.Select(x => x.name.ToLower()).ToArray()));
-            } else {
-                foreach (PlayerInput input in inputSources) {
-                    if (input.gameObject.name.ToLower().Equals(args[1])) {
-                        inputRecorder.Arm(input);
-                        Log("recorder armed for "+args[1]);
-                        terminalClose += inputRecorder.StartRecording;
-                        return;
-                    }
-                }
+            PlayerInput input = GetPlayerInputByName(args[1]);
+            if (input) {
+                inputRecorder.Arm(input);
+                Log("recorder armed for "+args[1]);
+                terminalClose += inputRecorder.StartRecording;
             }
         } else if (args[0].Equals("replay")) {
             if (args[1].Equals("stop")) {
@@ -203,7 +192,83 @@ public class Terminal : MonoBehaviour, IPointerDownHandler {
             }
             ai.PlayReplay(replay);
             aiPlayer = ai;
+        } else if (args[0].Equals("ghost")) {
+            // ghost save Target Opponent? ghost save Target?
+            // ghost save Target with auto-grabbed Opponent
+            if (args[1].Equals("watch")) {
+                if (args.Count() < 2) {
+                    Log("ghost watch needs a target");
+                    return;
+                }
+                // get gameobjects with playerinput, match on name
+                PlayerInput player = GetPlayerInputByName(args[2]);
+                PlayerInput opponent = null;
+                foreach (PlayerInput playerInput in GameObject.FindObjectsOfType<PlayerInput>()) {
+                    if (playerInput.name != player.name) {
+                        opponent = playerInput;
+                        break;
+                    }
+                }
+                ghostRecorder.Arm(player, opponent);
+                Log("ghost watch armed for "+args[2]);
+                terminalClose += ghostRecorder.StartRecording;
+            } else if (args[1] == "save") {
+                ghostRecorder.StopRecording();
+            } else if (args[1] == "play") {
+                if (args.Count() < 4) {
+                    Log("usage: ghost play [ghostfile] [target] [?opponent]");
+                }
+                Ghostfile ghostfile;
+                try {
+                    ghostfile = JsonConvert.DeserializeObject<Ghostfile>(File.ReadAllText($"{Application.dataPath}/{args[2]}.ghostfile.json"));
+                } catch (System.IO.FileNotFoundException e) {
+                    Log(e.Message);
+                    return;
+                }
+                PlayerInput puppet = GetPlayerInputByName(args[3]);
+                AIPlayer ai = puppet.GetComponent<AIPlayer>();
+                if (!ai) ai = puppet.gameObject.AddComponent<AIPlayer>();
+
+                PlayerInput opponent = null;
+                if (args.Count() >= 4) {
+                    opponent = GetPlayerInputByName(args[4]);
+                } else {
+                    foreach (PlayerInput input in GameObject.FindObjectsOfType<PlayerInput>()) {
+                        if (input != puppet) {
+                            opponent = input;
+                            break;
+                        }
+                    }
+                    if (opponent == null) {
+                        Log("no player named "+args[4]+" found");
+                        return;
+                    }
+                }
+                Log($"Playing ghostfile on {puppet.gameObject.name} with opponent {opponent.gameObject.name}");
+                ai.PlayGhost(ghostfile, opponent.gameObject);
+            }
         }
+    }
+
+    PlayerInput GetPlayerInputByName(string name) {
+        PlayerInput[] inputSources = GameObject.FindObjectsOfType<PlayerInput>();
+        bool foundTarget = false;
+        foreach (PlayerInput input in inputSources) {
+            if (input.gameObject.name.Equals(name)) {
+                foundTarget = true;
+            }
+        }
+        if (!foundTarget) {
+            Log("no player named "+name+" found. try one of: \n"+string.Join('\n', inputSources.Select(x => x.name.ToLower()).ToArray()));
+            return null;
+        } else {
+            foreach (PlayerInput input in inputSources) {
+                if (input.gameObject.name.Equals(name)) {
+                    return input;
+                }
+            }
+        }
+        return null;
     }
 
     void CameraMainTarget(Transform t) {

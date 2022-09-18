@@ -5,7 +5,6 @@ using System.Collections.Generic;
 public class ValController : EntityController, IAttackLandListener {
 
 	protected AudioResource dashSound;
-	bool canDash = true;
 
 	protected override void Awake() {
 		base.Awake();

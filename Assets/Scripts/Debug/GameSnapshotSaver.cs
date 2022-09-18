@@ -8,14 +8,21 @@ public class GameSnapshotSaver {
 	PlayerSnapshotInfo enemyInfo;
 
 	public void Initialize(GameObject self, GameObject enemy) {
-		playerInfo = self.GetComponent<PlayerSnapshotInfo>() ? self.GetComponent<PlayerSnapshotInfo>() : self.AddComponent<PlayerSnapshotInfo>();
-		enemyInfo = enemy.GetComponent<PlayerSnapshotInfo>() ? enemy.GetComponent<PlayerSnapshotInfo>() : enemy.AddComponent<PlayerSnapshotInfo>();
+		AddSnapshotInfo(self);
+		AddSnapshotInfo(enemy);
 
 		playerInfo.Start();
 		enemyInfo.Start();
 	}
 
-	public override int GetHashCode() {
+	PlayerSnapshotInfo AddSnapshotInfo(GameObject target) {
+		if (target.GetComponent<PlayerSnapshotInfo>() != null) {
+			return target.GetComponent<PlayerSnapshotInfo>();
+		}
+		return target.AddComponent<PlayerSnapshotInfo>();
+	}
+
+	public int GetGameStateHash() {
 		int i = 0;
 		/* 
 			32 bits of information
@@ -31,10 +38,11 @@ public class GameSnapshotSaver {
 			12: 	hit this frame
 			13: 	opponent stunned
 			14: 	airjump left
-			15-31: 	free space
+			15: 	dash online
+			16-31: 	free space
 		*/
 
-		if (playerInfo.inAttack) i |= 1 << 0;
+		if (playerInfo.inAttack) i |= 1;
 		if (enemyInfo.inAttack)  i |= 1 << 1;
 
 		float xDistance = Mathf.Abs(playerInfo.rb2d.position.x - enemyInfo.transform.position.x);
@@ -62,12 +70,15 @@ public class GameSnapshotSaver {
 
 		if (playerInfo.controller && playerInfo.controller.HasAirJumps()) i |= 1 << 14;
 
+		if (playerInfo.controller && playerInfo.controller.canDash) i |= 1 << 15;
+
 		return i;
 	}
 
 	int DistanceToRange(float distance) {
+		distance = Mathf.Abs(distance);
 		// convert distance to close | medium | far | no threat
-		if (distance < 1.5f) return 0b00;
+		if (distance < 1.3f) return 0b00;
 		else if (distance < 3f) return 0b01;
 		else if (distance < 5f) return 0b10;
 		else return 0b11;

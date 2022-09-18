@@ -19,11 +19,6 @@ public class PlayerSnapshotInfo : MonoBehaviour, IHitListener {
 
 	public void OnHit(AttackHitbox attack) {
 		hitThisFrame = true;
-		StartCoroutine(HitTimeout());
-	}
-
-	IEnumerator HitTimeout() {
-		yield return new WaitForSecondsRealtime(1f/12f);
-		hitThisFrame = false;
+		this.WaitAndExecute(() => hitThisFrame = false, 1f/12f);
 	}
 }
