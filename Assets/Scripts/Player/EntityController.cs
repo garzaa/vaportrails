@@ -48,6 +48,7 @@ public class EntityController : Entity {
 	float ySpeedLastFrame;
 	bool stickDownLastFrame;
 
+	public bool inAttack => currentAttack != null;
 	protected AttackData currentAttack;
 	protected PlayerInput input;
 	ToonMotion toonMotion;
@@ -365,6 +366,31 @@ public class EntityController : Entity {
         }
     }
 
+	public void DashIfPossible(AudioResource dashSound) {
+		if (!groundData.grounded && currentAirDashes <= 0) return;
+
+
+		dashSound.PlayFrom(gameObject);
+		animator.SetTrigger(inputBackwards ? "BackDash" : "Dash");
+		shader.FlashWhite();
+		canDash = false;
+		dashing = true;
+		fMod = 0;
+		// dash at the max direction indicated by the stick
+		// if already moving in that way, make it additive
+		float speed = movement.runSpeed+movement.dashSpeed;
+		if ((inputForwards && movingForwards) || (inputBackwards && movingBackwards)) {
+			speed = Mathf.Max(Mathf.Abs(rb2d.velocity.x)+movement.dashSpeed, speed);
+		}
+		rb2d.velocity = new Vector2(
+			speed * Mathf.Sign(input.HorizontalInput()),
+			Mathf.Max(rb2d.velocity.y, 0)
+		);
+		if (!groundData.grounded) currentAirDashes--;
+
+		this.WaitAndExecute(EndDashCooldown, movement.dashCooldown);
+	}
+
 	public void StopDashAnimation() {
 		fMod = 0;
 		dashing = false;
@@ -443,4 +469,11 @@ public class EntityController : Entity {
 	public bool HasAirJumps() {
 		return currentAirJumps > 0;
 	}
+
+	public void EndDashCooldown() {
+		if (canDash) return;
+		shader.FlashCyan();
+		canDash = true;
+	}
+
 }

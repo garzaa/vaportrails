@@ -7,6 +7,8 @@ Shader "Custom2D/Entity"
 		[MaterialToggle] PixelSnap ("Pixel snap", Float) = 0
 		[PerRendererData] whiteFlashTime ("whiteFlashTime", Float) = -100
 		[PerRendererData] cyanFlashTime ("cyanFlashTime", Float) = -100
+		[PerRendererData] flinchWeight ("flinchWeight", Float) = 0
+		[PerRendererData] flinchDirection ("flinchDirection", Vector) = (0, 0, 0, 0)
 	}
 
 	SubShader
@@ -49,12 +51,22 @@ Shader "Custom2D/Entity"
 			
 			fixed4 _Color;
 
+			float flinchWeight;
+			float4 flinchDirection;
+			float _UnscaledTime;
+
+			float4 flinchVertex(float4 vert) {
+				float4 target = vert + flinchDirection*flinchWeight*0.07;
+				return lerp(vert, target, sin(_UnscaledTime * 50));
+			}
+
 			v2f vert(appdata_t IN)
 			{
 				v2f OUT;
 				OUT.vertex = UnityObjectToClipPos(IN.vertex);
 				OUT.texcoord = IN.texcoord;
 				OUT.color = IN.color * _Color;
+				OUT.vertex = flinchVertex(OUT.vertex);
 				#ifdef PIXELSNAP_ON
 				OUT.vertex = UnityPixelSnap (OUT.vertex);
 				#endif
@@ -67,7 +79,6 @@ Shader "Custom2D/Entity"
 			float _AlphaSplitEnabled;
 			float whiteFlashTime;
 			float cyanFlashTime;
-			float _UnscaledTime;
 
 			fixed4 SampleSpriteTexture (float2 uv)
 			{

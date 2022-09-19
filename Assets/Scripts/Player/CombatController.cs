@@ -27,6 +27,8 @@ public class CombatController : MonoBehaviour, IAttackLandListener, IHitListener
 	GameObject techEffect;
 	Collider2D collider2d;
 
+	AirAttackTracker airAttackTracker = new AirAttackTracker();
+
 	protected virtual void Start() {
 		player = GetComponent<EntityController>();
 		groundData = GetComponent<GroundCheck>().groundData;
@@ -43,14 +45,14 @@ public class CombatController : MonoBehaviour, IAttackLandListener, IHitListener
 			this,
 			animator,
 			GetComponent<AttackBuffer>(),
-			GetComponent<AirAttackTracker>(),
+			airAttackTracker,
 			input
 		);
 		airAttackGraph.Initialize(
 			this,
 			animator,
 			GetComponent<AttackBuffer>(),
-			GetComponent<AirAttackTracker>(),
+			airAttackTracker,
 			input
 		);
 	}
@@ -183,7 +185,5 @@ public class CombatController : MonoBehaviour, IAttackLandListener, IHitListener
 		return player.IsSpeeding();
 	}
 
-	virtual public void RefreshAirAttacks() {
-
-	}
+	virtual public void RefreshAirAttacks() {}
 }

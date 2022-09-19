@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class AirAttackTracker : MonoBehaviour {
+public class AirAttackTracker {
     HashSet<string> usedAttacks = new HashSet<string>();
 
     public void Add(string attackName) {

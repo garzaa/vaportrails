@@ -40,7 +40,8 @@ public class GameSnapshotSaver {
 			14: 	airjump left
 			15: 	dash online
 			16: 	touching wall
-			17-31: 	free space
+			17-24: 	attack name hash
+			25-31:  free space
 		*/
 
 		if (playerInfo.inAttack) i = 1;
@@ -74,6 +75,12 @@ public class GameSnapshotSaver {
 		if (playerInfo.controller && playerInfo.controller.canDash) i |= 1 << 15;
 
 		if (playerInfo.wallCheck.touchingWall) i |= 1 << 16;
+
+		if (playerInfo.inAttack) {
+			byte byteHash = playerInfo.GetShortState();
+			Debug.Log("capturing byte hash "+byteHash);
+			i |= byteHash << 17;
+		}
 
 		return i;
 	}

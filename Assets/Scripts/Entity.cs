@@ -22,7 +22,7 @@ public class Entity : MonoBehaviour, IHitListener {
 	protected GroundData groundData;
 	protected WallCheckData wallData;
 	protected Collider2D groundColliderLastFrame;
-	protected EntityShader entityShader;
+	public EntityShader shader { get; private set; }
 	public bool stunned { get; private set; }
 	
 	GroundCheck groundCheck;
@@ -50,7 +50,7 @@ public class Entity : MonoBehaviour, IHitListener {
 		if (suppressAnimatorWarnings) animator.logWarnings = false;
         rb2d = GetComponent<Rigidbody2D>();
 		rb2d.interpolation = RigidbodyInterpolation2D.Extrapolate;
-		entityShader = GetComponent<EntityShader>();
+		shader = GetComponent<EntityShader>();
         groundMask = 1 << LayerMask.NameToLayer(Layers.Ground);
         collider2d = GetComponent<Collider2D>();
         groundCheck = GetComponent<GroundCheck>();
@@ -115,6 +115,8 @@ public class Entity : MonoBehaviour, IHitListener {
 				Flip();
 			}
 			if (attack.data.stunLength > 0) StunFor(attack.data.stunLength);
+			shader.FlashWhite();
+			shader.Flinch(GetKnockback(attack), attack.data.hitstop);
 		}
 	}
 
@@ -193,7 +195,8 @@ public class Entity : MonoBehaviour, IHitListener {
 	}
 
 	void RectifyEntityCollision() {
-		// push away if standing on top of someone
+		// push self away if standing on top of someone
+		if (stunned) return;
 		overlapResults = Physics2D.OverlapBoxAll(
 			transform.position,
 			collider2d.bounds.size / 2f,

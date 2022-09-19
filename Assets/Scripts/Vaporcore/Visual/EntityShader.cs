@@ -3,11 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 
-public class EntityShader : MonoBehaviour, IHitListener {
+public class EntityShader : MonoBehaviour {
 	List<Renderer> renderers = new List<Renderer>();
 	List<MaterialPropertyBlock> propertyBlocks = new List<MaterialPropertyBlock>();
 
 	Material entityMaterial;
+
+	Coroutine flinchRoutine;
 
 	void Awake() {
 		entityMaterial = Resources.Load<Material>("Runtime/EntityMaterial");
@@ -36,7 +38,23 @@ public class EntityShader : MonoBehaviour, IHitListener {
 		}
 	}
 
-	public void OnHit(AttackHitbox attack) {
-		FlashWhite();
+	public void Flinch(Vector2 direction, float duration) {
+		if (flinchRoutine != null) StopCoroutine(flinchRoutine);
+		ExecuteChange(block => {
+			block.SetVector("flinchDirection", direction.normalized);
+			block.SetFloat("flinchWeight", 1f);
+		});
+		flinchRoutine = StartCoroutine(StopFlinch(duration));
+	}
+
+	public void FlinchOnce(Vector2 direction) {
+		Flinch(direction, 0.1f);
+	}
+
+	IEnumerator StopFlinch(float duration) {
+		yield return new WaitForSecondsRealtime(duration);
+		ExecuteChange(block => {
+			block.SetFloat("flinchWeight", 0f);
+		});
 	}
 }

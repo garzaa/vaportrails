@@ -68,8 +68,6 @@ public class AttackHitbox : MonoBehaviour {
 	void OnTriggerEnter2D(Collider2D other) {
 		Hurtbox hurtbox = other.GetComponent<Hurtbox>();
 		if (hurtbox && CanHit(hurtbox)) {
-			Hitstop.Run(data.hitstop);
-
 			foreach (Hurtbox h in hurtbox.transform.root.GetComponentsInChildren<Hurtbox>()) {
 				if (singleHitPerActive) {
 					hurtboxesHitThisActive.Add(h);
@@ -98,6 +96,7 @@ public class AttackHitbox : MonoBehaviour {
 			}
 			hurtbox.OnAttackLand(this);
 			OnAttackLand.Invoke();
+			Hitstop.Run(data.hitstop);
 		}
 	}
 }

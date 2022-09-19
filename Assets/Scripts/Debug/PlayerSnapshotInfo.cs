@@ -10,6 +10,7 @@ public class PlayerSnapshotInfo : MonoBehaviour, IHitListener {
 	public GroundData groundData { get; private set; }
 	public EntityController controller { get; private set; }
 	public WallCheckData wallCheck { get; private set; }
+	Animator animator;
 
 	public void Start() {
 		entity = GetComponent<Entity>();
@@ -17,10 +18,15 @@ public class PlayerSnapshotInfo : MonoBehaviour, IHitListener {
 		groundData = entity.GetComponent<GroundCheck>().groundData;
 		controller = GetComponent<EntityController>();
 		wallCheck = GetComponent<WallCheck>().wallData;
+		animator = GetComponent<Animator>();
 	}
 
 	public void OnHit(AttackHitbox attack) {
 		hitThisFrame = true;
 		this.WaitAndExecute(() => hitThisFrame = false, 1f/12f);
+	}
+
+	public byte GetShortState() {
+		return ((byte)animator.GetCurrentAnimatorStateInfo(0).fullPathHash);
 	}
 }

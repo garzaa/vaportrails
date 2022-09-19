@@ -37,7 +37,7 @@ public class AttackGraph : NodeGraph {
 		enteredCurrentNode = false;
     }
 
-    public void ExitGraph(bool quiet=false) {
+    public void ExitGraph() {
         if (currentNode != null) {
             currentNode.OnNodeExit();
         }
@@ -68,7 +68,7 @@ public class AttackGraph : NodeGraph {
 		}
 
 		if (!nameCorresponds && enteredCurrentNode) {
-			ExitGraph(quiet: true);
+			ExitGraph();
 		}
 
 		if (nameCorresponds) {
