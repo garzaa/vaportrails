@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 93af5be29414da440814eeb14596c6e5, type: 3}
-  m_Name: Attack
+  m_Name: Wing Sweep
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
   position: {x: -152, y: -24}
@@ -56,7 +56,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 93af5be29414da440814eeb14596c6e5, type: 3}
-  m_Name: Attack
+  m_Name: Point Strike
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
   position: {x: -152, y: -216}
@@ -192,9 +192,52 @@ MonoBehaviour:
   - {fileID: -2076936626023422332}
   - {fileID: -3701931120875062896}
   - {fileID: -8779223317430618611}
+  - {fileID: 7940857184761271470}
   animator: {fileID: 0}
   buffer: {fileID: 0}
-  airAttackTracker: {fileID: 0}
   combatController: {fileID: 0}
-  grounded: 0
+  grounded: 1
   inputManager: {fileID: 0}
+--- !u!114 &7940857184761271470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93af5be29414da440814eeb14596c6e5, type: 3}
+  m_Name: Hard Landing
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -112.5, y: 210.5}
+  ports:
+    keys:
+    - input
+    - links
+    values:
+    - _fieldName: input
+      _node: {fileID: 7940857184761271470}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: links
+      _node: {fileID: 7940857184761271470}
+      _typeQualifiedName: AttackLink[], Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+  attackData: {fileID: 11400000, guid: 85fb867339ea7dc478e84d6f96c1c7b9, type: 2}
+  input:
+    type: 0
+    direction: 0
+  links: []
+  timeOffset: 0

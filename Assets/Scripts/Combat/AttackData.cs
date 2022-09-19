@@ -16,6 +16,7 @@ public class AttackData : ScriptableObject {
 	public bool hasSelfKnockback;
 	[ShowIf(nameof(hasSelfKnockback))]
 	public Vector2 selfKnockback;
+	public bool zoomIn = false;
 
 	float enableTime;
 

@@ -116,7 +116,7 @@ public class Entity : MonoBehaviour, IHitListener {
 			}
 			if (attack.data.stunLength > 0) StunFor(attack.data.stunLength);
 			shader.FlashWhite();
-			shader.Flinch(GetKnockback(attack), attack.data.hitstop);
+			shader.Flinch(GetKnockback(attack) * new Vector2(-1, 1), attack.data.hitstop);
 		}
 	}
 

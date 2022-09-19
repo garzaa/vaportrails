@@ -19,6 +19,7 @@ public class AttackHitbox : MonoBehaviour {
 	HashSet<Hurtbox> hurtboxesHitThisActive = new HashSet<Hurtbox>();
 	// for entities like Lady of the Lake who has multiple hurtboxes
 	HashSet<Entity> entitiesHitThisActive = new HashSet<Entity>();
+	CameraZoom cameraZoom;
 	bool hitboxOutLastFrame = false;
 
 	public UnityEvent OnAttackLand;
@@ -27,6 +28,7 @@ public class AttackHitbox : MonoBehaviour {
 		gameObject.layer = LayerMask.NameToLayer(Layers.Hitboxes);
 		attackLandListeners = GetComponentsInParent<IAttackLandListener>();
 		colliders = GetComponents<Collider2D>();
+		cameraZoom = GameObject.FindObjectOfType<CameraZoom>();
 	}
 
 	void Update() {
@@ -96,6 +98,7 @@ public class AttackHitbox : MonoBehaviour {
 			}
 			hurtbox.OnAttackLand(this);
 			OnAttackLand.Invoke();
+			if (data.zoomIn) cameraZoom.ZoomFor(2, data.hitstop);
 			Hitstop.Run(data.hitstop);
 		}
 	}

@@ -57,7 +57,7 @@ Shader "Custom2D/Entity"
 
 			float4 flinchVertex(float4 vert) {
 				float4 target = vert + flinchDirection*flinchWeight*0.07;
-				return lerp(vert, target, sin(_UnscaledTime * 50));
+				return lerp(vert, target, sin(_UnscaledTime * 100));
 			}
 
 			v2f vert(appdata_t IN)

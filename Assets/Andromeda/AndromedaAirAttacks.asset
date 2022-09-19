@@ -1,5 +1,39 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-6795757836602782232
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b0efb61c0d737e459a3c908650c5da2, type: 3}
+  m_Name: Move Graph
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 168, y: -56}
+  ports:
+    keys:
+    - input
+    values:
+    - _fieldName: input
+      _node: {fileID: -6795757836602782232}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: onLand
+        node: {fileID: -4140659376928405838}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  targetNode: {fileID: 7940857184761271470, guid: 19dcfdd35d7df3a4f82650fde225976f, type: 2}
+  input:
+    type: 0
+    direction: 0
 --- !u!114 &-4885283071779246905
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10,7 +44,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f560ccef1c7828547a8ca9ba50993c96, type: 3}
-  m_Name: Air Attack
+  m_Name: Satellite Wing
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
   position: {x: -161.5, y: 114.5}
@@ -70,7 +104,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f560ccef1c7828547a8ca9ba50993c96, type: 3}
-  m_Name: Air Attack
+  m_Name: Falling Star
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
   position: {x: -174.5, y: -120.5}
@@ -84,7 +118,10 @@ MonoBehaviour:
       _node: {fileID: -4140659376928405838}
       _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
-      connections: []
+      connections:
+      - fieldName: input
+        node: {fileID: -6795757836602782232}
+        reroutePoints: []
       _direction: 1
       _connectionType: 1
       _typeConstraint: 0
@@ -220,9 +257,9 @@ MonoBehaviour:
   - {fileID: -1017956487442271454}
   - {fileID: -4140659376928405838}
   - {fileID: -4885283071779246905}
+  - {fileID: -6795757836602782232}
   animator: {fileID: 0}
   buffer: {fileID: 0}
-  airAttackTracker: {fileID: 0}
   combatController: {fileID: 0}
   grounded: 1
   inputManager: {fileID: 0}
