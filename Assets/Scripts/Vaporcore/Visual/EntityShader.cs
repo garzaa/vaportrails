@@ -39,6 +39,9 @@ public class EntityShader : MonoBehaviour {
 	}
 
 	public void Flinch(Vector2 direction, float duration) {
+		if (direction.sqrMagnitude == 0) {
+			direction = Vector2.right;
+		}
 		if (flinchRoutine != null) StopCoroutine(flinchRoutine);
 		ExecuteChange(block => {
 			block.SetVector("flinchDirection", direction.normalized);

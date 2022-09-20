@@ -135,6 +135,18 @@ public class CombatController : MonoBehaviour, IAttackLandListener, IHitListener
 		player.CancelStun();
 	}
 
+	public void EndGroundStunAnimation() {
+		if (Mathf.Abs(input.HorizontalInput()) > 0.2f) {
+			rb2d.velocity = new Vector2(
+				player.movement.runSpeed * Mathf.Sign(input.HorizontalInput()),
+				0
+			);
+			animator.SetTrigger("TechSuccess");
+			GetComponent<EntityShader>().FlashCyan();
+			player.CancelStun();
+		}
+	}
+
 	void EndTechWindow() {
 		canTech = false;
 		techLockout = true;

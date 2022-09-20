@@ -10,10 +10,10 @@ public class GroundPinner : MonoBehaviour {
 	public float maxDistance = 10;
 	public bool disableIfMiss = true;
 
-	void LateUpdate() {
+	void Update() {
 		RaycastHit2D hit = Physics2D.Raycast(
 			transform.position, 
-			direction.normalized.Rotate(this.transform.eulerAngles.z), 		
+			(direction * transform.lossyScale).normalized.Rotate(this.transform.eulerAngles.z), 		
 			maxDistance,
 			1 << LayerMask.NameToLayer(Layers.Ground)
 		);

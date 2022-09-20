@@ -50,7 +50,7 @@ public class AttackHitbox : MonoBehaviour {
 		hitboxOutLastFrame = hitboxOut;
 	}
 
-	public void OnHitboxOut() {
+	void OnHitboxOut() {
 		data.OnHitboxOut();
 	}
 
@@ -68,6 +68,7 @@ public class AttackHitbox : MonoBehaviour {
 	}
 
 	void OnTriggerEnter2D(Collider2D other) {
+		if (!data) return;
 		Hurtbox hurtbox = other.GetComponent<Hurtbox>();
 		if (hurtbox && CanHit(hurtbox)) {
 			foreach (Hurtbox h in hurtbox.transform.root.GetComponentsInChildren<Hurtbox>()) {

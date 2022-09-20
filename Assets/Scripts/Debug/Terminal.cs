@@ -190,6 +190,7 @@ public class Terminal : MonoBehaviour, IPointerDownHandler {
             if (!ai) {
                 ai = puppet.AddComponent<AIPlayer>();
             }
+            Log("Replaying "+args[1]+" on "+args[2]);
             ai.PlayReplay(replay);
             aiPlayer = ai;
         } else if (args[0].Equals("ghost")) {
@@ -259,7 +260,7 @@ public class Terminal : MonoBehaviour, IPointerDownHandler {
             }
         }
         if (!foundTarget) {
-            Log("no player named "+name+" found. try one of: \n"+string.Join('\n', inputSources.Select(x => x.name.ToLower()).ToArray()));
+            Log("no player named "+name+" found. try one of: \n"+string.Join('\n', inputSources.Select(x => x.name).ToArray()));
             return null;
         } else {
             foreach (PlayerInput input in inputSources) {

@@ -60,6 +60,8 @@ public class AttackGraph : NodeGraph {
 
 		if (!nameCorresponds && !enteredCurrentNode) {
 			// wait for animator state to actually propagate
+            // this can lock the player in the attack state if they do an attack in the air
+            // somehow
 			return;
 		}
 		

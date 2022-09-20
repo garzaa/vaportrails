@@ -24,6 +24,9 @@ MonoBehaviour:
         PublicKeyToken=null
       connections:
       - fieldName: onLand
+        node: {fileID: -4885283071779246905}
+        reroutePoints: []
+      - fieldName: onLand
         node: {fileID: -4140659376928405838}
         reroutePoints: []
       _direction: 0
@@ -58,7 +61,10 @@ MonoBehaviour:
       _node: {fileID: -4885283071779246905}
       _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
-      connections: []
+      connections:
+      - fieldName: input
+        node: {fileID: -6795757836602782232}
+        reroutePoints: []
       _direction: 1
       _connectionType: 1
       _typeConstraint: 0
@@ -68,7 +74,7 @@ MonoBehaviour:
       _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
       connections:
-      - fieldName: links 1
+      - fieldName: links 2
         node: {fileID: -1017956487442271454}
         reroutePoints: []
       _direction: 0
@@ -131,7 +137,7 @@ MonoBehaviour:
       _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
       connections:
-      - fieldName: links 0
+      - fieldName: links 1
         node: {fileID: -1017956487442271454}
         reroutePoints: []
       _direction: 0
@@ -178,6 +184,7 @@ MonoBehaviour:
     - links
     - links 0
     - links 1
+    - links 2
     values:
     - _fieldName: speedLinks
       _node: {fileID: -1017956487442271454}
@@ -212,13 +219,25 @@ MonoBehaviour:
         PublicKeyToken=null
       connections:
       - fieldName: input
-        node: {fileID: -4140659376928405838}
+        node: {fileID: 4154376683595710960}
         reroutePoints: []
       _direction: 1
       _connectionType: 1
       _typeConstraint: 0
       _dynamic: 1
     - _fieldName: links 1
+      _node: {fileID: -1017956487442271454}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: input
+        node: {fileID: -4140659376928405838}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 1
+    - _fieldName: links 2
       _node: {fileID: -1017956487442271454}
       _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
@@ -235,6 +254,8 @@ MonoBehaviour:
     type: 0
     direction: 0
   links:
+  - type: 2
+    direction: 2
   - type: 1
     direction: 0
   - type: 2
@@ -258,8 +279,69 @@ MonoBehaviour:
   - {fileID: -4140659376928405838}
   - {fileID: -4885283071779246905}
   - {fileID: -6795757836602782232}
+  - {fileID: 4154376683595710960}
   animator: {fileID: 0}
   buffer: {fileID: 0}
   combatController: {fileID: 0}
   grounded: 1
   inputManager: {fileID: 0}
+--- !u!114 &4154376683595710960
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f560ccef1c7828547a8ca9ba50993c96, type: 3}
+  m_Name: Short Hop Laser
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -168, y: -344}
+  ports:
+    keys:
+    - onLand
+    - input
+    - links
+    values:
+    - _fieldName: onLand
+      _node: {fileID: 4154376683595710960}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: input
+      _node: {fileID: 4154376683595710960}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: links 0
+        node: {fileID: -1017956487442271454}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: links
+      _node: {fileID: 4154376683595710960}
+      _typeQualifiedName: AttackLink[], Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+  attackData: {fileID: 11400000, guid: fe1efca1ac74c2b41b3207c8849ecfe4, type: 2}
+  input:
+    type: 0
+    direction: 0
+  links: []
+  timeOffset: 0
+  onLand:
+    type: 0
+    direction: 0
+  singleUse: 0

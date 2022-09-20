@@ -24,7 +24,7 @@ MonoBehaviour:
       _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
       connections:
-      - fieldName: links 1
+      - fieldName: links 2
         node: {fileID: -2076936626023422332}
         reroutePoints: []
       _direction: 0
@@ -41,6 +41,52 @@ MonoBehaviour:
       _typeConstraint: 0
       _dynamic: 0
   attackData: {fileID: 11400000, guid: 88a5578349d1a6b42b87f49980a2f84f, type: 2}
+  input:
+    type: 0
+    direction: 0
+  links: []
+  timeOffset: 0
+--- !u!114 &-4485824062387828946
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93af5be29414da440814eeb14596c6e5, type: 3}
+  m_Name: Moonlight Sabre
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -152, y: -392}
+  ports:
+    keys:
+    - input
+    - links
+    values:
+    - _fieldName: input
+      _node: {fileID: -4485824062387828946}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: links 0
+        node: {fileID: -2076936626023422332}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: links
+      _node: {fileID: -4485824062387828946}
+      _typeQualifiedName: AttackLink[], Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+  attackData: {fileID: 11400000, guid: fe381878e84590a4cb43e4b0fad7a204, type: 2}
   input:
     type: 0
     direction: 0
@@ -70,7 +116,7 @@ MonoBehaviour:
       _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
       connections:
-      - fieldName: links 0
+      - fieldName: links 1
         node: {fileID: -2076936626023422332}
         reroutePoints: []
       _direction: 0
@@ -113,6 +159,7 @@ MonoBehaviour:
     - links
     - links 0
     - links 1
+    - links 2
     values:
     - _fieldName: speedLinks
       _node: {fileID: -2076936626023422332}
@@ -147,13 +194,25 @@ MonoBehaviour:
         PublicKeyToken=null
       connections:
       - fieldName: input
-        node: {fileID: -3701931120875062896}
+        node: {fileID: -4485824062387828946}
         reroutePoints: []
       _direction: 1
       _connectionType: 1
       _typeConstraint: 0
       _dynamic: 1
     - _fieldName: links 1
+      _node: {fileID: -2076936626023422332}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: input
+        node: {fileID: -3701931120875062896}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 1
+    - _fieldName: links 2
       _node: {fileID: -2076936626023422332}
       _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
@@ -170,6 +229,8 @@ MonoBehaviour:
     type: 0
     direction: 0
   links:
+  - type: 1
+    direction: -2
   - type: 1
     direction: 0
   - type: 2
@@ -193,6 +254,7 @@ MonoBehaviour:
   - {fileID: -3701931120875062896}
   - {fileID: -8779223317430618611}
   - {fileID: 7940857184761271470}
+  - {fileID: -4485824062387828946}
   animator: {fileID: 0}
   buffer: {fileID: 0}
   combatController: {fileID: 0}
@@ -211,7 +273,7 @@ MonoBehaviour:
   m_Name: Hard Landing
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -112.5, y: 210.5}
+  position: {x: -584, y: 232}
   ports:
     keys:
     - input

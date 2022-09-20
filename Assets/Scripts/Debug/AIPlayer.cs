@@ -23,6 +23,8 @@ public class AIPlayer : MonoBehaviour {
 	float startTime;
 	int lastFrame;
 
+	const float reactionTime = 1f/4f;
+
 	// action ID to button/axis ID
 	Dictionary<int, int> buttonMaps = new Dictionary<int, int>();
 	Dictionary<int, int> axisMaps = new Dictionary<int, int>();
@@ -101,8 +103,7 @@ public class AIPlayer : MonoBehaviour {
 	}
 
 	void PlayGhost() {
-		// only update inputs every 1/12 of a second
-		if (Time.unscaledTime - InputRecorder.pollInterval < lastGhostInputTime) {
+		if (Time.unscaledTime - reactionTime < lastGhostInputTime) {
 			SetPuppetInput(lastGhostInput);
 			return;
 		}

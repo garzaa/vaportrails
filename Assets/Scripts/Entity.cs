@@ -117,6 +117,8 @@ public class Entity : MonoBehaviour, IHitListener {
 			if (attack.data.stunLength > 0) StunFor(attack.data.stunLength);
 			shader.FlashWhite();
 			shader.Flinch(GetKnockback(attack) * new Vector2(-1, 1), attack.data.hitstop);
+		} else {
+			shader.FlinchOnce(GetKnockback(attack) * new Vector2(-1, 1));
 		}
 	}
 
@@ -211,6 +213,8 @@ public class Entity : MonoBehaviour, IHitListener {
 			}
 		}
 		if (overlapping) {
+			Entity entity = overlapping.GetComponent<Entity>();
+			if (entity && entity.stunned) return;
 			rb2d.AddForce(Vector3.Project((transform.position - overlapping.transform.position), Vector3.right).normalized * 4f);
 		}
 	}
