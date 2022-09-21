@@ -117,10 +117,10 @@ public class PlayerInput : MonoBehaviour {
     }
 
     public static bool IsHorizontal(int actionID) {
-		return actionID == HorizontalAxisID;
+		return actionID == HorizontalActionID;
 	}
 
-    public const int HorizontalAxisID = 0;
+    public const int HorizontalActionID = 0;
 }
 
 public static class Buttons {

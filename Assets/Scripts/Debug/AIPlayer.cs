@@ -35,18 +35,20 @@ public class AIPlayer : MonoBehaviour {
 			puppetInput = gameObject.AddComponent<PuppetInput>();
 		}
 		player = ReInput.players.GetPlayer(GetComponent<PlayerInput>().playerNum);
+		puppetInput.EnableInput();
+		puppetController = puppetInput.controller;
 	}
 
 	public void PlayReplay(Replay replay) {
 		Start();
-		puppetInput.EnableInput();
-		puppetController = puppetInput.controller;
 		startTime = Time.unscaledTime;
 		currentReplay = replay;
 		lastFrame = 0;
 	}
 
 	public void PlayGhost(Ghostfile ghostFile, GameObject opponent) {
+		Start();
+		snapshotSaver.Initialize(this.gameObject, opponent);
 		ghost = ghostFile.ghost;
 		this.opponent = opponent;
 	}
@@ -95,9 +97,10 @@ public class AIPlayer : MonoBehaviour {
 	}
 
 	void SetNormalizedinput(FrameInput input) {
-		if (input.actionIDAxes.ContainsKey(PlayerInput.HorizontalAxisID)
+		if (input.actionIDAxes.ContainsKey(PlayerInput.HorizontalActionID)
 		&& opponent.transform.position.x < transform.position.x) {
-			input.actionIDAxes[PlayerInput.HorizontalAxisID] *= -1;
+			Debug.Log("normalizing H-axis");
+			input.actionIDAxes[PlayerInput.HorizontalActionID] *= -1;
 		}
 		SetPuppetInput(input);
 	}
@@ -119,7 +122,7 @@ public class AIPlayer : MonoBehaviour {
 			Debug.Log("No game hash, picking a random input");
 			ghostInput = ChooseWeightedInput(Utils.RandomDictValue(ghost));
 		}
-		SetPuppetInput(ghostInput);
+		SetNormalizedinput(ghostInput);
 		lastGhostInput = ghostInput;
 	}
 
@@ -138,7 +141,7 @@ public class AIPlayer : MonoBehaviour {
 	void AddAxisMap(int actionID) {
 		if (!axisMaps.ContainsKey(actionID)) {
 			ActionElementMap map = player.controllers.maps.GetFirstAxisMapWithAction(
-				puppetController.type,
+				ControllerType.Custom,
 				actionID,
 				skipDisabledMaps: false
 			);
@@ -149,7 +152,7 @@ public class AIPlayer : MonoBehaviour {
 	void AddButtonMap(int actionID) {
 		if (!buttonMaps.ContainsKey(actionID)) {
 			ActionElementMap map = player.controllers.maps.GetFirstButtonMapWithAction(
-				puppetController.type,
+				ControllerType.Custom,
 				actionID,
 				skipDisabledMaps: false
 			);

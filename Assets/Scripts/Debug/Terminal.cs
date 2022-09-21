@@ -247,6 +247,15 @@ public class Terminal : MonoBehaviour, IPointerDownHandler {
                 }
                 Log($"Playing ghostfile on {puppet.gameObject.name} with opponent {opponent.gameObject.name}");
                 ai.PlayGhost(ghostfile, opponent.gameObject);
+                aiPlayer = ai;
+            } else if (args[1] == "stop") {
+                if (aiPlayer || !aiPlayer.currentReplay) {
+                    aiPlayer.StopGhost();
+                    aiPlayer = null;
+                } else {
+                    Log("No currently playing replay to stop.");
+                }
+                return;
             }
         }
     }
