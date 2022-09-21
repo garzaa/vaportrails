@@ -231,7 +231,7 @@ public class Terminal : MonoBehaviour, IPointerDownHandler {
                 if (!ai) ai = puppet.gameObject.AddComponent<AIPlayer>();
 
                 PlayerInput opponent = null;
-                if (args.Count() >= 4) {
+                if (args.Count() >= 5) {
                     opponent = GetPlayerInputByName(args[4]);
                 } else {
                     foreach (PlayerInput input in GameObject.FindObjectsOfType<PlayerInput>()) {

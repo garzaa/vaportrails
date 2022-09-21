@@ -21,6 +21,9 @@ public class AttackGraph : NodeGraph {
 
     CombatNode currentNode = null;
 
+    float nodeSwitchTime;
+    const float nodeSwitchGracePeriod = 0.1f;
+
     public void Initialize(CombatController combatController, Animator anim, AttackBuffer buffer, AirAttackTracker airAttackTracker, PlayerInput inputManager) {
         this.animator = anim;
         this.buffer = buffer;
@@ -35,6 +38,7 @@ public class AttackGraph : NodeGraph {
         currentNode = (entryNode == null) ? GetRootNode() : entryNode;
         currentNode.OnNodeEnter();
 		enteredCurrentNode = false;
+        nodeSwitchTime = Time.unscaledTime;
     }
 
     public void ExitGraph() {
@@ -59,8 +63,11 @@ public class AttackGraph : NodeGraph {
 		bool nameCorresponds = clipName.Equals(currentNode.name);
 
 		if (!nameCorresponds && !enteredCurrentNode) {
+            // in case something went wrong, unlock the player
+            if (Time.unscaledTime-nodeSwitchTime > nodeSwitchGracePeriod) {
+                ExitGraph();
+            }
 			// wait for animator state to actually propagate
-            // this can lock the player in the attack state if they do an attack in the air
             // somehow
 			return;
 		}
@@ -85,6 +92,7 @@ public class AttackGraph : NodeGraph {
         currentNode.OnNodeExit();
         currentNode = node;
         currentNode.OnNodeEnter();
+        nodeSwitchTime = Time.unscaledTime;
     }
     
     int GetStateHash() {

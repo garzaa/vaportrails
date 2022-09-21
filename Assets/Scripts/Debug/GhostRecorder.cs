@@ -31,7 +31,7 @@ public class GhostRecorder : InputRecorder {
 
 	// define a data structure of hash : list<FrameInput> pairings
 	// this can be raw-serialized https://www.newtonsoft.com/json/help/html/serializationguide.htm
-	Dictionary<int, List<FrameInput>> ghostInputs;
+	Dictionary<int, List<FrameInput>> ghostInputs = new Dictionary<int, List<FrameInput>>();
 
 	GameObject self;
 	GameObject enemy;
@@ -41,6 +41,7 @@ public class GhostRecorder : InputRecorder {
 	int hashCollisions = 0;
 
 	public void Arm(PlayerInput self, PlayerInput enemy) {
+		base.Arm(self);
 		this.self = self.gameObject;
 		this.enemy = enemy.gameObject;
 		this.player = input.GetPlayer();
@@ -106,7 +107,6 @@ public class GhostRecorder : InputRecorder {
 
 		Terminal.Log("done. running weighting pass...");
 
-		// second pass: normalize the weights
 		foreach (List<WeightedFrameInput> weightedInputList in weightedInputs.Values) {
 			float total = weightedInputList.Select(weightedInput => weightedInput.normalizedWeight).Sum();
 			foreach (WeightedFrameInput input in weightedInputList) {
@@ -131,7 +131,7 @@ public class GhostRecorder : InputRecorder {
 
 [System.Serializable]
 public class WeightedFrameInput {
-	public float normalizedWeight = 0;
+	public float normalizedWeight = 1;
 	public FrameInput frameInput;
 
 	public WeightedFrameInput(FrameInput f) {

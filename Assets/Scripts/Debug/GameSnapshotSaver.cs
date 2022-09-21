@@ -8,8 +8,8 @@ public class GameSnapshotSaver {
 	PlayerSnapshotInfo enemyInfo;
 
 	public void Initialize(GameObject self, GameObject enemy) {
-		AddSnapshotInfo(self);
-		AddSnapshotInfo(enemy);
+		playerInfo = AddSnapshotInfo(self);
+		enemyInfo = AddSnapshotInfo(enemy);
 
 		playerInfo.Start();
 		enemyInfo.Start();

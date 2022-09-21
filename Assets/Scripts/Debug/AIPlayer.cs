@@ -123,10 +123,12 @@ public class AIPlayer : MonoBehaviour {
 		lastGhostInput = ghostInput;
 	}
 
+	// https://limboh27.medium.com/implementing-weighted-rng-in-unity-ed7186e3ff3b
 	public FrameInput ChooseWeightedInput(List<WeightedFrameInput> inputs) {
 		float v = Random.value;
 		foreach (WeightedFrameInput weightedInput in inputs) {
-			if (weightedInput.normalizedWeight < v) {
+			v -= weightedInput.normalizedWeight;
+			if (v < 0) {
 				return weightedInput.frameInput;
 			}
 		}
