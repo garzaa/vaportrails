@@ -120,6 +120,15 @@ public class PlayerInput : MonoBehaviour {
 		return actionID == HorizontalActionID;
 	}
 
+    public static bool IsAttack(int actionID) {
+        return 
+            actionID == 3
+            || actionID == 4
+            || actionID == 5
+            || actionID == 6
+        ;
+    }
+
     public const int HorizontalActionID = 0;
 }
 

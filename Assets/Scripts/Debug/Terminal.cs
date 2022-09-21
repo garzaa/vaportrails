@@ -32,6 +32,10 @@ public class Terminal : MonoBehaviour, IPointerDownHandler {
 
     Player currentPlayer;
 
+    public static bool IsOpen() {
+        return t.terminalContainer.activeSelf;
+    }
+
     void Start() {
         t = this;
         ClearConsole();

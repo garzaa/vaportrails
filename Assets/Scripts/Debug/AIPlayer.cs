@@ -99,13 +99,13 @@ public class AIPlayer : MonoBehaviour {
 	void SetNormalizedinput(FrameInput input) {
 		if (input.actionIDAxes.ContainsKey(PlayerInput.HorizontalActionID)
 		&& opponent.transform.position.x < transform.position.x) {
-			Debug.Log("normalizing H-axis");
 			input.actionIDAxes[PlayerInput.HorizontalActionID] *= -1;
 		}
 		SetPuppetInput(input);
 	}
 
 	void PlayGhost() {
+		puppetInput.ZeroInput();
 		if (Time.unscaledTime - reactionTime < lastGhostInputTime) {
 			SetPuppetInput(lastGhostInput);
 			return;

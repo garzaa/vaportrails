@@ -78,7 +78,6 @@ public class GameSnapshotSaver {
 
 		if (playerInfo.inAttack) {
 			byte byteHash = playerInfo.GetShortState();
-			Debug.Log("capturing byte hash "+byteHash);
 			i |= byteHash << 17;
 		}
 
@@ -88,7 +87,7 @@ public class GameSnapshotSaver {
 	int DistanceToRange(float distance) {
 		distance = Mathf.Abs(distance);
 		// convert distance to close | medium | far | no threat
-		if (distance < 1.3f) return 0b00;
+		if (distance < 1f) return 0b00;
 		else if (distance < 3f) return 0b01;
 		else if (distance < 5f) return 0b10;
 		else return 0b11;

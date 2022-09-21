@@ -66,6 +66,7 @@ public class InputRecorder : MonoBehaviour {
 	}
 
 	protected void Update() {
+		if (Terminal.IsOpen()) return;
 		if (recording && (Time.unscaledTime > lastPollTime+pollInterval)) {
 			SaveSnapshot();
 			lastPollTime = Time.unscaledTime;

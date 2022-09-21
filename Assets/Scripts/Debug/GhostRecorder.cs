@@ -7,30 +7,6 @@ using Newtonsoft.Json;
 using System.IO;
 
 public class GhostRecorder : InputRecorder {
-	// like an input recorder, but saves game states as well
-
-	// initialize: add a game snapshot saver to self
-	// if it doesn't exist already
-	// initialize it with the player and the opponent
-
-	/*
-		high level:
-		1. save inputs along with game state
-		2. save them as weighted options
-			2a. normalize each weight to make runtime lookup faster
-		3. ???
-		4. profit
-	*/
-
-	/*
-		TODO: Important caveats
-		- normalize input as towards/away from the player
-		- grab the horizontal movement axis and invert it if the opponent is to the left, very simple
-		- override the SaveInput functino to see if it's the horizontal input and then invert if necessary
-	*/
-
-	// define a data structure of hash : list<FrameInput> pairings
-	// this can be raw-serialized https://www.newtonsoft.com/json/help/html/serializationguide.htm
 	Dictionary<int, List<FrameInput>> ghostInputs = new Dictionary<int, List<FrameInput>>();
 
 	GameObject self;
@@ -39,6 +15,8 @@ public class GhostRecorder : InputRecorder {
 	GameSnapshotSaver snapshot = new GameSnapshotSaver();
 
 	int hashCollisions = 0;
+
+	public List<int> stretchedAttackIDs = new List<int>();
 
 	public void Arm(PlayerInput self, PlayerInput enemy) {
 		base.Arm(self);
@@ -49,6 +27,8 @@ public class GhostRecorder : InputRecorder {
 	}
 
 	override protected void SaveInput(InputActionEventData e) {
+		actionIDs.UnionWith(stretchedAttackIDs);
+
 		if (ReInput.mapping.GetAction(e.actionId).type.Equals(InputActionType.Axis)) {
 			int axis = (int) Mathf.Sign(e.GetAxis());
 			// normalize to towards<->away from opponent
@@ -58,7 +38,20 @@ public class GhostRecorder : InputRecorder {
 			actionIDAxes[e.actionId] = axis;
 		} else {
 			actionIDs.Add(e.actionId);
+
+			// attack inputs happen relatively rarely compared to how long
+			// the player "wants to be in attack"
+			if (PlayerInput.IsAttack(e.actionId)) {
+				Debug.Log("stretching attack");
+				stretchedAttackIDs.Add(e.actionId);
+				StartCoroutine(CutAttackPress(e.actionId));
+			}
 		}
+	}
+
+	IEnumerator CutAttackPress(int actionID) {
+		yield return new WaitForSecondsRealtime(pollInterval * 6f);
+		stretchedAttackIDs.Remove(actionID);
 	}
 
 	protected override void SaveSnapshot() {
