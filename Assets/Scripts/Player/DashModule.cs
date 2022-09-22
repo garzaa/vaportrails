@@ -11,7 +11,7 @@ public class DashModule : MonoBehaviour {
 	GroundData groundData;
 
 	void Awake() {
-		dashSound = Resources.Load<AudioResource>("Runtime/DashSound");
+		if (dashSound == null) dashSound = Resources.Load<AudioResource>("Runtime/DashSound");
 		entity = GetComponent<EntityController>();
 		input = GetComponent<PlayerInput>();
 		groundData = GetComponent<GroundCheck>().groundData;
