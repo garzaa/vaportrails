@@ -33,9 +33,9 @@ public class AttackBuffer : MonoBehaviour {
             Vector2 ls = inputManager.LeftStick();
 
             attackDirection = new Vector2Int(
-                    (int) Mathf.Sign(ls.x * player.ForwardScalar()),
-                    (int) (Mathf.Approximately(ls.y, 0) ? 0 : ClampZero(ls.y))
-                );
+                inputManager.HasHorizontalInput() ? (int) Mathf.Sign(ls.x * player.ForwardScalar()) : 0,
+                (int) (Mathf.Approximately(ls.y, 0) ? 0 : ClampZero(ls.y))
+            );
             attackDirection = attackDirection * new Vector2Int(1, 2);
 			BufferedAttack attack = new BufferedAttack(attackType, attackDirection);
 			bufferedAttacks.Add(attack);

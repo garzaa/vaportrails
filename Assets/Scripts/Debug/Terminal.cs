@@ -253,11 +253,9 @@ public class Terminal : MonoBehaviour, IPointerDownHandler {
                 ai.PlayGhost(ghostfile, opponent.gameObject);
                 aiPlayer = ai;
             } else if (args[1] == "stop") {
-                if (aiPlayer || !aiPlayer.currentReplay) {
-                    aiPlayer.StopGhost();
-                    aiPlayer = null;
-                } else {
-                    Log("No currently playing replay to stop.");
+                foreach (AIPlayer a in GameObject.FindObjectsOfType<AIPlayer>()) {
+                    Log("stopping any ghost replays");
+                    a.StopGhost();
                 }
                 return;
             }

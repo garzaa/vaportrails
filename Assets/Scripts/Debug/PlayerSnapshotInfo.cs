@@ -2,9 +2,10 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class PlayerSnapshotInfo : MonoBehaviour, IHitListener {
+public class PlayerSnapshotInfo : MonoBehaviour, IHitListener, IAttackLandListener {
 	public bool inAttack;
 	public bool hitThisFrame;
+	public bool attackLanded;
 	public Entity entity { get; private set; }
 	public Rigidbody2D rb2d { get; private set; }
 	public GroundData groundData { get; private set; }
@@ -24,6 +25,11 @@ public class PlayerSnapshotInfo : MonoBehaviour, IHitListener {
 	public void OnHit(AttackHitbox attack) {
 		hitThisFrame = true;
 		this.WaitAndExecute(() => hitThisFrame = false, 1f/12f);
+	}
+
+	public void OnAttackLand(Hurtbox hurtbox) {
+		attackLanded = true;
+		this.WaitAndExecute(() => attackLanded = false, 3f/12f);
 	}
 
 	public byte GetShortState() {

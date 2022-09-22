@@ -124,6 +124,9 @@ public class Entity : MonoBehaviour, IHitListener {
 
 	public Vector2 GetKnockback(AttackHitbox attack) {
 		Vector2 v = attack.data.GetKnockback();
+		if (groundData.grounded && v.y < 0 && v.y > -5) {
+			v.y = 0;
+		}
 		float attackX = attack.transform.position.x;
 		v.x *= attackX > transform.position.x ? -1 : 1;
 		return v;

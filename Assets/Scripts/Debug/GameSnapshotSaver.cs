@@ -41,7 +41,9 @@ public class GameSnapshotSaver {
 			15: 	dash online
 			16: 	touching wall
 			17-24: 	attack name hash
-			25-31:  free space
+			25: 	whether attack just landed
+			26-31:  free space
+
 		*/
 
 		if (playerInfo.inAttack) i = 1;
@@ -81,6 +83,8 @@ public class GameSnapshotSaver {
 			i |= byteHash << 17;
 		}
 
+		if (playerInfo.attackLanded) i |= 1 << 25;
+
 		return i;
 	}
 
@@ -88,13 +92,12 @@ public class GameSnapshotSaver {
 		distance = Mathf.Abs(distance);
 		// convert distance to close | medium | far | no threat
 		if (distance < 1f) return 0b00;
-		else if (distance < 3f) return 0b01;
-		else if (distance < 5f) return 0b10;
-		else return 0b11;
+		else if (distance < 4f) return 0b01;
+		else return 0b10;
 
 	}
 
 	Vector2 ProjectPosition(PlayerSnapshotInfo info) {
-		return info.rb2d.position + info.rb2d.velocity * 0.5f;
+		return info.rb2d.position + info.rb2d.velocity * 0.25f;
 	}
 }

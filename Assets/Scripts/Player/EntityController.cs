@@ -183,7 +183,7 @@ public class EntityController : Entity {
             SlowOnFriction();
         }
 
-		if (rb2d.velocity.y < movement.maxFallSpeed) {
+		if (rb2d.velocity.y < movement.maxFallSpeed && !inAttack) {
 			rb2d.velocity = new Vector2(rb2d.velocity.x, movement.maxFallSpeed);
 		}
 
@@ -323,7 +323,8 @@ public class EntityController : Entity {
         animator.SetFloat("YSpeed", rb2d.velocity.y);
         animator.SetFloat("XSpeedMagnitude", Mathf.Abs(rb2d.velocity.x));
 		animator.SetBool("MovingBackward", movingBackwards);
-		animator.SetBool("Wallsliding", wallData.touchingWall);
+		// edge-raycasts can hit the wall
+		animator.SetBool("Wallsliding", wallData.touchingWall && groundData.distance > 0.5f);
 		animator.SetFloat("RelativeXSpeed", rb2d.velocity.x * Forward().x);
 		animator.SetFloat("GroundDistance", groundData.distance);
 		animator.SetFloat("RelativeXInput", input.HorizontalInput() * -transform.localScale.x);
