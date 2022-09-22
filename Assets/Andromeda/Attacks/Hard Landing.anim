@@ -637,6 +637,22 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     path: AndromedaRig/Hips/Chest/Wings/Near Wing/2
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: {x: 0, y: -0.65, z: 0}
+        inSlope: {x: 0, y: 0, z: 0}
+        outSlope: {x: 0, y: 0, z: 0}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0, y: 0.33333334, z: 0.33333334}
+        outWeight: {x: 0, y: 0.33333334, z: 0.33333334}
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    path: AndromedaRig/EffectPoint
   m_ScaleCurves:
   - curve:
       serializedVersion: 2
@@ -847,6 +863,13 @@ AnimationClip:
       isPPtrCurve: 0
     - serializedVersion: 2
       path: 709940675
+      attribute: 1
+      script: {fileID: 0}
+      typeID: 4
+      customType: 0
+      isPPtrCurve: 0
+    - serializedVersion: 2
+      path: 3965353753
       attribute: 1
       script: {fileID: 0}
       typeID: 4
@@ -3107,6 +3130,63 @@ AnimationClip:
     path: AndromedaRig/Hips/Chest/Wings/Near Wing/2
     classID: 4
     script: {fileID: 0}
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: m_LocalPosition.x
+    path: AndromedaRig/EffectPoint
+    classID: 4
+    script: {fileID: 0}
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: -0.65
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: m_LocalPosition.y
+    path: AndromedaRig/EffectPoint
+    classID: 4
+    script: {fileID: 0}
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: m_LocalPosition.z
+    path: AndromedaRig/EffectPoint
+    classID: 4
+    script: {fileID: 0}
   m_EulerEditorCurves:
   - curve:
       serializedVersion: 2
@@ -3415,6 +3495,13 @@ AnimationClip:
     functionName: PlayAudio
     data: 
     objectReferenceParameter: {fileID: 11400000, guid: bcf593ef925cfb04094a341a3e7485f6, type: 2}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0
+    functionName: InstantiateEffect
+    data: 
+    objectReferenceParameter: {fileID: 5599746130917514411, guid: 367cabb6624d9dd4ea4d733bfd1549f7, type: 3}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0

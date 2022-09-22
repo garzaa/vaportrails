@@ -50,7 +50,7 @@ public class GhostRecorder : InputRecorder {
 	}
 
 	IEnumerator CutAttackPress(int actionID) {
-		yield return new WaitForSecondsRealtime(pollInterval * 6f);
+		yield return new WaitForSecondsRealtime(pollInterval * 10f);
 		stretchedAttackIDs.Remove(actionID);
 	}
 
