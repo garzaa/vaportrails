@@ -11,7 +11,6 @@ public class BasicAnimationNode : CombatNode {
 
 	public override void OnNodeEnter() {
 		base.OnNodeEnter();
-		Debug.Log("entering state "+stateName);
 		attackGraph.animator.Play(stateName, layer:0, normalizedTime:0);
 	}
 

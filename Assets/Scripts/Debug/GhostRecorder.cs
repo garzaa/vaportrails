@@ -72,17 +72,15 @@ public class GhostRecorder : InputRecorder {
 		Terminal.Log($"Ghost recording finished with {ghostInputs.Count} states; {hashCollisions} multi-input states");
 		Dictionary<int, List<WeightedFrameInput>> weightedInputs = new Dictionary<int, List<WeightedFrameInput>>();
 
-		Terminal.Log("combining frames...");
+		Terminal.Log("first pass: combining frames...");
 		foreach (KeyValuePair<int, List<FrameInput>> ghostInput in ghostInputs) {
 			int gameState = ghostInput.Key;
 			List<FrameInput> stateInputs = ghostInput.Value;
 
 			// first pass: add everything under that game state, don't weight them yet
-			// if there's no entry for that game state hash, then add it
 			if (!weightedInputs.ContainsKey(gameState)) {
 				weightedInputs[gameState] = new List<WeightedFrameInput>();
 			}
-			// then add it to the list, keep track of the duplicate count with the normalized weight (for now)
 			foreach (FrameInput stateInput in stateInputs) {
 				bool duplicateInput = false;
 				foreach (WeightedFrameInput weightedInput in weightedInputs[gameState]) {
