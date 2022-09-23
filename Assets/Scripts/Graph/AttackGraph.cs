@@ -24,6 +24,8 @@ public class AttackGraph : NodeGraph {
     float nodeSwitchTime;
     const float nodeSwitchGracePeriod = 0.1f;
 
+    public string stateMachineName = "GroundAttacks";
+
     public void Initialize(CombatController combatController, Animator anim, AttackBuffer buffer, AirAttackTracker airAttackTracker, PlayerInput inputManager) {
         this.animator = anim;
         this.buffer = buffer;
@@ -53,14 +55,16 @@ public class AttackGraph : NodeGraph {
     public void Update() {
         // assume there aren't any blend states on the animator
         AnimatorClipInfo[] clipInfo = animator.GetCurrentAnimatorClipInfo(layerIndex:0);
+        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
 
         // if the current state has no animation clip in it
+        // that is bad, but could be due to a weird transition issue
+        // we need the clip later on so discard this frame
 		if (clipInfo.Length==0) {
 			return;
 		}
-		string clipName = clipInfo[0].clip.name;
 
-		bool nameCorresponds = clipName.Equals(currentNode.name);
+        bool nameCorresponds = stateInfo.IsName("Base Layer."+stateMachineName+"."+currentNode.name);
 
 		if (!nameCorresponds && !enteredCurrentNode) {
             // in case something went wrong, unlock the player
@@ -68,7 +72,6 @@ public class AttackGraph : NodeGraph {
                 ExitGraph();
             }
 			// wait for animator state to actually propagate
-            // somehow
 			return;
 		}
 		

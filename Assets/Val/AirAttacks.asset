@@ -19,6 +19,7 @@ MonoBehaviour:
     - onLand
     - input
     - links
+    - onHit
     values:
     - _fieldName: onLand
       _node: {fileID: -7042432427910524947}
@@ -50,16 +51,63 @@ MonoBehaviour:
       _connectionType: 1
       _typeConstraint: 0
       _dynamic: 0
+    - _fieldName: onHit
+      _node: {fileID: -7042432427910524947}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
   attackData: {fileID: 11400000, guid: b90721df4cedf394e86ed6785c4e40b4, type: 2}
   input:
     type: 0
     direction: 0
   links: []
+  onHit:
+    type: 0
+    direction: 0
   timeOffset: 0
   onLand:
     type: 0
     direction: 0
   singleUse: 0
+--- !u!114 &-6690191480983078567
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b7731d48a22d9248a073e965347a1b8, type: 3}
+  m_Name: Divekick Recoil
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 280, y: -104}
+  ports:
+    keys:
+    - input
+    values:
+    - _fieldName: input
+      _node: {fileID: -6690191480983078567}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: onHit
+        node: {fileID: 8918050907873563099}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  stateName: Divekick Recoil
+  actionableAt: 0.9
+  input:
+    type: 0
+    direction: 0
 --- !u!114 &-6480086313833965529
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -73,12 +121,13 @@ MonoBehaviour:
   m_Name: Air High Kick
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -24, y: -376}
+  position: {x: -56, y: -392}
   ports:
     keys:
     - onLand
     - input
     - links
+    - onHit
     values:
     - _fieldName: onLand
       _node: {fileID: -6480086313833965529}
@@ -110,11 +159,23 @@ MonoBehaviour:
       _connectionType: 1
       _typeConstraint: 0
       _dynamic: 0
+    - _fieldName: onHit
+      _node: {fileID: -6480086313833965529}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
   attackData: {fileID: 11400000, guid: c9a2235804ccb0f4c8e62942f60bcebd, type: 2}
   input:
     type: 0
     direction: 0
   links: []
+  onHit:
+    type: 0
+    direction: 0
   timeOffset: 0
   onLand:
     type: 0
@@ -133,7 +194,7 @@ MonoBehaviour:
   m_Name: Move Graph
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 232, y: -72}
+  position: {x: 280, y: 24}
   ports:
     keys:
     - input
@@ -172,11 +233,13 @@ MonoBehaviour:
   - {fileID: -2126959507096117593}
   - {fileID: -6480086313833965529}
   - {fileID: -7042432427910524947}
+  - {fileID: -6690191480983078567}
   animator: {fileID: 0}
   buffer: {fileID: 0}
-  airAttackTracker: {fileID: 0}
   combatController: {fileID: 0}
-  grounded: 1
+  grounded: 0
+  inputManager: {fileID: 0}
+  stateMachineName: AirAttacks
 --- !u!114 &6211059138720334733
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -199,6 +262,7 @@ MonoBehaviour:
     - links 0
     - links 1
     - links 2
+    - onHit
     values:
     - _fieldName: speedLinks
       _node: {fileID: 6211059138720334733}
@@ -263,6 +327,15 @@ MonoBehaviour:
       _connectionType: 1
       _typeConstraint: 0
       _dynamic: 1
+    - _fieldName: onHit
+      _node: {fileID: 6211059138720334733}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
   attackData: {fileID: 0}
   input:
     type: 0
@@ -273,6 +346,9 @@ MonoBehaviour:
   - type: 2
     direction: -2
   - type: 2
+    direction: 0
+  onHit:
+    type: 0
     direction: 0
   timeOffset: 0
   speedLinks: []
@@ -295,6 +371,7 @@ MonoBehaviour:
     - onLand
     - input
     - links
+    - onHit
     values:
     - _fieldName: onLand
       _node: {fileID: 8918050907873563099}
@@ -329,11 +406,26 @@ MonoBehaviour:
       _connectionType: 1
       _typeConstraint: 0
       _dynamic: 0
+    - _fieldName: onHit
+      _node: {fileID: 8918050907873563099}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: input
+        node: {fileID: -6690191480983078567}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
   attackData: {fileID: 11400000, guid: 1820d23bc65b1234997f9c5e6c46c1c1, type: 2}
   input:
     type: 0
     direction: 0
   links: []
+  onHit:
+    type: 0
+    direction: 0
   timeOffset: 0
   onLand:
     type: 0

@@ -93,13 +93,22 @@ public class AIPlayer : MonoBehaviour {
 		foreach (int actionID in input.actionIDs) {
 			AddButtonMap(actionID);
 			puppetInput.SetButton(buttonMaps[actionID]);
+
+			// if attack, attack towards player
+			if (PlayerInput.IsAttack(actionID)) {
+				AddAxisMap(RewiredConsts.Action.Horizontal);
+				puppetInput.SetAxis(
+					axisMaps[RewiredConsts.Action.Horizontal],
+					Mathf.Sign(opponent.transform.position.x - transform.position.x)
+				);
+			}
 		}
 	}
 
 	void SetNormalizedinput(FrameInput input) {
-		if (input.actionIDAxes.ContainsKey(PlayerInput.HorizontalActionID)
+		if (input.actionIDAxes.ContainsKey(RewiredConsts.Action.Horizontal)
 		&& opponent.transform.position.x < transform.position.x) {
-			input.actionIDAxes[PlayerInput.HorizontalActionID] *= -1;
+			input.actionIDAxes[RewiredConsts.Action.Horizontal] *= -1;
 		}
 		SetPuppetInput(input);
 	}
@@ -126,7 +135,6 @@ public class AIPlayer : MonoBehaviour {
 		lastGhostInput = ghostInput;
 	}
 
-	// https://limboh27.medium.com/implementing-weighted-rng-in-unity-ed7186e3ff3b
 	public FrameInput ChooseWeightedInput(List<WeightedFrameInput> inputs) {
 		float v = Random.value;
 		foreach (WeightedFrameInput weightedInput in inputs) {

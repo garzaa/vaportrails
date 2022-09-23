@@ -7,7 +7,10 @@ abstract public class CombatNode : Node {
     bool active;
 
     [HideInInspector]
-    protected bool cancelable;
+    protected bool attackLanded;
+
+    [HideInInspector]
+    protected bool hitLanded;
 
     protected AttackGraph attackGraph;
 
@@ -22,7 +25,7 @@ abstract public class CombatNode : Node {
     }
 
     virtual public void OnNodeExit() {
-        cancelable = false;
+        attackLanded = false;
         active = false;
     }
 
@@ -39,6 +42,6 @@ abstract public class CombatNode : Node {
     }
 
     virtual public void OnAttackLand() {
-        cancelable = true;
+        attackLanded = true;
     }
 }

@@ -486,7 +486,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Short Hop Laser
+  m_Name: Low Orbit Laser
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -579,6 +579,7 @@ AnimatorState:
   m_StateMachineBehaviours:
   - {fileID: -8746968791027797628}
   - {fileID: 5118904594735856083}
+  - {fileID: 5491664650494632551}
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -1646,8 +1647,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   frameImpulses:
-  - frame: 3
-    impulse: {x: 0, y: 4}
+  - frame: 1
+    impulse: {x: -4, y: 5}
 --- !u!206 &1940745114054514370
 BlendTree:
   m_ObjectHideFlags: 1
@@ -1787,7 +1788,7 @@ AnimatorStateTransition:
   m_ExitTime: 0
   m_HasExitTime: 1
   m_HasFixedDuration: 1
-  m_InterruptionSource: 2
+  m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
 --- !u!114 &2365812734774528929
@@ -1879,7 +1880,7 @@ AnimatorStateTransition:
   m_ExitTime: 0
   m_HasExitTime: 1
   m_HasFixedDuration: 1
-  m_InterruptionSource: 2
+  m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
 --- !u!1101 &2914579520046189423
@@ -2152,6 +2153,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fmod: 0.2
+--- !u!114 &5491664650494632551
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 862b262b5d97bea41b5ff7ff46b52176, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1109 &5867278952840487943
 AnimatorTransition:
   m_ObjectHideFlags: 1
@@ -2336,7 +2349,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 5c700bb95c15a4d4eaf2ba8d4a623fcc, type: 2}
+  m_Motion: {fileID: 7400000, guid: 5efceb8e3b38372419f3894f82af6757, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -2810,7 +2823,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 5e8b4869e52c5344ca70b7e3198e6d0d, type: 2}
+  m_Motion: {fileID: 7400000, guid: 59fb507cec6a4be408eaa7a9086458f8, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 

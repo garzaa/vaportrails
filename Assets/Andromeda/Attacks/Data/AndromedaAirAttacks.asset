@@ -24,9 +24,6 @@ MonoBehaviour:
         PublicKeyToken=null
       connections:
       - fieldName: onLand
-        node: {fileID: -4885283071779246905}
-        reroutePoints: []
-      - fieldName: onLand
         node: {fileID: -4140659376928405838}
         reroutePoints: []
       _direction: 0
@@ -56,15 +53,13 @@ MonoBehaviour:
     - onLand
     - input
     - links
+    - onHit
     values:
     - _fieldName: onLand
       _node: {fileID: -4885283071779246905}
       _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
-      connections:
-      - fieldName: input
-        node: {fileID: -6795757836602782232}
-        reroutePoints: []
+      connections: []
       _direction: 1
       _connectionType: 1
       _typeConstraint: 0
@@ -90,11 +85,23 @@ MonoBehaviour:
       _connectionType: 1
       _typeConstraint: 0
       _dynamic: 0
+    - _fieldName: onHit
+      _node: {fileID: -4885283071779246905}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
   attackData: {fileID: 11400000, guid: ae62fd08161002e4a91510cc183517df, type: 2}
   input:
     type: 0
     direction: 0
   links: []
+  onHit:
+    type: 0
+    direction: 0
   timeOffset: 0
   onLand:
     type: 0
@@ -119,6 +126,7 @@ MonoBehaviour:
     - onLand
     - input
     - links
+    - onHit
     values:
     - _fieldName: onLand
       _node: {fileID: -4140659376928405838}
@@ -153,11 +161,23 @@ MonoBehaviour:
       _connectionType: 1
       _typeConstraint: 0
       _dynamic: 0
+    - _fieldName: onHit
+      _node: {fileID: -4140659376928405838}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
   attackData: {fileID: 11400000, guid: 3555c33474e2bf34eb82f6907695e95d, type: 2}
   input:
     type: 0
     direction: 0
   links: []
+  onHit:
+    type: 0
+    direction: 0
   timeOffset: 0
   onLand:
     type: 0
@@ -185,6 +205,7 @@ MonoBehaviour:
     - links 0
     - links 1
     - links 2
+    - onHit
     values:
     - _fieldName: speedLinks
       _node: {fileID: -1017956487442271454}
@@ -249,6 +270,15 @@ MonoBehaviour:
       _connectionType: 1
       _typeConstraint: 0
       _dynamic: 1
+    - _fieldName: onHit
+      _node: {fileID: -1017956487442271454}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
   attackData: {fileID: 0}
   input:
     type: 0
@@ -259,6 +289,9 @@ MonoBehaviour:
   - type: 1
     direction: 0
   - type: 2
+    direction: 0
+  onHit:
+    type: 0
     direction: 0
   timeOffset: 0
   speedLinks: []
@@ -285,6 +318,7 @@ MonoBehaviour:
   combatController: {fileID: 0}
   grounded: 1
   inputManager: {fileID: 0}
+  stateMachineName: AirAttacks
 --- !u!114 &4154376683595710960
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -295,7 +329,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f560ccef1c7828547a8ca9ba50993c96, type: 3}
-  m_Name: Short Hop Laser
+  m_Name: Low Orbit Laser
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
   position: {x: -168, y: -344}
@@ -304,6 +338,7 @@ MonoBehaviour:
     - onLand
     - input
     - links
+    - onHit
     values:
     - _fieldName: onLand
       _node: {fileID: 4154376683595710960}
@@ -335,11 +370,23 @@ MonoBehaviour:
       _connectionType: 1
       _typeConstraint: 0
       _dynamic: 0
+    - _fieldName: onHit
+      _node: {fileID: 4154376683595710960}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
   attackData: {fileID: 11400000, guid: fe1efca1ac74c2b41b3207c8849ecfe4, type: 2}
   input:
     type: 0
     direction: 0
   links: []
+  onHit:
+    type: 0
+    direction: 0
   timeOffset: 0
   onLand:
     type: 0

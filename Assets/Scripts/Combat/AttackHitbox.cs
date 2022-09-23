@@ -94,7 +94,7 @@ public class AttackHitbox : MonoBehaviour {
 				);
 				
 				foreach (IAttackLandListener attackLandListener in attackLandListeners) {
-					attackLandListener.OnAttackLand(hurtbox);
+					attackLandListener.OnAttackLand(data, hurtbox);
 				}
 			}
 			hurtbox.OnAttackLand(this);

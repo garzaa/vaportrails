@@ -16,6 +16,9 @@ public class AttackNode : CombatNode {
     List<Tuple<AttackLink, CombatNode>> directionalLinks = new List<Tuple<AttackLink, CombatNode>>();
     CombatNode anyDirectionNode = null;
 
+    [Output(backingValue=ShowBackingValue.Never, connectionType=ConnectionType.Override)]
+    public AttackLink onHit;
+
     [HideInInspector]
     public float timeOffset = 0;
 
@@ -28,14 +31,17 @@ public class AttackNode : CombatNode {
     }
 
     override public void NodeUpdate(int currentFrame, float clipTime, AttackBuffer buffer) {
-        attackGraph.animator.SetBool("Actionable", currentFrame>=attackData.IASA);
-
-        if (buffer.Ready() && (cancelable || currentFrame>=attackData.IASA)) {
+        base.NodeUpdate(currentFrame, clipTime, buffer);
+        if (buffer.Ready() && (attackLanded || currentFrame>=attackData.IASA)) {
             if (currentFrame>=attackData.IASA) {
                 MoveNextNode(buffer, allowReEntry: true);
                 return;
-            } else if (cancelable) {
-                MoveNextNode(buffer);
+            } else if (attackLanded) {
+                if (GetPort(nameof(onHit)).ConnectionCount > 0) {
+                    attackGraph.MoveNode(GetPort(nameof(onHit)).Connection.node as CombatNode);
+                } else { 
+                    MoveNextNode(buffer);
+                }
                 return;
             }
         }
@@ -44,6 +50,8 @@ public class AttackNode : CombatNode {
             attackGraph.ExitGraph();
             return;
         }
+
+        attackGraph.animator.SetBool("Actionable", currentFrame>=attackData.IASA);
     }
 
     override public void OnNodeExit() {

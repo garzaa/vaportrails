@@ -57,7 +57,11 @@ public class CombatController : MonoBehaviour, IAttackLandListener, IHitListener
 		);
 	}
 
-	public void OnAttackLand(Hurtbox hurtbox) {
+	public void OnAttackLand(AttackData data, Hurtbox hurtbox) {
+		player.DisableShortHop();
+		if (data.hasSelfKnockback) {
+			rb2d.velocity = data.selfKnockback * player.Forward();
+		}
 		if (currentGraph) currentGraph.OnAttackLand();
 	}
 

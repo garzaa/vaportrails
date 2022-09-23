@@ -10,15 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 81ff14a31c87f084ebc55d0cdbaf2d17, type: 3}
-  m_Name: Divekick
+  m_Name: Low Orbit Laser
   m_EditorClassIdentifier: 
-  damage: 0
-  IASA: 7
-  jumpCancelable: 1
-  stunLength: 0.2
+  damage: 2
+  knockback: {x: 0, y: 0}
+  lateHit: 0
+  IASA: 12
+  jumpCancelable: 0
+  stunLength: 0.5
   hitstop: 0.05
-  knockback: {x: 1, y: 3}
   hitmarker: {fileID: 5549221920177132900, guid: d825fee1db2149740915d843fa1d6fee, type: 3}
-  hitSound: {fileID: 11400000, guid: cd95d9c92cf95f840a65acf457b191a6, type: 2}
+  hitSound: {fileID: 0}
   hasSelfKnockback: 0
   selfKnockback: {x: 0, y: 0}
+  zoomIn: 0

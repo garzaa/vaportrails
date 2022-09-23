@@ -117,19 +117,16 @@ public class PlayerInput : MonoBehaviour {
     }
 
     public static bool IsHorizontal(int actionID) {
-		return actionID == HorizontalActionID;
+		return actionID == RewiredConsts.Action.Horizontal;
 	}
 
     public static bool IsAttack(int actionID) {
         return 
-            actionID == 3
-            || actionID == 4
-            || actionID == 5
-            || actionID == 6
+            actionID == RewiredConsts.Action.Punch
+            || actionID == RewiredConsts.Action.Kick
+            || actionID == RewiredConsts.Action.Projectile
         ;
     }
-
-    public const int HorizontalActionID = 0;
 }
 
 public static class Buttons {

@@ -45,6 +45,7 @@ public class Terminal : MonoBehaviour, IPointerDownHandler {
         foreach (String command in executeOnStart.Split("\n")) {
             ParseCommand(command.Trim());
         }
+        OnTerminalClose();
     }
 
     void ClearTerminalCloseListeners() {
@@ -76,7 +77,7 @@ public class Terminal : MonoBehaviour, IPointerDownHandler {
     void OnTerminalClose() {
         if (terminalClose != null) terminalClose();
         ClearTerminalCloseListeners();
-        currentPlayer.controllers.hasKeyboard = true;
+        if (currentPlayer != null) currentPlayer.controllers.hasKeyboard = true;
     }
 
     public void OnPointerDown(PointerEventData eventData) {
@@ -135,6 +136,8 @@ public class Terminal : MonoBehaviour, IPointerDownHandler {
                         // and we just swap Controller 0 between all the players
                         input.EnableHumanControl();
                         currentPlayer = input.GetPlayer();
+                        // reset this to false so it'll be re-enabled on terminal close
+                        currentPlayer.controllers.hasKeyboard = false;
                     } else {
                         input.DisableHumanControl();
                     }

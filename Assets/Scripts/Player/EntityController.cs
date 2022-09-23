@@ -218,8 +218,6 @@ public class EntityController : Entity {
 		}
 	}
 
-
-
 	public void DisableShortHop() {
 		canShortHop = false;
 	}
