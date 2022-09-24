@@ -29,8 +29,6 @@ public class GroundCheck : MonoBehaviour {
     const float minHitInterval = 0.3f;
     float lastHitTime = 0f;
 
-    // TODO: add distance
-
     void Awake() {
         col = GetComponent<Collider2D>();
         overlapBoxSize = new Vector2();

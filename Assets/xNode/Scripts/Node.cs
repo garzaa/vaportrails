@@ -170,9 +170,9 @@ namespace XNode {
 
         /// <summary> Remove an dynamic port from the node </summary>
         public void RemoveDynamicPort(string fieldName) {
-            NodePort dynamicPort = GetPort(fieldName);
+            NodePort dynamicPort = GetNode(fieldName);
             if (dynamicPort == null) throw new ArgumentException("port " + fieldName + " doesn't exist");
-            RemoveDynamicPort(GetPort(fieldName));
+            RemoveDynamicPort(GetNode(fieldName));
         }
 
         /// <summary> Remove an dynamic port from the node </summary>
@@ -196,20 +196,20 @@ namespace XNode {
 #region Ports
         /// <summary> Returns output port which matches fieldName </summary>
         public NodePort GetOutputPort(string fieldName) {
-            NodePort port = GetPort(fieldName);
+            NodePort port = GetNode(fieldName);
             if (port == null || port.direction != NodePort.IO.Output) return null;
             else return port;
         }
 
         /// <summary> Returns input port which matches fieldName </summary>
         public NodePort GetInputPort(string fieldName) {
-            NodePort port = GetPort(fieldName);
+            NodePort port = GetNode(fieldName);
             if (port == null || port.direction != NodePort.IO.Input) return null;
             else return port;
         }
 
         /// <summary> Returns port which matches fieldName </summary>
-        public NodePort GetPort(string fieldName) {
+        public NodePort GetNode(string fieldName) {
             NodePort port;
             if (ports.TryGetValue(fieldName, out port)) return port;
             else return null;
@@ -225,7 +225,7 @@ namespace XNode {
         /// <param name="fieldName">Field name of requested input port</param>
         /// <param name="fallback">If no ports are connected, this value will be returned</param>
         public T GetInputValue<T>(string fieldName, T fallback = default(T)) {
-            NodePort port = GetPort(fieldName);
+            NodePort port = GetNode(fieldName);
             if (port != null && port.IsConnected) return port.GetInputValue<T>();
             else return fallback;
         }
@@ -234,7 +234,7 @@ namespace XNode {
         /// <param name="fieldName">Field name of requested input port</param>
         /// <param name="fallback">If no ports are connected, this value will be returned</param>
         public T[] GetInputValues<T>(string fieldName, params T[] fallback) {
-            NodePort port = GetPort(fieldName);
+            NodePort port = GetNode(fieldName);
             if (port != null && port.IsConnected) return port.GetInputValues<T>();
             else return fallback;
         }

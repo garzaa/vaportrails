@@ -26,6 +26,7 @@ public class AttackGraph : NodeGraph {
 
     public string stateMachineName = "GroundAttacks";
 
+    // TODO: can just make this a monobehaviour (or even an object!) and pass in the context info
     public void Initialize(CombatController combatController, Animator anim, AttackBuffer buffer, AirAttackTracker airAttackTracker, PlayerInput inputManager) {
         this.animator = anim;
         this.buffer = buffer;
@@ -109,7 +110,7 @@ public class AttackGraph : NodeGraph {
         return null;
     }
 
-    public void OnAttackLand() {
+    public void OnAttackLand(AttackData attack, Hurtbox hurtbox) {
         currentNode.OnAttackLand();
     }
 

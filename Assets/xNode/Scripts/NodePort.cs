@@ -108,7 +108,7 @@ namespace XNode {
             for (int i = connections.Count - 1; i >= 0; i--) {
                 if (connections[i].node != null &&
                     !string.IsNullOrEmpty(connections[i].fieldName) &&
-                    connections[i].node.GetPort(connections[i].fieldName) != null)
+                    connections[i].node.GetNode(connections[i].fieldName) != null)
                     continue;
                 connections.RemoveAt(i);
             }
@@ -236,7 +236,7 @@ namespace XNode {
                 connections.RemoveAt(i);
                 return null;
             }
-            NodePort port = connections[i].node.GetPort(connections[i].fieldName);
+            NodePort port = connections[i].node.GetNode(connections[i].fieldName);
             if (port == null) {
                 connections.RemoveAt(i);
                 return null;
@@ -411,7 +411,7 @@ namespace XNode {
             /// <summary> Returns the port that this <see cref="PortConnection"/> points to </summary>
             private NodePort GetPort() {
                 if (node == null || string.IsNullOrEmpty(fieldName)) return null;
-                return node.GetPort(fieldName);
+                return node.GetNode(fieldName);
             }
         }
     }

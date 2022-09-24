@@ -6,12 +6,7 @@ abstract public class CombatNode : Node {
     [HideInInspector]
     bool active;
 
-    [HideInInspector]
     protected bool attackLanded;
-
-    [HideInInspector]
-    protected bool hitLanded;
-
     protected AttackGraph attackGraph;
 
     virtual public void OnNodeEnter() {
@@ -31,6 +26,12 @@ abstract public class CombatNode : Node {
 
     virtual public bool Enabled() {
         return true;
+    }
+
+    public bool CanMoveNode(string portName) {
+        if (GetNode(portName).Connection == null) return false;
+        CombatNode node = GetNode(portName).Connection.node as CombatNode;
+        return node.Enabled();
     }
 
     virtual public void OnGrounded() {

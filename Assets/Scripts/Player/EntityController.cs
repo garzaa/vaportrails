@@ -240,6 +240,11 @@ public class EntityController : Entity {
 		if ((!currentAttack && frozeInputs) || (currentAttack && !currentAttack.jumpCancelable)) return;
 
 		void GroundJump() {
+			// allow reverse aerial rush
+			if (movingForwards && inputBackwards) {
+				Flip();
+			}
+
 			bufferedJump = false;
 			jumpNoise.PlayFrom(this.gameObject);
 			if (!wallData.touchingWall) {
@@ -368,10 +373,8 @@ public class EntityController : Entity {
 	public void DashIfPossible(AudioResource dashSound) {
 		if (!groundData.grounded && currentAirDashes <= 0) return;
 
-
 		dashSound.PlayFrom(gameObject);
 		animator.SetTrigger(inputBackwards ? "BackDash" : "Dash");
-		shader.FlashWhite();
 		canDash = false;
 		dashing = true;
 		fMod = 0;

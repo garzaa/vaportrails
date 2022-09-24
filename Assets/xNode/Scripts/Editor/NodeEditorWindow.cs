@@ -37,7 +37,7 @@ namespace XNodeEditor {
                 if (_node == null) {
                     return null;
                 }
-                return _node.GetPort(_name);
+                return _node.GetNode(_name);
             }
         }
 

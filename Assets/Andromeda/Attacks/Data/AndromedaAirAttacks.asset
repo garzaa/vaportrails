@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Move Graph
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 152, y: -120}
+  position: {x: 456, y: 152}
   ports:
     keys:
     - input
@@ -34,6 +34,79 @@ MonoBehaviour:
   input:
     type: 0
     direction: 0
+--- !u!114 &-6503406774311002028
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f560ccef1c7828547a8ca9ba50993c96, type: 3}
+  m_Name: Aerial Launch Arm
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 136, y: -504}
+  ports:
+    keys:
+    - onLand
+    - input
+    - links
+    - onHit
+    values:
+    - _fieldName: onLand
+      _node: {fileID: -6503406774311002028}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: input
+      _node: {fileID: -6503406774311002028}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: links 0
+        node: {fileID: -1017956487442271454}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: links
+      _node: {fileID: -6503406774311002028}
+      _typeQualifiedName: AttackLink[], Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: onHit
+      _node: {fileID: -6503406774311002028}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+  attackData: {fileID: 11400000, guid: bf4105f8a51bec242be60752d7e8eb31, type: 2}
+  input:
+    type: 0
+    direction: 0
+  links: []
+  onHit:
+    type: 0
+    direction: 0
+  timeOffset: 0
+  onLand:
+    type: 0
+    direction: 0
+  singleUse: 0
 --- !u!114 &-4885283071779246905
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -47,7 +120,7 @@ MonoBehaviour:
   m_Name: Satellite Wing
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -161.5, y: 114.5}
+  position: {x: 136, y: 376}
   ports:
     keys:
     - onLand
@@ -69,7 +142,7 @@ MonoBehaviour:
       _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
       connections:
-      - fieldName: links 3
+      - fieldName: links 4
         node: {fileID: -1017956487442271454}
         reroutePoints: []
       _direction: 0
@@ -120,7 +193,7 @@ MonoBehaviour:
   m_Name: Falling Star
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -174.5, y: -120.5}
+  position: {x: 136, y: 152}
   ports:
     keys:
     - onLand
@@ -145,7 +218,7 @@ MonoBehaviour:
       _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
       connections:
-      - fieldName: links 2
+      - fieldName: links 3
         node: {fileID: -1017956487442271454}
         reroutePoints: []
       _direction: 0
@@ -196,7 +269,7 @@ MonoBehaviour:
   m_Name: Initial Branch
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -568, y: -104}
+  position: {x: -392, y: -264}
   ports:
     keys:
     - speedLinks
@@ -207,6 +280,7 @@ MonoBehaviour:
     - links 2
     - onHit
     - links 3
+    - links 4
     values:
     - _fieldName: speedLinks
       _node: {fileID: -1017956487442271454}
@@ -241,7 +315,7 @@ MonoBehaviour:
         PublicKeyToken=null
       connections:
       - fieldName: input
-        node: {fileID: 9172169836585994511}
+        node: {fileID: -6503406774311002028}
         reroutePoints: []
       _direction: 1
       _connectionType: 1
@@ -253,7 +327,7 @@ MonoBehaviour:
         PublicKeyToken=null
       connections:
       - fieldName: input
-        node: {fileID: 4154376683595710960}
+        node: {fileID: 9172169836585994511}
         reroutePoints: []
       _direction: 1
       _connectionType: 1
@@ -265,7 +339,7 @@ MonoBehaviour:
         PublicKeyToken=null
       connections:
       - fieldName: input
-        node: {fileID: -4140659376928405838}
+        node: {fileID: 4154376683595710960}
         reroutePoints: []
       _direction: 1
       _connectionType: 1
@@ -286,6 +360,18 @@ MonoBehaviour:
         PublicKeyToken=null
       connections:
       - fieldName: input
+        node: {fileID: -4140659376928405838}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 1
+    - _fieldName: links 4
+      _node: {fileID: -1017956487442271454}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: input
         node: {fileID: -4885283071779246905}
         reroutePoints: []
       _direction: 1
@@ -297,10 +383,12 @@ MonoBehaviour:
     type: 0
     direction: 0
   links:
-  - type: 2
-    direction: 2
   - type: 1
     direction: 2
+  - type: 2
+    direction: 2
+  - type: 2
+    direction: -2
   - type: 1
     direction: 0
   - type: 2
@@ -329,10 +417,11 @@ MonoBehaviour:
   - {fileID: -6795757836602782232}
   - {fileID: 4154376683595710960}
   - {fileID: 9172169836585994511}
+  - {fileID: -6503406774311002028}
   animator: {fileID: 0}
   buffer: {fileID: 0}
   combatController: {fileID: 0}
-  grounded: 0
+  grounded: 1
   inputManager: {fileID: 0}
   stateMachineName: AirAttacks
 --- !u!114 &4154376683595710960
@@ -348,7 +437,7 @@ MonoBehaviour:
   m_Name: Low Orbit Laser
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -168, y: -344}
+  position: {x: 136, y: -72}
   ports:
     keys:
     - onLand
@@ -370,7 +459,7 @@ MonoBehaviour:
       _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
       connections:
-      - fieldName: links 1
+      - fieldName: links 2
         node: {fileID: -1017956487442271454}
         reroutePoints: []
       _direction: 0
@@ -421,7 +510,7 @@ MonoBehaviour:
   m_Name: Wing Anti-Air
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -168, y: -568}
+  position: {x: 136, y: -296}
   ports:
     keys:
     - onLand
@@ -443,7 +532,7 @@ MonoBehaviour:
       _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
       connections:
-      - fieldName: links 0
+      - fieldName: links 1
         node: {fileID: -1017956487442271454}
         reroutePoints: []
       _direction: 0

@@ -12,7 +12,7 @@ public class TimeOffsetNode : CombatNode {
 
     override public void OnNodeEnter() {
         base.OnNodeEnter();
-        AttackNode next = GetPort("output").Connection.node as AttackNode;
+        AttackNode next = GetNode("output").Connection.node as AttackNode;
         next.timeOffset = this.normalizedOffset;
         attackGraph.MoveNode(next);
     }

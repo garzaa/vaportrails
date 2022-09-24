@@ -23,7 +23,7 @@ namespace XNodeEditor {
         public static void PropertyField(SerializedProperty property, GUIContent label, bool includeChildren = true, params GUILayoutOption[] options) {
             if (property == null) throw new NullReferenceException();
             XNode.Node node = property.serializedObject.targetObject as XNode.Node;
-            XNode.NodePort port = node.GetPort(property.name);
+            XNode.NodePort port = node.GetNode(property.name);
             PropertyField(property, label, port, includeChildren);
         }
 
@@ -339,7 +339,7 @@ namespace XNodeEditor {
 
             list.drawElementCallback =
                 (Rect rect, int index, bool isActive, bool isFocused) => {
-                    XNode.NodePort port = node.GetPort(fieldName + " " + index);
+                    XNode.NodePort port = node.GetNode(fieldName + " " + index);
                     if (hasArrayData && arrayData.propertyType != SerializedPropertyType.String) {
                         if (arrayData.arraySize <= index) {
                             EditorGUI.LabelField(rect, "Array[" + index + "] data out of range");
@@ -378,8 +378,8 @@ namespace XNodeEditor {
                     // Move up
                     if (rl.index > reorderableListIndex) {
                         for (int i = reorderableListIndex; i < rl.index; ++i) {
-                            XNode.NodePort port = node.GetPort(fieldName + " " + i);
-                            XNode.NodePort nextPort = node.GetPort(fieldName + " " + (i + 1));
+                            XNode.NodePort port = node.GetNode(fieldName + " " + i);
+                            XNode.NodePort nextPort = node.GetNode(fieldName + " " + (i + 1));
                             port.SwapConnections(nextPort);
 
                             // Swap cached positions to mitigate twitching
@@ -392,8 +392,8 @@ namespace XNodeEditor {
                     // Move down
                     else {
                         for (int i = reorderableListIndex; i > rl.index; --i) {
-                            XNode.NodePort port = node.GetPort(fieldName + " " + i);
-                            XNode.NodePort nextPort = node.GetPort(fieldName + " " + (i - 1));
+                            XNode.NodePort port = node.GetNode(fieldName + " " + i);
+                            XNode.NodePort nextPort = node.GetNode(fieldName + " " + (i - 1));
                             port.SwapConnections(nextPort);
 
                             // Swap cached positions to mitigate twitching

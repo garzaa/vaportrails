@@ -92,10 +92,10 @@ public class AttackHitbox : MonoBehaviour {
 					currentActiveCollider.ClosestPoint(other.transform.position+(Vector3)other.GetComponent<Collider2D>().offset),
 					Quaternion.identity
 				);
-				
-				foreach (IAttackLandListener attackLandListener in attackLandListeners) {
-					attackLandListener.OnAttackLand(data, hurtbox);
-				}
+			}
+
+			foreach (IAttackLandListener attackLandListener in attackLandListeners) {
+				attackLandListener.OnAttackLand(data, hurtbox);
 			}
 			hurtbox.OnAttackLand(this);
 			OnAttackLand.Invoke();

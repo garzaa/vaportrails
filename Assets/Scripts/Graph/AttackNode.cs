@@ -30,18 +30,23 @@ public class AttackNode : CombatNode {
         timeOffset = 0;
     }
 
+    public string GetAnimationStateName() {
+        return attackData.name;
+    }
+
     override public void NodeUpdate(int currentFrame, float clipTime, AttackBuffer buffer) {
         base.NodeUpdate(currentFrame, clipTime, buffer);
-        if (buffer.Ready() && (attackLanded || currentFrame>=attackData.IASA)) {
+
+        if (attackLanded && CanMoveNode(nameof(onHit))) {
+            CombatNode node = GetNode(nameof(onHit)).Connection.node as CombatNode;
+            attackGraph.MoveNode(node);
+            return;
+        } else if (buffer.Ready()) {
             if (currentFrame>=attackData.IASA) {
                 MoveNextNode(buffer, allowReEntry: true);
                 return;
             } else if (attackLanded) {
-                if (GetPort(nameof(onHit)).ConnectionCount > 0) {
-                    attackGraph.MoveNode(GetPort(nameof(onHit)).Connection.node as CombatNode);
-                } else { 
-                    MoveNextNode(buffer);
-                }
+                MoveNextNode(buffer);
                 return;
             }
         }
@@ -88,7 +93,7 @@ public class AttackNode : CombatNode {
 				AttackLink link = attackLinks[i];
 				if (link.type==attack.type && attack.HasDirection(link.direction)) {
 					consumedAttack = true;
-					CombatNode next = GetPort(portListName+" "+i).Connection.node as CombatNode;
+					CombatNode next = GetNode(portListName+" "+i).Connection.node as CombatNode;
 					if (next.Enabled()) {
 						if (link.direction != AttackDirection.ANY) {
 							directionalLinks.Add(new Tuple<AttackLink, CombatNode>(link, next));
@@ -110,10 +115,6 @@ public class AttackNode : CombatNode {
         }
 
         return null;
-    }
-
-    void Awake() {
-		if (attackData != null) name = attackData.name;
     }
 }
 

@@ -17,8 +17,8 @@ public class AirAttackNode : AttackNode {
     }
 
     override public void NodeUpdate(int currentFrame, float clipTime, AttackBuffer buffer) {
-        if (attackLanded && GetPort(nameof(onHit)).ConnectionCount > 0) {
-            attackGraph.MoveNode(GetPort(nameof(onHit)).Connection.node as CombatNode);
+        if (attackLanded && GetNode(nameof(onHit)).ConnectionCount > 0) {
+            attackGraph.MoveNode(GetNode(nameof(onHit)).Connection.node as CombatNode);
         } else if (attackGraph.grounded) {
             OnGrounded();
         } else if (buffer.Ready() && (currentFrame>=attackData.IASA || attackLanded)) {
@@ -29,8 +29,8 @@ public class AirAttackNode : AttackNode {
     }
 
     override public void OnGrounded() {
-        if (GetPort("onLand").ConnectionCount>0) {
-            attackGraph.MoveNode(GetPort("onLand").Connection.node as CombatNode);
+        if (GetNode("onLand").ConnectionCount>0) {
+            attackGraph.MoveNode(GetNode("onLand").Connection.node as CombatNode);
         } else {
             attackGraph.ExitGraph();
         }

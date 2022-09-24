@@ -12,7 +12,7 @@ public class UnlockableGate : CombatNode {
     public AttackLink unlockedBranch;
 
     CombatNode GetUnlockedNode() {
-        return (GetPort("unlockedBranch").Connection.node as CombatNode);
+        return (GetNode("unlockedBranch").Connection.node as CombatNode);
     }
 
     override public bool Enabled() {
