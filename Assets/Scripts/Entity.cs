@@ -216,9 +216,7 @@ public class Entity : MonoBehaviour, IHitListener {
 			}
 		}
 		if (overlapping) {
-			Entity entity = overlapping.GetComponent<Entity>();
-			if (entity && entity.stunned) return;
-			rb2d.AddForce(Vector3.Project((transform.position - overlapping.transform.position), Vector3.right).normalized * 4f);
+			rb2d.AddForce(Vector3.Project((transform.position - overlapping.transform.position), Vector3.right).normalized * 4f * Time.timeScale);
 		}
 	}
 

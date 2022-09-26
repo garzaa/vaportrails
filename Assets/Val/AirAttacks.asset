@@ -86,7 +86,7 @@ MonoBehaviour:
   m_Name: Falling Leaf Kick
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -56, y: 56}
+  position: {x: -56, y: 280}
   ports:
     keys:
     - onLand
@@ -108,7 +108,7 @@ MonoBehaviour:
       _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
       connections:
-      - fieldName: links 3
+      - fieldName: links 4
         node: {fileID: 6211059138720334733}
         reroutePoints: []
       _direction: 0
@@ -308,12 +308,86 @@ MonoBehaviour:
   - {fileID: -7042432427910524947}
   - {fileID: -6690191480983078567}
   - {fileID: -7943525400074050575}
+  - {fileID: 1175483536977120707}
   animator: {fileID: 0}
   buffer: {fileID: 0}
   combatController: {fileID: 0}
   grounded: 1
   inputManager: {fileID: 0}
   stateMachineName: AirAttacks
+--- !u!114 &1175483536977120707
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f560ccef1c7828547a8ca9ba50993c96, type: 3}
+  m_Name: Tornado Kick
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -56, y: 56}
+  ports:
+    keys:
+    - onLand
+    - input
+    - links
+    - onHit
+    values:
+    - _fieldName: onLand
+      _node: {fileID: 1175483536977120707}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: input
+      _node: {fileID: 1175483536977120707}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: links 3
+        node: {fileID: 6211059138720334733}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: links
+      _node: {fileID: 1175483536977120707}
+      _typeQualifiedName: AttackLink[], Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: onHit
+      _node: {fileID: 1175483536977120707}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+  attackData: {fileID: 11400000, guid: 383e2334ca153f84cb77a6566b84f1ad, type: 2}
+  input:
+    type: 0
+    direction: 0
+  links: []
+  onHit:
+    type: 0
+    direction: 0
+  timeOffset: 0
+  onLand:
+    type: 0
+    direction: 0
+  singleUse: 0
 --- !u!114 &6211059138720334733
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -338,6 +412,7 @@ MonoBehaviour:
     - links 2
     - onHit
     - links 3
+    - links 4
     values:
     - _fieldName: speedLinks
       _node: {fileID: 6211059138720334733}
@@ -417,6 +492,18 @@ MonoBehaviour:
         PublicKeyToken=null
       connections:
       - fieldName: input
+        node: {fileID: 1175483536977120707}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 1
+    - _fieldName: links 4
+      _node: {fileID: 6211059138720334733}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: input
         node: {fileID: -7042432427910524947}
         reroutePoints: []
       _direction: 1
@@ -434,6 +521,8 @@ MonoBehaviour:
     direction: 2
   - type: 2
     direction: -2
+  - type: 2
+    direction: 1
   - type: 2
     direction: 0
   onHit:

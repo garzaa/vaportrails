@@ -29,7 +29,7 @@ public class PlayerSnapshotInfo : MonoBehaviour, IHitListener, IAttackLandListen
 
 	public void OnAttackLand(AttackData data, Hurtbox hurtbox) {
 		attackLanded = true;
-		this.WaitAndExecute(() => attackLanded = false, 3f/12f);
+		this.WaitAndExecute(() => attackLanded = false, 8f/12f);
 	}
 
 	public byte GetShortState() {

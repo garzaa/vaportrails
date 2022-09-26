@@ -193,7 +193,7 @@ public class EntityController : Entity {
 
 		// fast fall
 		if (!groundData.grounded
-			&& !frozeInputs
+			&& !stunned
 			&& !wallData.touchingWall
 			&& input.VerticalInput() == -1f
 			&& rb2d.velocity.y<0

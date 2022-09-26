@@ -60,6 +60,12 @@ public class CombatController : MonoBehaviour, IAttackLandListener, IHitListener
 	public void OnAttackLand(AttackData attack, Hurtbox hurtbox) {
 		player.DisableShortHop();
 		if (attack.hasSelfKnockback) {
+			Vector2 v = attack.selfKnockback;
+			if (v.x == 0) {
+				v.x = rb2d.velocity.x;
+			} else {
+				v.x *= player.ForwardScalar();
+			}
 			rb2d.velocity = attack.selfKnockback * player.Forward();
 		}
 		if (currentGraph) currentGraph.OnAttackLand(attack, hurtbox);

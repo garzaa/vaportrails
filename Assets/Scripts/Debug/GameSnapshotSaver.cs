@@ -29,8 +29,8 @@ public class GameSnapshotSaver {
 
 			0:	 	whether I am attacking
 			1: 		whether opponent is attacking
-			2-3:	X range of opponent: close | medium | far | no threat
-			4-5: 	Y range of opponent: close | medium | far | no threat
+			2-3:	X range of opponent: close | medium | far
+			4-5: 	Y range of opponent: close | medium | far
 			6-7: 	projected X range in 0.5 seconds (from this and opponent motion vectors)
 			8-9: 	projected Y range in 0.5 seconds
 			10: 	grounded
@@ -59,10 +59,10 @@ public class GameSnapshotSaver {
 		Vector2 projectedEnemy = ProjectPosition(enemyInfo);
 
 		float projXDistance = projectedPlayer.x - projectedEnemy.x;
-		i |= DistanceToRange(projXDistance) << 6;
+		i |= ProjDistanceToRange(xDistance, projXDistance) << 6;
 
 		float projYDistance = projectedPlayer.y - projectedEnemy.y;
-		i |= DistanceToRange(projYDistance) << 8;
+		i |= ProjDistanceToRange(yDistance, projYDistance) << 8;
 
 		if (playerInfo.groundData.grounded) i |= 1 << 10;
 
@@ -94,7 +94,14 @@ public class GameSnapshotSaver {
 		if (distance < 1f) return 0b00;
 		else if (distance < 4f) return 0b01;
 		else return 0b10;
+	}
 
+	int ProjDistanceToRange(float dNow, float dFuture) {
+		// if behind return the last bit
+		if (Mathf.Sign(dNow) * Mathf.Sign(dFuture) < 0) {
+			return 0b11;
+		}
+		return DistanceToRange(dFuture);
 	}
 
 	Vector2 ProjectPosition(PlayerSnapshotInfo info) {
