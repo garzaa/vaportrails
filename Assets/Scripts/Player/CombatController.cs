@@ -164,6 +164,13 @@ public class CombatController : MonoBehaviour, IAttackLandListener, IHitListener
 	}
 
 	public void OnHit(AttackHitbox attack) {
+		DI(attack);
+	}
+
+	void DI(AttackHitbox attack) {
+		if (attack.data.GetKnockback(attack, this.gameObject).sqrMagnitude < 1) {
+			return;
+		}
 		// sideways DI is stronger than towards/away
 		// (sin(2x - (1/4 circle))) * 0.4 + 0.6
 		// ↑ this is a sinewave between 0.2 and 1.0 that peaks at (1, 0) and (-1, 0)
