@@ -223,7 +223,7 @@ public class EntityController : Entity {
 	}
 
 	public void OnAttackLand(Hurtbox hurtbox) {
-		UpdateToonMotion();
+		StartCoroutine(UpdateToonMotion());
 	}
 
 	void Jump(bool executeIfBuffered=false) {

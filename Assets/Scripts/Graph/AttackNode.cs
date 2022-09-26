@@ -41,14 +41,8 @@ public class AttackNode : CombatNode {
             CombatNode node = GetNode(nameof(onHit)).Connection.node as CombatNode;
             attackGraph.MoveNode(node);
             return;
-        } else if (buffer.Ready()) {
-            if (currentFrame>=attackData.IASA) {
-                MoveNextNode(buffer, allowReEntry: true);
-                return;
-            } else if (attackLanded) {
-                MoveNextNode(buffer);
-                return;
-            }
+        } else if (buffer.Ready() && (attackLanded || currentFrame>=attackData.IASA)) {
+            MoveNextNode(buffer);
         }
         
         if (currentFrame>=attackData.IASA && attackGraph.inputManager.HasHorizontalInput()) {
@@ -64,15 +58,11 @@ public class AttackNode : CombatNode {
         timeOffset = 0;
     }
  
-    protected void MoveNextNode(AttackBuffer buffer, bool allowReEntry=false) {
+    protected void MoveNextNode(AttackBuffer buffer) {
         CombatNode next = GetNextNode(buffer);
         if (next != null) {
             attackGraph.MoveNode(next);
             return;
-        }
-
-        if (allowReEntry) {
-            attackGraph.EnterGraph();
         }
     }
 

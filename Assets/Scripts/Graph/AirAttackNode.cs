@@ -17,10 +17,10 @@ public class AirAttackNode : AttackNode {
     }
 
     override public void NodeUpdate(int currentFrame, float clipTime, AttackBuffer buffer) {
-        if (attackLanded && GetNode(nameof(onHit)).ConnectionCount > 0) {
-            attackGraph.MoveNode(GetNode(nameof(onHit)).Connection.node as CombatNode);
-        } else if (attackGraph.grounded) {
+        if (attackGraph.grounded) {
             OnGrounded();
+        } else if (attackLanded && CanMoveNode(nameof(onHit))) {
+            attackGraph.MoveNode(GetNode(nameof(onHit)).Connection.node as CombatNode);
         } else if (buffer.Ready() && (currentFrame>=attackData.IASA || attackLanded)) {
             MoveNextNode(buffer);
         } else if (clipTime >= 1) {
