@@ -5,7 +5,10 @@ using System.Collections.Generic;
 
 [RequireComponent(typeof(AttackBuffer))]
 public class CombatController : MonoBehaviour, IAttackLandListener, IHitListener {	
-	AttackHitbox attackHitbox;
+	#pragma warning disable 0649
+	[SerializeField] AttackHitbox hitbox;
+	[SerializeField] AttackHitbox altHitbox;
+	#pragma warning restore 0649
 
 	protected WallCheckData wallData;
 	protected Rigidbody2D rb2d;
@@ -35,7 +38,6 @@ public class CombatController : MonoBehaviour, IAttackLandListener, IHitListener
 		rb2d = GetComponent<Rigidbody2D>();
 		wallData = GetComponent<WallCheck>().wallData;
 		animator = GetComponent<Animator>();
-		attackHitbox = GetComponentInChildren<AttackHitbox>();
 		input = GetComponent<PlayerInput>();
 		collider2d = GetComponent<Collider2D>();
 
@@ -191,7 +193,10 @@ public class CombatController : MonoBehaviour, IAttackLandListener, IHitListener
 		if (combatNode is AttackNode) {
 			AttackNode attackNode = combatNode as AttackNode;
 			player.OnAttackNodeEnter(attackNode.attackData);
-			attackHitbox.data = attackNode.attackData;
+			hitbox.data = attackNode.attackData;
+			if (altHitbox) {
+				altHitbox.data = attackNode?.attackData?.altHitbox;
+			}
 		} else {
 			player.OnAttackNodeEnter(null);
 		}

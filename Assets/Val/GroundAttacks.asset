@@ -403,7 +403,7 @@ MonoBehaviour:
   m_Name: High Kick
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 136, y: -472}
+  position: {x: 136, y: -488}
   ports:
     keys:
     - input
@@ -439,7 +439,7 @@ MonoBehaviour:
         PublicKeyToken=null
       connections:
       - fieldName: input
-        node: {fileID: 8333533718961233585}
+        node: {fileID: 2295136725489853279}
         reroutePoints: []
       _direction: 1
       _connectionType: 1
@@ -451,7 +451,7 @@ MonoBehaviour:
         PublicKeyToken=null
       connections:
       - fieldName: input
-        node: {fileID: 2295136725489853279}
+        node: {fileID: 8333533718961233585}
         reroutePoints: []
       _direction: 1
       _connectionType: 1
@@ -472,9 +472,9 @@ MonoBehaviour:
     direction: 0
   links:
   - type: 2
-    direction: -1
-  - type: 2
     direction: -2
+  - type: 2
+    direction: 0
   onHit:
     type: 0
     direction: 0
@@ -574,7 +574,7 @@ MonoBehaviour:
   m_Name: Axe Kick
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 456, y: -376}
+  position: {x: 440, y: -568}
   ports:
     keys:
     - input
@@ -586,7 +586,7 @@ MonoBehaviour:
       _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
       connections:
-      - fieldName: links 1
+      - fieldName: links 0
         node: {fileID: -2182646159027362593}
         reroutePoints: []
       _direction: 0
@@ -1148,7 +1148,7 @@ MonoBehaviour:
   m_Name: Flash Kick
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 456, y: -552}
+  position: {x: 440, y: -392}
   ports:
     keys:
     - input
@@ -1160,7 +1160,7 @@ MonoBehaviour:
       _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
       connections:
-      - fieldName: links 0
+      - fieldName: links 1
         node: {fileID: -2182646159027362593}
         reroutePoints: []
       _direction: 0

@@ -26,6 +26,9 @@ public class AttackData : ScriptableObject {
 
 	public bool zoomIn = false;
 
+	[Tooltip("For sweet/sourspots")]
+	public AttackData altHitbox;
+
 	float enableTime;
 
 	// halve in damage/knockback every 1 frame 

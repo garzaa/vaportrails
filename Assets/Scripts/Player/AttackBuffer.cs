@@ -38,11 +38,15 @@ public class AttackBuffer : MonoBehaviour {
             );
             attackDirection = attackDirection * new Vector2Int(1, 2);
 			BufferedAttack attack = new BufferedAttack(attackType, attackDirection);
-			bufferedAttacks.Add(attack);
-			StartCoroutine(RemoveAction(attack));
+			AddBufferedAttack(attack);
             // if it enters a graph without a buffered attack (i.e. it's read first)
             combatController.CheckAttackInputs();
         }
+    }
+
+    public void AddBufferedAttack(BufferedAttack attack) {
+        bufferedAttacks.Add(attack);
+        StartCoroutine(RemoveAction(attack));
     }
 
     float ClampZero(float input) {
@@ -62,6 +66,10 @@ public class AttackBuffer : MonoBehaviour {
 		bufferedAttacks.RemoveAt(0);
 		return a;
 	}
+
+    public void Refund(BufferedAttack attack) {
+        AddBufferedAttack(attack);
+    }
 
 	public bool Ready() {
 		return bufferedAttacks.Count > 0;

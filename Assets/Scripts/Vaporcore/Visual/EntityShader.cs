@@ -60,4 +60,12 @@ public class EntityShader : MonoBehaviour {
 			block.SetFloat("flinchWeight", 0f);
 		});
 	}
+
+	public void SetFlashing() {
+
+	}
+
+	public void UnsetFlashing() {
+		
+	}
 }

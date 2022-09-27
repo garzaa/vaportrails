@@ -44,11 +44,6 @@ public class AttackNode : CombatNode {
         } else if (buffer.Ready() && (attackLanded || currentFrame>=attackData.IASA)) {
             MoveNextNode(buffer);
         }
-        
-        if (currentFrame>=attackData.IASA && attackGraph.inputManager.HasHorizontalInput()) {
-            attackGraph.ExitGraph();
-            return;
-        }
 
         attackGraph.animator.SetBool("Actionable", currentFrame>=attackData.IASA);
     }
@@ -71,18 +66,23 @@ public class AttackNode : CombatNode {
     }
 
     // directional attacks are prioritized in order, then the first any-directional link is used
-    protected CombatNode MatchAttackNode(AttackBuffer buffer, AttackLink[] attackLinks, string portListName="links") {
+    protected CombatNode MatchAttackNode(
+        AttackBuffer buffer,
+        AttackLink[] attackLinks,
+        string portListName=nameof(links),
+        bool loopOnce=false
+    ) {
         directionalLinks.Clear();
         anyDirectionNode = null;
-		bool consumedAttack = false;
+		bool foundCandidate = false;
 
 		// keep looking through the buffer for the next action
-		while (buffer.Ready() && !consumedAttack) {
+		while (buffer.Ready() && !foundCandidate) {
 			BufferedAttack attack = buffer.Consume();
 			for (int i=0; i<attackLinks.Length; i++) {
 				AttackLink link = attackLinks[i];
 				if (link.type==attack.type && attack.HasDirection(link.direction)) {
-					consumedAttack = true;
+					foundCandidate = true;
 					CombatNode next = GetNode(portListName+" "+i).Connection.node as CombatNode;
 					if (next.Enabled()) {
 						if (link.direction != AttackDirection.ANY) {
@@ -94,6 +94,10 @@ public class AttackNode : CombatNode {
                     break;
 				}
 			}
+            if (loopOnce && !foundCandidate) {
+                buffer.Refund(attack);
+                return null;
+            }
 		}
 
         if (directionalLinks.Count > 0) {

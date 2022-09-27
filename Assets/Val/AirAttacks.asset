@@ -34,7 +34,10 @@ MonoBehaviour:
       _node: {fileID: -7943525400074050575}
       _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
-      connections: []
+      connections:
+      - fieldName: links 0
+        node: {fileID: 6211059138720334733}
+        reroutePoints: []
       _direction: 0
       _connectionType: 0
       _typeConstraint: 0
@@ -105,7 +108,7 @@ MonoBehaviour:
       _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
       connections:
-      - fieldName: links 4
+      - fieldName: links 5
         node: {fileID: 6211059138720334733}
         reroutePoints: []
       _direction: 0
@@ -178,7 +181,7 @@ MonoBehaviour:
       _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
       connections:
-      - fieldName: links 0
+      - fieldName: links 1
         node: {fileID: 6211059138720334733}
         reroutePoints: []
       _direction: 0
@@ -286,7 +289,7 @@ MonoBehaviour:
       _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
       connections:
-      - fieldName: links 1
+      - fieldName: links 2
         node: {fileID: 6211059138720334733}
         reroutePoints: []
       _direction: 0
@@ -422,7 +425,7 @@ MonoBehaviour:
       _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
       connections:
-      - fieldName: links 3
+      - fieldName: links 4
         node: {fileID: 6211059138720334733}
         reroutePoints: []
       _direction: 0
@@ -473,7 +476,7 @@ MonoBehaviour:
   m_Name: Initial Branch
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -424, y: -200}
+  position: {x: -520, y: -200}
   ports:
     keys:
     - speedLinks
@@ -486,6 +489,7 @@ MonoBehaviour:
     - links 3
     - links 4
     - speedLinks 0
+    - links 5
     values:
     - _fieldName: speedLinks
       _node: {fileID: 6211059138720334733}
@@ -520,7 +524,7 @@ MonoBehaviour:
         PublicKeyToken=null
       connections:
       - fieldName: input
-        node: {fileID: -6885289937481435947}
+        node: {fileID: -7943525400074050575}
         reroutePoints: []
       _direction: 1
       _connectionType: 1
@@ -532,7 +536,7 @@ MonoBehaviour:
         PublicKeyToken=null
       connections:
       - fieldName: input
-        node: {fileID: -6480086313833965529}
+        node: {fileID: -6885289937481435947}
         reroutePoints: []
       _direction: 1
       _connectionType: 1
@@ -544,7 +548,7 @@ MonoBehaviour:
         PublicKeyToken=null
       connections:
       - fieldName: input
-        node: {fileID: 8918050907873563099}
+        node: {fileID: -6480086313833965529}
         reroutePoints: []
       _direction: 1
       _connectionType: 1
@@ -565,7 +569,7 @@ MonoBehaviour:
         PublicKeyToken=null
       connections:
       - fieldName: input
-        node: {fileID: 1175483536977120707}
+        node: {fileID: 8918050907873563099}
         reroutePoints: []
       _direction: 1
       _connectionType: 1
@@ -577,7 +581,7 @@ MonoBehaviour:
         PublicKeyToken=null
       connections:
       - fieldName: input
-        node: {fileID: -7042432427910524947}
+        node: {fileID: 1175483536977120707}
         reroutePoints: []
       _direction: 1
       _connectionType: 1
@@ -595,11 +599,25 @@ MonoBehaviour:
       _connectionType: 1
       _typeConstraint: 0
       _dynamic: 1
+    - _fieldName: links 5
+      _node: {fileID: 6211059138720334733}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: input
+        node: {fileID: -7042432427910524947}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 1
   attackData: {fileID: 0}
   input:
     type: 0
     direction: 0
   links:
+  - type: 1
+    direction: 0
   - type: 2
     direction: -1
   - type: 2
@@ -728,7 +746,7 @@ MonoBehaviour:
       _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
       connections:
-      - fieldName: links 2
+      - fieldName: links 3
         node: {fileID: 6211059138720334733}
         reroutePoints: []
       _direction: 0

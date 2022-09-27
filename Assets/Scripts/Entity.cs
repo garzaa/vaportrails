@@ -162,6 +162,9 @@ public class Entity : MonoBehaviour, IHitListener {
 
 	void StunBounce() {
 		if (stunBounced) {
+			rb2d.velocity = new Vector2(rb2d.velocity.x, 0);
+			// TODO: set to ground flop
+			// and then have a TechPossibleInState
 			CancelStun();
 			return;
 		}
