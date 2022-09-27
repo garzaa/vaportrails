@@ -7,6 +7,8 @@ public class ValCombatController : CombatController {
 	public SubscriptableInt currentEP;
 	public SubscriptableInt maxEP;
 
+	public AttackNode orcaFlipNode;
+
 	Gun gunEyes;
 	PlayerTargetingSystem targetingSystem;
 
@@ -64,7 +66,7 @@ public class ValCombatController : CombatController {
 			canFlipKick = false;
 			player.DisableShortHop();
 			rb2d.velocity = new Vector2(rb2d.velocity.x, Mathf.Max(rb2d.velocity.y, player.movement.jumpSpeed));
-			animator.Play("OrcaFlip");
+			EnterAttackGraph(orcaFlipNode.graph as AttackGraph, orcaFlipNode);
 		}
 	}
 

@@ -22,7 +22,7 @@ public class CombatController : MonoBehaviour, IAttackLandListener, IHitListener
 	public AttackGraph groundAttackGraph;
 	public AttackGraph airAttackGraph;
 
-	public float diStrength = 3f;
+	public float diStrength = 2f;
 
 	const float techWindow = 0.3f;
 	const float techLockoutLength = 0.6f;
@@ -70,7 +70,7 @@ public class CombatController : MonoBehaviour, IAttackLandListener, IHitListener
 			} else {
 				v.x *= player.ForwardScalar();
 			}
-			rb2d.velocity = attack.selfKnockback * player.Forward();
+			rb2d.velocity = v;
 		}
 		if (currentGraph) currentGraph.OnAttackLand(attack, hurtbox);
 	}
@@ -182,7 +182,7 @@ public class CombatController : MonoBehaviour, IAttackLandListener, IHitListener
 		Vector2 leftStick = input.LeftStick();
 		float angle = Vector2.SignedAngle(selfKnockback, leftStick);
 		float diMagnitude = (Mathf.Cos(angle * Mathf.Deg2Rad)* 0.4f) + 0.6f;
-		rb2d.velocity += leftStick * diMagnitude * diStrength;
+		rb2d.velocity += leftStick * diMagnitude * diStrength * attack.data.diRatio;
 	}
 
 	public virtual void EnterAttackGraph(AttackGraph graph, CombatNode entryNode=null) {

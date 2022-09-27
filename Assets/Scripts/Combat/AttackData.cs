@@ -29,6 +29,9 @@ public class AttackData : ScriptableObject {
 	[Tooltip("For sweet/sourspots")]
 	public AttackData altHitbox;
 
+	[Range(0, 1)]
+	public float diRatio = 1f;
+
 	float enableTime;
 
 	// halve in damage/knockback every 1 frame 

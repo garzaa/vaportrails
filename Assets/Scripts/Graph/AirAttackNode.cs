@@ -29,7 +29,7 @@ public class AirAttackNode : AttackNode {
     }
 
     override public void OnGrounded() {
-        if (GetNode("onLand").ConnectionCount>0) {
+        if (CanMoveNode(nameof(onLand))) {
             attackGraph.MoveNode(GetNode("onLand").Connection.node as CombatNode);
         } else {
             attackGraph.ExitGraph();
