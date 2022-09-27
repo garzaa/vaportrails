@@ -17,12 +17,15 @@ public class DashModule : MonoBehaviour {
 		entity = GetComponent<EntityController>();
 		input = GetComponent<PlayerInput>();
 		groundData = GetComponent<GroundCheck>().groundData;
+		EnableDash();
 	}
 
 	void Update() {
 		if (entity.stunned) return;
 
-		if (entity.frozeInputs && !entity.inAttack && canDash) return;
+		if (!canDash) return;
+
+		if (entity.frozeInputs && !entity.inAttack) return;
 
 		if (input.ButtonDown(Buttons.SPECIAL) && entity.canDash && input.HasHorizontalInput() && input.VerticalInput()<0.5) {
 			entity.DashIfPossible(dashSound);
