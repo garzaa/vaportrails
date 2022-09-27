@@ -17,6 +17,7 @@ public class CombatController : MonoBehaviour, IAttackLandListener, IHitListener
 	protected Animator animator;
 	public AttackGraph currentGraph = null;
 	protected PlayerInput input;
+	AttackBuffer buffer;
 
 	public AttackGraph groundAttackGraph;
 	public AttackGraph airAttackGraph;
@@ -40,20 +41,21 @@ public class CombatController : MonoBehaviour, IAttackLandListener, IHitListener
 		animator = GetComponent<Animator>();
 		input = GetComponent<PlayerInput>();
 		collider2d = GetComponent<Collider2D>();
+		buffer = GetComponent<AttackBuffer>();
 
 		techEffect = Resources.Load<GameObject>("Runtime/TechEffect");
 
 		groundAttackGraph.Initialize(
 			this,
 			animator,
-			GetComponent<AttackBuffer>(),
+			buffer,
 			airAttackTracker,
 			input
 		);
 		airAttackGraph.Initialize(
 			this,
 			animator,
-			GetComponent<AttackBuffer>(),
+			buffer,
 			airAttackTracker,
 			input
 		);

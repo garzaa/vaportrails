@@ -228,7 +228,10 @@ MonoBehaviour:
       _node: {fileID: -5152714321913037071}
       _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
-      connections: []
+      connections:
+      - fieldName: input
+        node: {fileID: 7367564331834169068}
+        reroutePoints: []
       _direction: 1
       _connectionType: 1
       _typeConstraint: 0
@@ -990,7 +993,10 @@ MonoBehaviour:
       _node: {fileID: 7367564331834169068}
       _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
-      connections: []
+      connections:
+      - fieldName: onHit
+        node: {fileID: -5152714321913037071}
+        reroutePoints: []
       _direction: 0
       _connectionType: 0
       _typeConstraint: 0

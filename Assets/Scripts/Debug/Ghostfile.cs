@@ -5,7 +5,7 @@ using System.Collections.Generic;
 [System.Serializable]
 public class Ghostfile {
 
-	// TODO: manually set tech percentage (store this in a scriptableobject i guess)
+	public float techPercentage;
 
 	public Dictionary<int, List<WeightedFrameInput>> ghost;
 
