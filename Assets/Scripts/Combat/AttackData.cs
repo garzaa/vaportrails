@@ -9,7 +9,6 @@ public class AttackData : ScriptableObject {
 	public bool autolink = false;
 	[HideIf(nameof(autolink))]
 	[SerializeField] Vector2 knockback = Vector2.one;
-	
 	[HideIf(nameof(autolink))]
 	public bool lateHit = false;
 

@@ -127,7 +127,7 @@ public class Entity : MonoBehaviour, IHitListener {
 		if (groundData.grounded && v.y < 0 && v.y > -5) {
 			v.y = 0;
 		}
-		if (! attack.data.autolink) {
+		if (!attack.data.autolink) {
 			float attackX = attack.transform.position.x;
 			v.x *= attackX > transform.position.x ? -1 : 1;
 		}

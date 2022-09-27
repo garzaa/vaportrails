@@ -13,14 +13,15 @@ MonoBehaviour:
   m_Name: Tornado Kick
   m_EditorClassIdentifier: 
   damage: 1
-  knockback: {x: 1, y: 1}
+  autolink: 1
+  knockback: {x: 0.5, y: 0}
   lateHit: 0
   IASA: 12
   jumpCancelable: 0
-  stunLength: 0.5
-  hitstop: 0.05
+  stunLength: 0.4
+  hitstop: 0.01
   hitmarker: {fileID: 5549221920177132900, guid: d825fee1db2149740915d843fa1d6fee, type: 3}
   hitSound: {fileID: 11400000, guid: cd95d9c92cf95f840a65acf457b191a6, type: 2}
-  hasSelfKnockback: 0
-  selfKnockback: {x: 0, y: 0}
+  hasSelfKnockback: 1
+  selfKnockback: {x: 0, y: 0.7}
   zoomIn: 0
