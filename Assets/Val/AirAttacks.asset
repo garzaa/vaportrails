@@ -327,79 +327,6 @@ MonoBehaviour:
     type: 0
     direction: 0
   singleUse: 0
---- !u!114 &-3827490153433503054
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f560ccef1c7828547a8ca9ba50993c96, type: 3}
-  m_Name: Orca Flip Finisher
-  m_EditorClassIdentifier: 
-  graph: {fileID: 11400000}
-  position: {x: -472, y: -664}
-  ports:
-    keys:
-    - onLand
-    - input
-    - links
-    - onHit
-    values:
-    - _fieldName: onLand
-      _node: {fileID: -3827490153433503054}
-      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      connections: []
-      _direction: 1
-      _connectionType: 1
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: input
-      _node: {fileID: -3827490153433503054}
-      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      connections:
-      - fieldName: links 0
-        node: {fileID: -2801933637361297788}
-        reroutePoints: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: links
-      _node: {fileID: -3827490153433503054}
-      _typeQualifiedName: AttackLink[], Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      connections: []
-      _direction: 1
-      _connectionType: 1
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: onHit
-      _node: {fileID: -3827490153433503054}
-      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      connections: []
-      _direction: 1
-      _connectionType: 1
-      _typeConstraint: 0
-      _dynamic: 0
-  attackData: {fileID: 11400000, guid: 2052f4be4844a574ead8221a76db60a0, type: 2}
-  input:
-    type: 0
-    direction: 0
-  links: []
-  onHit:
-    type: 0
-    direction: 0
-  timeOffset: 0
-  onLand:
-    type: 0
-    direction: 0
-  singleUse: 0
 --- !u!114 &-2801933637361297788
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -462,10 +389,7 @@ MonoBehaviour:
       _node: {fileID: -2801933637361297788}
       _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
-      connections:
-      - fieldName: input
-        node: {fileID: -3827490153433503054}
-        reroutePoints: []
+      connections: []
       _direction: 1
       _connectionType: 1
       _typeConstraint: 0
@@ -543,7 +467,6 @@ MonoBehaviour:
   - {fileID: -6885289937481435947}
   - {fileID: 7016034450050395571}
   - {fileID: -2801933637361297788}
-  - {fileID: -3827490153433503054}
   animator: {fileID: 0}
   buffer: {fileID: 0}
   combatController: {fileID: 0}

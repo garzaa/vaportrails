@@ -9,8 +9,6 @@ public class AttackData : ScriptableObject {
 	public bool autolink = false;
 	[HideIf(nameof(autolink))]
 	[SerializeField] Vector2 knockback = Vector2.one;
-	[HideIf(nameof(autolink))]
-	public bool lateHit = false;
 
 	public int IASA;
 	public bool jumpCancelable;
@@ -32,12 +30,9 @@ public class AttackData : ScriptableObject {
 	[Range(0, 1)]
 	public float diRatio = 1f;
 
-	float enableTime;
-
 	// halve in damage/knockback every 1 frame 
 	public int GetDamage() {
-		if (!lateHit) return damage;
-		return Mathf.Max(damage * 1/FramesOut(), 1);
+		return damage;
 	}
 
 	public Vector2 GetKnockback(AttackHitbox self, GameObject target) {
@@ -50,15 +45,7 @@ public class AttackData : ScriptableObject {
 			v += (Vector2) (target.transform.position - self.transform.position) * 0.2f;
 		}
 
-		if (lateHit) return v * (1/(float) FramesOut());
 		return v;
 	}
 
-	int FramesOut() {
-		return Mathf.Max(1, Mathf.FloorToInt((Time.time - enableTime) * 12f));
-	}
-
-	public void OnHitboxOut() {
-		enableTime = Time.time;
-	}
 }

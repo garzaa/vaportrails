@@ -51,7 +51,7 @@ public class AttackHitbox : MonoBehaviour {
 	}
 
 	void OnHitboxOut() {
-		if (data) data.OnHitboxOut();
+	
 	}
 
 	protected virtual bool CanHit(Hurtbox hurtbox) {

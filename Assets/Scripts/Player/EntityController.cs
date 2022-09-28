@@ -286,7 +286,7 @@ public class EntityController : Entity {
 			if (movingBackwards || inputBackwards) {
 				animator.SetTrigger("Backflip");
 			} else {
-				animator.SetTrigger("WallJump");
+				animator.SetTrigger("Jump");
 			}
 			jumpNoise.PlayFrom(this.gameObject);
 			airControlMod = 1;
