@@ -1,10 +1,14 @@
 using UnityEngine;
+using UnityEngine.Events;
 using System.Collections.Generic;
 using System.Collections;
 
 public class GroundCheck : MonoBehaviour {
     public GroundData groundData = new GroundData();
     public bool skipFirstLanding = true;
+
+    public UnityEvent onLedgeStep;
+
     bool firstLanding = true;
     [SerializeField] bool detecting = true;
     
@@ -60,6 +64,7 @@ public class GroundCheck : MonoBehaviour {
         }
 
         if (!groundData.onLedge && onLedge) {
+            onLedgeStep.Invoke();
             groundData.ledgeStep = true;
         }
 

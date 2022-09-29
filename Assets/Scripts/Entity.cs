@@ -102,8 +102,6 @@ public class Entity : MonoBehaviour, IHitListener {
 
 	public void OnHit(AttackHitbox attack) { 
 		if (staggerable) {
-			// TODO: alter knockback vector based on hurtbox point distance from line of attack center + knockback vector
-			// https://answers.unity.com/questions/263308/projection-of-a-point-on-a-line.html
 			Vector2 v = GetKnockback(attack);
 			// heavier people get knocked back less
 			rb2d.velocity = v * (1f/rb2d.mass);
@@ -136,6 +134,7 @@ public class Entity : MonoBehaviour, IHitListener {
 
 	void StunFor(float seconds) {
 		CancelStun();
+		animator.SetTrigger("OnHit");
 		stunBounced = false;
 		stunned = true;
 		animator.SetBool("Stunned", true);
@@ -165,6 +164,9 @@ public class Entity : MonoBehaviour, IHitListener {
 			rb2d.velocity = new Vector2(rb2d.velocity.x, 0);
 			// TODO: set to ground flop
 			// and then have a TechPossibleInState
+			// this also necessitates a TechCheck() function
+			// which is hard because a base entity doesn't know about teching
+			// virtual function? virtual function perhaps
 			CancelStun();
 			return;
 		}
