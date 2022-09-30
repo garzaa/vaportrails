@@ -11,7 +11,6 @@ abstract public class CombatNode : Node {
 
     virtual public void OnNodeEnter() {
         attackGraph = this.graph as AttackGraph;
-        active = true;
         attackGraph.combatController.OnAttackNodeEnter(this);
     }
 
@@ -21,7 +20,6 @@ abstract public class CombatNode : Node {
 
     virtual public void OnNodeExit() {
         attackLanded = false;
-        active = false;
     }
 
     virtual public bool Enabled() {
@@ -36,10 +34,6 @@ abstract public class CombatNode : Node {
 
     virtual public void OnGrounded() {
 
-    }
-
-    public bool IsActive() {
-        return active;
     }
 
     virtual public void OnAttackLand() {

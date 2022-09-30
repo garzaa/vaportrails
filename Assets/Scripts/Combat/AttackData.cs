@@ -30,7 +30,8 @@ public class AttackData : ScriptableObject {
 	[Range(0, 1)]
 	public float diRatio = 1f;
 
-	// halve in damage/knockback every 1 frame 
+	public bool fromBackwardsInput = false;
+
 	public int GetDamage() {
 		return damage;
 	}

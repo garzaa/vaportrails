@@ -51,9 +51,9 @@ MonoBehaviour:
   ports:
     keys:
     - onLand
-    - input
     - links
     - onHit
+    - input
     values:
     - _fieldName: onLand
       _node: {fileID: -6503406774311002028}
@@ -62,18 +62,6 @@ MonoBehaviour:
       connections: []
       _direction: 1
       _connectionType: 1
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: input
-      _node: {fileID: -6503406774311002028}
-      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      connections:
-      - fieldName: links 0
-        node: {fileID: -1017956487442271454}
-        reroutePoints: []
-      _direction: 0
-      _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
     - _fieldName: links
@@ -92,6 +80,18 @@ MonoBehaviour:
       connections: []
       _direction: 1
       _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: input
+      _node: {fileID: -6503406774311002028}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: links 0
+        node: {fileID: -1017956487442271454}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
   attackData: {fileID: 11400000, guid: bf4105f8a51bec242be60752d7e8eb31, type: 2}
@@ -124,9 +124,9 @@ MonoBehaviour:
   ports:
     keys:
     - onLand
-    - input
     - links
     - onHit
+    - input
     values:
     - _fieldName: onLand
       _node: {fileID: -4885283071779246905}
@@ -135,18 +135,6 @@ MonoBehaviour:
       connections: []
       _direction: 1
       _connectionType: 1
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: input
-      _node: {fileID: -4885283071779246905}
-      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      connections:
-      - fieldName: links 4
-        node: {fileID: -1017956487442271454}
-        reroutePoints: []
-      _direction: 0
-      _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
     - _fieldName: links
@@ -165,6 +153,18 @@ MonoBehaviour:
       connections: []
       _direction: 1
       _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: input
+      _node: {fileID: -4885283071779246905}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: links 4
+        node: {fileID: -1017956487442271454}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
   attackData: {fileID: 11400000, guid: ae62fd08161002e4a91510cc183517df, type: 2}
@@ -197,9 +197,9 @@ MonoBehaviour:
   ports:
     keys:
     - onLand
-    - input
     - links
     - onHit
+    - input
     values:
     - _fieldName: onLand
       _node: {fileID: -4140659376928405838}
@@ -211,18 +211,6 @@ MonoBehaviour:
         reroutePoints: []
       _direction: 1
       _connectionType: 1
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: input
-      _node: {fileID: -4140659376928405838}
-      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      connections:
-      - fieldName: links 3
-        node: {fileID: -1017956487442271454}
-        reroutePoints: []
-      _direction: 0
-      _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
     - _fieldName: links
@@ -241,6 +229,18 @@ MonoBehaviour:
       connections: []
       _direction: 1
       _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: input
+      _node: {fileID: -4140659376928405838}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: links 3
+        node: {fileID: -1017956487442271454}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
   attackData: {fileID: 11400000, guid: 3555c33474e2bf34eb82f6907695e95d, type: 2}
@@ -273,7 +273,6 @@ MonoBehaviour:
   ports:
     keys:
     - speedLinks
-    - input
     - links
     - links 0
     - links 1
@@ -281,6 +280,7 @@ MonoBehaviour:
     - onHit
     - links 3
     - links 4
+    - input
     values:
     - _fieldName: speedLinks
       _node: {fileID: -1017956487442271454}
@@ -289,15 +289,6 @@ MonoBehaviour:
       connections: []
       _direction: 1
       _connectionType: 1
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: input
-      _node: {fileID: -1017956487442271454}
-      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      connections: []
-      _direction: 0
-      _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
     - _fieldName: links
@@ -378,6 +369,15 @@ MonoBehaviour:
       _connectionType: 1
       _typeConstraint: 0
       _dynamic: 1
+    - _fieldName: input
+      _node: {fileID: -1017956487442271454}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
   attackData: {fileID: 0}
   input:
     type: 0
@@ -441,9 +441,9 @@ MonoBehaviour:
   ports:
     keys:
     - onLand
-    - input
     - links
     - onHit
+    - input
     values:
     - _fieldName: onLand
       _node: {fileID: 4154376683595710960}
@@ -452,18 +452,6 @@ MonoBehaviour:
       connections: []
       _direction: 1
       _connectionType: 1
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: input
-      _node: {fileID: 4154376683595710960}
-      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      connections:
-      - fieldName: links 2
-        node: {fileID: -1017956487442271454}
-        reroutePoints: []
-      _direction: 0
-      _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
     - _fieldName: links
@@ -482,6 +470,18 @@ MonoBehaviour:
       connections: []
       _direction: 1
       _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: input
+      _node: {fileID: 4154376683595710960}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: links 2
+        node: {fileID: -1017956487442271454}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
   attackData: {fileID: 11400000, guid: fe1efca1ac74c2b41b3207c8849ecfe4, type: 2}
@@ -514,9 +514,9 @@ MonoBehaviour:
   ports:
     keys:
     - onLand
-    - input
     - links
     - onHit
+    - input
     values:
     - _fieldName: onLand
       _node: {fileID: 9172169836585994511}
@@ -525,18 +525,6 @@ MonoBehaviour:
       connections: []
       _direction: 1
       _connectionType: 1
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: input
-      _node: {fileID: 9172169836585994511}
-      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      connections:
-      - fieldName: links 1
-        node: {fileID: -1017956487442271454}
-        reroutePoints: []
-      _direction: 0
-      _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
     - _fieldName: links
@@ -555,6 +543,18 @@ MonoBehaviour:
       connections: []
       _direction: 1
       _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: input
+      _node: {fileID: 9172169836585994511}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: links 1
+        node: {fileID: -1017956487442271454}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
   attackData: {fileID: 11400000, guid: 12721dd6a80091f409caf14dcf7ff33d, type: 2}

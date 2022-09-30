@@ -16,22 +16,10 @@ MonoBehaviour:
   position: {x: 456, y: 712}
   ports:
     keys:
-    - input
     - links
     - onHit
+    - input
     values:
-    - _fieldName: input
-      _node: {fileID: -8943185299639134591}
-      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      connections:
-      - fieldName: onHit
-        node: {fileID: -8674303102600886378}
-        reroutePoints: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
     - _fieldName: links
       _node: {fileID: -8943185299639134591}
       _typeQualifiedName: AttackLink[], Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
@@ -48,6 +36,18 @@ MonoBehaviour:
       connections: []
       _direction: 1
       _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: input
+      _node: {fileID: -8943185299639134591}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: onHit
+        node: {fileID: -8674303102600886378}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
   attackData: {fileID: 11400000, guid: 274f5d06035ff2d4db7480dcec103d3a, type: 2}
@@ -75,22 +75,10 @@ MonoBehaviour:
   position: {x: 136, y: 712}
   ports:
     keys:
-    - input
     - links
     - onHit
+    - input
     values:
-    - _fieldName: input
-      _node: {fileID: -8674303102600886378}
-      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      connections:
-      - fieldName: speedLinks 2
-        node: {fileID: 7367564331834169068}
-        reroutePoints: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
     - _fieldName: links
       _node: {fileID: -8674303102600886378}
       _typeQualifiedName: AttackLink[], Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
@@ -110,6 +98,18 @@ MonoBehaviour:
         reroutePoints: []
       _direction: 1
       _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: input
+      _node: {fileID: -8674303102600886378}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: speedLinks 2
+        node: {fileID: 7367564331834169068}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
   attackData: {fileID: 11400000, guid: f0c9d2455ac34294792c024c449cec42, type: 2}
@@ -137,22 +137,10 @@ MonoBehaviour:
   position: {x: 728, y: -216}
   ports:
     keys:
-    - input
     - links
     - onHit
+    - input
     values:
-    - _fieldName: input
-      _node: {fileID: -7836476412415192413}
-      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      connections:
-      - fieldName: links 0
-        node: {fileID: 6332814915573547029}
-        reroutePoints: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
     - _fieldName: links
       _node: {fileID: -7836476412415192413}
       _typeQualifiedName: AttackLink[], Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
@@ -169,6 +157,18 @@ MonoBehaviour:
       connections: []
       _direction: 1
       _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: input
+      _node: {fileID: -7836476412415192413}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: links 0
+        node: {fileID: 6332814915573547029}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
   attackData: {fileID: 11400000, guid: 150e64d633340a84cb649897f2b57811, type: 2}
@@ -196,25 +196,10 @@ MonoBehaviour:
   position: {x: 136, y: 520}
   ports:
     keys:
-    - input
     - links
     - onHit
+    - input
     values:
-    - _fieldName: input
-      _node: {fileID: -5152714321913037071}
-      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      connections:
-      - fieldName: output
-        node: {fileID: -783924786998265801}
-        reroutePoints: []
-      - fieldName: speedLinks 1
-        node: {fileID: 7367564331834169068}
-        reroutePoints: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
     - _fieldName: links
       _node: {fileID: -5152714321913037071}
       _typeQualifiedName: AttackLink[], Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
@@ -228,12 +213,24 @@ MonoBehaviour:
       _node: {fileID: -5152714321913037071}
       _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
-      connections:
-      - fieldName: input
-        node: {fileID: 7367564331834169068}
-        reroutePoints: []
+      connections: []
       _direction: 1
       _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: input
+      _node: {fileID: -5152714321913037071}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: speedLinks 1
+        node: {fileID: 7367564331834169068}
+        reroutePoints: []
+      - fieldName: output
+        node: {fileID: -783924786998265801}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
   attackData: {fileID: 11400000, guid: e3aa699e28ce6bf4cbe470fc1bfb9a20, type: 2}
@@ -261,23 +258,11 @@ MonoBehaviour:
   position: {x: 136, y: 184}
   ports:
     keys:
-    - input
     - links
     - links 0
     - onHit
+    - input
     values:
-    - _fieldName: input
-      _node: {fileID: -4714013082723229361}
-      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      connections:
-      - fieldName: links 1
-        node: {fileID: 7367564331834169068}
-        reroutePoints: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
     - _fieldName: links
       _node: {fileID: -4714013082723229361}
       _typeQualifiedName: AttackLink[], Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
@@ -308,6 +293,18 @@ MonoBehaviour:
       _connectionType: 1
       _typeConstraint: 0
       _dynamic: 0
+    - _fieldName: input
+      _node: {fileID: -4714013082723229361}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: links 1
+        node: {fileID: 7367564331834169068}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
   attackData: {fileID: 11400000, guid: f0a0ee045a180cb40964d49b3dbef142, type: 2}
   input:
     type: 0
@@ -335,23 +332,11 @@ MonoBehaviour:
   position: {x: 136, y: -216}
   ports:
     keys:
-    - input
     - links
     - links 0
     - onHit
+    - input
     values:
-    - _fieldName: input
-      _node: {fileID: -2496123809670740237}
-      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      connections:
-      - fieldName: links 4
-        node: {fileID: 7367564331834169068}
-        reroutePoints: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
     - _fieldName: links
       _node: {fileID: -2496123809670740237}
       _typeQualifiedName: AttackLink[], Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
@@ -382,6 +367,18 @@ MonoBehaviour:
       _connectionType: 1
       _typeConstraint: 0
       _dynamic: 0
+    - _fieldName: input
+      _node: {fileID: -2496123809670740237}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: links 4
+        node: {fileID: 7367564331834169068}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
   attackData: {fileID: 11400000, guid: f9d0a995cc0ef204b81d00e741d479c5, type: 2}
   input:
     type: 0
@@ -409,24 +406,12 @@ MonoBehaviour:
   position: {x: 136, y: -488}
   ports:
     keys:
-    - input
     - links
     - links 0
     - links 1
     - onHit
+    - input
     values:
-    - _fieldName: input
-      _node: {fileID: -2182646159027362593}
-      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      connections:
-      - fieldName: links 0
-        node: {fileID: 7367564331834169068}
-        reroutePoints: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
     - _fieldName: links
       _node: {fileID: -2182646159027362593}
       _typeQualifiedName: AttackLink[], Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
@@ -469,6 +454,18 @@ MonoBehaviour:
       _connectionType: 1
       _typeConstraint: 0
       _dynamic: 0
+    - _fieldName: input
+      _node: {fileID: -2182646159027362593}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: links 0
+        node: {fileID: 7367564331834169068}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
   attackData: {fileID: 11400000, guid: c3de1d21108df874182cc594a2388e10, type: 2}
   input:
     type: 0
@@ -477,7 +474,7 @@ MonoBehaviour:
   - type: 2
     direction: -2
   - type: 2
-    direction: 0
+    direction: -1
   onHit:
     type: 0
     direction: 0
@@ -580,22 +577,10 @@ MonoBehaviour:
   position: {x: 440, y: -568}
   ports:
     keys:
-    - input
     - links
     - onHit
+    - input
     values:
-    - _fieldName: input
-      _node: {fileID: 2295136725489853279}
-      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      connections:
-      - fieldName: links 0
-        node: {fileID: -2182646159027362593}
-        reroutePoints: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
     - _fieldName: links
       _node: {fileID: 2295136725489853279}
       _typeQualifiedName: AttackLink[], Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
@@ -612,6 +597,18 @@ MonoBehaviour:
       connections: []
       _direction: 1
       _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: input
+      _node: {fileID: 2295136725489853279}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: links 0
+        node: {fileID: -2182646159027362593}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
   attackData: {fileID: 11400000, guid: 6836478d6013d414a9c70780427b3354, type: 2}
@@ -639,22 +636,10 @@ MonoBehaviour:
   position: {x: 424, y: 184}
   ports:
     keys:
-    - input
     - links
     - onHit
+    - input
     values:
-    - _fieldName: input
-      _node: {fileID: 3697867700367071595}
-      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      connections:
-      - fieldName: links 0
-        node: {fileID: -4714013082723229361}
-        reroutePoints: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
     - _fieldName: links
       _node: {fileID: 3697867700367071595}
       _typeQualifiedName: AttackLink[], Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
@@ -671,6 +656,18 @@ MonoBehaviour:
       connections: []
       _direction: 1
       _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: input
+      _node: {fileID: 3697867700367071595}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: links 0
+        node: {fileID: -4714013082723229361}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
   attackData: {fileID: 11400000, guid: e9450ae1c5b7e65488221e964e2596fb, type: 2}
@@ -698,26 +695,11 @@ MonoBehaviour:
   position: {x: 136, y: -8}
   ports:
     keys:
-    - input
     - links
     - links 0
     - onHit
+    - input
     values:
-    - _fieldName: input
-      _node: {fileID: 5149676047783924878}
-      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      connections:
-      - fieldName: links 3
-        node: {fileID: 7367564331834169068}
-        reroutePoints: []
-      - fieldName: links 2
-        node: {fileID: 7367564331834169068}
-        reroutePoints: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
     - _fieldName: links
       _node: {fileID: 5149676047783924878}
       _typeQualifiedName: AttackLink[], Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
@@ -748,6 +730,21 @@ MonoBehaviour:
       _connectionType: 1
       _typeConstraint: 0
       _dynamic: 0
+    - _fieldName: input
+      _node: {fileID: 5149676047783924878}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: links 3
+        node: {fileID: 7367564331834169068}
+        reroutePoints: []
+      - fieldName: links 2
+        node: {fileID: 7367564331834169068}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
   attackData: {fileID: 11400000, guid: 246b3658401fbac4fb14ac5a6ae81bd0, type: 2}
   input:
     type: 0
@@ -775,22 +772,10 @@ MonoBehaviour:
   position: {x: 440, y: -8}
   ports:
     keys:
-    - input
     - links
     - onHit
+    - input
     values:
-    - _fieldName: input
-      _node: {fileID: 6106788391044239856}
-      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      connections:
-      - fieldName: links 0
-        node: {fileID: 5149676047783924878}
-        reroutePoints: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
     - _fieldName: links
       _node: {fileID: 6106788391044239856}
       _typeQualifiedName: AttackLink[], Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
@@ -807,6 +792,18 @@ MonoBehaviour:
       connections: []
       _direction: 1
       _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: input
+      _node: {fileID: 6106788391044239856}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: links 0
+        node: {fileID: 5149676047783924878}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
   attackData: {fileID: 11400000, guid: de37b9a5f8a030e46abb95d2063c259b, type: 2}
@@ -834,22 +831,10 @@ MonoBehaviour:
   position: {x: 136, y: 344}
   ports:
     keys:
-    - input
     - links
     - onHit
+    - input
     values:
-    - _fieldName: input
-      _node: {fileID: 6225885635047150608}
-      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      connections:
-      - fieldName: speedLinks 0
-        node: {fileID: 7367564331834169068}
-        reroutePoints: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
     - _fieldName: links
       _node: {fileID: 6225885635047150608}
       _typeQualifiedName: AttackLink[], Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
@@ -866,6 +851,18 @@ MonoBehaviour:
       connections: []
       _direction: 1
       _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: input
+      _node: {fileID: 6225885635047150608}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: speedLinks 0
+        node: {fileID: 7367564331834169068}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
   attackData: {fileID: 11400000, guid: f1bf5a448a9f9994983bb647f0befcb2, type: 2}
@@ -893,23 +890,11 @@ MonoBehaviour:
   position: {x: 440, y: -216}
   ports:
     keys:
-    - input
     - links
     - links 0
     - onHit
+    - input
     values:
-    - _fieldName: input
-      _node: {fileID: 6332814915573547029}
-      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      connections:
-      - fieldName: links 0
-        node: {fileID: -2496123809670740237}
-        reroutePoints: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
     - _fieldName: links
       _node: {fileID: 6332814915573547029}
       _typeQualifiedName: AttackLink[], Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
@@ -940,6 +925,18 @@ MonoBehaviour:
       _connectionType: 1
       _typeConstraint: 0
       _dynamic: 0
+    - _fieldName: input
+      _node: {fileID: 6332814915573547029}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: links 0
+        node: {fileID: -2496123809670740237}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
   attackData: {fileID: 11400000, guid: b6390910b5a8ff84489bc31c90d6f8b9, type: 2}
   input:
     type: 0
@@ -968,7 +965,6 @@ MonoBehaviour:
   ports:
     keys:
     - speedLinks
-    - input
     - links
     - links 0
     - speedLinks 0
@@ -979,6 +975,7 @@ MonoBehaviour:
     - links 4
     - onHit
     - speedLinks 2
+    - input
     values:
     - _fieldName: speedLinks
       _node: {fileID: 7367564331834169068}
@@ -987,18 +984,6 @@ MonoBehaviour:
       connections: []
       _direction: 1
       _connectionType: 1
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: input
-      _node: {fileID: 7367564331834169068}
-      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      connections:
-      - fieldName: onHit
-        node: {fileID: -5152714321913037071}
-        reroutePoints: []
-      _direction: 0
-      _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
     - _fieldName: links
@@ -1115,6 +1100,15 @@ MonoBehaviour:
       _connectionType: 1
       _typeConstraint: 0
       _dynamic: 1
+    - _fieldName: input
+      _node: {fileID: 7367564331834169068}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
   attackData: {fileID: 0}
   input:
     type: 0
@@ -1157,22 +1151,10 @@ MonoBehaviour:
   position: {x: 440, y: -392}
   ports:
     keys:
-    - input
     - links
     - onHit
+    - input
     values:
-    - _fieldName: input
-      _node: {fileID: 8333533718961233585}
-      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      connections:
-      - fieldName: links 1
-        node: {fileID: -2182646159027362593}
-        reroutePoints: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
     - _fieldName: links
       _node: {fileID: 8333533718961233585}
       _typeQualifiedName: AttackLink[], Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
@@ -1189,6 +1171,18 @@ MonoBehaviour:
       connections: []
       _direction: 1
       _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: input
+      _node: {fileID: 8333533718961233585}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: links 1
+        node: {fileID: -2182646159027362593}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
   attackData: {fileID: 11400000, guid: 19417705a56266d46806172f72754b7a, type: 2}

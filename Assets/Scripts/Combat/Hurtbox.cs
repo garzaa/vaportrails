@@ -15,7 +15,22 @@ public class Hurtbox : MonoBehaviour {
 		hitListeners = GetComponentsInParent<IHitListener>();
 	}
 
-	public void OnAttackLand(AttackHitbox attack) {
+	public bool VulnerableTo(AttackHitbox attack) {
+		foreach (IHitListener h in hitListeners) {
+			if (!h.CanBeHit(attack)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public void HitProbe(AttackHitbox attack) {
+		foreach (IHitListener hitListener in hitListeners) {
+			hitListener.OnHitCheck(attack);
+		}
+	}
+
+	public void OnHitConfirm(AttackHitbox attack) {
 		foreach (IHitListener hitListener in hitListeners) {
 			hitListener.OnHit(attack);
 		}

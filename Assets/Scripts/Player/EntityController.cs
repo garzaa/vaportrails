@@ -240,11 +240,6 @@ public class EntityController : Entity {
 		if ((!currentAttack && frozeInputs) || (currentAttack && !currentAttack.jumpCancelable)) return;
 
 		void GroundJump() {
-			// allow reverse aerial rush
-			if (movingForwards && inputBackwards) {
-				Flip();
-			}
-
 			bufferedJump = false;
 			jumpNoise.PlayFrom(this.gameObject);
 			if (!wallData.touchingWall) {
@@ -420,7 +415,7 @@ public class EntityController : Entity {
 	public void OnAttackNodeEnter(AttackData attackData) {
 		currentAttack = attackData;
 		frozeInputs = true;
-		if (groundData.grounded) {
+		if (groundData.grounded && (attackData && !attackData.fromBackwardsInput)) {
 			float actualInputX = input.HorizontalInput();
 			if (facingRight && actualInputX<0) {
 				Flip();

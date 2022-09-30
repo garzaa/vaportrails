@@ -70,7 +70,8 @@ public class AttackHitbox : MonoBehaviour {
 	void OnTriggerEnter2D(Collider2D other) {
 		if (!data) return;
 		Hurtbox hurtbox = other.GetComponent<Hurtbox>();
-		if (hurtbox && CanHit(hurtbox)) {
+		hurtbox?.HitProbe(this);
+		if (hurtbox && CanHit(hurtbox) && hurtbox.VulnerableTo(this)) {
 			foreach (Hurtbox h in hurtbox.transform.root.GetComponentsInChildren<Hurtbox>()) {
 				if (singleHitPerActive) {
 					hurtboxesHitThisActive.Add(h);
@@ -97,7 +98,7 @@ public class AttackHitbox : MonoBehaviour {
 			foreach (IAttackLandListener attackLandListener in attackLandListeners) {
 				attackLandListener.OnAttackLand(data, hurtbox);
 			}
-			hurtbox.OnAttackLand(this);
+			hurtbox.OnHitConfirm(this);
 			OnAttackLand.Invoke();
 			if (data.zoomIn) cameraZoom.ZoomFor(2, data.hitstop);
 			Hitstop.Run(data.hitstop);
