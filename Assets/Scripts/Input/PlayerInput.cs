@@ -129,6 +129,7 @@ public class PlayerInput : MonoBehaviour {
     }
 }
 
+// TODO: use RewiredConsts with action axes
 public static class Buttons {
     public static readonly string H_AXIS = "Horizontal";
     public static readonly string V_AXIS = "Vertical";
@@ -142,7 +143,7 @@ public static class Buttons {
     public static readonly string SPECIAL    = "Special";
     public static readonly string PROJECTILE = "Projectile";
     public static readonly string INTERACT   = "Interact";
-    public static readonly string BLOCK      = "Block";
+    public static readonly string PARRY      = "Parry";
     public static readonly string SURF       = "Surf";
 
     public static readonly string CONFIRM = "Confirm";

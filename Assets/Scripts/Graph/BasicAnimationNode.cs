@@ -17,7 +17,6 @@ public class BasicAnimationNode : CombatNode {
 	override public void NodeUpdate(int currentFrame, float clipTime, AttackBuffer buffer) {
 		base.NodeUpdate(currentFrame, clipTime, buffer);
 		if (clipTime > actionableAt) {
-			Debug.Log("exiting graph, animation finished");
 			attackGraph.ExitGraph();
 		}
 	}

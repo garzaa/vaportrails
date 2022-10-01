@@ -31,6 +31,7 @@ public class ValCombatController : CombatController, IHitListener {
 	const string emptyMessage = "SOLENOID EMPTY";
 
 	const float autoparryDuration = 0.5f;
+	CameraZoom cameraZoom;
 
 	protected override void Start() {
 		base.Start();
@@ -40,6 +41,7 @@ public class ValCombatController : CombatController, IHitListener {
 		currentEP.OnChange.AddListener(OnEnergyChange);
 		maxEP.Initialize();
 		chargeIndicator.SetActive(false);
+		cameraZoom = GameObject.FindObjectOfType<CameraZoom>();
 	}
 
 	public void OnEnergyChange(int energy) {
@@ -50,6 +52,7 @@ public class ValCombatController : CombatController, IHitListener {
 		base.Update();
 
 		Shoot();
+		Parry();
 	
 		if (combatLayerWeight == 0) {
 			animator.SetLayerWeight(1, Mathf.MoveTowards(animator.GetLayerWeight(1), combatLayerWeight, 4*Time.deltaTime));
@@ -59,7 +62,7 @@ public class ValCombatController : CombatController, IHitListener {
 	void Parry() {
 		if (player.frozeInputs) return;
 
-		if (input.ButtonDown(Buttons.BLOCK)) {
+		if (input.ButtonDown(Buttons.PARRY)) {
 			if (groundData.grounded) {
 				EnterAttackGraph(groundAttackGraph, groundParryNode);
 			} else {
@@ -73,37 +76,35 @@ public class ValCombatController : CombatController, IHitListener {
 	}
 
 	public void OnHitCheck(AttackHitbox attack) {
-		// TODO: OH BEFORE the attack lands if there's not enough energy
-		// then lose it, play glass break sound, poise break, stun for 1s
+		if (parryActive || autoparry) {
+			// TODO: OH BEFORE the attack lands if there's not enough energy
+			// then lose it, play glass break sound, poise break, stun for 1s, parry inactive
+			// BUT parry the last attack
+			// TODO: run hitstop for the attack
+		}
 
-		// if an attack lands on a parry
 		if (parryActive) {
-			// instantiate the effect
 			Instantiate(parrySuccessEffect, this.transform);
-			// set autoparry to active
-			// and disable first parry
 			parryActive = false;
 			autoparry = true;
 			Invoke(nameof(DisableAutoparry), autoparryDuration);
 			// transition to parry success animation
 			// which should NOT be a combat node
 			// so the player can act out of it
-			if (groundData.grounded) {
-				animator.Play("GroundParrySuccess", 0);
-			} else {
-				animator.Play("AirParrySuccess", 0);
-			}
+			// they should be single poses that instantly transition to the base layer state
+			// with an interruptible transition
+			cameraZoom.ZoomFor(2, 0.4f);
+			Hitstop.Run(0.4f);
 			currentGraph?.ExitGraph();
-			// then also take care of hitstop and zoomin?
-			// oh also subtract energy from the attack
+			if (groundData.grounded) {
+				animator.Play("Ground Parry Success", 0);
+			} else {
+				animator.Play("Air Parry Success", 0);
+			}
 		} else if (autoparry) {
 			CancelInvoke(nameof(DisableAutoparry));
 			Invoke(nameof(DisableAutoparry), autoparryDuration);
 			// TODO: instantiate the autoparry arm
-		}
-
-		if (parryActive || autoparry) {
-			// TODO: run hitstop for the attack
 		}
 	}
 
