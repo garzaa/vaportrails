@@ -327,6 +327,38 @@ MonoBehaviour:
     type: 0
     direction: 0
   singleUse: 0
+--- !u!114 &-4208440387906325956
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b7731d48a22d9248a073e965347a1b8, type: 3}
+  m_Name: Air Parry
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -488, y: 472}
+  ports:
+    keys:
+    - input
+    values:
+    - _fieldName: input
+      _node: {fileID: -4208440387906325956}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  stateName: Air Parry
+  actionableAt: 0.9
+  input:
+    type: 0
+    direction: 0
 --- !u!114 &-2801933637361297788
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -467,12 +499,11 @@ MonoBehaviour:
   - {fileID: -6885289937481435947}
   - {fileID: 7016034450050395571}
   - {fileID: -2801933637361297788}
-  - {fileID: 7241486429383816755}
-  - {fileID: 5278690577140188520}
+  - {fileID: -4208440387906325956}
   animator: {fileID: 0}
   buffer: {fileID: 0}
   combatController: {fileID: 0}
-  grounded: 0
+  grounded: 1
   inputManager: {fileID: 0}
   stateMachineName: AirAttacks
 --- !u!114 &1175483536977120707
@@ -548,40 +579,6 @@ MonoBehaviour:
     type: 0
     direction: 0
   singleUse: 0
---- !u!114 &5278690577140188520
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b0efb61c0d737e459a3c908650c5da2, type: 3}
-  m_Name: Move Graph
-  m_EditorClassIdentifier: 
-  graph: {fileID: 11400000}
-  position: {x: -440, y: 552}
-  ports:
-    keys:
-    - input
-    values:
-    - _fieldName: input
-      _node: {fileID: 5278690577140188520}
-      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      connections:
-      - fieldName: onLand
-        node: {fileID: 7241486429383816755}
-        reroutePoints: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-  targetNode: {fileID: 8060471930037119819, guid: c1fde87b57147bf49b5b770fe780baff, type: 2}
-  input:
-    type: 0
-    direction: 0
 --- !u!114 &6211059138720334733
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -815,79 +812,6 @@ MonoBehaviour:
       _typeConstraint: 0
       _dynamic: 0
   attackData: {fileID: 11400000, guid: 94543dcb4aef15c4b90f24173cd1edc4, type: 2}
-  input:
-    type: 0
-    direction: 0
-  links: []
-  onHit:
-    type: 0
-    direction: 0
-  timeOffset: 0
-  onLand:
-    type: 0
-    direction: 0
-  singleUse: 0
---- !u!114 &7241486429383816755
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f560ccef1c7828547a8ca9ba50993c96, type: 3}
-  m_Name: Air Parry
-  m_EditorClassIdentifier: 
-  graph: {fileID: 11400000}
-  position: {x: -808, y: 472}
-  ports:
-    keys:
-    - onLand
-    - input
-    - links
-    - onHit
-    values:
-    - _fieldName: onLand
-      _node: {fileID: 7241486429383816755}
-      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      connections:
-      - fieldName: input
-        node: {fileID: 5278690577140188520}
-        reroutePoints: []
-      _direction: 1
-      _connectionType: 1
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: input
-      _node: {fileID: 7241486429383816755}
-      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      connections: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: links
-      _node: {fileID: 7241486429383816755}
-      _typeQualifiedName: AttackLink[], Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      connections: []
-      _direction: 1
-      _connectionType: 1
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: onHit
-      _node: {fileID: 7241486429383816755}
-      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      connections: []
-      _direction: 1
-      _connectionType: 1
-      _typeConstraint: 0
-      _dynamic: 0
-  attackData: {fileID: 0}
   input:
     type: 0
     direction: 0

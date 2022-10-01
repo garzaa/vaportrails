@@ -18,6 +18,10 @@ abstract public class CombatNode : Node {
 
     }
 
+    virtual public string GetAnimationStateName() {
+        return this.name;
+    }
+
     virtual public void OnNodeExit() {
         attackLanded = false;
     }

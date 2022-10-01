@@ -17,6 +17,7 @@ public class AirAttackNode : AttackNode {
     }
 
     override public void NodeUpdate(int currentFrame, float clipTime, AttackBuffer buffer) {
+
         if (attackGraph.grounded) {
             OnGrounded();
         } else if (attackLanded && CanMoveNode(nameof(onHit))) {

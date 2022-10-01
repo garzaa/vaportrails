@@ -20,4 +20,8 @@ public class BasicAnimationNode : CombatNode {
 			attackGraph.ExitGraph();
 		}
 	}
+
+	public override string GetAnimationStateName() {
+		return stateName;
+	}
 }

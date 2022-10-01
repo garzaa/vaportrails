@@ -24,14 +24,15 @@ public class AttackNode : CombatNode {
 
     override public void OnNodeEnter() {
         base.OnNodeEnter();
-        if (attackData != null) {
-            attackGraph.animator.Play(attackData.name, layer:0, normalizedTime:timeOffset);
+        if (!string.IsNullOrEmpty(GetAnimationStateName())) {
+            attackGraph.animator.Play(GetAnimationStateName(), layer:0, normalizedTime:timeOffset);
         }
         timeOffset = 0;
     }
 
-    public string GetAnimationStateName() {
-        return attackData.name;
+    override public string GetAnimationStateName() {
+        if (attackData) return attackData.name;
+        return "";
     }
 
     override public void NodeUpdate(int currentFrame, float clipTime, AttackBuffer buffer) {

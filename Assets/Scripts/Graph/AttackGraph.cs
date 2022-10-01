@@ -70,6 +70,7 @@ public class AttackGraph : NodeGraph {
 		if (!nameCorresponds && !enteredCurrentNode) {
             // in case something went wrong, unlock the player
             if (Time.unscaledTime-nodeSwitchTime > nodeSwitchGracePeriod) {
+                Debug.Log(clipInfo[0].clip.name);
                 ExitGraph();
             }
 			// wait for animator state to actually propagate
