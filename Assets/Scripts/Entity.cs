@@ -132,7 +132,7 @@ public class Entity : MonoBehaviour, IHitListener {
 		return v;
 	}
 
-	void StunFor(float seconds) {
+	public void StunFor(float seconds) {
 		CancelStun();
 		animator.SetTrigger("OnHit");
 		stunBounced = false;

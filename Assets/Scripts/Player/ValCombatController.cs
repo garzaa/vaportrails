@@ -33,6 +33,8 @@ public class ValCombatController : CombatController, IHitListener {
 
 	const float autoparryDuration = 0.5f;
 	CameraZoom cameraZoom;
+	GameObject firstParryEffect;
+	GameObject poiseBreakEffect;
 
 	protected override void Start() {
 		base.Start();
@@ -43,6 +45,7 @@ public class ValCombatController : CombatController, IHitListener {
 		maxEP.Initialize();
 		chargeIndicator.SetActive(false);
 		cameraZoom = GameObject.FindObjectOfType<CameraZoom>();
+		poiseBreakEffect = Resources.Load<GameObject>("Runtime/PoiseBreakEffect");
 	}
 
 	public void OnEnergyChange(int energy) {
@@ -63,7 +66,7 @@ public class ValCombatController : CombatController, IHitListener {
 	void Parry() {
 		if (player.frozeInputs) return;
 
-		if (input.ButtonDown(Buttons.PARRY)) {
+		if (input.ButtonDown(Buttons.PARRY) && currentEP.Get() > 0) {
 			if (groundData.grounded) {
 				EnterAttackGraph(groundAttackGraph, groundParryNode);
 			} else {
@@ -77,17 +80,8 @@ public class ValCombatController : CombatController, IHitListener {
 	}
 
 	public void OnHitCheck(AttackHitbox attack) {
-		if (parryActive || autoparry) {
-			// TODO: OH BEFORE the attack lands if there's not enough energy
-			// then lose it, play glass break sound, poise break, stun for 1s, parry inactive
-			// BUT parry the last attack
-			// TODO: run hitstop for the attack
-			GameObject g = Instantiate(autoParryArm, this.transform);
-			g.transform.position = attack.GetComponent<Collider2D>().ClosestPoint(transform.position);
-		}
-
 		if (parryActive) {
-			Instantiate(parrySuccessEffect, this.transform);
+			firstParryEffect = Instantiate(parrySuccessEffect, this.transform);
 			parryActive = false;
 			autoparry = true;
 			Invoke(nameof(DisableAutoparry), autoparryDuration);
@@ -96,8 +90,8 @@ public class ValCombatController : CombatController, IHitListener {
 			// so the player can act out of it
 			// they should be single poses that instantly transition to the base layer state
 			// with an interruptible transition
-			cameraZoom.ZoomFor(2, 0.4f);
-			Hitstop.Run(0.4f);
+			cameraZoom.ZoomFor(2, 0.7f);
+			Hitstop.Run(0.7f);
 			currentGraph?.ExitGraph();
 			if (groundData.grounded) {
 				animator.Play("Ground Parry Success", 0);
@@ -107,8 +101,35 @@ public class ValCombatController : CombatController, IHitListener {
 		} else if (autoparry) {
 			CancelInvoke(nameof(DisableAutoparry));
 			Invoke(nameof(DisableAutoparry), autoparryDuration);
-			// TODO: instantiate the autoparry arm
+			GameObject g = Instantiate(autoParryArm, this.transform);
+			g.transform.position = attack.GetComponent<Collider2D>().ClosestPoint(transform.position);
+			shader.FlinchOnce(player.GetKnockback(attack));
 		}
+
+		if (parryActive || autoparry) {
+			// if insufficient energy
+			// poise break, BUT parry the attack
+			if (currentEP.Get() < attack.data.GetDamage()) {
+				player.StunFor(1f);
+				poiseBreak.PlayFrom(this.gameObject);
+				Instantiate(poiseBreakEffect, this.transform.position, Quaternion.identity, null);
+				if (firstParryEffect) {
+					Destroy(firstParryEffect);
+				}
+				// setting autoparry active now will let the incoming attack land
+				// since this all happens on the attack check
+				StartCoroutine(WaitAndPoiseBreak());
+				Hitstop.Run(1f, priority: true);
+				parryActive = false;
+			}
+			Hitstop.Run(attack.data.hitstop);
+			LoseEnergy(attack.data.GetDamage());
+		}
+	}
+
+	IEnumerator WaitAndPoiseBreak() {
+		yield return new WaitForEndOfFrame();
+		autoparry = false;
 	}
 
 	void StartParryWindow() {

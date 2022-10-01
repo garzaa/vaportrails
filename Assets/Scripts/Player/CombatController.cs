@@ -15,6 +15,7 @@ public class CombatController : MonoBehaviour, IAttackLandListener, IHitListener
 	protected GroundData groundData;
 	protected EntityController player;
 	protected Animator animator;
+	protected EntityShader shader;
 	public AttackGraph currentGraph = null;
 	protected PlayerInput input;
 	AttackBuffer buffer;
@@ -42,6 +43,7 @@ public class CombatController : MonoBehaviour, IAttackLandListener, IHitListener
 		input = GetComponent<PlayerInput>();
 		collider2d = GetComponent<Collider2D>();
 		buffer = GetComponent<AttackBuffer>();
+		shader = GetComponent<EntityShader>();
 
 		techEffect = Resources.Load<GameObject>("Runtime/TechEffect");
 
@@ -143,7 +145,7 @@ public class CombatController : MonoBehaviour, IAttackLandListener, IHitListener
 			);
 		}
 		animator.SetTrigger("TechSuccess");
-		GetComponent<EntityShader>().FlashCyan();
+		shader.FlashCyan();
 		canTech = false;
 		CancelInvoke(nameof(EndTechWindow));
 		player.CancelStun();
