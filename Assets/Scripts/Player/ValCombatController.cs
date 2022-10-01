@@ -21,6 +21,7 @@ public class ValCombatController : CombatController, IHitListener {
 	[SerializeField] AttackNode orcaFlipNode;
 	[SerializeField] CombatNode airParryNode;
 	[SerializeField] CombatNode groundParryNode;
+	[SerializeField] CombatNode healNode;
 	[SerializeField] GameObject chargeIndicator;
 	[SerializeField] AudioResource fullChargeSound;
 	[SerializeField] AudioResource emptyChargeSound;
@@ -35,6 +36,7 @@ public class ValCombatController : CombatController, IHitListener {
 	CameraZoom cameraZoom;
 	GameObject firstParryEffect;
 	AudioResource poiseBreak;
+	HP hp;
 
 	protected override void Start() {
 		base.Start();
@@ -46,6 +48,7 @@ public class ValCombatController : CombatController, IHitListener {
 		chargeIndicator.SetActive(false);
 		cameraZoom = GameObject.FindObjectOfType<CameraZoom>();
 		poiseBreak = Resources.Load<AudioResource>("Runtime/PoiseBreak");
+		hp = GetComponent<HP>();
 	}
 
 	public void OnEnergyChange(int energy) {
@@ -57,10 +60,36 @@ public class ValCombatController : CombatController, IHitListener {
 
 		Shoot();
 		Parry();
+		CheckHealInput();
 	
 		if (combatLayerWeight == 0) {
 			animator.SetLayerWeight(1, Mathf.MoveTowards(animator.GetLayerWeight(1), combatLayerWeight, 4*Time.deltaTime));
 		}
+	}
+
+	void CheckHealInput() {
+		if (player.frozeInputs) return;
+		if (
+			input.ButtonDown(Buttons.SPECIAL)
+			&& input.VerticalInput() < -0.4f
+			&& groundData.grounded
+			&& currentEP.Get() > 0
+			&& hp.GetCurrent() < hp.GetMax()
+		) {
+			EnterAttackGraph(groundAttackGraph, healNode);
+		}
+	}
+
+	public void HealFromAnimation() {
+		// heal at most 8 HP per animation
+		int toHeal = hp.GetMax() - hp.GetCurrent();
+		toHeal = Mathf.Min(toHeal, 8);
+		hp.AdjustCurrent(toHeal);
+		currentEP.Set(currentEP.Get() - toHeal);
+		chargeIndicator.SetActive(false);
+		chargeIndicator.GetComponentInChildren<Text>().text = "WAVE REPAIR";
+		chargeIndicator.SetActive(true);
+		fullChargeSound.PlayFrom(this.gameObject);
 	}
 
 	void Parry() {
@@ -117,6 +146,7 @@ public class ValCombatController : CombatController, IHitListener {
 					firstParryEffect = Instantiate(parrySuccessEffect, this.transform.position, Quaternion.identity);
 				}
 				firstParryEffect.GetComponentInChildren<Text>().text = "POISE BREAK";
+				shader.Flinch(Vector2.right, 1f);
 				poiseBroke = true;
 				// setting autoparry active now will let the incoming attack land
 				// since this all happens on the attack check

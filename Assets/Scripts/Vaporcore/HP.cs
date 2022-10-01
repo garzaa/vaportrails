@@ -39,7 +39,7 @@ public class HP : MonoBehaviour, IHitListener {
 	}
 
 	public void AdjustCurrent(int diff) {
-		current.Set(current.Get() + diff);
+		current.Set(Mathf.Min(current.Get() + diff, max.Get()));
 		CheckEvents();
 	}
 
@@ -53,5 +53,13 @@ public class HP : MonoBehaviour, IHitListener {
 
 	public void FullHeal() {
 		current.Set(max.Get());
+	}
+
+	public int GetCurrent() {
+		return current.Get();
+	}
+
+	public int GetMax() {
+		return max.Get();
 	}
 }

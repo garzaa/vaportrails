@@ -1,5 +1,37 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-9064113469144294988
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b7731d48a22d9248a073e965347a1b8, type: 3}
+  m_Name: PlayerHeal
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -216, y: 840}
+  ports:
+    keys:
+    - input
+    values:
+    - _fieldName: input
+      _node: {fileID: -9064113469144294988}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  stateName: PlayerHeal
+  actionableAt: 0.9
+  input:
+    type: 0
+    direction: 0
 --- !u!114 &-8943185299639134591
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -556,6 +588,7 @@ MonoBehaviour:
   - {fileID: -8674303102600886378}
   - {fileID: -8943185299639134591}
   - {fileID: 6816034862222783534}
+  - {fileID: -9064113469144294988}
   animator: {fileID: 0}
   buffer: {fileID: 0}
   combatController: {fileID: 0}
