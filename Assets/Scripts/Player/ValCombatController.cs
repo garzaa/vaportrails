@@ -34,7 +34,7 @@ public class ValCombatController : CombatController, IHitListener {
 	const float autoparryDuration = 0.5f;
 	CameraZoom cameraZoom;
 	GameObject firstParryEffect;
-	GameObject poiseBreakEffect;
+	AudioResource poiseBreak;
 
 	protected override void Start() {
 		base.Start();
@@ -45,7 +45,7 @@ public class ValCombatController : CombatController, IHitListener {
 		maxEP.Initialize();
 		chargeIndicator.SetActive(false);
 		cameraZoom = GameObject.FindObjectOfType<CameraZoom>();
-		poiseBreakEffect = Resources.Load<GameObject>("Runtime/PoiseBreakEffect");
+		poiseBreak = Resources.Load<AudioResource>("Runtime/PoiseBreak");
 	}
 
 	public void OnEnergyChange(int energy) {
@@ -109,13 +109,15 @@ public class ValCombatController : CombatController, IHitListener {
 		if (parryActive || autoparry) {
 			// if insufficient energy
 			// poise break, BUT parry the attack
+			bool poiseBroke = false;
 			if (currentEP.Get() < attack.data.GetDamage()) {
 				player.StunFor(1f);
 				poiseBreak.PlayFrom(this.gameObject);
-				Instantiate(poiseBreakEffect, this.transform.position, Quaternion.identity, null);
-				if (firstParryEffect) {
-					Destroy(firstParryEffect);
+				if (!firstParryEffect) {
+					firstParryEffect = Instantiate(parrySuccessEffect, this.transform.position, Quaternion.identity);
 				}
+				firstParryEffect.GetComponentInChildren<Text>().text = "POISE BREAK";
+				poiseBroke = true;
 				// setting autoparry active now will let the incoming attack land
 				// since this all happens on the attack check
 				StartCoroutine(WaitAndPoiseBreak());
@@ -124,6 +126,10 @@ public class ValCombatController : CombatController, IHitListener {
 			}
 			Hitstop.Run(attack.data.hitstop);
 			LoseEnergy(attack.data.GetDamage());
+			if (poiseBroke) {
+				// don't show the empty indicator on top of the poise break
+				chargeIndicator.SetActive(false);
+			}
 		}
 	}
 
