@@ -25,6 +25,7 @@ public class ValCombatController : CombatController, IHitListener {
 	[SerializeField] AudioResource fullChargeSound;
 	[SerializeField] AudioResource emptyChargeSound;
 	[SerializeField] GameObject parrySuccessEffect;
+	[SerializeField] GameObject autoParryArm;
 	#pragma warning restore 0649
 
 	const string fullMessage = "FULLY CHARGED";
@@ -81,6 +82,8 @@ public class ValCombatController : CombatController, IHitListener {
 			// then lose it, play glass break sound, poise break, stun for 1s, parry inactive
 			// BUT parry the last attack
 			// TODO: run hitstop for the attack
+			GameObject g = Instantiate(autoParryArm, this.transform);
+			g.transform.position = attack.GetComponent<Collider2D>().ClosestPoint(transform.position);
 		}
 
 		if (parryActive) {
