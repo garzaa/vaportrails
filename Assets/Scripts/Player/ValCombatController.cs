@@ -114,14 +114,10 @@ public class ValCombatController : CombatController, IHitListener {
 			parryActive = false;
 			autoparry = true;
 			Invoke(nameof(DisableAutoparry), autoparryDuration);
-			// transition to parry success animation
-			// which should NOT be a combat node
-			// so the player can act out of it
-			// they should be single poses that instantly transition to the base layer state
-			// with an interruptible transition
 			cameraZoom.ZoomFor(2, 0.5f);
 			FreezeFrame.Run(0.5f);
 			currentGraph?.ExitGraph();
+			// not a combat node, so it can be acted out of
 			if (groundData.grounded) {
 				animator.Play("Ground Parry Success", 0);
 			} else {
@@ -149,7 +145,7 @@ public class ValCombatController : CombatController, IHitListener {
 				shader.Flinch(Vector2.right, 1f);
 				poiseBroke = true;
 				// setting autoparry active now will let the incoming attack land
-				// since this all happens on the attack check
+				// since this all happens on the attack probe
 				StartCoroutine(WaitAndPoiseBreak());
 				parryActive = false;
 			}

@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-[CreateAssetMenu(menuName = "Data/SaveContainer")]
+[CreateAssetMenu(menuName = "Data/Runtime/SaveContainer")]
 public class SaveContainer : ScriptableObject {
 	Save _save = new Save();
 

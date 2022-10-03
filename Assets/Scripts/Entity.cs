@@ -18,7 +18,7 @@ public class Entity : MonoBehaviour, IHitListener {
 	protected Rigidbody2D rb2d;
 	protected int groundMask;
 	protected Collider2D collider2d;
-	protected bool facingRight;
+	public bool facingRight { get; private set; }
 	protected GroundData groundData;
 	protected WallCheckData wallData;
 	protected Collider2D groundColliderLastFrame;
@@ -289,7 +289,7 @@ public class Entity : MonoBehaviour, IHitListener {
 		_Flip();
     }
 
-	void _Flip() {
+	public void _Flip() {
 		facingRight = !facingRight;
         transform.localScale = Vector3.Scale(transform.localScale, new Vector3(-1, 1, 1));
 	}

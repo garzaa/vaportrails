@@ -4,6 +4,7 @@ using System.IO;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Serialization;
 
 public class JsonSaver {
     const string folder = "saves";
@@ -19,7 +20,7 @@ public class JsonSaver {
         Save save;
         using (StreamReader r = new StreamReader(GetSavePath(slot))) {
             string fileJson = r.ReadToEnd();
-            save = (Save) JsonConvert.DeserializeObject<Save>(fileJson);
+            save = JsonConvert.DeserializeObject<Save>(fileJson);
         }
         return save;
     }

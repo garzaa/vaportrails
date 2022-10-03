@@ -5,24 +5,24 @@ using UnityEngine.SceneManagement;
 using Newtonsoft.Json.Linq;
 using System;
 
-public abstract class SavedObject : MonoBehaviour, ISaveListener {
+public abstract class SavedObject : MonoBehaviour {
 
 	public bool useGlobalNamespace;
 
-	Dictionary<string, object> properties = new Dictionary<string, object>();
+	private Dictionary<string, object> properties = new Dictionary<string, object>();
 
 	bool hasSavedData => properties.Count > 0;
 
 	Save save;
 
 	void Start() {
-		save = GameObject.FindObjectOfType<SaveManager>().save;
 		Load();
 		Initialize();
-		if (hasSavedData) LoadFromProperties(properties);
+		if (hasSavedData) LoadFromProperties();
 	}
 
 	void Load() {
+		save = GameObject.FindObjectOfType<SaveManager>().save;
 		properties = save.LoadAtPath(GetObjectPath());
 	}
 
@@ -30,9 +30,14 @@ public abstract class SavedObject : MonoBehaviour, ISaveListener {
 		SaveToProperties(ref properties);
 	}
 
+	public void AfterDiskLoad() {
+		Load();
+		if (hasSavedData) LoadFromProperties();
+	}
+
 	protected abstract void SaveToProperties(ref Dictionary<string, object> properties);
 	protected virtual void Initialize() {}
-	protected abstract void LoadFromProperties(Dictionary<string, object> properties);
+	protected abstract void LoadFromProperties();
 
 	public string GetObjectPath() {
 		if (useGlobalNamespace) return $"global/{name}/{GetType().Name}";
