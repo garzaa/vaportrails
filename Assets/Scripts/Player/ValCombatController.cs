@@ -119,8 +119,8 @@ public class ValCombatController : CombatController, IHitListener {
 			// so the player can act out of it
 			// they should be single poses that instantly transition to the base layer state
 			// with an interruptible transition
-			cameraZoom.ZoomFor(2, 0.7f);
-			Hitstop.Run(0.7f);
+			cameraZoom.ZoomFor(2, 0.5f);
+			FreezeFrame.Run(0.5f);
 			currentGraph?.ExitGraph();
 			if (groundData.grounded) {
 				animator.Play("Ground Parry Success", 0);
@@ -132,7 +132,6 @@ public class ValCombatController : CombatController, IHitListener {
 			Invoke(nameof(DisableAutoparry), autoparryDuration);
 			GameObject g = Instantiate(autoParryArm, this.transform);
 			g.transform.position = attack.GetComponent<Collider2D>().ClosestPoint(transform.position);
-			shader.FlinchOnce(player.GetKnockback(attack));
 		}
 
 		if (parryActive || autoparry) {
@@ -140,7 +139,8 @@ public class ValCombatController : CombatController, IHitListener {
 			// poise break, BUT parry the attack
 			bool poiseBroke = false;
 			if (currentEP.Get() < attack.data.GetDamage()) {
-				player.StunFor(1f);
+				player.StunFor(1f, 1f);
+				player.DoHitstop(1f, Vector2.zero, priority: true);
 				poiseBreak.PlayFrom(this.gameObject);
 				if (!firstParryEffect) {
 					firstParryEffect = Instantiate(parrySuccessEffect, this.transform.position, Quaternion.identity);
@@ -151,14 +151,14 @@ public class ValCombatController : CombatController, IHitListener {
 				// setting autoparry active now will let the incoming attack land
 				// since this all happens on the attack check
 				StartCoroutine(WaitAndPoiseBreak());
-				Hitstop.Run(1f, priority: true);
 				parryActive = false;
 			}
-			Hitstop.Run(attack.data.hitstop);
 			LoseEnergy(attack.data.GetDamage());
 			if (poiseBroke) {
 				// don't show the empty indicator on top of the poise break
 				chargeIndicator.SetActive(false);
+			} else {
+				shader.FlinchOnce(player.GetKnockback(attack));
 			}
 		}
 	}

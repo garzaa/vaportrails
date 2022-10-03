@@ -1,11 +1,11 @@
 using UnityEngine;
 using System.Collections;
 
-public class Hitstop : MonoBehaviour {
+public class FreezeFrame : MonoBehaviour {
 
-	public static Hitstop instance;
+	public static FreezeFrame instance;
 
-	static Coroutine currentHitstopRoutine;
+	static Coroutine freezeRoutine;
 
 	static bool currentPriority = false;
 
@@ -18,17 +18,17 @@ public class Hitstop : MonoBehaviour {
 		Interrupt();
 		currentPriority = priority;
 		Time.timeScale = 0.01f;
-		currentHitstopRoutine = instance.StartCoroutine(EndHitstop(seconds));
+		freezeRoutine = instance.StartCoroutine(EndFreeze(seconds));
 	}
 
-	static IEnumerator EndHitstop(float seconds) {
+	static IEnumerator EndFreeze(float seconds) {
 		yield return new WaitForSecondsRealtime(seconds);
 		Time.timeScale = 1f;
 		currentPriority = false;
 	}
 
 	public static void Interrupt() {
-		if (currentHitstopRoutine != null) instance.StopCoroutine(currentHitstopRoutine);
+		if (freezeRoutine != null) instance.StopCoroutine(freezeRoutine);
 		currentPriority = false;
 		Time.timeScale = 1f;
 	}

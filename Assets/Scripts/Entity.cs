@@ -45,6 +45,9 @@ public class Entity : MonoBehaviour, IHitListener {
 
 	Collider2D[] overlapResults;
 
+	bool hitstopPriority;
+    Coroutine hitstopRoutine;
+
 	protected virtual void Awake() {
 		animator = GetComponent<Animator>();
 		if (suppressAnimatorWarnings) animator.logWarnings = false;
@@ -71,6 +74,29 @@ public class Entity : MonoBehaviour, IHitListener {
 			stunSpin.enabled = false;
 		}
 	}
+
+    public void DoHitstop(float duration, Vector2 exitVelocity, bool priority=false) {
+        if (hitstopPriority && !priority) return;
+		if (hitstopRoutine != null) StopCoroutine(hitstopRoutine);
+		animator.speed = 0f;
+		rb2d.constraints = RigidbodyConstraints2D.FreezeAll;
+		shader.Flinch(exitVelocity, duration);
+		hitstopRoutine = StartCoroutine(EndHitstop(duration, exitVelocity));
+    }
+
+    IEnumerator EndHitstop(float duration, Vector2 exitVelocity) {
+        yield return new WaitForSeconds(duration);
+		rb2d.constraints = RigidbodyConstraints2D.FreezeRotation;
+		rb2d.velocity = exitVelocity;
+        hitstopPriority = false;
+        animator.speed = 1;
+    }
+
+    void InterruptHitstop() {
+		if (hitstopRoutine != null) StopCoroutine(hitstopRoutine);
+		hitstopPriority = false;
+		animator.speed = 1f;
+    }
 
 	public void JumpDust() {
 		Vector2 pos = new Vector2(
@@ -105,6 +131,7 @@ public class Entity : MonoBehaviour, IHitListener {
 			Vector2 v = GetKnockback(attack);
 			// heavier people get knocked back less
 			rb2d.velocity = v * (1f/rb2d.mass);
+
 			// flip to attack
 			float attackX = attack.transform.position.x;
 			if (facingRight && attackX<transform.position.x) {
@@ -112,11 +139,13 @@ public class Entity : MonoBehaviour, IHitListener {
 			} else if (!facingRight && attackX>transform.position.x) {
 				Flip();
 			}
-			if (attack.data.stunLength > 0) StunFor(attack.data.stunLength);
+			if (attack.data.stunLength > 0) {
+				StunFor(attack.data.stunLength, attack.data.hitstop);
+			}
+			DoHitstop(attack.data.hitstop, rb2d.velocity);
 			shader.FlashWhite();
-			shader.Flinch(GetKnockback(attack) * new Vector2(-1, 1), attack.data.hitstop);
 		} else {
-			shader.FlinchOnce(GetKnockback(attack) * new Vector2(-1, 1));
+			shader.FlinchOnce(GetKnockback(attack));
 		}
 	}
 
@@ -132,7 +161,7 @@ public class Entity : MonoBehaviour, IHitListener {
 		return v;
 	}
 
-	public void StunFor(float seconds) {
+	public void StunFor(float seconds, float hitstopDuration) {
 		CancelStun();
 		animator.SetTrigger("OnHit");
 		stunBounced = false;
@@ -140,7 +169,7 @@ public class Entity : MonoBehaviour, IHitListener {
 		animator.SetBool("Stunned", true);
 		rb2d.sharedMaterial = stunMaterial;
 		stunSmoke.Play();
-		Invoke(nameof(UnStun), seconds);
+		Invoke(nameof(UnStun), seconds+hitstopDuration);
 	}
 
 	public void CancelStun() {

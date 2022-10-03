@@ -101,7 +101,6 @@ public class AttackHitbox : MonoBehaviour {
 			hurtbox.OnHitConfirm(this);
 			OnAttackLand.Invoke();
 			if (data.zoomIn) cameraZoom.ZoomFor(2, data.hitstop);
-			Hitstop.Run(data.hitstop);
 		}
 	}
 }

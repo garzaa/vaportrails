@@ -74,6 +74,7 @@ public class CombatController : MonoBehaviour, IAttackLandListener, IHitListener
 			}
 			rb2d.velocity = v;
 		}
+		player.DoHitstop(attack.hitstop, rb2d.velocity);
 		if (currentGraph) currentGraph.OnAttackLand(attack, hurtbox);
 	}
 
