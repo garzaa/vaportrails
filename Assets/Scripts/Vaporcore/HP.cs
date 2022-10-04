@@ -11,12 +11,15 @@ public class HP : MonoBehaviour, IHitListener {
 	[ShowIf(nameof(renderHealthbar))]
 	public float verticalOffset = 0.8f;
 
+	BarUI barUI;
+
 	void Start() {
 		if (renderHealthbar) {
-			BarUI barUI = Instantiate(Resources.Load<GameObject>("Runtime/MiniHealthBar"), this.transform).GetComponent<BarUI>();
+			barUI = Instantiate(Resources.Load<GameObject>("Runtime/MiniHealthBar"), this.transform).GetComponent<BarUI>();
 			current.OnChange.AddListener(barUI.SetCurrent);
 			max.OnChange.AddListener(barUI.SetMax);
 			barUI.GetComponent<RectTransform>().localPosition = Vector2.up * 0.64f;
+			barUI.HideImmediate();
 		}
 
 		max.Initialize();
@@ -29,9 +32,10 @@ public class HP : MonoBehaviour, IHitListener {
 		}
 	}
 
-	public void SetCurrent(int i) {
+	public void SetCurrent(int i, bool quiet=false) {
 		current.Set(i);
 		CheckEvents();
+		if (quiet) barUI.HideImmediate(); 
 	}
 
 	public void SetMax(int i) {

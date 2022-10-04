@@ -84,6 +84,8 @@ public class ValCombatController : CombatController, IHitListener {
 		// heal at most 8 HP per animation
 		int toHeal = hp.GetMax() - hp.GetCurrent();
 		toHeal = Mathf.Min(toHeal, 8);
+		// don't overheal and get negative energy
+		toHeal = Mathf.Min(toHeal, currentEP.Get());
 		hp.AdjustCurrent(toHeal);
 		currentEP.Set(currentEP.Get() - toHeal);
 		chargeIndicator.SetActive(false);

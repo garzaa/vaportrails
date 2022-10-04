@@ -14,7 +14,6 @@ public class PlayerProperties : SavedObject {
 	}
 
 	protected override void LoadFromProperties() {
-		Debug.Log("loading from properties");
 		hp.SetCurrent(Get<int>("currentHP"));
 		hp.SetMax(Get<int>("maxHP"));
 		combatController.currentEP.Set(Get<int>("currentEP"));

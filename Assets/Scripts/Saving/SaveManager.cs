@@ -16,16 +16,17 @@ public class SaveManager : MonoBehaviour {
 		}
 	}
 
+	// TODO: on exit to main menu, autosave
+
 	void Awake() {
 		transitionManager = GameObject.FindObjectOfType<TransitionManager>();
 	}
 
 	void Update() {
 		if (Input.GetKeyDown(KeyCode.LeftBracket)) {
-			Debug.Log("saving...");
 			Save();
+			Debug.Log("saved");
 		} else if (Input.GetKeyDown(KeyCode.RightBracket)) {
-			Debug.Log("loading...");
 			Load();
 		}
 	}

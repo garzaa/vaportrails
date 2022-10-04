@@ -55,7 +55,7 @@ public class EntityShader : MonoBehaviour {
 	}
 
 	IEnumerator StopFlinch(float duration) {
-		yield return new WaitForSecondsRealtime(duration);
+		yield return new WaitForSeconds(duration);
 		ExecuteChange(block => {
 			block.SetFloat("flinchWeight", 0f);
 		});

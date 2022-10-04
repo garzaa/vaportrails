@@ -33,7 +33,6 @@ public class JsonSaver {
             }
             return true;
         } catch (Exception) {
-            // deal with legacy saves/changed formats
             return false;
         }
     }

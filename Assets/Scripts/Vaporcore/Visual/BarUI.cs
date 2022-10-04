@@ -96,4 +96,8 @@ public class BarUI : MonoBehaviour {
 			canvasGroup.alpha = Mathf.Lerp(canvasGroup.alpha, 0, 0.1f);
 		}
     }
+
+    public void HideImmediate() {
+        changeTime = 0;
+    }
 }

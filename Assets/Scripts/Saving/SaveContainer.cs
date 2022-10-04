@@ -15,5 +15,4 @@ public class SaveContainer : ScriptableObject {
 	public void SetSave(Save save) {
 		_save = save;
 	}
-
 }
