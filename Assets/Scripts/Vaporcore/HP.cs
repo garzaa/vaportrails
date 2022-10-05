@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
+using System.Collections;
+using System.Collections.Generic;
 using Sirenix.OdinInspector;
 
 public class HP : MonoBehaviour, IHitListener {
@@ -11,19 +13,22 @@ public class HP : MonoBehaviour, IHitListener {
 	[ShowIf(nameof(renderHealthbar))]
 	public float verticalOffset = 0.8f;
 
-	BarUI barUI;
-
 	void Start() {
 		if (renderHealthbar) {
-			barUI = Instantiate(Resources.Load<GameObject>("Runtime/MiniHealthBar"), this.transform).GetComponent<BarUI>();
-			current.OnChange.AddListener(barUI.SetCurrent);
-			max.OnChange.AddListener(barUI.SetMax);
-			barUI.GetComponent<RectTransform>().localPosition = Vector2.up * 0.64f;
-			barUI.HideImmediate();
+			// don't have it appear from player stats modification
+			StartCoroutine(AddHealthbar());
 		}
 
 		max.Initialize();
 		current.Initialize();
+	}
+
+	IEnumerator AddHealthbar() {
+		yield return new WaitForEndOfFrame();
+		BarUI barUI = Instantiate(Resources.Load<GameObject>("Runtime/MiniHealthBar"), this.transform).GetComponent<BarUI>();
+		current.OnChange.AddListener(barUI.SetCurrent);
+		max.OnChange.AddListener(barUI.SetMax);
+		barUI.GetComponent<RectTransform>().localPosition = Vector2.up * 0.64f;
 	}
 
 	void CheckEvents() {
@@ -32,10 +37,9 @@ public class HP : MonoBehaviour, IHitListener {
 		}
 	}
 
-	public void SetCurrent(int i, bool quiet=false) {
+	public void SetCurrent(int i) {
 		current.Set(i);
 		CheckEvents();
-		if (quiet) barUI.HideImmediate(); 
 	}
 
 	public void SetMax(int i) {

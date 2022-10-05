@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Name: Knee Strike Confirm
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 456, y: 712}
+  position: {x: 456, y: 808}
   ports:
     keys:
     - links
@@ -104,7 +104,7 @@ MonoBehaviour:
   m_Name: Knee Strike
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 136, y: 712}
+  position: {x: 136, y: 808}
   ports:
     keys:
     - links
@@ -225,7 +225,7 @@ MonoBehaviour:
   m_Name: Boost Slide
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 136, y: 520}
+  position: {x: 136, y: 632}
   ports:
     keys:
     - links
@@ -287,7 +287,7 @@ MonoBehaviour:
   m_Name: Stomp
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 136, y: 184}
+  position: {x: 136, y: 232}
   ports:
     keys:
     - links
@@ -440,7 +440,6 @@ MonoBehaviour:
     keys:
     - links
     - links 0
-    - links 1
     - onHit
     - input
     values:
@@ -460,18 +459,6 @@ MonoBehaviour:
       connections:
       - fieldName: input
         node: {fileID: 2295136725489853279}
-        reroutePoints: []
-      _direction: 1
-      _connectionType: 1
-      _typeConstraint: 0
-      _dynamic: 1
-    - _fieldName: links 1
-      _node: {fileID: -2182646159027362593}
-      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      connections:
-      - fieldName: input
-        node: {fileID: 8333533718961233585}
         reroutePoints: []
       _direction: 1
       _connectionType: 1
@@ -505,8 +492,6 @@ MonoBehaviour:
   links:
   - type: 2
     direction: -2
-  - type: 2
-    direction: -1
   onHit:
     type: 0
     direction: 0
@@ -608,7 +593,7 @@ MonoBehaviour:
   m_Name: Axe Kick
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 440, y: -568}
+  position: {x: 424, y: -488}
   ports:
     keys:
     - links
@@ -862,7 +847,7 @@ MonoBehaviour:
   m_Name: Shoulder Tackle
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 136, y: 344}
+  position: {x: 136, y: 456}
   ports:
     keys:
     - links
@@ -1214,7 +1199,7 @@ MonoBehaviour:
   m_Name: Flash Kick
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 440, y: -392}
+  position: {x: -216, y: 968}
   ports:
     keys:
     - links
@@ -1243,10 +1228,7 @@ MonoBehaviour:
       _node: {fileID: 8333533718961233585}
       _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
-      connections:
-      - fieldName: links 1
-        node: {fileID: -2182646159027362593}
-        reroutePoints: []
+      connections: []
       _direction: 0
       _connectionType: 0
       _typeConstraint: 0

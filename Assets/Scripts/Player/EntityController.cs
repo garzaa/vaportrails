@@ -85,8 +85,7 @@ public class EntityController : Entity {
 
 	void Move() {
 		inputX = input.HorizontalInput();
-		inputBackwards = input.HasHorizontalInput()
-				&& input.HorizontalInput()*(facingRight ? 1 : -1) < 0;
+		inputBackwards = input.HasHorizontalInput() && input.HorizontalInput()*ForwardScalar() < 0;
 		inputForwards = input.HasHorizontalInput() && !inputBackwards;
 		movingBackwards = Mathf.Abs(rb2d.velocity.x) > 0.01 && rb2d.velocity.x * -transform.localScale.x < 0;
 		movingForwards = input.HasHorizontalInput() && ((facingRight && rb2d.velocity.x > 0) || (!facingRight && rb2d.velocity.x < 0));

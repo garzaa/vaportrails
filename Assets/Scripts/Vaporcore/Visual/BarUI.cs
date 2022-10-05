@@ -23,7 +23,7 @@ public class BarUI : MonoBehaviour {
     readonly float deltaMoveSpeed = 20f;
     readonly float deltaTolerance = 1f;
     float currentDelta;
-    float changeTime;
+    float changeTime = -100;
 	CanvasGroup canvasGroup;
 
     void OnEnable() {
@@ -95,9 +95,5 @@ public class BarUI : MonoBehaviour {
 		if (disappearAfterDelta && Time.time > changeTime+disappearDelay) {
 			canvasGroup.alpha = Mathf.Lerp(canvasGroup.alpha, 0, 0.1f);
 		}
-    }
-
-    public void HideImmediate() {
-        changeTime = 0;
     }
 }

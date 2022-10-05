@@ -164,6 +164,7 @@ public class Entity : MonoBehaviour, IHitListener {
 	public void StunFor(float seconds, float hitstopDuration) {
 		CancelStun();
 		animator.SetTrigger("OnHit");
+		landNoise?.PlayFrom(this.gameObject);
 		stunBounced = false;
 		stunned = true;
 		animator.SetBool("Stunned", true);
@@ -188,14 +189,19 @@ public class Entity : MonoBehaviour, IHitListener {
 		stunSmoke.Stop();
 	}
 
+	void OnCollisionEnter2D(Collision2D collision) {
+		if (stunned) StunBounce();
+	}
+
 	void StunBounce() {
 		if (stunBounced) {
 			rb2d.velocity = new Vector2(rb2d.velocity.x, 0);
-			// TODO: set to ground flop
+			// TODO: set to ground flop if grounded
 			// and then have a TechPossibleInState
 			// this also necessitates a TechCheck() function
 			// which is hard because a base entity doesn't know about teching
 			// virtual function? virtual function perhaps
+
 			CancelStun();
 			return;
 		}
@@ -208,15 +214,12 @@ public class Entity : MonoBehaviour, IHitListener {
 	protected virtual void Update() {
 		UpdateFootfallSound();
 		if (groundData.hitGround && canGroundHitEffect) {
-			if (!stunned) {
-				if (defaultFootfall) FootfallSound();
-			} else {
-				landNoise?.PlayFrom(this.gameObject);
+			if (!stunned && defaultFootfall) {
+				FootfallSound();
 			}
 			LandDust();
 			canGroundHitEffect = false;
 			this.WaitAndExecute(() => canGroundHitEffect=true, 0.1f);
-			if (stunned && !wallData.touchingWall) StunBounce();
 		}
 		if (wallData.hitWall) {
 			landNoise?.PlayFrom(this.gameObject);
@@ -226,7 +229,6 @@ public class Entity : MonoBehaviour, IHitListener {
 			g.transform.position = new Vector2(x, transform.position.y);
 			g.transform.eulerAngles = new Vector3(0, 0, wallRight ? 90 : -90);
 			OnWallHit();
-			if (stunned && !groundData.grounded) StunBounce();
 		}
 		RectifyEntityCollision();
 		if (stunRotation) {

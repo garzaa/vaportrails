@@ -17,6 +17,8 @@ public class SaveManager : MonoBehaviour {
 	}
 
 	// TODO: on exit to main menu, autosave
+	// but only in certain areas (e.g. not during boss fights or cutscenes)
+	// maybe no saving during combat or a cutscene...perhaps...
 
 	void Awake() {
 		transitionManager = GameObject.FindObjectOfType<TransitionManager>();
