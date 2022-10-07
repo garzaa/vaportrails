@@ -6,6 +6,8 @@ using System.Collections.Generic;
 public class DialogueUI : MonoBehaviour {
 	Animator animator;
 	SlowRenderer slowRenderer;
+	AudioResource dialogueRenderSound;
+	bool open;
 
 	EntityController currentPlayer;
 	
@@ -23,12 +25,14 @@ public class DialogueUI : MonoBehaviour {
 		animator = GetComponent<Animator>();
 		slowRenderer = GetComponentInChildren<SlowRenderer>();
 		// defaults to player 0
-		playerInput = gameObject.AddComponent<PlayerInput>();
+		playerInput = FindObjectOfType<PlayerInput>();
+		dialogueRenderSound = Resources.Load<AudioResource>("Runtime/DialogueRenderSound");
 	}
 
 	void Update() {
-		if (playerInput.GenericContinueInput()) {
+		if (open && playerInput.GenericContinueInput()) {
 			if (slowRenderer.rendering) {
+				dialogueRenderSound.PlayFrom(this.gameObject);
 				slowRenderer.Complete();
 			} else {
 				NextLineOrClose();
@@ -51,6 +55,7 @@ public class DialogueUI : MonoBehaviour {
 	}
 
 	void ShowLine(DialogueLine line) {
+		dialogueRenderSound.PlayFrom(this.gameObject);
 		slowRenderer.Render(line.text);
 		if (line.portrait) {
 			portraitContainer.SetActive(true);
@@ -68,6 +73,7 @@ public class DialogueUI : MonoBehaviour {
 	}
 
 	public void Open(EntityController player) {
+		open = true;
 		if (currentPlayer && currentPlayer!=player) {
 			currentPlayer.ExitCutscene(this);
 		} 
@@ -78,6 +84,7 @@ public class DialogueUI : MonoBehaviour {
 	}
 
 	public void Close() {
+		open = false;
 		if (currentPlayer) currentPlayer.ExitCutscene(this);
 		animator.SetBool("Shown", false);
 	}

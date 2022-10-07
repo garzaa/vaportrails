@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Wing Sweep
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -152, y: -40}
+  position: {x: -152, y: 24}
   ports:
     keys:
     - links
@@ -176,7 +176,10 @@ MonoBehaviour:
       _node: {fileID: -3701931120875062896}
       _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
-      connections: []
+      connections:
+      - fieldName: input
+        node: {fileID: 8801320611016985274}
+        reroutePoints: []
       _direction: 1
       _connectionType: 1
       _typeConstraint: 0
@@ -445,7 +448,7 @@ MonoBehaviour:
   m_Name: Time Offset
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 152, y: -8}
+  position: {x: 136, y: 24}
   ports:
     keys:
     - input
@@ -467,7 +470,10 @@ MonoBehaviour:
       _node: {fileID: 3411624471137251866}
       _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
-      connections: []
+      connections:
+      - fieldName: input
+        node: {fileID: 8801320611016985274}
+        reroutePoints: []
       _direction: 1
       _connectionType: 1
       _typeConstraint: 0
@@ -580,6 +586,12 @@ MonoBehaviour:
       connections:
       - fieldName: links 3
         node: {fileID: -2076936626023422332}
+        reroutePoints: []
+      - fieldName: output
+        node: {fileID: 3411624471137251866}
+        reroutePoints: []
+      - fieldName: links 0
+        node: {fileID: -3701931120875062896}
         reroutePoints: []
       _direction: 0
       _connectionType: 0

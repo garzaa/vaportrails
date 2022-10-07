@@ -26,6 +26,7 @@ public class HP : MonoBehaviour, IHitListener {
 	IEnumerator AddHealthbar() {
 		yield return new WaitForEndOfFrame();
 		BarUI barUI = Instantiate(Resources.Load<GameObject>("Runtime/MiniHealthBar"), this.transform).GetComponent<BarUI>();
+		barUI.normalizeSize = true;
 		current.OnChange.AddListener(barUI.SetCurrent);
 		max.OnChange.AddListener(barUI.SetMax);
 		barUI.GetComponent<RectTransform>().localPosition = Vector2.up * 0.64f;

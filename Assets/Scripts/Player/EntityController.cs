@@ -266,6 +266,7 @@ public class EntityController : Entity {
 			w.transform.position = new Vector2(facingRight ? collider2d.bounds.min.x : collider2d.bounds.max.x, transform.position.y);
 			w.transform.localScale = new Vector3(facingRight ? 1 : -1, 1, 1);
 			canShortHop = false;
+			animator.SetTrigger("WallJump");
 		}
 
 		void AirJump() {
@@ -281,7 +282,7 @@ public class EntityController : Entity {
 			if (movingBackwards || inputBackwards) {
 				animator.SetTrigger("Backflip");
 			} else {
-				animator.SetTrigger("Jump");
+				animator.SetTrigger("AirJump");
 			}
 			jumpNoise.PlayFrom(this.gameObject);
 			airControlMod = 1;
@@ -477,6 +478,7 @@ public class EntityController : Entity {
 	}
 
 	public void EnterCutscene(MonoBehaviour source) {
+		// TODO: add a camera look target for the cutscene source
 		animator.Play("Idle", 0);
 		rb2d.velocity = Vector2.zero;
 		cutsceneSources.Add(source);

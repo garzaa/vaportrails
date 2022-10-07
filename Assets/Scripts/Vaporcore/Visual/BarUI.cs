@@ -43,7 +43,10 @@ public class BarUI : MonoBehaviour {
 	}
 
     void Redraw() {
-		if (normalizeSize && max > 0) pixelsPerUnit = size / max;
+		if (normalizeSize && max > 0) {
+            // TODO: this doesn't work
+            pixelsPerUnit = size / max;
+        }
 
         if (background) ScaleImage(background, max);
         ScaleImage(container, max);

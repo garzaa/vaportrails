@@ -16,6 +16,7 @@ public class Terminal : MonoBehaviour, IPointerDownHandler {
     public RectTransform textOutputContainer;
     public InputField input;
     public GameObject textOutputTemplate;
+    public List<Ghost> includedGhostfiles;
 
     [TextArea]
     public string executeOnStart = "";
@@ -222,15 +223,23 @@ public class Terminal : MonoBehaviour, IPointerDownHandler {
                 terminalClose += ghostRecorder.StartRecording;
             } else if (args[1] == "save") {
                 ghostRecorder.StopRecording();
+            } else if (args[1] == "list") {
+                foreach (Ghost ghost in includedGhostfiles) {
+                    Log(ghost.name);
+                }
             } else if (args[1] == "play") {
                 if (args.Count() < 4) {
                     Log("usage: ghost play [ghostfile] [target] [?opponent]");
                 }
-                Ghostfile ghostfile;
-                try {
-                    ghostfile = JsonConvert.DeserializeObject<Ghostfile>(File.ReadAllText($"{Application.dataPath}/{args[2]}.ghostfile.json"));
-                } catch (System.IO.FileNotFoundException e) {
-                    Log(e.Message);
+                Ghostfile ghostfile = null;
+                foreach (Ghost g in includedGhostfiles) {
+                    if (g.name == args[2]) {
+                        Log("loading included ghostfile");
+                        ghostfile = g.Load();
+                    }
+                }
+                if (ghostfile == null) {
+                    Log("no ghost named "+args[2]+" found");
                     return;
                 }
                 PlayerInput puppet = GetPlayerInputByName(args[3]);
