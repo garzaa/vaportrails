@@ -70,7 +70,7 @@ public class CombatController : MonoBehaviour, IAttackLandListener, IHitListener
 			if (v.x == 0) {
 				v.x = rb2d.velocity.x;
 			} else {
-				v.x *= player.ForwardScalar();
+				v.x *= player.Forward();
 			}
 			rb2d.velocity = v;
 		}
@@ -194,10 +194,10 @@ public class CombatController : MonoBehaviour, IAttackLandListener, IHitListener
 		graph.EnterGraph(entryNode);
 	}
 
-	public void OnAttackNodeEnter(CombatNode combatNode) {
+	public void OnCombatNodeEnter(CombatNode combatNode) {
 		if (combatNode is AttackNode) {
 			AttackNode attackNode = combatNode as AttackNode;
-			player.OnAttackNodeEnter(attackNode.attackData);
+			player.OnAttackNodeEnter(attackNode);
 			hitbox.data = attackNode.attackData;
 			if (altHitbox) {
 				altHitbox.data = attackNode?.attackData?.altHitbox;

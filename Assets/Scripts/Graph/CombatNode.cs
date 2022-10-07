@@ -11,7 +11,7 @@ abstract public class CombatNode : Node {
 
     virtual public void OnNodeEnter() {
         attackGraph = this.graph as AttackGraph;
-        attackGraph.combatController.OnAttackNodeEnter(this);
+        attackGraph.combatController.OnCombatNodeEnter(this);
     }
 
     virtual public void NodeUpdate(int currentFrame, float clipTime, AttackBuffer buffer) {

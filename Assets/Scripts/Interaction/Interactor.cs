@@ -30,7 +30,6 @@ public class Interactor : MonoBehaviour {
 	void Update() {
 		if (
 			!entity.frozeInputs
-			&& entity.groundData.grounded
 			&& player.GetButtonDown(RewiredConsts.Action.Interact)
 		) {
 			foreach (Interactable i in interactables) {

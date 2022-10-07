@@ -19,7 +19,7 @@ public class Entity : MonoBehaviour, IHitListener {
 	protected int groundMask;
 	protected Collider2D collider2d;
 	public bool facingRight { get; private set; }
-	public GroundData groundData { get; private set; }
+	protected GroundData groundData;
 	protected WallCheckData wallData;
 	protected Collider2D groundColliderLastFrame;
 	public EntityShader shader { get; private set; }
@@ -304,18 +304,18 @@ public class Entity : MonoBehaviour, IHitListener {
 		}
 	}
 
-	public Vector2Int Forward() {
+	public Vector2Int ForwardVector() {
 		return new Vector2Int(
-            ForwardScalar(),
+            Forward(),
             1
         );
 	}
 
-	public int ForwardScalar() {
+	public int Forward() {
 		return facingRight ? 1 : -1;
 	}
 
 	public void AddAttackImpulse(Vector2 impulse) {
-		rb2d.AddForce(impulse * Forward(), ForceMode2D.Impulse);
+		rb2d.AddForce(impulse * ForwardVector(), ForceMode2D.Impulse);
 	}
 }

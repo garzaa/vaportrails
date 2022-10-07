@@ -5,6 +5,8 @@ public class AirAttackNode : AttackNode {
     [Output(backingValue=ShowBackingValue.Never, connectionType=ConnectionType.Override)]
     public AttackLink onLand;
 
+    public bool allowFlip;
+
     public bool singleUse;
 
     public override bool Enabled() {

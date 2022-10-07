@@ -87,7 +87,7 @@ public class EntityController : Entity {
 
 	void Move() {
 		inputX = input.HorizontalInput();
-		inputBackwards = input.HasHorizontalInput() && input.HorizontalInput()*ForwardScalar() < 0;
+		inputBackwards = input.HasHorizontalInput() && input.HorizontalInput()*Forward() < 0;
 		inputForwards = input.HasHorizontalInput() && !inputBackwards;
 		movingBackwards = Mathf.Abs(rb2d.velocity.x) > 0.01 && rb2d.velocity.x * -transform.localScale.x < 0;
 		movingForwards = input.HasHorizontalInput() && ((facingRight && rb2d.velocity.x > 0) || (!facingRight && rb2d.velocity.x < 0));
@@ -260,12 +260,11 @@ public class EntityController : Entity {
 			// assume player is facing the wall and needs to be flipped away from it
 			jumpNoise.PlayFrom(this.gameObject);
 			float v = movement.jumpSpeed;
-			rb2d.velocity = new Vector2((facingRight ? v : -v)*1.3f, Mathf.Max(v, rb2d.velocity.y));
+			rb2d.velocity = new Vector2((facingRight ? v : -v)*1.5f, Mathf.Max(v, rb2d.velocity.y));
 			airControlMod = 0;
 			GameObject w = Instantiate(wallJumpDust);
 			w.transform.position = new Vector2(facingRight ? collider2d.bounds.min.x : collider2d.bounds.max.x, transform.position.y);
 			w.transform.localScale = new Vector3(facingRight ? 1 : -1, 1, 1);
-			animator.SetTrigger("WallJump");
 			canShortHop = false;
 		}
 
@@ -324,7 +323,7 @@ public class EntityController : Entity {
 		animator.SetBool("MovingBackward", movingBackwards);
 		// edge-raycasts can hit the wall
 		animator.SetBool("Wallsliding", wallData.touchingWall && groundData.distance > 0.5f);
-		animator.SetFloat("RelativeXSpeed", rb2d.velocity.x * Forward().x);
+		animator.SetFloat("RelativeXSpeed", rb2d.velocity.x * ForwardVector().x);
 		animator.SetFloat("GroundDistance", groundData.distance);
 		animator.SetFloat("RelativeXInput", input.HorizontalInput() * -transform.localScale.x);
 
@@ -413,10 +412,13 @@ public class EntityController : Entity {
 		Jump(executeIfBuffered: true);
 	}
 
-	public void OnAttackNodeEnter(AttackData attackData) {
+	public void OnAttackNodeEnter(AttackNode attackNode) {
+		AttackData attackData = attackNode?.attackData;
 		currentAttack = attackData;
 		frozeInputs = true;
-		if (groundData.grounded && (attackData && !attackData.fromBackwardsInput)) {
+		// bespoke for divekick animation
+		bool allowFlip = (attackNode is AirAttackNode && (attackNode as AirAttackNode).allowFlip);
+		if ((groundData.grounded || allowFlip) && (attackData && !attackData.fromBackwardsInput)) {
 			float actualInputX = input.HorizontalInput();
 			if (facingRight && actualInputX<0) {
 				Flip();

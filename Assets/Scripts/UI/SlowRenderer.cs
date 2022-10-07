@@ -27,23 +27,22 @@ public class SlowRenderer : MonoBehaviour {
 
 	public void Complete() {
 		StopCoroutine(renderRoutine);
+		renderRoutine = null;
 		target.text = textToRender;
 	}
 
 	IEnumerator SlowRender() {
-		if (letterIndex < textToRender.Length) {
+		while (letterIndex < textToRender.Length) {
 			target.text = textToRender.Substring(0, letterIndex+1) + MakeInvisibleText();
 			int scalar = 1;
 			if (IsPause(textToRender[letterIndex])) {
 				scalar = 7;
 			}
-			yield return new WaitForSecondsRealtime(letterDelay * scalar);
 			letterIndex++;
-			StartCoroutine(SlowRender());
-		} else {
-			renderRoutine = null;
-			yield break;
+			yield return new WaitForSecondsRealtime(letterDelay * scalar);
 		}
+		renderRoutine = null;
+		yield break;
 	}
 
 	bool IsPause(char c) {

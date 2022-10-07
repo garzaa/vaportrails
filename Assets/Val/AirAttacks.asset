@@ -72,6 +72,7 @@ MonoBehaviour:
   onLand:
     type: 0
     direction: 0
+  allowFlip: 0
   singleUse: 0
 --- !u!114 &-7042432427910524947
 MonoBehaviour:
@@ -145,6 +146,7 @@ MonoBehaviour:
   onLand:
     type: 0
     direction: 0
+  allowFlip: 0
   singleUse: 0
 --- !u!114 &-6885289937481435947
 MonoBehaviour:
@@ -218,6 +220,7 @@ MonoBehaviour:
   onLand:
     type: 0
     direction: 0
+  allowFlip: 0
   singleUse: 0
 --- !u!114 &-6690191480983078567
 MonoBehaviour:
@@ -326,6 +329,7 @@ MonoBehaviour:
   onLand:
     type: 0
     direction: 0
+  allowFlip: 0
   singleUse: 0
 --- !u!114 &-4208440387906325956
 MonoBehaviour:
@@ -440,6 +444,7 @@ MonoBehaviour:
   onLand:
     type: 0
     direction: 0
+  allowFlip: 0
   singleUse: 0
 --- !u!114 &-2126959507096117593
 MonoBehaviour:
@@ -578,6 +583,7 @@ MonoBehaviour:
   onLand:
     type: 0
     direction: 0
+  allowFlip: 0
   singleUse: 0
 --- !u!114 &6211059138720334733
 MonoBehaviour:
@@ -606,6 +612,7 @@ MonoBehaviour:
     - links 4
     - speedLinks 0
     - links 5
+    - speedLinks 1
     values:
     - _fieldName: speedLinks
       _node: {fileID: 6211059138720334733}
@@ -709,7 +716,7 @@ MonoBehaviour:
         PublicKeyToken=null
       connections:
       - fieldName: input
-        node: {fileID: 7016034450050395571}
+        node: {fileID: 8918050907873563099}
         reroutePoints: []
       _direction: 1
       _connectionType: 1
@@ -722,6 +729,18 @@ MonoBehaviour:
       connections:
       - fieldName: input
         node: {fileID: -7042432427910524947}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 1
+    - _fieldName: speedLinks 1
+      _node: {fileID: 6211059138720334733}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: input
+        node: {fileID: 7016034450050395571}
         reroutePoints: []
       _direction: 1
       _connectionType: 1
@@ -749,6 +768,8 @@ MonoBehaviour:
     direction: 0
   timeOffset: 0
   speedLinks:
+  - type: 2
+    direction: -2
   - type: 2
     direction: -1
 --- !u!114 &7016034450050395571
@@ -786,7 +807,7 @@ MonoBehaviour:
       _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
       connections:
-      - fieldName: speedLinks 0
+      - fieldName: speedLinks 1
         node: {fileID: 6211059138720334733}
         reroutePoints: []
       _direction: 0
@@ -823,6 +844,7 @@ MonoBehaviour:
   onLand:
     type: 0
     direction: 0
+  allowFlip: 0
   singleUse: 0
 --- !u!114 &8918050907873563099
 MonoBehaviour:
@@ -865,6 +887,9 @@ MonoBehaviour:
       - fieldName: links 1
         node: {fileID: 6211059138720334733}
         reroutePoints: []
+      - fieldName: speedLinks 0
+        node: {fileID: 6211059138720334733}
+        reroutePoints: []
       _direction: 0
       _connectionType: 0
       _typeConstraint: 0
@@ -902,4 +927,5 @@ MonoBehaviour:
   onLand:
     type: 0
     direction: 0
+  allowFlip: 1
   singleUse: 0
