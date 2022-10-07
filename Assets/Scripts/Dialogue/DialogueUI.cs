@@ -10,6 +10,7 @@ public class DialogueUI : MonoBehaviour {
 	#pragma warning disable 0649
 	[SerializeField] Image speakerPortrait;
 	[SerializeField] Text speakerName;
+	[SerializeField] GameObject portraitContainer;
 	#pragma warning restore 0649
 
 	Queue<DialogueLine> currentLines = new Queue<DialogueLine>();
@@ -49,7 +50,12 @@ public class DialogueUI : MonoBehaviour {
 
 	void ShowLine(DialogueLine line) {
 		slowRenderer.Render(line.text);
-		speakerPortrait.sprite = line.portrait;
+		if (line.portrait) {
+			portraitContainer.gameObject.SetActive(true);
+			speakerPortrait.sprite = line.portrait;
+		} else {
+			portraitContainer.gameObject.SetActive(false);
+		}
 		speakerName.text = line.speakerName;
 	}
 
