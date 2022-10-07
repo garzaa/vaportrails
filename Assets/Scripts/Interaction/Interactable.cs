@@ -9,7 +9,7 @@ public abstract class Interactable : MonoBehaviour {
 	GameObject prompt;
 
 	void Start() {
-		prompt = Instantiate(Resources.Load<GameObject>("Runtime/InteractPromptTemplate"));
+		prompt = Instantiate(Resources.Load<GameObject>("Runtime/PromptBase"));
 		prompt.GetComponentInChildren<SpriteRenderer>().sprite = GetSprite();
 		prompt.transform.parent = this.transform;
 		prompt.transform.position = this.transform.position + Vector3.up;

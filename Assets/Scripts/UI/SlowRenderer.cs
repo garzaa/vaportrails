@@ -21,6 +21,7 @@ public class SlowRenderer : MonoBehaviour {
 	public void Render(string t) {
 		target.text = "";
 		letterIndex = 0;
+		textToRender = t;
 		renderRoutine = StartCoroutine(SlowRender());
 	}
 
@@ -39,6 +40,9 @@ public class SlowRenderer : MonoBehaviour {
 			yield return new WaitForSecondsRealtime(letterDelay * scalar);
 			letterIndex++;
 			StartCoroutine(SlowRender());
+		} else {
+			renderRoutine = null;
+			yield break;
 		}
 	}
 

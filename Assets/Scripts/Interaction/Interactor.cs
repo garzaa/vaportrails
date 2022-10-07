@@ -28,8 +28,13 @@ public class Interactor : MonoBehaviour {
 	}
 
 	void Update() {
-		if (!entity.frozeInputs && player.GetButtonDown(RewiredConsts.Action.Interact)) {
+		if (
+			!entity.frozeInputs
+			&& entity.groundData.grounded
+			&& player.GetButtonDown(RewiredConsts.Action.Interact)
+		) {
 			foreach (Interactable i in interactables) {
+				entity.FlipTo(i.gameObject);
 				i.OnInteract(entity);
 			}
 		}

@@ -19,7 +19,7 @@ public class Entity : MonoBehaviour, IHitListener {
 	protected int groundMask;
 	protected Collider2D collider2d;
 	public bool facingRight { get; private set; }
-	protected GroundData groundData;
+	public GroundData groundData { get; private set; }
 	protected WallCheckData wallData;
 	protected Collider2D groundColliderLastFrame;
 	public EntityShader shader { get; private set; }
@@ -294,6 +294,14 @@ public class Entity : MonoBehaviour, IHitListener {
 	public void _Flip() {
 		facingRight = !facingRight;
         transform.localScale = Vector3.Scale(transform.localScale, new Vector3(-1, 1, 1));
+	}
+
+	public void FlipTo(GameObject target) {
+		if (transform.position.x < target.transform.position.x && !facingRight) {
+			_Flip();
+		} else if (target.transform.position.x < transform.position.x && facingRight) {
+			_Flip();
+		}
 	}
 
 	public Vector2Int Forward() {

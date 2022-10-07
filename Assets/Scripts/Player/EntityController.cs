@@ -357,7 +357,7 @@ public class EntityController : Entity {
 	}
 
 	void CheckFlip() {
-		if ((inputBackwards && !movingBackwards) || !groundData.grounded || dashing) return;
+		if ((inputBackwards && !movingBackwards) || !groundData.grounded || dashing || frozeInputs) return;
 
         if (facingRight && inputX<0) {
             Flip();
@@ -475,6 +475,8 @@ public class EntityController : Entity {
 	}
 
 	public void EnterCutscene(MonoBehaviour source) {
+		animator.Play("Idle", 0);
+		rb2d.velocity = Vector2.zero;
 		cutsceneSources.Add(source);
 	}
 

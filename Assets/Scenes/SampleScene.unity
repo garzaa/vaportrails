@@ -1709,6 +1709,7 @@ Transform:
   - {fileID: 38368357}
   - {fileID: 1535226859}
   - {fileID: 1011619827}
+  - {fileID: 169269218}
   m_Father: {fileID: 248532091}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2035,6 +2036,77 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   useGlobalNamespace: 1
+--- !u!1 &169269217
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 169269218}
+  - component: {fileID: 169269220}
+  - component: {fileID: 169269219}
+  m_Layer: 9
+  m_Name: Interactor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &169269218
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 169269217}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 152597310}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &169269219
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 169269217}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26d698940df4c044cb9d5a5c739c29e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!61 &169269220
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 169269217}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0
 --- !u!1 &181980976
 GameObject:
   m_ObjectHideFlags: 0
@@ -2488,7 +2560,7 @@ GameObject:
   - component: {fileID: 312205554}
   - component: {fileID: 312205556}
   m_Layer: 0
-  m_Name: SpeakerText
+  m_Name: SpeakerName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5627,10 +5699,10 @@ MonoBehaviour:
   conversations:
   - lines:
     - speakerName: Steven
-      portrait: {fileID: 0}
+      portrait: {fileID: 21300000, guid: 2fea12cd83e18a9458ea77ac03d50e79, type: 3}
       text: Welcome back. I hope you like your new movement.
     - speakerName: Val
-      portrait: {fileID: 0}
+      portrait: {fileID: -1235353492, guid: 1171058749ee757438b4f70244064702, type: 3}
       text: Thanks.
 --- !u!114 &668108992
 MonoBehaviour:
@@ -7015,7 +7087,7 @@ GameObject:
   - component: {fileID: 900616953}
   - component: {fileID: 900616952}
   m_Layer: 0
-  m_Name: SpeakerName
+  m_Name: SpeakerNameContainer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -16314,9 +16386,9 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 150}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &1440245388
 MonoBehaviour:
@@ -25064,10 +25136,10 @@ RectTransform:
   m_Father: {fileID: 1208332314}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 128, y: 128}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1728600034
 MonoBehaviour:
@@ -26004,7 +26076,8 @@ GameObject:
   - component: {fileID: 1905612358}
   - component: {fileID: 1905612357}
   - component: {fileID: 1905612361}
-  m_Layer: 0
+  - component: {fileID: 1905612362}
+  m_Layer: 5
   m_Name: DialogueUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -26102,8 +26175,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffa066d6f2c5c7548b43c6000d4d7948, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speakerPortrait: {fileID: 0}
-  speakerName: {fileID: 0}
+  speakerPortrait: {fileID: 1728600034}
+  speakerName: {fileID: 312205554}
+  portraitContainer: {fileID: 1208332313}
+  speakerNameContainer: {fileID: 900616948}
 --- !u!114 &1905612361
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26121,6 +26196,26 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 2047
+--- !u!95 &1905612362
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1905612355}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 84557a20f0573534dbf9f6c8f9c0ff2d, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1909240933
 GameObject:
   m_ObjectHideFlags: 0
@@ -26729,7 +26824,7 @@ MonoBehaviour:
   fps: 18
   ignoreGameobjects:
   - {fileID: 1084128034}
-  - {fileID: 0}
+  - {fileID: 982385699}
   - {fileID: 601526862}
   - {fileID: 1741772182}
   - {fileID: 728451615}

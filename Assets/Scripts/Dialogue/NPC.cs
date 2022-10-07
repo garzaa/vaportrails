@@ -13,8 +13,8 @@ public class NPC : Interactable {
 	public override void OnInteract(EntityController player) {
 		// player should enter cutscene
 		// oh yeah that should be passed through actually
-		player.EnterCutscene(this);
 		dialogueUI.AddLines(GetLastConversations().GetNextConversation());
+		dialogueUI.Open(player);
 	}
 
 	ConversationContainer GetLastConversations() {
