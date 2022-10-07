@@ -11,7 +11,6 @@ public class ItemGiverEditor : MonoBehaviour {
         }
         GetComponentInChildren<ItemGiver>().item = this.item;
         GetComponentInChildren<SpriteRenderer>().sprite = this.item.icon;
-        gameObject.name = "Floating "+item.name;
     }
 
     void OnValidate() {

@@ -19,7 +19,7 @@ public class EntityController : Entity {
 
 	public bool frozeInputs { 
 		get {
-			return _frozeInputs || stunned;
+			return _frozeInputs || stunned || cutsceneSources.Count>0;
 		} 
 		private set {
 			_frozeInputs = value;
@@ -55,6 +55,8 @@ public class EntityController : Entity {
 	GameObject wallJumpDust;
 	GameObject fastfallSpark;
 	ParticleSystem speedDust;
+
+	HashSet<MonoBehaviour> cutsceneSources = new HashSet<MonoBehaviour>();
 
 	override protected void Awake() {
 		base.Awake();
@@ -470,6 +472,14 @@ public class EntityController : Entity {
 		if (canDash) return;
 		shader.FlashCyan();
 		canDash = true;
+	}
+
+	public void EnterCutscene(MonoBehaviour source) {
+		cutsceneSources.Add(source);
+	}
+
+	public void ExitCutscene(MonoBehaviour source) {
+		cutsceneSources.Remove(source);
 	}
 
 }

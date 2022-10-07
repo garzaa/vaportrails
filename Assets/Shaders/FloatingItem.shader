@@ -57,10 +57,10 @@ Shader "Custom2D/FloatingItem"
 			{
 				v2f OUT;
 				OUT.vertex = UnityObjectToClipPos(IN.vertex);
-				OUT.vertex.y += sin(_Time.z) * 0.01;
 				OUT.texcoord = IN.texcoord;
 				OUT.color = IN.color * _Color;
                 OUT.worldPos = mul(unity_ObjectToWorld, IN.vertex);
+				OUT.vertex.y += sin(_Time.z + (-OUT.worldPos.x + OUT.worldPos.y)) * 0.01;
 
 				return OUT;
 			}
