@@ -220,6 +220,7 @@ public class ValCombatController : CombatController, IHitListener {
 		canFlipKick = true;
 	}
 
+	// this is invoked from the basic attack hitbox
 	public void GainEnergy() {
 		bool wasFull = currentEP.Get()==maxEP.Get();
 		currentEP.Set(Mathf.Min(maxEP.Get(), currentEP.Get()+1));
@@ -271,13 +272,6 @@ public class ValCombatController : CombatController, IHitListener {
 
 	public override void OnCombatNodeEnter(CombatNode combatNode) {
 		base.OnCombatNodeEnter(combatNode);
-		// then if you get energy, gain it? 
-		// if it costs energy
-		// and there's not enough energy
-		// then don't let the hitbox be active or something
-		// actually disable the hitbox component, that would be interesting
-		// unless the order is such that it hits the bool afterwards
-		// maybe an i consent i consent i don't thing?
 	}
 
 }

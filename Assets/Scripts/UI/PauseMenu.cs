@@ -19,7 +19,7 @@ public class PauseMenu : MonoBehaviour {
 
 	void Update() {
 		if (input.ButtonDown(Buttons.PAUSE)) {
-			if (!pauseUI.activeSelf && !player.frozeInputs) {
+			if (!pauseUI.activeSelf && !player.inCutscene) {
 				Open();
 			} else if (pauseUI.activeSelf) {
 				Close();

@@ -72,6 +72,11 @@ public class AttackHitbox : MonoBehaviour {
 		Hurtbox hurtbox = other.GetComponent<Hurtbox>();
 		hurtbox?.HitProbe(this);
 		if (hurtbox && CanHit(hurtbox) && hurtbox.VulnerableTo(this)) {
+			Hit(hurtbox, other);
+		}
+	}
+
+	protected virtual void Hit(Hurtbox hurtbox, Collider2D other) {
 			foreach (Hurtbox h in hurtbox.transform.root.GetComponentsInChildren<Hurtbox>()) {
 				if (singleHitPerActive) {
 					hurtboxesHitThisActive.Add(h);
@@ -101,6 +106,5 @@ public class AttackHitbox : MonoBehaviour {
 			hurtbox.OnHitConfirm(this);
 			OnAttackLand.Invoke();
 			if (data.zoomIn) cameraZoom.ZoomFor(2, data.hitstop);
-		}
 	}
 }

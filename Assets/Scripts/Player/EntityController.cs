@@ -20,13 +20,15 @@ public class EntityController : Entity {
 
 	public bool frozeInputs { 
 		get {
-			return _frozeInputs || stunned || cutsceneSources.Count>0;
+			return _frozeInputs || stunned || inCutscene;
 		} 
 		private set {
 			_frozeInputs = value;
 		}
 	}
 	private bool _frozeInputs;
+
+	public bool inCutscene => cutsceneSources.Count > 0;
 
 	protected bool inputBackwards;
 	protected bool inputForwards;
