@@ -56,7 +56,7 @@ MonoBehaviour:
       _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
       connections:
-      - fieldName: links 2
+      - fieldName: links 4
         node: {fileID: -2076936626023422332}
         reroutePoints: []
       _direction: 0
@@ -189,7 +189,7 @@ MonoBehaviour:
       _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
       connections:
-      - fieldName: links 4
+      - fieldName: links 3
         node: {fileID: -2076936626023422332}
         reroutePoints: []
       _direction: 0
@@ -281,7 +281,7 @@ MonoBehaviour:
         PublicKeyToken=null
       connections:
       - fieldName: input
-        node: {fileID: -8779223317430618611}
+        node: {fileID: 8801320611016985274}
         reroutePoints: []
       _direction: 1
       _connectionType: 1
@@ -293,7 +293,7 @@ MonoBehaviour:
         PublicKeyToken=null
       connections:
       - fieldName: input
-        node: {fileID: 8801320611016985274}
+        node: {fileID: -3701931120875062896}
         reroutePoints: []
       _direction: 1
       _connectionType: 1
@@ -314,7 +314,7 @@ MonoBehaviour:
         PublicKeyToken=null
       connections:
       - fieldName: input
-        node: {fileID: -3701931120875062896}
+        node: {fileID: -8779223317430618611}
         reroutePoints: []
       _direction: 1
       _connectionType: 1
@@ -373,7 +373,7 @@ MonoBehaviour:
   animator: {fileID: 0}
   buffer: {fileID: 0}
   combatController: {fileID: 0}
-  grounded: 0
+  grounded: 1
   inputManager: {fileID: 0}
   stateMachineName: GroundAttacks
 --- !u!114 &2704641078139956176
@@ -584,14 +584,14 @@ MonoBehaviour:
       _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
       connections:
-      - fieldName: links 3
-        node: {fileID: -2076936626023422332}
-        reroutePoints: []
       - fieldName: output
         node: {fileID: 3411624471137251866}
         reroutePoints: []
       - fieldName: links 0
         node: {fileID: -3701931120875062896}
+        reroutePoints: []
+      - fieldName: links 2
+        node: {fileID: -2076936626023422332}
         reroutePoints: []
       _direction: 0
       _connectionType: 0

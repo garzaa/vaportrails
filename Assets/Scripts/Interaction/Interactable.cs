@@ -11,7 +11,6 @@ public abstract class Interactable : MonoBehaviour {
 
 	void Start() {
 		prompt = Instantiate(Resources.Load<GameObject>("Runtime/PromptBase"));
-		prompt.GetComponentInChildren<SpriteRenderer>().sprite = GetSprite();
 		prompt.transform.parent = this.transform;
 		prompt.transform.position = this.transform.position + Vector3.up;
 		prompt.SetActive(false);
@@ -25,6 +24,7 @@ public abstract class Interactable : MonoBehaviour {
 
 	public virtual void OnEnter() {
 		hoverSound.PlayFrom(this.gameObject);
+		prompt.GetComponentInChildren<SpriteRenderer>().sprite = GetSprite();
 		prompt.SetActive(true);
 	}
 

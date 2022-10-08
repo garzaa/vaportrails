@@ -6,10 +6,12 @@ public class Interactor : MonoBehaviour {
 	HashSet<Interactable> interactables = new HashSet<Interactable>();
 	Rewired.Player player;
 	EntityController entity;
+	Collider2D trigger;
 
 	void Start() {
 		player = GetComponentInParent<PlayerInput>().GetPlayer();
 		entity = GetComponentInParent<EntityController>();
+		trigger = GetComponent<Collider2D>();
 	}
 
 
@@ -28,6 +30,8 @@ public class Interactor : MonoBehaviour {
 	}
 
 	void Update() {
+		trigger.enabled = !entity.frozeInputs;
+
 		if (
 			!entity.frozeInputs
 			&& player.GetButtonDown(RewiredConsts.Action.Interact)

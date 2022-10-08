@@ -129,6 +129,9 @@ public class WeightedFrameInput {
 	public float normalizedWeight = 1;
 	public FrameInput frameInput;
 
+	// needed for ahead-of-time compilation helper
+	public WeightedFrameInput() {}
+
 	public WeightedFrameInput(FrameInput f) {
 		this.frameInput = f;
 	}

@@ -7,6 +7,7 @@ public class EntityController : Entity {
 	#pragma warning disable 0649
 	[SerializeField] GameObject playerRig;
 	[SerializeField] AudioResource jumpNoise;
+	[SerializeField] bool faceRightOnStart;
 	#pragma warning restore 0649
 
 	public MovementStats movement;
@@ -69,6 +70,7 @@ public class EntityController : Entity {
 		// p = mv
 		RefreshAirMovement();
 		canDash = true;
+		if (!facingRight && faceRightOnStart) _Flip();
 	}
 
 	override protected void Update() {
@@ -326,12 +328,13 @@ public class EntityController : Entity {
 		animator.SetBool("Wallsliding", wallData.touchingWall && groundData.distance > 0.5f);
 		animator.SetFloat("RelativeXSpeed", rb2d.velocity.x * ForwardVector().x);
 		animator.SetFloat("GroundDistance", groundData.distance);
-		animator.SetFloat("RelativeXInput", input.HorizontalInput() * -transform.localScale.x);
 
         if (frozeInputs) {
 			animator.SetBool("MovingForward", false);
 			animator.SetFloat("XInputMagnitude", 0);
+			animator.SetFloat("RelativeXInput", 0);
         } else {
+			animator.SetFloat("RelativeXInput", input.HorizontalInput() * -transform.localScale.x);
 			animator.SetBool("MovingForward", movingForwards);
 			animator.SetFloat("XInputMagnitude", Mathf.Abs(input.HorizontalInput()));
 		}
@@ -477,10 +480,12 @@ public class EntityController : Entity {
 		canDash = true;
 	}
 
-	public void EnterCutscene(MonoBehaviour source) {
+	public void EnterCutscene(MonoBehaviour source, bool halt=true) {
 		// TODO: add a camera look target for the cutscene source
-		animator.Play("Idle", 0);
-		rb2d.velocity = Vector2.zero;
+		if (halt) {
+			rb2d.velocity = Vector2.zero;
+			animator.Play("Idle", 0);
+		}
 		cutsceneSources.Add(source);
 	}
 

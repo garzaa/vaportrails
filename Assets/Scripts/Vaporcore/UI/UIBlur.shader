@@ -21,6 +21,10 @@ Shader "CustomUI/UIBlur" {
             {
                 "_HBlur"
             }
+            /*
+            ZTest Off
+            Blend SrcAlpha OneMinusSrcAlpha
+            */
 
             Cull Off
             Lighting Off

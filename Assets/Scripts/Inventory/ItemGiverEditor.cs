@@ -1,6 +1,5 @@
 using UnityEngine;
 
-#if UNITY_EDITOR
 [ExecuteInEditMode]
 public class ItemGiverEditor : MonoBehaviour {
     public Item item;
@@ -17,4 +16,3 @@ public class ItemGiverEditor : MonoBehaviour {
         OnEnable();
     }
 }
-#endif

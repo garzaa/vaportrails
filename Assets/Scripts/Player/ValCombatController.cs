@@ -269,4 +269,15 @@ public class ValCombatController : CombatController, IHitListener {
 		StartAttackStance();
 	}
 
+	public override void OnCombatNodeEnter(CombatNode combatNode) {
+		base.OnCombatNodeEnter(combatNode);
+		// then if you get energy, gain it? 
+		// if it costs energy
+		// and there's not enough energy
+		// then don't let the hitbox be active or something
+		// actually disable the hitbox component, that would be interesting
+		// unless the order is such that it hits the bool afterwards
+		// maybe an i consent i consent i don't thing?
+	}
+
 }

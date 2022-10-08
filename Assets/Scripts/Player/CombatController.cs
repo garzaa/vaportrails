@@ -91,7 +91,7 @@ public class CombatController : MonoBehaviour, IAttackLandListener, IHitListener
 		}
 
 		if (!techLockout && player.stunned && !canTech) {
-			if (input.ButtonDown(Buttons.SPECIAL)) {
+			if (input.ButtonDown(Buttons.SPECIAL) || input.ButtonDown(Buttons.PARRY)) {
 				canTech = true;
 				Invoke(nameof(EndTechWindow), techWindow);
 			}
@@ -194,7 +194,7 @@ public class CombatController : MonoBehaviour, IAttackLandListener, IHitListener
 		graph.EnterGraph(entryNode);
 	}
 
-	public void OnCombatNodeEnter(CombatNode combatNode) {
+	public virtual void OnCombatNodeEnter(CombatNode combatNode) {
 		if (combatNode is AttackNode) {
 			AttackNode attackNode = combatNode as AttackNode;
 			player.OnAttackNodeEnter(attackNode);

@@ -205,6 +205,7 @@ public class Entity : MonoBehaviour, IHitListener {
 			CancelStun();
 			return;
 		}
+		landNoise?.PlayFrom(gameObject);
 		animator.SetBool("Tumbling", true);
 		stunBounced = true;
 		this.WaitAndExecute(() => rb2d.sharedMaterial = defaultMaterial, 0.1f);

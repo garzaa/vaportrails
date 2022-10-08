@@ -6,8 +6,18 @@ using System.Collections.Generic;
 public class NPC : Interactable {
 	DialogueUI dialogueUI;
 	
+	Sprite newPromptSprite;
+	
 	void Awake() {
 		dialogueUI = GameObject.FindObjectOfType<DialogueUI>();
+		newPromptSprite = Resources.Load<Sprite>("Runtime/UnreadNPCPrompt");
+	}
+
+	protected override Sprite GetSprite() {
+		if (GetLastConversations().unread) {
+			return newPromptSprite;
+		}
+		return base.GetSprite();
 	}
 
 	public override void OnInteract(EntityController player) {

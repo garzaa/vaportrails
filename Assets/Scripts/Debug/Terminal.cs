@@ -262,7 +262,7 @@ public class Terminal : MonoBehaviour, IPointerDownHandler {
                     }
                 }
                 Log($"Playing ghostfile on {puppet.gameObject.name} with opponent {opponent.gameObject.name}");
-                ai.PlayGhost(ghostfile, opponent.gameObject);
+                ai.StartGhost(ghostfile, opponent.gameObject);
                 aiPlayer = ai;
             } else if (args[1] == "stop") {
                 foreach (AIPlayer a in GameObject.FindObjectsOfType<AIPlayer>()) {

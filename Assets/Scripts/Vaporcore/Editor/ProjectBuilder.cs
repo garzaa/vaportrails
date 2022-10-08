@@ -11,13 +11,11 @@ public class ProjectBuilder {
 
     public static void BuildAll() {
         enabledScenes = GetEnabledScenes();
-        string versionPath = "1.0";//Path.Combine(Directory.GetCurrentDirectory(), "version.txt");
-	    PlayerSettings.bundleVersion = "1.0"; // System.IO.File.ReadAllText(versionPath).Replace("\n", "");
         Build(BuildTarget.WebGL, "webgl");
-        Build(BuildTarget.StandaloneWindows64, "win-exe", extension: ".exe");
         Build(BuildTarget.StandaloneWindows, "win32-exe", extension: ".exe");
         Build(BuildTarget.StandaloneOSX, "osx");
         Build(BuildTarget.StandaloneLinux64, "gnu-linux", extension: ".x86");
+        Build(BuildTarget.StandaloneWindows64, "win-exe", extension: ".exe");
     }
 
     public static void BuildWindows() {

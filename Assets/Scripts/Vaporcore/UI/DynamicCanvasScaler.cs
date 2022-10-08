@@ -22,7 +22,7 @@ public class DynamicCanvasScaler : MonoBehaviour {
     }
 
     int ComputePixelScale() {
-        return Mathf.Max(minimumScale, Mathf.CeilToInt((float)Screen.height / minScreenHeight));
+        return Mathf.Max(minimumScale, Mathf.FloorToInt((float)Screen.height / minScreenHeight));
     }
 
     public static int GetPixelScale() {

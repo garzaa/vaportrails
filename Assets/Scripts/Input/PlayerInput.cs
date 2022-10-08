@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using Rewired;
+using System.Linq;
 
 public class PlayerInput : MonoBehaviour {
     Player player = null;
@@ -127,6 +128,12 @@ public class PlayerInput : MonoBehaviour {
             || actionID == RewiredConsts.Action.Projectile
         ;
     }
+
+    public static PlayerInput GetPlayerOneInput() {
+		return GameObject.FindObjectsOfType<PlayerInput>()
+			.Where(x => x.playerNum == 0)
+			.First();
+	}
 }
 
 // TODO: use RewiredConsts with action axes

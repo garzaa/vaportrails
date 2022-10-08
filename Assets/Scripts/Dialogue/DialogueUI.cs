@@ -16,6 +16,7 @@ public class DialogueUI : MonoBehaviour {
 	[SerializeField] Text speakerName;
 	[SerializeField] GameObject portraitContainer;
 	[SerializeField] GameObject speakerNameContainer;
+	[SerializeField] GameObject speechBubbleTail;
 	#pragma warning restore 0649
 
 	Queue<DialogueLine> currentLines = new Queue<DialogueLine>();
@@ -25,14 +26,13 @@ public class DialogueUI : MonoBehaviour {
 		animator = GetComponent<Animator>();
 		slowRenderer = GetComponentInChildren<SlowRenderer>();
 		// defaults to player 0
-		playerInput = FindObjectOfType<PlayerInput>();
+		playerInput = PlayerInput.GetPlayerOneInput();
 		dialogueRenderSound = Resources.Load<AudioResource>("Runtime/DialogueRenderSound");
 	}
 
 	void Update() {
 		if (open && playerInput.GenericContinueInput()) {
 			if (slowRenderer.rendering) {
-				dialogueRenderSound.PlayFrom(this.gameObject);
 				slowRenderer.Complete();
 			} else {
 				NextLineOrClose();
@@ -67,8 +67,12 @@ public class DialogueUI : MonoBehaviour {
 		if (!string.IsNullOrEmpty(line.speakerName)) {
 			speakerName.text = line.speakerName;
 			speakerNameContainer.SetActive(true);
+			speechBubbleTail.SetActive(true);
+			// make the box resize to fit the new name
+			LayoutRebuilder.ForceRebuildLayoutImmediate(speakerNameContainer.GetComponent<RectTransform>());
 		} else {
 			speakerNameContainer.SetActive(false);
+			speechBubbleTail.SetActive(false);
 		}
 	}
 
@@ -87,5 +91,6 @@ public class DialogueUI : MonoBehaviour {
 		open = false;
 		if (currentPlayer) currentPlayer.ExitCutscene(this);
 		animator.SetBool("Shown", false);
+		dialogueRenderSound.PlayFrom(this.gameObject);
 	}
 }
