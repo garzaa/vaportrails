@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Name: Knee Strike Confirm
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 456, y: 808}
+  position: {x: 696, y: 824}
   ports:
     keys:
     - links
@@ -104,7 +104,7 @@ MonoBehaviour:
   m_Name: Knee Strike
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 136, y: 808}
+  position: {x: 376, y: 824}
   ports:
     keys:
     - links
@@ -137,8 +137,8 @@ MonoBehaviour:
       _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
       connections:
-      - fieldName: speedLinks 2
-        node: {fileID: 7367564331834169068}
+      - fieldName: onPass
+        node: {fileID: 5405037810879109774}
         reroutePoints: []
       _direction: 0
       _connectionType: 0
@@ -574,12 +574,73 @@ MonoBehaviour:
   - {fileID: -8943185299639134591}
   - {fileID: 6816034862222783534}
   - {fileID: -9064113469144294988}
+  - {fileID: 5405037810879109774}
+  - {fileID: 391144820956782227}
   animator: {fileID: 0}
   buffer: {fileID: 0}
   combatController: {fileID: 0}
   grounded: 1
   inputManager: {fileID: 0}
   stateMachineName: GroundAttacks
+--- !u!114 &391144820956782227
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93af5be29414da440814eeb14596c6e5, type: 3}
+  m_Name: Lesser Knee Strike
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 376, y: 1016}
+  ports:
+    keys:
+    - input
+    - links
+    - onHit
+    values:
+    - _fieldName: input
+      _node: {fileID: 391144820956782227}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: onFail
+        node: {fileID: 5405037810879109774}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: links
+      _node: {fileID: 391144820956782227}
+      _typeQualifiedName: AttackLink[], Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: onHit
+      _node: {fileID: 391144820956782227}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+  attackData: {fileID: 11400000, guid: 260b382223c7e08419473a381c742626, type: 2}
+  input:
+    type: 0
+    direction: 0
+  links: []
+  onHit:
+    type: 0
+    direction: 0
+  timeOffset: 0
 --- !u!114 &2295136725489853279
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -775,6 +836,72 @@ MonoBehaviour:
     type: 0
     direction: 0
   timeOffset: 0
+--- !u!114 &5405037810879109774
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0a2267afd067b34ab54a38ec55df1b0, type: 3}
+  m_Name: Energy Gate
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 152, y: 824}
+  ports:
+    keys:
+    - input
+    - onPass
+    - onFail
+    values:
+    - _fieldName: input
+      _node: {fileID: 5405037810879109774}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: speedLinks 2
+        node: {fileID: 7367564331834169068}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: onPass
+      _node: {fileID: 5405037810879109774}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: input
+        node: {fileID: -8674303102600886378}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: onFail
+      _node: {fileID: 5405037810879109774}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: input
+        node: {fileID: 391144820956782227}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+  energyCost: 4
+  input:
+    type: 0
+    direction: 0
+  onPass:
+    type: 0
+    direction: 0
+  onFail:
+    type: 0
+    direction: 0
 --- !u!114 &6106788391044239856
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1145,7 +1272,7 @@ MonoBehaviour:
         PublicKeyToken=null
       connections:
       - fieldName: input
-        node: {fileID: -8674303102600886378}
+        node: {fileID: 5405037810879109774}
         reroutePoints: []
       _direction: 1
       _connectionType: 1

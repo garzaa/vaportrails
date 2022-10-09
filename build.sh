@@ -3,7 +3,6 @@
 echo "removing old demo folders"
 for i in win-exe win32-exe osx webgl gnu-linux; do
     rm -r ../demos/vaportrails-$i
-    rm -r ../demos/zips/vaportrails-$i.zip
 done
 
 code "C:\Users\Adrian\AppData\Local\Unity\Editor\Editor.log"
