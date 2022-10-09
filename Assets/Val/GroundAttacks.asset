@@ -199,6 +199,9 @@ MonoBehaviour:
       - fieldName: links 0
         node: {fileID: 6332814915573547029}
         reroutePoints: []
+      - fieldName: onFail
+        node: {fileID: 6489941346990127484}
+        reroutePoints: []
       _direction: 0
       _connectionType: 0
       _typeConstraint: 0
@@ -255,11 +258,11 @@ MonoBehaviour:
       _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
       connections:
-      - fieldName: speedLinks 1
-        node: {fileID: 7367564331834169068}
-        reroutePoints: []
       - fieldName: output
         node: {fileID: -783924786998265801}
+        reroutePoints: []
+      - fieldName: speedLinks 2
+        node: {fileID: 7367564331834169068}
         reroutePoints: []
       _direction: 0
       _connectionType: 0
@@ -576,6 +579,8 @@ MonoBehaviour:
   - {fileID: -9064113469144294988}
   - {fileID: 5405037810879109774}
   - {fileID: 391144820956782227}
+  - {fileID: 6489941346990127484}
+  - {fileID: 8369844048227420039}
   animator: {fileID: 0}
   buffer: {fileID: 0}
   combatController: {fileID: 0}
@@ -861,7 +866,7 @@ MonoBehaviour:
       _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
       connections:
-      - fieldName: speedLinks 2
+      - fieldName: speedLinks 3
         node: {fileID: 7367564331834169068}
         reroutePoints: []
       _direction: 0
@@ -1094,6 +1099,72 @@ MonoBehaviour:
     type: 0
     direction: 0
   timeOffset: 0
+--- !u!114 &6489941346990127484
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0a2267afd067b34ab54a38ec55df1b0, type: 3}
+  m_Name: Energy Gate
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -808, y: -200}
+  ports:
+    keys:
+    - input
+    - onPass
+    - onFail
+    values:
+    - _fieldName: input
+      _node: {fileID: 6489941346990127484}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: speedLinks 1
+        node: {fileID: 7367564331834169068}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: onPass
+      _node: {fileID: 6489941346990127484}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: input
+        node: {fileID: 8369844048227420039}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: onFail
+      _node: {fileID: 6489941346990127484}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: input
+        node: {fileID: -7836476412415192413}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+  energyCost: 4
+  input:
+    type: 0
+    direction: 0
+  onPass:
+    type: 0
+    direction: 0
+  onFail:
+    type: 0
+    direction: 0
 --- !u!114 &6816034862222783534
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1154,6 +1225,7 @@ MonoBehaviour:
     - onHit
     - speedLinks 2
     - input
+    - speedLinks 3
     values:
     - _fieldName: speedLinks
       _node: {fileID: 7367564331834169068}
@@ -1203,7 +1275,7 @@ MonoBehaviour:
         PublicKeyToken=null
       connections:
       - fieldName: input
-        node: {fileID: -5152714321913037071}
+        node: {fileID: 6489941346990127484}
         reroutePoints: []
       _direction: 1
       _connectionType: 1
@@ -1272,7 +1344,7 @@ MonoBehaviour:
         PublicKeyToken=null
       connections:
       - fieldName: input
-        node: {fileID: 5405037810879109774}
+        node: {fileID: -5152714321913037071}
         reroutePoints: []
       _direction: 1
       _connectionType: 1
@@ -1282,11 +1354,26 @@ MonoBehaviour:
       _node: {fileID: 7367564331834169068}
       _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
-      connections: []
+      connections:
+      - fieldName: onHit
+        node: {fileID: 8369844048227420039}
+        reroutePoints: []
       _direction: 0
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
+    - _fieldName: speedLinks 3
+      _node: {fileID: 7367564331834169068}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: input
+        node: {fileID: 5405037810879109774}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 1
   attackData: {fileID: 0}
   input:
     type: 0
@@ -1307,6 +1394,8 @@ MonoBehaviour:
     direction: 0
   timeOffset: 0
   speedLinks:
+  - type: 1
+    direction: -2
   - type: 1
     direction: 0
   - type: 2
@@ -1361,6 +1450,68 @@ MonoBehaviour:
       _typeConstraint: 0
       _dynamic: 0
   attackData: {fileID: 11400000, guid: 19417705a56266d46806172f72754b7a, type: 2}
+  input:
+    type: 0
+    direction: 0
+  links: []
+  onHit:
+    type: 0
+    direction: 0
+  timeOffset: 0
+--- !u!114 &8369844048227420039
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93af5be29414da440814eeb14596c6e5, type: 3}
+  m_Name: EX Palm Strike
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -584, y: -200}
+  ports:
+    keys:
+    - input
+    - links
+    - onHit
+    values:
+    - _fieldName: input
+      _node: {fileID: 8369844048227420039}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: onPass
+        node: {fileID: 6489941346990127484}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: links
+      _node: {fileID: 8369844048227420039}
+      _typeQualifiedName: AttackLink[], Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: onHit
+      _node: {fileID: 8369844048227420039}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: input
+        node: {fileID: 7367564331834169068}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+  attackData: {fileID: 11400000, guid: fd673b4b82d47a140a7043c9d9177516, type: 2}
   input:
     type: 0
     direction: 0

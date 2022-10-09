@@ -378,6 +378,76 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &32514038
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 32514039}
+  - component: {fileID: 32514041}
+  - component: {fileID: 32514040}
+  m_Layer: 8
+  m_Name: EX Palm Strike
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &32514039
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 32514038}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2120177983}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &32514040
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 32514038}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b021af6215a34c4ba1da56541205abb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attacksPlayer: 0
+  indiscriminate: 0
+  data: {fileID: 11400000, guid: fd673b4b82d47a140a7043c9d9177516, type: 2}
+  spawnHitmarkerAtCenter: 0
+  singleHitPerActive: 1
+  OnAttackLand:
+    m_PersistentCalls:
+      m_Calls: []
+  energyCost: 4
+--- !u!58 &32514041
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 32514038}
+  m_Enabled: 0
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0.14643645}
+  serializedVersion: 2
+  m_Radius: 0.64643645
 --- !u!1 &38368356
 GameObject:
   m_ObjectHideFlags: 0
@@ -19446,11 +19516,14 @@ MonoBehaviour:
         are two other speed-gated moves now.
     - speakerName: Steven
       portrait: {fileID: 21300000, guid: 2fea12cd83e18a9458ea77ac03d50e79, type: 3}
-      text: 'Kick: A light knee strike that confirms into a heavy poise-breaker.
-        It costs 4 energy.
+      text: 'Down+Punch:  A shoulder tackle you can jump out of at any time.
 
-        Punch: A shoulder tackle that you can jump-cancel
-        at any time.'
+        Kick:
+        A light knee strike that confirms into a heavy poise-breaker. It costs 4
+        energy.
+
+        Punch: A palm strike that you can immediately cancel into
+        another move on land. It costs 4 energy.'
 --- !u!114 &1510457934
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31051,6 +31124,7 @@ Transform:
   - {fileID: 741016860}
   - {fileID: 485213756}
   - {fileID: 347399534}
+  - {fileID: 32514039}
   m_Father: {fileID: 152597310}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
