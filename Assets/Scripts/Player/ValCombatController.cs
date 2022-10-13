@@ -197,6 +197,7 @@ public class ValCombatController : CombatController, IHitListener {
 			player.DisableShortHop();
 			rb2d.velocity = new Vector2(rb2d.velocity.x, Mathf.Max(rb2d.velocity.y, player.movement.jumpSpeed));
 			EnterAttackGraph(orcaFlipNode.graph as AttackGraph, orcaFlipNode);
+			player.SetJustJumped();
 		} else if (!player.inAttack) {
 			EnterAttackGraph(groundOrcaFlipNode.graph as AttackGraph, groundOrcaFlipNode);
 		}

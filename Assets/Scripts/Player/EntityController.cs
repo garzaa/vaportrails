@@ -50,6 +50,8 @@ public class EntityController : Entity {
 	float fallStart;
 	float ySpeedLastFrame;
 	bool stickDownLastFrame;
+	bool keepJumpSpeed;
+	Coroutine keepJumpSpeedRoutine;
 
 	public bool inAttack => currentAttack != null;
 	protected AttackData currentAttack;
@@ -235,6 +237,7 @@ public class EntityController : Entity {
 		if (stunned) return;
 
 		if (input.ButtonUp(Buttons.JUMP) && rb2d.velocity.y > movement.shortHopCutoffVelocity && canShortHop) {
+			keepJumpSpeed = false;
 			rb2d.velocity = new Vector2(rb2d.velocity.x, movement.shortHopCutoffVelocity);
 		}
 
@@ -257,6 +260,7 @@ public class EntityController : Entity {
 			canShortHop = true;
 			JumpDust();
             rb2d.velocity = new Vector2(rb2d.velocity.x, Mathf.Max(movement.jumpSpeed, rb2d.velocity.y));
+			SetJustJumped();
         }
 
 		void WallJump() {
@@ -264,13 +268,21 @@ public class EntityController : Entity {
 			// assume player is facing the wall and needs to be flipped away from it
 			jumpNoise.PlayFrom(this.gameObject);
 			float v = movement.jumpSpeed;
-			rb2d.velocity = new Vector2((facingRight ? v : -v)*1.5f, Mathf.Max(v, rb2d.velocity.y));
-			airControlMod = 0;
+			// if inputting towards wall, jump up it
+			if (wallData.direction * inputX > 0) {
+				rb2d.velocity = new Vector2((facingRight ? v : -v)*1.0f, Mathf.Max(v, rb2d.velocity.y));
+				animator.SetTrigger("Backflip");
+				airControlMod = 0.2f;
+			} else {
+				rb2d.velocity = new Vector2((facingRight ? v : -v)*1.5f, Mathf.Max(v, rb2d.velocity.y));
+				animator.SetTrigger("WallJump");
+				airControlMod = 0.0f;
+			}
 			GameObject w = Instantiate(wallJumpDust);
 			w.transform.position = new Vector2(facingRight ? collider2d.bounds.min.x : collider2d.bounds.max.x, transform.position.y);
 			w.transform.localScale = new Vector3(facingRight ? 1 : -1, 1, 1);
 			canShortHop = false;
-			animator.SetTrigger("WallJump");
+			SetJustJumped();
 		}
 
 		void AirJump() {
@@ -291,11 +303,19 @@ public class EntityController : Entity {
 			jumpNoise.PlayFrom(this.gameObject);
 			airControlMod = 1;
 			canShortHop = false;
+			SetJustJumped();
 		}
 
 		void BufferJump() {
 			bufferedJump = true;
 			this.WaitAndExecute(() => bufferedJump = false, bufferDuration);
+		}
+
+		if (keepJumpSpeed && !frozeInputs) {
+			rb2d.velocity = new Vector2(
+				rb2d.velocity.x,
+				Mathf.Max(0, rb2d.velocity.y)
+			);
 		}
 
 		if (groundData.hitGround && bufferedJump) {
@@ -319,6 +339,23 @@ public class EntityController : Entity {
 				AirJump();
             }
         }
+	}
+
+	IEnumerator KeepJumpSpeedRoutine() {
+		keepJumpSpeed = true;
+		// v = v0 + at
+		float timeToZero = -movement.jumpSpeed/Physics2D.gravity.y;
+		yield return new WaitForSeconds(timeToZero);
+		keepJumpSpeed = false;
+	}
+
+	// grace period for if you bonk your head on the ceiling
+	public void SetJustJumped() {
+		if (keepJumpSpeedRoutine != null) {
+			StopCoroutine(keepJumpSpeedRoutine);
+		}
+		keepJumpSpeed = true;
+		keepJumpSpeedRoutine = StartCoroutine(KeepJumpSpeedRoutine());
 	}
 
 	void UpdateAnimator() {
