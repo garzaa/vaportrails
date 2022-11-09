@@ -68,4 +68,10 @@ public class EntityShader : MonoBehaviour {
 	public void UnsetFlashing() {
 		
 	}
+	
+	void OnDestroy() {
+		foreach (Renderer renderer in renderers) {
+			Destroy(renderer.material);	
+		}
+	}
 }
