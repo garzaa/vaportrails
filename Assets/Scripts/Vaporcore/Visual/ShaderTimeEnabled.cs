@@ -3,18 +3,18 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class ShaderTimeEnabled : MonoBehaviour {
-	Renderer renderer = null;
+	Renderer shaderRenderer = null;
 	MaterialPropertyBlock material;
     
 	void OnEnable() {
-		if (renderer == null) {
-			renderer = GetComponent<Renderer>();
-			renderer.GetPropertyBlock(material);
+		if (shaderRenderer == null) {
+			shaderRenderer = GetComponent<Renderer>();
+			shaderRenderer.GetPropertyBlock(material);
 		}
-		renderer.SetFloat("TimeEnabled", Time.time);
+		material.SetFloat("TimeEnabled", Time.time);
 	}
 
 	void OnDestroy() {
-		Destroy(renderer.material);
+		Destroy(shaderRenderer.material);
 	}
 }

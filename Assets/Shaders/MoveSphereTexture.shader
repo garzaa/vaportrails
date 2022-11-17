@@ -78,7 +78,7 @@ Shader "Custom3D/MoveSphereTexture" {
 				fixed4 c = tex2D(_MainTex, IN.texcoord) * IN.color;
 
 				// compute overlay texture movement
-				fixed4 overlay = tex2D(_OverlayTex, (IN.texcoord * _OverlayScale.xy) + (Time.y - TimeEnabled)*_Speed.xy);
+				fixed4 overlay = tex2D(_OverlayTex, (IN.texcoord * _OverlayScale.xy) + (_Time.y - TimeEnabled)*_Speed.xy);
 
 				c.rgb = lerp(c.rgb, overlay.rgb, overlay.a);
 
