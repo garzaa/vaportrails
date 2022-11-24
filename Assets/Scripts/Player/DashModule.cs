@@ -27,7 +27,7 @@ public class DashModule : MonoBehaviour {
 
 		if (entity.frozeInputs && !entity.inAttack) return;
 
-		if (input.ButtonDown(Buttons.SPECIAL) && entity.canDash && input.HasHorizontalInput() && input.VerticalInput()<0.5) {
+		if (input.ButtonDown(Buttons.SPECIAL) && entity.canDash && input.HasHorizontalInput() && Mathf.Abs(input.VerticalInput())<0.5) {
 			entity.DashIfPossible(dashSound);
 		}
 	}

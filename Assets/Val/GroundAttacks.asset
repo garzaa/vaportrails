@@ -438,7 +438,7 @@ MonoBehaviour:
   m_Name: High Kick
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 136, y: -488}
+  position: {x: 168, y: -712}
   ports:
     keys:
     - links
@@ -480,10 +480,7 @@ MonoBehaviour:
       _node: {fileID: -2182646159027362593}
       _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
-      connections:
-      - fieldName: links 0
-        node: {fileID: 7367564331834169068}
-        reroutePoints: []
+      connections: []
       _direction: 0
       _connectionType: 0
       _typeConstraint: 0
@@ -659,7 +656,7 @@ MonoBehaviour:
   m_Name: Axe Kick
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 424, y: -488}
+  position: {x: 504, y: -712}
   ports:
     keys:
     - links
@@ -691,6 +688,9 @@ MonoBehaviour:
       connections:
       - fieldName: links 0
         node: {fileID: -2182646159027362593}
+        reroutePoints: []
+      - fieldName: links 0
+        node: {fileID: 5149676047783924878}
         reroutePoints: []
       _direction: 0
       _connectionType: 0
@@ -777,7 +777,7 @@ MonoBehaviour:
   m_Name: Crescent Kick
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 136, y: -8}
+  position: {x: 136, y: -488}
   ports:
     keys:
     - links
@@ -800,7 +800,7 @@ MonoBehaviour:
         PublicKeyToken=null
       connections:
       - fieldName: input
-        node: {fileID: 6106788391044239856}
+        node: {fileID: 2295136725489853279}
         reroutePoints: []
       _direction: 1
       _connectionType: 1
@@ -820,10 +820,7 @@ MonoBehaviour:
       _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
       connections:
-      - fieldName: links 3
-        node: {fileID: 7367564331834169068}
-        reroutePoints: []
-      - fieldName: links 2
+      - fieldName: links 0
         node: {fileID: 7367564331834169068}
         reroutePoints: []
       _direction: 0
@@ -920,7 +917,7 @@ MonoBehaviour:
   m_Name: Back Kick
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 440, y: -8}
+  position: {x: 152, y: 8}
   ports:
     keys:
     - links
@@ -950,8 +947,11 @@ MonoBehaviour:
       _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
       connections:
-      - fieldName: links 0
-        node: {fileID: 5149676047783924878}
+      - fieldName: links 3
+        node: {fileID: 7367564331834169068}
+        reroutePoints: []
+      - fieldName: links 2
+        node: {fileID: 7367564331834169068}
         reroutePoints: []
       _direction: 0
       _connectionType: 0
@@ -1251,7 +1251,7 @@ MonoBehaviour:
         PublicKeyToken=null
       connections:
       - fieldName: input
-        node: {fileID: -2182646159027362593}
+        node: {fileID: 5149676047783924878}
         reroutePoints: []
       _direction: 1
       _connectionType: 1
@@ -1299,7 +1299,7 @@ MonoBehaviour:
         PublicKeyToken=null
       connections:
       - fieldName: input
-        node: {fileID: 5149676047783924878}
+        node: {fileID: 6106788391044239856}
         reroutePoints: []
       _direction: 1
       _connectionType: 1
@@ -1311,7 +1311,7 @@ MonoBehaviour:
         PublicKeyToken=null
       connections:
       - fieldName: input
-        node: {fileID: 5149676047783924878}
+        node: {fileID: 6106788391044239856}
         reroutePoints: []
       _direction: 1
       _connectionType: 1
