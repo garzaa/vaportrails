@@ -21,14 +21,15 @@ public class Transition : ScriptableObject {
     }
 
     public class SubwayTransition : NullableTransitionValue {
-        bool arrivingFromLeft = false;
+        public bool arrivingFromLeft = false;
+        public float xOffset = 0;
     }
 
     public class PlayerPositionTransition : NullableTransitionValue {
-        public Vector2 position;
+        public Vector2 vec2;
 
         public PlayerPositionTransition(Vector2 v) {
-            position = v;
+            vec2 = v;
         }
     }
 }
