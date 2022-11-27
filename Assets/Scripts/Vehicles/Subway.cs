@@ -10,7 +10,8 @@ public class Subway : MonoBehaviour {
 	SubwayCar[] cars;
 	Animator animator;
 
-	bool atStation = false;
+	bool arriving = false;
+	bool playerInStation = false;
 
 	void Start() {
 		cars = GetComponentsInChildren<SubwayCar>();
@@ -21,25 +22,25 @@ public class Subway : MonoBehaviour {
 
 	// called as an event from player trigger
 	public void OnPlayerEnterTrigger() {
-		if (atStation) {
-			return;
-		}
+		playerInStation = true;
 		ArriveAtStation();
 	}
 
 	void ArriveAtStation() {
 		animator.SetTrigger("Arrive");
-		atStation = true;
-	}
+		arriving = true;
+	}	
 
 	public void OnPlayerLeaveTrigger() {
-		// called if either player steps out of volume or 
+		if (arriving) return;
+		playerInStation = false;
 		LeaveStation();
 	}
 
-	void LeaveStation() {
-		atStation = false;
-		animator.SetTrigger("Leave");
+	public void LeaveStation() {
+		// called if either player steps out of volume or transitionmanager says to leave
+		animator.SetTrigger("Depart");
+		animator.ResetTrigger("Arrive");
 	}
 
 	public void LoadRidingPlayer(Transition.SubwayTransition subwayTransition) {
@@ -59,11 +60,21 @@ public class Subway : MonoBehaviour {
 	}
 
 	public void FinishArriveAnimation() {
+		arriving = false;
 		foreach (SubwayCar car in cars) {
 			car.OpenDoors();
 		}
+		if (!playerInStation) {
+			LeaveStation();
+		}
 		player.SetActive(true);
 		playerDummy.SetActive(false);
+	}
+
+	public void FinishDepartAnimation() {
+		if (playerInStation) {
+			ArriveAtStation();
+		}
 	}
 
 	// called from interaction
