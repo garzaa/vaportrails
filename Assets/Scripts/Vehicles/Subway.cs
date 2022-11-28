@@ -145,10 +145,14 @@ public class Subway : MonoBehaviour {
 			playerDummy.transform.localPosition.y,
 			playerDummy.transform.localPosition.z
 		);
+
 		// face towards subway leave direction
+		Entity playerEntity = player.GetComponent<Entity>();
 		if (leaveDirection == SubwayDirection.RIGHT) {
+			if (!playerEntity.facingRight) playerEntity.Flip();
 			playerDummy.transform.localScale = new Vector3(-1, 1, 1);
 		} else {
+			if (playerEntity.facingRight) playerEntity.Flip();
 			playerDummy.transform.localScale = new Vector3(1, 1, 1);
 		}
 		// show player dummy
