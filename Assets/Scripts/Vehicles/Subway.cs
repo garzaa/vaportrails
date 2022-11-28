@@ -11,8 +11,9 @@ public class Subway : MonoBehaviour {
 	}
 
 	public string stopDestination;
+	public SceneReference nextStop;
 	public string lineName;
-	public Text infoText;
+	public Text[] infoBoards;
 
 	public SubwayDirection leaveDirection;
 	public SubwayDirection arriveDirection;
@@ -29,18 +30,21 @@ public class Subway : MonoBehaviour {
 
 	int cycleLength = 10 + 10 + 10 + 10;
 
-	void Start() {
+	void Awake() {
 		cars = GetComponentsInChildren<SubwayCar>();
 		animator = GetComponent<Animator>();
 		player = PlayerInput.GetPlayerOneInput().gameObject;
-		playerDummy.SetActive(false);
 		animator.SetFloat("LeaveDirection", (float) leaveDirection);
 		animator.SetFloat("ArriveDirection", (float) arriveDirection);
-		StartCoroutine(SubwayRoutine());
+		playerOne = PlayerInput.GetPlayerOneInput();
+		playerDummy.SetActive(false);
+	}
+
+	void Start() {
 		foreach (SubwayCar car in cars) {
 			car.DisableBoarding();
 		}
-		playerOne = PlayerInput.GetPlayerOneInput();
+		StartCoroutine(SubwayRoutine());
 	}
 
 	void Update() {
@@ -50,6 +54,11 @@ public class Subway : MonoBehaviour {
 	}
 
 	IEnumerator SubwayRoutine() {
+		// stagger other trains to make transferring easier
+		if (!holdingPlayer) {
+			SetInfoText(NextStopTime(5));
+			yield return new WaitForSeconds(5);
+		}
 		for (;;) {
 			ArriveAtStation();
 			SetInfoText(NextStopTime(0));
@@ -70,11 +79,17 @@ public class Subway : MonoBehaviour {
 	}
 
 	IEnumerator UpdateBoard(string[] s) {
-		infoText.text = s[0];
+		SetBoardsText(s[0]);
 		yield return new WaitForSeconds(0.2f);
-		infoText.text = s[0] + "\n" + s[1];
+		SetBoardsText(s[0] + "\n" + s[1]);
 		yield return new WaitForSeconds(0.2f);
-		infoText.text = s[0] + "\n" + s[1] + "\n" + s[2];
+		SetBoardsText(s[0] + "\n" + s[1] + "\n" + s[2]);
+	}
+
+	void SetBoardsText(string s) {
+		foreach (Text t in infoBoards) {
+			t.text = s;
+		}
 	}
 
 	string NextStopTime(int time) {
@@ -82,7 +97,7 @@ public class Subway : MonoBehaviour {
 		if (time == 0) top = RouteInfo() + " now arriving";
 		else top = RouteInfo() + ": " + time+"s";
 		string middle = RouteInfo() + ": " + FormatSeconds(time+cycleLength);
-		string bottom = RouteInfo() + ": " + FormatSeconds(time+cycleLength+cycleLength);
+		string bottom = RouteInfo() + ": " + FormatSeconds(time+(cycleLength*2));
 		return top + "\n" + middle + "\n" + bottom;
 	}
 
@@ -97,10 +112,13 @@ public class Subway : MonoBehaviour {
 
 	void ArriveAtStation() {
 		if (holdingPlayer) {
+			Entity playerEntity = player.GetComponent<Entity>();
 			if (arriveDirection == SubwayDirection.RIGHT) {
-				playerDummy.transform.localScale = new Vector3(-1, 1, 1);
+				playerDummy.transform.localScale = new Vector3(1, 1, 1);
+				if (playerEntity.facingRight) playerEntity.Flip();
 			} else {
 				playerDummy.transform.localScale = new Vector3(-1, 1, 1);
+				if (!playerEntity.facingRight) playerEntity.Flip();
 			}
 		}
 		animator.SetTrigger("Arrive");
@@ -130,6 +148,10 @@ public class Subway : MonoBehaviour {
 	public void FinishDepartAnimation() {
 		if (holdingPlayer) {
 			// set the subway transition and DO IT
+			Transition.SubwayTransition subway = new Transition.SubwayTransition();
+			subway.scene = nextStop;
+			subway.xOffset = playerDummy.transform.localPosition.x;
+			GameObject.FindObjectOfType<TransitionManager>().SubwayTransition(subway);
 		} 
 	}
 
@@ -163,11 +185,13 @@ public class Subway : MonoBehaviour {
 	void OffboardPlayer() {
 		player.SetActive(true);
 		playerDummy.SetActive(false);
+		holdingPlayer = false;
 	}
 
 	// called from arriving animation
 	public void OpenAllDoors() {
-		doorsOpen = true;
+		// wait for the doors open animation to go a bit
+		this.WaitAndExecute(() => doorsOpen = true, 0.5f);
 		foreach (SubwayCar car in cars) {
 			car.OpenDoors();
 			car.EnableBoarding();

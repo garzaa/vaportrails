@@ -6,12 +6,6 @@ using UnityEngine.SceneManagement;
 public class TransitionManager : SavedObject {
 	public Transition transition;
 
-	// TODO: clear the transition at some point?
-	// maybe in loadscene/loadsubway?
-	// loadscene(beacon)
-	// takesubway(subwaytransition)
-	// then call subway arrive on load
-
 	protected override void LoadFromProperties() {}
 
 	public void LoadLastSavedScene() {
@@ -34,6 +28,7 @@ public class TransitionManager : SavedObject {
 	public void SubwayTransition(Transition.SubwayTransition subwayTransition) {
 		transition.Clear();
 		transition.subway = subwayTransition;
+		SceneManager.LoadScene(subwayTransition.scene);
 	}
 
 	public void BeaconTransition() {}
