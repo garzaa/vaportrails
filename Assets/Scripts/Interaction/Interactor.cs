@@ -36,7 +36,8 @@ public class Interactor : MonoBehaviour {
 			!entity.frozeInputs
 			&& player.GetButtonDown(RewiredConsts.Action.Interact)
 		) {
-			foreach (Interactable i in interactables) {
+			// deal with them leaving the collider on this frame as a result of interaction
+			foreach (Interactable i in new List<Interactable>(interactables)) {
 				entity.FlipTo(i.gameObject);
 				i.OnInteract(entity);
 			}

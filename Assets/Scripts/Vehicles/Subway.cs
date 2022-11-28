@@ -24,6 +24,8 @@ public class Subway : MonoBehaviour {
 	Animator animator;
 
 	bool holdingPlayer;
+	bool doorsOpen;
+	PlayerInput playerOne;
 
 	int cycleLength = 10 + 10 + 10 + 10;
 
@@ -35,11 +37,20 @@ public class Subway : MonoBehaviour {
 		animator.SetFloat("LeaveDirection", (float) leaveDirection);
 		animator.SetFloat("ArriveDirection", (float) arriveDirection);
 		StartCoroutine(SubwayRoutine());
+		foreach (SubwayCar car in cars) {
+			car.DisableBoarding();
+		}
+		playerOne = PlayerInput.GetPlayerOneInput();
+	}
+
+	void Update() {
+		if (holdingPlayer && doorsOpen && playerOne.VerticalInput() < -0.3f) {
+			OffboardPlayer();
+		}
 	}
 
 	IEnumerator SubwayRoutine() {
 		for (;;) {
-			Debug.Log("new subway loop");
 			ArriveAtStation();
 			SetInfoText(NextStopTime(0));
 			// arrive time + wait at station time
@@ -85,6 +96,13 @@ public class Subway : MonoBehaviour {
 	}
 
 	void ArriveAtStation() {
+		if (holdingPlayer) {
+			if (arriveDirection == SubwayDirection.RIGHT) {
+				playerDummy.transform.localScale = new Vector3(-1, 1, 1);
+			} else {
+				playerDummy.transform.localScale = new Vector3(-1, 1, 1);
+			}
+		}
 		animator.SetTrigger("Arrive");
 	}
 
@@ -127,6 +145,12 @@ public class Subway : MonoBehaviour {
 			playerDummy.transform.localPosition.y,
 			playerDummy.transform.localPosition.z
 		);
+		// face towards subway leave direction
+		if (leaveDirection == SubwayDirection.RIGHT) {
+			playerDummy.transform.localScale = new Vector3(-1, 1, 1);
+		} else {
+			playerDummy.transform.localScale = new Vector3(1, 1, 1);
+		}
 		// show player dummy
 		playerDummy.SetActive(true);
 		holdingPlayer = true;
@@ -137,18 +161,21 @@ public class Subway : MonoBehaviour {
 		playerDummy.SetActive(false);
 	}
 
-	// called from arrriving animation
-	// TODO: set this
+	// called from arriving animation
 	public void OpenAllDoors() {
+		doorsOpen = true;
 		foreach (SubwayCar car in cars) {
 			car.OpenDoors();
+			car.EnableBoarding();
 		}
 	}
 
 	// called from departing animation
 	public void CloseAllDoors() {
+		doorsOpen = false;
 		foreach (SubwayCar car in cars) {
 			car.CloseDoors();
+			car.DisableBoarding();
 		}
 	}
 }

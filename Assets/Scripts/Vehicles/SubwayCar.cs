@@ -10,9 +10,12 @@ public class SubwayCar : MonoBehaviour {
 	AudioSource audioSource;
 	public AudioSource[] doorNoise;
 
-	void Start() {
+	EventOnInteract[] doorInteracts;
+
+	void Awake() {
 		audioSource = GetComponent<AudioSource>();
 		anim = GetComponent<Animator>();
+		doorInteracts = GetComponentsInChildren<EventOnInteract>();
 	}
 
 	public void CloseDoors() {
@@ -30,10 +33,14 @@ public class SubwayCar : MonoBehaviour {
 	}
 
 	public void EnableBoarding() {
-		// enable the door interactables
+		foreach (EventOnInteract d in doorInteracts) {
+			d.GetComponent<BoxCollider2D>().enabled = true;
+		}
 	}
 
 	public void DisableBoarding() {
-		// disable the door interactables
+		foreach (EventOnInteract d in doorInteracts) {
+			d.GetComponent<BoxCollider2D>().enabled = false;
+		}
 	}
 }
