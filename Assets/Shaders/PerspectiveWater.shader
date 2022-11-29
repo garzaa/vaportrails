@@ -10,6 +10,7 @@ Shader "Custom2D/PerspectiveWater"
 		_MainScale ("Main Scale", Vector) = (1, 1, 0, 0)
 		_HorizonDistance ("Horizon Distance", Float) = 4
 		_MoveSpeed ("Move Speed", Vector) = (0, 0, 0, 0)
+		_DistanceRamp ("Distance Ramp", 2D) = "white" {}
 	}
 
 	SubShader
@@ -74,6 +75,7 @@ Shader "Custom2D/PerspectiveWater"
 			float4 _MainScale, _MoveSpeed;
 			float _HorizonDistance;
 
+			// TODO: JUST USE A GRADIENT YOU STUPID FUCK
 			fixed4 SampleSpriteTexture (float2 uv, float3 worldpos) {
 
 				// make uv x centered

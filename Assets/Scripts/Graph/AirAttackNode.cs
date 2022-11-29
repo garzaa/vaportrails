@@ -9,33 +9,32 @@ public class AirAttackNode : AttackNode {
 
     public bool singleUse;
 
-    public override bool Enabled() {
-        return base.Enabled() && !(this.graph as AttackGraph).airAttackTracker.Has(attackData.name);
+    public override bool Enabled(AttackGraphTraverser.Context context) {
+        return base.Enabled(context) && context.CanAirAttack(name);
     }
 
-    public override void OnNodeEnter() {
-        base.OnNodeEnter();
-        if (singleUse) attackGraph.airAttackTracker.Add(attackData.name);
+    public override void OnNodeEnter(AttackGraphTraverser.Context context) {
+        base.OnNodeEnter(context);
+        if (singleUse) context.BurnAirAttack(attackData.name);
     }
 
-    override public void NodeUpdate(int currentFrame, float clipTime, AttackBuffer buffer) {
-
-        if (attackGraph.grounded) {
-            OnGrounded();
-        } else if (attackLanded && CanMoveNode(nameof(onHit))) {
-            attackGraph.MoveNode(GetNode(nameof(onHit)).Connection.node as CombatNode);
-        } else if (buffer.Ready() && (currentFrame>=attackData.IASA || attackLanded)) {
-            MoveNextNode(buffer);
-        } else if (clipTime >= 1) {
-            attackGraph.ExitGraph();
+    override public void NodeUpdate(AttackGraphTraverser.Context context) {
+        if (context.grounded) {
+            OnGrounded(context);
+        } else if (context.attackLanded && CanMoveNode(nameof(onHit), context)) {
+            context.traverser.MoveNode(GetNode(nameof(onHit)).Connection.node as CombatNode);
+        } else if (context.buffer.Ready() && (context.currentFrame>=attackData.IASA || context.attackLanded)) {
+            MoveNextNode(context);
+        } else if (context.clipTime>=1) {
+            context.traverser.ExitGraph();
         }
     }
 
-    override public void OnGrounded() {
-        if (CanMoveNode(nameof(onLand))) {
-            attackGraph.MoveNode(GetNode("onLand").Connection.node as CombatNode);
+    void OnGrounded(AttackGraphTraverser.Context context) {
+        if (CanMoveNode(nameof(onLand), context)) {
+            context.traverser.MoveNode(GetNode("onLand").Connection.node as CombatNode);
         } else {
-            attackGraph.ExitGraph();
+            context.traverser.ExitGraph();
         }
     }    
 }

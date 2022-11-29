@@ -16,12 +16,13 @@ public class CombatController : MonoBehaviour, IAttackLandListener, IHitListener
 	protected EntityController player;
 	protected Animator animator;
 	protected EntityShader shader;
-	public AttackGraph currentGraph = null;
 	protected PlayerInput input;
 	AttackBuffer buffer;
 
 	public AttackGraph groundAttackGraph;
 	public AttackGraph airAttackGraph;
+
+	protected AttackGraphTraverser graphTraverser;
 
 	public float diStrength = 2f;
 
@@ -31,8 +32,6 @@ public class CombatController : MonoBehaviour, IAttackLandListener, IHitListener
 	bool techLockout = false;
 	GameObject techEffect;
 	Collider2D collider2d;
-
-	AirAttackTracker airAttackTracker = new AirAttackTracker();
 
 	protected virtual void Start() {
 		player = GetComponent<EntityController>();
@@ -46,21 +45,8 @@ public class CombatController : MonoBehaviour, IAttackLandListener, IHitListener
 		shader = GetComponent<EntityShader>();
 
 		techEffect = Resources.Load<GameObject>("Runtime/TechEffect");
-
-		groundAttackGraph.Initialize(
-			this,
-			animator,
-			buffer,
-			airAttackTracker,
-			input
-		);
-		airAttackGraph.Initialize(
-			this,
-			animator,
-			buffer,
-			airAttackTracker,
-			input
-		);
+		
+		graphTraverser = new AttackGraphTraverser(this);
 	}
 
 	public void OnAttackLand(AttackData attack, Hurtbox hurtbox) {
@@ -75,16 +61,13 @@ public class CombatController : MonoBehaviour, IAttackLandListener, IHitListener
 			rb2d.velocity = v;
 		}
 		player.DoHitstop(attack.hitstop, rb2d.velocity);
-		if (currentGraph) currentGraph.OnAttackLand(attack, hurtbox);
+		graphTraverser.OnAttackLand(attack, hurtbox);
 	}
 
 	protected virtual void Update() {
 		CheckAttackInputs();
 
-		if (currentGraph != null) {
-			currentGraph.UpdateGrounded(groundData.grounded);
-			currentGraph.Update();
-		}
+		graphTraverser.Update();
 
 		if (groundData.hitGround || wallData.hitWall) {
 			RefreshAirAttacks();
@@ -101,7 +84,7 @@ public class CombatController : MonoBehaviour, IAttackLandListener, IHitListener
 	}
 
 	public virtual void CheckAttackInputs() {
-		if (player.frozeInputs || currentGraph != null) {
+		if (player.frozeInputs || graphTraverser.InGraph()) {
 			return;
 		}
 
@@ -190,8 +173,7 @@ public class CombatController : MonoBehaviour, IAttackLandListener, IHitListener
 
 	public virtual void EnterAttackGraph(AttackGraph graph, CombatNode entryNode=null) {
 		player.OnAttackGraphEnter();
-		currentGraph = graph;
-		graph.EnterGraph(entryNode);
+		graphTraverser.EnterGraph(graph, entryNode);
 	}
 
 	public virtual void OnCombatNodeEnter(CombatNode combatNode) {
@@ -207,13 +189,8 @@ public class CombatController : MonoBehaviour, IAttackLandListener, IHitListener
 		}
 	}
 
-	public void OnAttackNodeExit() {
-		player.OnAttackNodeExit();
-	}
-
-	public void OnGraphExit() {
+	public void OnAttackGraphExit() {
 		player.OnAttackGraphExit();
-		currentGraph = null;
 	}
 
 	public float GetSpeed() {

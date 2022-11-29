@@ -473,10 +473,6 @@ public class EntityController : Entity {
 		}
 	}
 
-	public void OnAttackNodeExit() {
-	
-	}
-
 	public bool IsSpeeding() {
 		// this can jitter due to fixed update stuff
 		return Mathf.Abs(rb2d.velocity.x) > movement.runSpeed + 1.5f;

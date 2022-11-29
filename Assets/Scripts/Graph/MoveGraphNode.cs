@@ -7,9 +7,9 @@ public class MoveGraphNode : CombatNode {
     [Input(backingValue=ShowBackingValue.Never)]
     public AttackLink input;
 
-    override public void OnNodeEnter() {
-        base.OnNodeEnter();
-        attackGraph.combatController.EnterAttackGraph(
+    override public void OnNodeEnter(AttackGraphTraverser.Context context) {
+        base.OnNodeEnter(context);
+        context.traverser.EnterGraph(
             targetNode.graph as AttackGraph,
             targetNode
         );

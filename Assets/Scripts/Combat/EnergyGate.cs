@@ -14,12 +14,12 @@ public class EnergyGate : CombatNode {
 	[Output(backingValue=ShowBackingValue.Never, connectionType=ConnectionType.Override)]
 	public AttackLink onFail;
 
-	public override void OnNodeEnter() {
-		base.OnNodeEnter();
-		if ((attackGraph.combatController as ValCombatController).currentEP.Get() >= energyCost) {
-			attackGraph.MoveNode(GetNode(nameof(onPass)).Connection.node as CombatNode);
+	public override void OnNodeEnter(AttackGraphTraverser.Context context) {
+		base.OnNodeEnter(context);
+		if ((context.combatController as ValCombatController).currentEP.Get() >= energyCost) {
+			context.traverser.MoveNode(GetNode(nameof(onPass)).Connection.node as CombatNode);
 		} else {
-			attackGraph.MoveNode(GetNode(nameof(onFail)).Connection.node as CombatNode);
+			context.traverser.MoveNode(GetNode(nameof(onFail)).Connection.node as CombatNode);
 		}
 	}
 }

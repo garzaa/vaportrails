@@ -10,10 +10,9 @@ public class TimeOffsetNode : CombatNode {
     [Output(backingValue=ShowBackingValue.Never, connectionType=ConnectionType.Override)]
     public AttackLink output;
 
-    override public void OnNodeEnter() {
-        base.OnNodeEnter();
+    override public void OnNodeEnter(AttackGraphTraverser.Context context) {
+        base.OnNodeEnter(context);
         AttackNode next = GetNode("output").Connection.node as AttackNode;
-        next.timeOffset = this.normalizedOffset;
-        attackGraph.MoveNode(next);
+        context.traverser.MoveNode(next, normalizedOffset);
     }
 }

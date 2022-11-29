@@ -119,7 +119,7 @@ public class ValCombatController : CombatController, IHitListener {
 			Invoke(nameof(DisableAutoparry), autoparryDuration);
 			cameraZoom.ZoomFor(2, 0.5f);
 			FreezeFrame.Run(0.5f);
-			currentGraph?.ExitGraph();
+			graphTraverser.ExitGraph();
 			// not a combat node, so it can be acted out of
 			if (groundData.grounded) {
 				animator.Play("Ground Parry Success", 0);
@@ -180,7 +180,7 @@ public class ValCombatController : CombatController, IHitListener {
 	}
 
 	void Shoot() {
-		if (player.frozeInputs && currentGraph==null) return;
+		if (player.frozeInputs && !graphTraverser.InGraph()) return;
 
 		if (input.ButtonDown(Buttons.PROJECTILE) && currentEP.Get() > 0) {
 			animator.SetBool("WhiteEyes", true);
@@ -247,7 +247,7 @@ public class ValCombatController : CombatController, IHitListener {
 	override public void CheckAttackInputs() {
 		base.CheckAttackInputs();
 		if (
-			(!player.frozeInputs || currentGraph!=null)
+			(!player.frozeInputs || graphTraverser.InGraph())
 			&& input.ButtonDown(Buttons.SPECIAL)
 			&& !wallData.touchingWall
 		) {

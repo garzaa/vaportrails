@@ -5,25 +5,25 @@ public class InitialBranchNode : AttackNode {
     [Output(dynamicPortList=true, connectionType=ConnectionType.Override)]
     public AttackLink[] speedLinks;
 
-    override public void OnNodeEnter() {
-        base.OnNodeEnter();
-        CombatNode next = GetNextNode(attackGraph.buffer);
+    override public void OnNodeEnter(AttackGraphTraverser.Context context) {
+        base.OnNodeEnter(context);
+        CombatNode next = GetNextNode(context);
         if (next != null) {
-            attackGraph.MoveNode(next);
+            context.traverser.MoveNode(next);
         } else {
-            attackGraph.ExitGraph();
+            context.traverser.ExitGraph();
         }
     }
 
-    override public CombatNode GetNextNode(AttackBuffer buffer) {
+    override public CombatNode GetNextNode(AttackGraphTraverser.Context context) {
         CombatNode next = null;
 
-        if (attackGraph.combatController.IsSpeeding() && speedLinks.Length > 0) {
-            next = MatchAttackNode(buffer, speedLinks, portListName:nameof(speedLinks), loopOnce: true);
+        if (context.combatController.IsSpeeding() && speedLinks.Length > 0) {
+            next = MatchAttackNode(context, speedLinks, portListName:nameof(speedLinks), loopOnce: true);
         }
 
         if (next == null) {
-            next = MatchAttackNode(buffer, links);
+            next = MatchAttackNode(context, links);
         }
 
         return next;

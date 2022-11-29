@@ -19,15 +19,11 @@ public class AttackNode : CombatNode {
     [Output(backingValue=ShowBackingValue.Never, connectionType=ConnectionType.Override)]
     public AttackLink onHit;
 
-    [HideInInspector]
-    public float timeOffset = 0;
-
-    override public void OnNodeEnter() {
-        base.OnNodeEnter();
+    override public void OnNodeEnter(AttackGraphTraverser.Context context) {
+        base.OnNodeEnter(context);
         if (!string.IsNullOrEmpty(GetAnimationStateName())) {
-            attackGraph.animator.Play(GetAnimationStateName(), layer:0, normalizedTime:timeOffset);
+            context.animator.Play(GetAnimationStateName(), layer:0, normalizedTime:context.GetTimeOffset());
         }
-        timeOffset = 0;
     }
 
     override public string GetAnimationStateName() {
@@ -35,40 +31,33 @@ public class AttackNode : CombatNode {
         return "";
     }
 
-    override public void NodeUpdate(int currentFrame, float clipTime, AttackBuffer buffer) {
-        base.NodeUpdate(currentFrame, clipTime, buffer);
-
-        if (attackLanded && CanMoveNode(nameof(onHit))) {
+    override public void NodeUpdate(AttackGraphTraverser.Context context) {
+        base.NodeUpdate(context);
+        if (context.attackLanded && CanMoveNode(nameof(onHit), context)) {
             CombatNode node = GetNode(nameof(onHit)).Connection.node as CombatNode;
-            attackGraph.MoveNode(node);
+            context.traverser.MoveNode(node);
             return;
-        } else if (buffer.Ready() && (attackLanded || currentFrame>=attackData.IASA)) {
-            MoveNextNode(buffer);
+        } else if (context.buffer.Ready() && (context.attackLanded || context.currentFrame>=attackData.IASA)) {
+            MoveNextNode(context);
         }
 
-        attackGraph.animator.SetBool("Actionable", currentFrame>=attackData.IASA);
-    }
-
-    override public void OnNodeExit() {
-        base.OnNodeExit();
-        timeOffset = 0;
+        context.animator.SetBool("Actionable", context.currentFrame>=attackData.IASA);
     }
  
-    protected void MoveNextNode(AttackBuffer buffer) {
-        CombatNode next = GetNextNode(buffer);
+    protected void MoveNextNode(AttackGraphTraverser.Context context) {
+        CombatNode next = GetNextNode(context);
         if (next != null) {
-            attackGraph.MoveNode(next);
-            return;
+            context.traverser.MoveNode(next);
         }
     }
 
-    virtual public CombatNode GetNextNode(AttackBuffer buffer) {
-        return MatchAttackNode(buffer, this.links);
+    virtual public CombatNode GetNextNode(AttackGraphTraverser.Context context) {
+        return MatchAttackNode(context, this.links);
     }
 
     // directional attacks are prioritized in order, then the first any-directional link is used
     protected CombatNode MatchAttackNode(
-        AttackBuffer buffer,
+        AttackGraphTraverser.Context context,
         AttackLink[] attackLinks,
         string portListName=nameof(links),
         bool loopOnce=false
@@ -78,14 +67,14 @@ public class AttackNode : CombatNode {
 		bool foundCandidate = false;
 
 		// keep looking through the buffer for the next action
-		while (buffer.Ready() && !foundCandidate) {
-			BufferedAttack attack = buffer.Consume();
+		while (context.buffer.Ready() && !foundCandidate) {
+			BufferedAttack attack = context.buffer.Consume();
 			for (int i=0; i<attackLinks.Length; i++) {
 				AttackLink link = attackLinks[i];
 				if (link.type==attack.type && attack.HasDirection(link.direction)) {
 					foundCandidate = true;
 					CombatNode next = GetNode(portListName+" "+i).Connection.node as CombatNode;
-					if (next.Enabled()) {
+					if (next.Enabled(context)) {
 						if (link.direction != AttackDirection.ANY) {
 							directionalLinks.Add(new Tuple<AttackLink, CombatNode>(link, next));
 						} else if (anyDirectionNode == null) {
@@ -96,7 +85,7 @@ public class AttackNode : CombatNode {
 				}
 			}
             if (loopOnce && !foundCandidate) {
-                buffer.Refund(attack);
+                context.buffer.Refund(attack);
                 return null;
             }
 		}
@@ -112,26 +101,3 @@ public class AttackNode : CombatNode {
         return null;
     }
 }
-
-/*
-#if UNITY_EDITOR
-
-// highlight the current node
-// unfortunately doesn't always update in time, but oh well
-[CustomNodeEditor(typeof(AttackNode))]
-public class AttackNodeEditor : NodeEditor {
-    private AttackNode attackNode;
-    private static GUIStyle editorLabelStyle;
-
-    public override void OnBodyGUI() {
-        attackNode = target as AttackNode;
-
-        if (editorLabelStyle == null) editorLabelStyle = new GUIStyle(EditorStyles.label);
-        if (attackNode.active) EditorStyles.label.normal.textColor = Color.cyan;
-        base.OnBodyGUI();
-        EditorStyles.label.normal = editorLabelStyle.normal;
-    }
-}
-
-#endif
-*/

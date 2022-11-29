@@ -15,14 +15,14 @@ public class UnlockableGate : CombatNode {
         return (GetNode("unlockedBranch").Connection.node as CombatNode);
     }
 
-    override public bool Enabled() {
-        return base.Enabled() 
+    override public bool Enabled(AttackGraphTraverser.Context context) {
+        return base.Enabled(context) 
         // && GlobalController.inventory.items.HasItem(requiredItem)
-        && GetUnlockedNode().Enabled();
+        && GetUnlockedNode().Enabled(context);
     }
 
-    override public void OnNodeEnter() {
-        base.OnNodeEnter();
-        attackGraph.MoveNode(GetUnlockedNode());
+    override public void OnNodeEnter(AttackGraphTraverser.Context context) {
+        base.OnNodeEnter(context);
+        context.traverser.MoveNode(GetUnlockedNode());
     }
 }
