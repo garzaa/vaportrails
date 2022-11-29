@@ -85,9 +85,8 @@ Shader "Custom2D/PerspectiveWater"
 
 				// ok this can't be linear
 				// it needs to increase massively and then decrease a bit
-				float linearCurve = uv.y;
 				float logCurve = log(uv.y)+1;
-				float powerCurve = pow(uv.y, 3);
+				float powerCurve = pow(uv.y, 10);
 
 				// closer UVs use more of the worldPosition
 				uv.x = lerp(uv.x, worldpos.x, 1-logCurve);
@@ -109,7 +108,7 @@ Shader "Custom2D/PerspectiveWater"
 				// then do the color ramp
 				// horizontal: brightness
 				// vertical: camera distance
-				c = tex2D(_ColorRamp, fixed2(c.r, linearCurve));
+				c = tex2D(_ColorRamp, fixed2(c.r, powerCurve));
 
 				return c;
 			}
