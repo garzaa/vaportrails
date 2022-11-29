@@ -300,7 +300,6 @@ public class Terminal : MonoBehaviour, IPointerDownHandler {
     }
 
     void ClearInput() {
-        Debug.Log("clearing input");
 		input.text = "";
 	}
 

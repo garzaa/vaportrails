@@ -19,7 +19,7 @@ public class InitialBranchNode : AttackNode {
         CombatNode next = null;
 
         if (context.combatController.IsSpeeding() && speedLinks.Length > 0) {
-            next = MatchAttackNode(context, speedLinks, portListName:nameof(speedLinks), loopOnce: true);
+            next = MatchAttackNode(context, speedLinks, portListName:nameof(speedLinks));
         }
 
         if (next == null) {

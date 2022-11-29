@@ -42,7 +42,6 @@ public class GhostRecorder : InputRecorder {
 			// attack inputs happen relatively rarely compared to how long
 			// the player "wants to be in attack"
 			if (ShouldStretch(e.actionId)) {
-				Debug.Log("stretching attack");
 				stretchedAttackIDs.Add(e.actionId);
 				StartCoroutine(CutAttackPress(e.actionId));
 			}

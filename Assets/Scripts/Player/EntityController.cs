@@ -26,7 +26,7 @@ public class EntityController : Entity {
 			_frozeInputs = value;
 		}
 	}
-	private bool _frozeInputs;
+	[SerializeField] private bool _frozeInputs;
 
 	public bool inCutscene => cutsceneSources.Count > 0;
 
@@ -54,7 +54,7 @@ public class EntityController : Entity {
 	Coroutine keepJumpSpeedRoutine;
 
 	public bool inAttack => currentAttack != null;
-	protected AttackData currentAttack;
+	[SerializeField] protected AttackData currentAttack;
 	protected PlayerInput input;
 	ToonMotion toonMotion;
 	GameObject wallJumpDust;
@@ -452,7 +452,7 @@ public class EntityController : Entity {
 	}
 
 	public void OnAttackGraphExit() {
-		frozeInputs = false;
+		UnfreezeInputs();
 		currentAttack = null;
 		Jump(executeIfBuffered: true);
 	}
@@ -460,7 +460,7 @@ public class EntityController : Entity {
 	public void OnAttackNodeEnter(AttackNode attackNode) {
 		AttackData attackData = attackNode?.attackData;
 		currentAttack = attackData;
-		frozeInputs = true;
+		FreezeInputs();
 		// bespoke for divekick animation
 		bool allowFlip = (attackNode is AirAttackNode && (attackNode as AirAttackNode).allowFlip);
 		if ((groundData.grounded || allowFlip) && (attackData && !attackData.fromBackwardsInput)) {

@@ -59,8 +59,7 @@ public class AttackNode : CombatNode {
     protected CombatNode MatchAttackNode(
         AttackGraphTraverser.Context context,
         AttackLink[] attackLinks,
-        string portListName=nameof(links),
-        bool loopOnce=false
+        string portListName=nameof(links)
     ) {
         directionalLinks.Clear();
         anyDirectionNode = null;
@@ -84,10 +83,6 @@ public class AttackNode : CombatNode {
                     break;
 				}
 			}
-            if (loopOnce && !foundCandidate) {
-                context.buffer.Refund(attack);
-                return null;
-            }
 		}
 
         if (directionalLinks.Count > 0) {

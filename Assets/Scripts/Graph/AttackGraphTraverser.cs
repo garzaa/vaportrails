@@ -75,15 +75,15 @@ public class AttackGraphTraverser {
 		context.Refresh();
 		currentGraph = graph;
 		context.animator.SetBool("Actionable", false);
-		MoveNode(currentNode = entryNode ?? graph.GetRootNode());
+		MoveNode(entryNode ?? graph.GetRootNode());
 	}
 
 	public void MoveNode(CombatNode node) {
 		currentNode = node;
 		enteredCurrentNode = false;
 		nodeSwitchTime = Time.unscaledTime;
-		node.OnNodeEnter(context);
 		context.combatController.OnCombatNodeEnter(currentNode);
+		node.OnNodeEnter(context);
 	}
 	
 	public void MoveNode(CombatNode node, float timeOffset) {
@@ -94,7 +94,6 @@ public class AttackGraphTraverser {
 	public void ExitGraph() {
 		currentGraph = null;
 		currentNode = null;
-		context.Refresh();
 		context.animator.SetBool("Actionable", true);
 		context.combatController.OnAttackGraphExit();
 	}
@@ -108,7 +107,7 @@ public class AttackGraphTraverser {
 	}
 
 	public void Update() {
-		if (!currentGraph) return;
+		if (!InGraph()) return;
 		// this will break if the animator has a blend state in an attack node
 		AnimatorClipInfo[] clipInfo = context.animator.GetCurrentAnimatorClipInfo(layerIndex:0);
 		if (LockState(clipInfo)) {

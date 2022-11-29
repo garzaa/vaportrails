@@ -88,7 +88,7 @@ public class CombatController : MonoBehaviour, IAttackLandListener, IHitListener
 			return;
 		}
 
-		if (input.ButtonDown(Buttons.PUNCH) || input.ButtonDown(Buttons.KICK)) {
+		if (buffer.Ready()) {
 			if (groundData.grounded) {
 				EnterAttackGraph(groundAttackGraph);
 			} else if (!groundData.grounded && !wallData.touchingWall) {
