@@ -65,8 +65,8 @@ public class Terminal : MonoBehaviour, IPointerDownHandler {
     }
 
     void OnTerminalOpen() {
-        SelectInput();
         ClearInput();
+        SelectInput();
         foreach (PlayerInput input in GameObject.FindObjectsOfType<PlayerInput>()) {
             if (input.GetPlayer().controllers.hasKeyboard) {
                 currentPlayer = input.GetPlayer();
@@ -98,7 +98,7 @@ public class Terminal : MonoBehaviour, IPointerDownHandler {
 
     public void OnCommandSubmit() {
         if (string.IsNullOrWhiteSpace(input.text)) {
-			input.text = "";
+            ClearInput();
 			return;
 		}
 		string command = input.text.Trim();
@@ -300,6 +300,7 @@ public class Terminal : MonoBehaviour, IPointerDownHandler {
     }
 
     void ClearInput() {
+        Debug.Log("clearing input");
 		input.text = "";
 	}
 
