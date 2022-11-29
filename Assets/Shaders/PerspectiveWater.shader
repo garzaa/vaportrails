@@ -78,6 +78,9 @@ Shader "Custom2D/PerspectiveWater"
 
 			fixed4 SampleSpriteTexture (float2 uv, float3 worldpos) {
 				uv += _Time.x * _MoveSpeed;
+
+				// TODO: make it centered on the player
+				// pass in some kind of cameraXPos maybe
 				// make uv x centered
 				// i.e. map from 0-1 to -1 - 1
 				uv.x = (uv.x*2) - 1;
