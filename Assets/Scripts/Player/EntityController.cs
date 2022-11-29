@@ -381,6 +381,8 @@ public class EntityController : Entity {
 		if (groundData.hitGround) {
 			StartCoroutine(UpdateToonMotion());
 			landingRecovery = -1;
+			// TODO: move this to ValController or something
+			// also only make it happen if fall distance is more than 0.2 because subway
 			HairForwards();
 		}
 
