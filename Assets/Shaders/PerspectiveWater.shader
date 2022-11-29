@@ -9,8 +9,6 @@ Shader "Custom2D/PerspectiveWater"
 		[MaterialToggle] PixelSnap ("Pixel snap", Float) = 0
 		_MainScale ("Main Scale", Vector) = (1, 1, 0, 0)
 		_HorizonDistance ("Horizon Distance", Float) = 4
-		_NearScale ("Near Scale", Vector) = (0.5, 0.5, 0, 0)
-		_FarScale ("Far Scale", Vector) = (5, 5, 0, 0)
 		_MoveSpeed ("Move Speed", Vector) = (0, 0, 0, 0)
 	}
 
@@ -77,32 +75,41 @@ Shader "Custom2D/PerspectiveWater"
 			float _HorizonDistance;
 
 			fixed4 SampleSpriteTexture (float2 uv, float3 worldpos) {
-				uv += _Time.x * _MoveSpeed;
 
-				// TODO: make it centered on the player
-				// pass in some kind of cameraXPos maybe
 				// make uv x centered
 				// i.e. map from 0-1 to -1 - 1
 				uv.x = (uv.x*2) - 1;
-				// uv.x += worldpos.x;
-
+				
 				// bottom starts at 0
 				uv.y = 1 - uv.y;
 
-				float camDistance = uv.y*_HorizonDistance;
-				float distanceFraction = uv.y;
+				// ok this can't be linear
+				// it needs to increase massively and then decrease a bit
+				float linearCurve = uv.y;
+				float logCurve = log(uv.y)+1;
+				float powerCurve = pow(uv.y, 3);
 
-				// return lerp(float4(1, 0, 0, 1), float4(0, 0, 1, 1), uv.y);
+				// closer UVs use more of the worldPosition
+				uv.x = lerp(uv.x, worldpos.x, 1-logCurve);
 
-				uv.y *= camDistance;
+				//return lerp(float4(1, 0, 0, 1), float4(0, 0.5, 1, 1), 1-logCurve);
+
+				uv.y *= powerCurve*_HorizonDistance;
 				// multiplying it by the right value makes a curve
-				uv.x /= lerp(0, _HorizonDistance, 1-distanceFraction);
+				uv.x /= lerp(0, _HorizonDistance, 1-logCurve);
 
+				uv += _Time.x * _MoveSpeed;
 
 				fixed4 c = tex2D (_NoiseTex, uv/_MainScale.xy);
+				// add another moving texture for extra noise
+				fixed4 c2 = tex2D(_NoiseTex, (uv+ fixed2(_Time.x/2, _Time.z/2))/_MainScale.xy/4 );
+
+				c = lerp(c, c2, c2.r*0.5);
 
 				// then do the color ramp
-				// c = tex2D(_ColorRamp, fixed2(c.r * uv.y, 0));
+				// horizontal: brightness
+				// vertical: camera distance
+				c = tex2D(_ColorRamp, fixed2(c.r, linearCurve));
 
 				return c;
 			}
