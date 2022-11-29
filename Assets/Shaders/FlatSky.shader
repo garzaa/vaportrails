@@ -73,6 +73,7 @@ Shader "Custom2D/FlatSky"
 			fixed4 SampleSpriteTexture (float2 uv, fixed4 fadeColor)
 			{
 				float textureYPos = uv.y;
+				uv += _Time.x * _MoveSpeed;
 
 				// make uv x start at 0.5 instead?
 				// map uv.x from 0-1 to -1 - 1
@@ -83,7 +84,6 @@ Shader "Custom2D/FlatSky"
 				uv.xy *= lerp(_NearScale.xy, _FarScale.xy, textureYPos);
 				// return lerp(float4(1, 0, 0, 1), float4(0, 0, 1, 1), textureYPos);
 
-				uv += _Time.x * _MoveSpeed;
 				fixed4 c = tex2D (_MainTex, uv);
 
 				// then do the color ramp
