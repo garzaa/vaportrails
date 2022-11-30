@@ -143,7 +143,7 @@ public class EntityController : Entity {
 	}
 
 	override protected void OnWallHit() {
-		if (!stunned) FlipToWall();
+		if (!stunned && !animator.GetBool("Tumbling")) FlipToWall();
 		fMod = 1;
 		RefreshAirMovement();
 	}

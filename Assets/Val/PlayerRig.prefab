@@ -8320,7 +8320,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &6603927368714816909
 Transform:
   m_ObjectHideFlags: 0
@@ -8329,7 +8329,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6603927368714816908}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.58597136, z: 0}
+  m_LocalPosition: {x: 0, y: -0.5081217, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -8682,6 +8682,7 @@ GameObject:
   - component: {fileID: 6603927368899158687}
   - component: {fileID: 6603927368899158672}
   - component: {fileID: 6603927368899158673}
+  - component: {fileID: 5249992248628012642}
   m_Layer: 0
   m_Name: PlayerRig
   m_TagString: Untagged
@@ -8770,6 +8771,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb2d: {fileID: 0}
   offset: -90
+--- !u!114 &5249992248628012642
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6603927368899158684}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 358d46ccce780ca4c88f142d57a1b0b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rps: -1.5
+  unscaled: 0
+  resetOnDisable: 1
 --- !u!1 &6603927368941712437
 GameObject:
   m_ObjectHideFlags: 0

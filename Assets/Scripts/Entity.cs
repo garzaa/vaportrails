@@ -28,8 +28,6 @@ public class Entity : MonoBehaviour, IHitListener {
 	GroundCheck groundCheck;
 	AudioResource currentFootfall;
 	PhysicsMaterial2D defaultMaterial;
-	RotateToVelocity stunRotation;
-	Spinner stunSpin;
 
 	static GameObject jumpDust;
 	protected static GameObject landDust;
@@ -39,7 +37,6 @@ public class Entity : MonoBehaviour, IHitListener {
 	
 	bool canGroundHitEffect = true;
 	public bool staggerable = true;
-	bool stunBounced;
 	
 	bool canFlip = true;
 
@@ -67,12 +64,6 @@ public class Entity : MonoBehaviour, IHitListener {
 		stunSmoke = Instantiate(Resources.Load<GameObject>("Runtime/StunSmoke"), this.transform).GetComponent<ParticleSystem>();
 		stunSmoke.transform.localPosition = Vector3.zero;
 		stunSmoke.Stop();
-		stunRotation = GetComponentInChildren<RotateToVelocity>();
-		if (stunRotation) {
-			stunSpin = stunRotation.gameObject.AddComponent<Spinner>();
-			stunSpin.rps = -1.5f;
-			stunSpin.enabled = false;
-		}
 	}
 
     public void DoHitstop(float duration, Vector2 exitVelocity, bool priority=false) {
@@ -163,7 +154,6 @@ public class Entity : MonoBehaviour, IHitListener {
 
 	public void StunFor(float seconds, float hitstopDuration) {
 		animator.SetTrigger("OnHit");
-		stunBounced = false;
 		stunned = true;
 		animator.SetBool("Stunned", true);
 		animator.SetBool("Tumbling", false);
@@ -223,8 +213,6 @@ public class Entity : MonoBehaviour, IHitListener {
 	void StunBounce(Vector3 collisionNormal) {
 		landNoise?.PlayFrom(gameObject);
 		animator.SetBool("Tumbling", true);
-		stunBounced = true;
-		if (stunSpin) stunSpin.enabled = true;
 	}
 
 	protected virtual void Update() {
@@ -247,9 +235,6 @@ public class Entity : MonoBehaviour, IHitListener {
 			OnWallHit();
 		}
 		RectifyEntityCollision();
-		if (stunRotation) {
-			stunSpin.enabled = (stunned || animator.GetBool("Tumbling")) && !groundData.grounded && stunBounced;
-		}
 	}
 
 	void RectifyEntityCollision() {
