@@ -170,13 +170,12 @@ public class Entity : MonoBehaviour, IHitListener {
 		animator.SetBool("Stunned", true);
 		rb2d.sharedMaterial = stunMaterial;
 		stunSmoke.Play();
+		CancelInvoke(nameof(UnStun));
 		Invoke(nameof(UnStun), seconds+hitstopDuration);
 	}
 
 	public void CancelStun() {
-		if (IsInvoking(nameof(UnStun))) {
-			CancelInvoke(nameof(UnStun));
-		}
+		CancelInvoke(nameof(UnStun));
 		UnStun();
 	}
 
