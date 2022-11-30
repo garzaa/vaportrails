@@ -182,6 +182,8 @@ public class Entity : MonoBehaviour, IHitListener {
 		animator.SetBool("Stunned", false);
 		if (groundData.grounded) {
 			animator.SetBool("Tumbling", false);
+		} else {
+			animator.SetBool("Tumbling", true);
 		}
 		stunned = false;
 		rb2d.sharedMaterial = defaultMaterial;
@@ -191,15 +193,23 @@ public class Entity : MonoBehaviour, IHitListener {
 	void OnCollisionEnter2D(Collision2D collision) {
 		bool hitGround = Vector3.Angle(collision.contacts[0].normal, Vector3.up) < 0.1f;
 		if (hitGround && animator.GetBool("Tumbling")) {
-			rb2d.velocity = new Vector2(rb2d.velocity.x, 0);
-			animator.Play("GroundFlop", 0);
-			CancelInvoke(nameof(ExecuteTech));
-			Invoke(nameof(ExecuteTech), 7f/12f);
+			GroundFlop();
 		}
 		else if (stunned) {
-			stunBounced = true;
-			StunBounce(collision.contacts[0].normal);
+			if (rb2d.velocity.magnitude > 1f) {
+				StunBounce(collision.contacts[0].normal);
+			} else {
+				GroundFlop();
+			}
 		}
+	}
+
+	void GroundFlop() {
+		landNoise?.PlayFrom(gameObject);
+		rb2d.velocity = Vector2.zero;
+		animator.Play("GroundFlop", 0);
+		CancelInvoke(nameof(ExecuteTech));
+		Invoke(nameof(ExecuteTech), 9f/12f);
 	}
 
 	void ExecuteTech() {
@@ -211,7 +221,6 @@ public class Entity : MonoBehaviour, IHitListener {
 	}
 
 	void StunBounce(Vector3 collisionNormal) {
-		bool hitGround = Vector3.Angle(collisionNormal, Vector3.up) < 0.1f;
 		landNoise?.PlayFrom(gameObject);
 		animator.SetBool("Tumbling", true);
 		stunBounced = true;
@@ -239,7 +248,6 @@ public class Entity : MonoBehaviour, IHitListener {
 		}
 		RectifyEntityCollision();
 		if (stunRotation) {
-			stunRotation.enabled = stunned && !groundData.grounded && !stunBounced;
 			stunSpin.enabled = (stunned || animator.GetBool("Tumbling")) && !groundData.grounded && stunBounced;
 		}
 	}

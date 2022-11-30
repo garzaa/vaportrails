@@ -710,6 +710,7 @@ MonoBehaviour:
     - links
     - onHit
     - input
+    - links 0
     values:
     - _fieldName: links
       _node: {fileID: 3697867700367071595}
@@ -741,11 +742,25 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
+    - _fieldName: links 0
+      _node: {fileID: 3697867700367071595}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: input
+        node: {fileID: 6106788391044239856}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 1
   attackData: {fileID: 11400000, guid: e9450ae1c5b7e65488221e964e2596fb, type: 2}
   input:
     type: 0
     direction: 0
-  links: []
+  links:
+  - type: 2
+    direction: 0
   onHit:
     type: 0
     direction: 0
@@ -936,6 +951,9 @@ MonoBehaviour:
         reroutePoints: []
       - fieldName: links 2
         node: {fileID: 7367564331834169068}
+        reroutePoints: []
+      - fieldName: links 0
+        node: {fileID: 3697867700367071595}
         reroutePoints: []
       _direction: 0
       _connectionType: 0

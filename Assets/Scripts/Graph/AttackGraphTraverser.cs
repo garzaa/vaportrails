@@ -83,6 +83,7 @@ public class AttackGraphTraverser {
 		enteredCurrentNode = false;
 		nodeSwitchTime = Time.unscaledTime;
 		context.combatController.OnCombatNodeEnter(currentNode);
+		context.attackLanded = false;
 		node.OnNodeEnter(context);
 	}
 	
