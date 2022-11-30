@@ -10,9 +10,14 @@ public class PlayerInput : MonoBehaviour {
     Vector2 ls;
 
     public int playerNum = 0;
+    Controller lastActiveController;
 
 	void Awake() {
         player = ReInput.players.GetPlayer(playerNum);
+    }
+
+    void Start() {
+        if (playerNum == 0) player.AddInputEventDelegate(ShowHideMouse, UpdateLoopType.Update);
     }
 
     public Player GetPlayer() {
@@ -31,6 +36,11 @@ public class PlayerInput : MonoBehaviour {
 
     void Update() {
         ls = LeftStick();
+    }
+
+    void ShowHideMouse(InputActionEventData actionData) {
+        lastActiveController = player.controllers.GetLastActiveController();
+        Cursor.visible = (lastActiveController?.type == Rewired.ControllerType.Mouse);
     }
 
     public bool HasHorizontalInput() {
