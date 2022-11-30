@@ -268,8 +268,14 @@ MonoBehaviour:
       - _enabled: 1
         _categoryId: 0
         _layoutId: 0
-      _defaultMouseMaps: []
-      _defaultKeyboardMaps: []
+      _defaultMouseMaps:
+      - _enabled: 1
+        _categoryId: 0
+        _layoutId: 0
+      _defaultKeyboardMaps:
+      - _enabled: 1
+        _categoryId: 0
+        _layoutId: 0
       _defaultCustomControllerMaps:
       - _enabled: 1
         _categoryId: 0
@@ -1030,6 +1036,17 @@ MonoBehaviour:
         _modifierKey1: 0
         _modifierKey2: 0
         _modifierKey3: 0
+      - _actionCategoryId: 0
+        _actionId: 7
+        _elementType: 1
+        _elementIdentifierId: 7
+        _axisRange: 0
+        _invert: 0
+        _axisContribution: 0
+        _keyboardKeyCode: 0
+        _modifierKey1: 0
+        _modifierKey2: 0
+        _modifierKey3: 0
     customControllers:
     - _name: FalseInput
       _descriptiveName: AI Input controller
@@ -1077,6 +1094,12 @@ MonoBehaviour:
         _positiveName: 
         _negativeName: 
         _elementType: 0
+        _compoundElementType: 0
+      - _id: 7
+        _name: AI Parry
+        _positiveName: 
+        _negativeName: 
+        _elementType: 1
         _compoundElementType: 0
       _axes:
       - elementIdentifierId: 0
@@ -1170,7 +1193,9 @@ MonoBehaviour:
         name: AI Projectile
       - elementIdentifierId: 5
         name: AI Special
-      _elementIdentifierIdCounter: 7
+      - elementIdentifierId: 7
+        name: AI Parry
+      _elementIdentifierIdCounter: 8
     controllerMapLayoutManagerRuleSets: []
     controllerMapEnablerRuleSets: []
     playerIdCounter: 6

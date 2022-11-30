@@ -63,6 +63,12 @@ public class EntityController : Entity {
 
 	HashSet<MonoBehaviour> cutsceneSources = new HashSet<MonoBehaviour>();
 
+	const float techWindow = 0.3f;
+	const float techLockoutLength = 0.6f;
+	bool canTech = false;
+	bool techLockout = false;
+	GameObject techEffect;
+
 	override protected void Awake() {
 		base.Awake();
 		input = GetComponent<PlayerInput>();
@@ -70,6 +76,7 @@ public class EntityController : Entity {
 		wallJumpDust = Resources.Load<GameObject>("Runtime/WallJumpDust");
 		fastfallSpark = Resources.Load<GameObject>("Runtime/FastfallSpark");
 		speedDust = Resources.Load<GameObject>("Runtime/SpeedDust").GetComponentInChildren<ParticleSystem>();
+		techEffect = Resources.Load<GameObject>("Runtime/TechEffect");
 		GetComponentInChildren<ToonMotion>().ignoreGameobjects.Add(speedDust.transform.parent.gameObject);
 		// p = mv
 		RefreshAirMovement();
@@ -81,10 +88,10 @@ public class EntityController : Entity {
 		base.Update();
 		CheckFlip();
 		Move();
-		
 		Jump();
 		UpdateAnimator();
 		UpdateEffects();
+		CheckForTech();
 	}
 
 	void FixedUpdate() {
@@ -356,6 +363,65 @@ public class EntityController : Entity {
 		}
 		keepJumpSpeed = true;
 		keepJumpSpeedRoutine = StartCoroutine(KeepJumpSpeedRoutine());
+	}
+
+	void CheckForTech() {
+		if (!techLockout && stunned && !canTech) {
+			if (input.ButtonDown(Buttons.SPECIAL) || input.ButtonDown(Buttons.PARRY)) {
+				canTech = true;
+				Invoke(nameof(EndTechWindow), techWindow);
+			}
+		}
+		
+		if (stunned && (groundData.hitGround || wallData.hitWall)) {
+			if (!techLockout && canTech) {
+				OnTech();
+			}
+		}
+	}
+
+	public virtual void OnTech() {
+		if (wallData.touchingWall) {
+			rb2d.velocity = Vector2.zero;
+			RefreshAirMovement();
+			Instantiate(
+				techEffect,
+				transform.position + new Vector3(wallData.direction * collider2d.bounds.extents.x, 0, 0),
+				Quaternion.identity,
+				null
+			);
+		} else if (groundData.grounded) {
+			rb2d.velocity = new Vector2(
+				movement.runSpeed * Mathf.Sign(input.HorizontalInput()),
+				0
+			);
+			Instantiate(
+				techEffect,
+				transform.position + Vector3.down*collider2d.bounds.extents.y,
+				Quaternion.identity,
+				null
+			);
+		}
+		CancelStun();
+		UpdateAnimator();
+		if (input.HasHorizontalInput()) {
+			animator.SetTrigger("TechSuccess");
+		} else {
+			animator.Play("Idle", 0);
+		}
+		shader.FlashCyan();
+		canTech = false;
+		CancelInvoke(nameof(EndTechWindow));
+		GetComponent<CombatController>()?.OnTech();
+		// freeze inputs for a sec while teching
+		FreezeInputs();
+		Invoke(nameof(UnfreezeInputs), 0.5f);
+	}
+
+	void EndTechWindow() {
+		canTech = false;
+		techLockout = true;
+		this.WaitAndExecute(() => techLockout = false, techLockoutLength);
 	}
 
 	void UpdateAnimator() {

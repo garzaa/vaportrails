@@ -33,7 +33,7 @@ public class Entity : MonoBehaviour, IHitListener {
 
 	static GameObject jumpDust;
 	protected static GameObject landDust;
-	protected static PhysicsMaterial2D stunMaterial;
+	protected static PhysicsMaterial2D bouncyStunMaterial;
 	static GameObject footfallDust;
 	ParticleSystem stunSmoke;
 	
@@ -62,7 +62,7 @@ public class Entity : MonoBehaviour, IHitListener {
 		if (!jumpDust) jumpDust = Resources.Load<GameObject>("Runtime/JumpDust");
 		if (!landDust) landDust = Resources.Load<GameObject>("Runtime/LandDust");
 		if (!footfallDust) footfallDust = Resources.Load<GameObject>("Runtime/FootfallDust");
-		if (!stunMaterial) stunMaterial = Resources.Load<PhysicsMaterial2D>("Runtime/BounceEntity");
+		if (!bouncyStunMaterial) bouncyStunMaterial = Resources.Load<PhysicsMaterial2D>("Runtime/BounceEntity");
 		defaultMaterial = rb2d.sharedMaterial;
 		stunSmoke = Instantiate(Resources.Load<GameObject>("Runtime/StunSmoke"), this.transform).GetComponent<ParticleSystem>();
 		stunSmoke.transform.localPosition = Vector3.zero;
@@ -162,52 +162,59 @@ public class Entity : MonoBehaviour, IHitListener {
 	}
 
 	public void StunFor(float seconds, float hitstopDuration) {
-		CancelStun();
 		animator.SetTrigger("OnHit");
-		landNoise?.PlayFrom(this.gameObject);
 		stunBounced = false;
 		stunned = true;
 		animator.SetBool("Stunned", true);
-		rb2d.sharedMaterial = stunMaterial;
+		animator.SetBool("Tumbling", false);
+		rb2d.sharedMaterial = bouncyStunMaterial;
 		stunSmoke.Play();
 		CancelInvoke(nameof(UnStun));
+		CancelInvoke(nameof(ExecuteTech));
 		Invoke(nameof(UnStun), seconds+hitstopDuration);
 	}
 
 	public void CancelStun() {
-		CancelInvoke(nameof(UnStun));
 		UnStun();
 	}
 
 	void UnStun() {
 		animator.SetBool("Stunned", false);
-		animator.SetBool("Tumbling", false);
-		rb2d.sharedMaterial = defaultMaterial;
+		if (groundData.grounded) {
+			animator.SetBool("Tumbling", false);
+		}
 		stunned = false;
-		stunBounced = false;
+		rb2d.sharedMaterial = defaultMaterial;
 		stunSmoke.Stop();
 	}
 
 	void OnCollisionEnter2D(Collision2D collision) {
-		if (stunned) StunBounce();
+		bool hitGround = Vector3.Angle(collision.contacts[0].normal, Vector3.up) < 0.1f;
+		if (hitGround && animator.GetBool("Tumbling")) {
+			rb2d.velocity = new Vector2(rb2d.velocity.x, 0);
+			animator.Play("GroundFlop", 0);
+			CancelInvoke(nameof(ExecuteTech));
+			Invoke(nameof(ExecuteTech), 7f/12f);
+		}
+		else if (stunned) {
+			stunBounced = true;
+			StunBounce(collision.contacts[0].normal);
+		}
 	}
 
-	void StunBounce() {
-		if (stunBounced) {
-			rb2d.velocity = new Vector2(rb2d.velocity.x, 0);
-			// TODO: set to ground flop if grounded
-			// and then have a TechPossibleInState
-			// this also necessitates a TechCheck() function
-			// which is hard because a base entity doesn't know about teching
-			// virtual function? virtual function perhaps
-
+	void ExecuteTech() {
+		if (GetComponent<EntityController>()) {
+			GetComponent<EntityController>().OnTech();
+		} else {
 			CancelStun();
-			return;
 		}
+	}
+
+	void StunBounce(Vector3 collisionNormal) {
+		bool hitGround = Vector3.Angle(collisionNormal, Vector3.up) < 0.1f;
 		landNoise?.PlayFrom(gameObject);
 		animator.SetBool("Tumbling", true);
 		stunBounced = true;
-		this.WaitAndExecute(() => rb2d.sharedMaterial = defaultMaterial, 0.1f);
 		if (stunSpin) stunSpin.enabled = true;
 	}
 
@@ -233,7 +240,7 @@ public class Entity : MonoBehaviour, IHitListener {
 		RectifyEntityCollision();
 		if (stunRotation) {
 			stunRotation.enabled = stunned && !groundData.grounded && !stunBounced;
-			stunSpin.enabled = stunned && !groundData.grounded && stunBounced;
+			stunSpin.enabled = (stunned || animator.GetBool("Tumbling")) && !groundData.grounded && stunBounced;
 		}
 	}
 

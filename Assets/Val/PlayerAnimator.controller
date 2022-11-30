@@ -1679,23 +1679,26 @@ AnimatorStateMachine:
     m_Position: {x: 840, y: -90, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 146341258618555083}
-    m_Position: {x: 680, y: 180, z: 0}
+    m_Position: {x: 180, y: 220, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: 2180984319142580240}
+    m_Position: {x: 620, y: 210, z: 0}
   m_ChildStateMachines:
   - serializedVersion: 1
     m_StateMachine: {fileID: -1866298852665287989}
     m_Position: {x: 230, y: 70, z: 0}
   - serializedVersion: 1
     m_StateMachine: {fileID: -6277520203768089795}
-    m_Position: {x: 510, y: 220, z: 0}
+    m_Position: {x: 400, y: 210, z: 0}
   - serializedVersion: 1
     m_StateMachine: {fileID: -5138836292524971072}
     m_Position: {x: 90, y: -120, z: 0}
   - serializedVersion: 1
     m_StateMachine: {fileID: 3731404385243263953}
-    m_Position: {x: 470, y: -200, z: 0}
+    m_Position: {x: 470, y: -190, z: 0}
   - serializedVersion: 1
     m_StateMachine: {fileID: -5400881797658722551}
-    m_Position: {x: 280, y: 180, z: 0}
+    m_Position: {x: 180, y: 170, z: 0}
   m_AnyStateTransitions:
   - {fileID: 4274795306201297895}
   - {fileID: -2323452392505749814}
@@ -1715,7 +1718,7 @@ AnimatorStateMachine:
   - {fileID: 5867278952840487943}
   m_StateMachineTransitions: {}
   m_StateMachineBehaviours: []
-  m_AnyStatePosition: {x: -50, y: 20, z: 0}
+  m_AnyStatePosition: {x: -50, y: -80, z: 0}
   m_EntryPosition: {x: 190, y: 130, z: 0}
   m_ExitPosition: {x: 970, y: 100, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
@@ -2170,6 +2173,9 @@ AnimatorStateTransition:
   m_Conditions:
   - m_ConditionMode: 2
     m_ConditionEvent: Stunned
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: Tumbling
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -2745782287145422302}
@@ -3132,6 +3138,32 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
+--- !u!1102 &2180984319142580240
+AnimatorState:
+  serializedVersion: 6
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: GroundFlop
+  m_Speed: 1
+  m_CycleOffset: 0
+  m_Transitions: []
+  m_StateMachineBehaviours: []
+  m_Position: {x: 50, y: 50, z: 0}
+  m_IKOnFeet: 0
+  m_WriteDefaultValues: 1
+  m_Mirror: 0
+  m_SpeedParameterActive: 0
+  m_MirrorParameterActive: 0
+  m_CycleOffsetParameterActive: 0
+  m_TimeParameterActive: 0
+  m_Motion: {fileID: 7400000, guid: d8af1a0e6bc5fc04f95c747e533a3cda, type: 2}
+  m_Tag: 
+  m_SpeedParameter: 
+  m_MirrorParameter: 
+  m_CycleOffsetParameter: 
+  m_TimeParameter: 
 --- !u!1102 &2266654045472497641
 AnimatorState:
   serializedVersion: 6

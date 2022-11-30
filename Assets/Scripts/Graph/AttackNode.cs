@@ -63,33 +63,33 @@ public class AttackNode : CombatNode {
     ) {
         directionalLinks.Clear();
         anyDirectionNode = null;
-		bool foundCandidate = false;
 
-		// keep looking through the buffer for the next action
-		while (context.buffer.Ready() && !foundCandidate) {
-			BufferedAttack attack = context.buffer.Consume();
-			for (int i=0; i<attackLinks.Length; i++) {
-				AttackLink link = attackLinks[i];
-				if (link.type==attack.type && attack.HasDirection(link.direction)) {
-					foundCandidate = true;
-					CombatNode next = GetNode(portListName+" "+i).Connection.node as CombatNode;
-					if (next.Enabled(context)) {
-						if (link.direction != AttackDirection.ANY) {
-							directionalLinks.Add(new Tuple<AttackLink, CombatNode>(link, next));
-						} else if (anyDirectionNode == null) {
-							anyDirectionNode = next;
-						}
-					}
-                    break;
-				}
-			}
-		}
+        if (!context.buffer.Ready()) return null;
+
+        // match the current action to the buffer if it exists
+        BufferedAttack attack = context.buffer.Peek();
+        for (int i=0; i<attackLinks.Length; i++) {
+            AttackLink link = attackLinks[i];
+            if (link.type==attack.type && attack.HasDirection(link.direction)) {
+                CombatNode next = GetNode(portListName+" "+i).Connection.node as CombatNode;
+                if (next.Enabled(context)) {
+                    if (link.direction != AttackDirection.ANY) {
+                        directionalLinks.Add(new Tuple<AttackLink, CombatNode>(link, next));
+                    } else if (anyDirectionNode == null) {
+                        anyDirectionNode = next;
+                    }
+                }
+                break;
+            }
+        }
 
         if (directionalLinks.Count > 0) {
+            context.buffer.Consume();
             return directionalLinks[0].Item2;
         }
 
         if (anyDirectionNode != null) {
+            context.buffer.Consume();
             return anyDirectionNode;
         }
 

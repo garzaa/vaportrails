@@ -61,6 +61,10 @@ public class AttackBuffer : MonoBehaviour {
 		bufferedAttacks.Remove(attack);
     }
 
+    public BufferedAttack Peek() {
+        return bufferedAttacks[0];
+    }
+
 	public BufferedAttack Consume() {
 		BufferedAttack a = bufferedAttacks[0];
 		bufferedAttacks.RemoveAt(0);

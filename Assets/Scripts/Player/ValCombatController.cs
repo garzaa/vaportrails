@@ -260,7 +260,7 @@ public class ValCombatController : CombatController, IHitListener {
 		}
 	}
 
-	protected override void OnTech() {
+	public override void OnTech() {
 		base.OnTech();
 		StartAttackStance();
 	}

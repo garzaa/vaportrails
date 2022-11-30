@@ -26,11 +26,6 @@ public class CombatController : MonoBehaviour, IAttackLandListener, IHitListener
 
 	public float diStrength = 2f;
 
-	const float techWindow = 0.3f;
-	const float techLockoutLength = 0.6f;
-	bool canTech = false;
-	bool techLockout = false;
-	GameObject techEffect;
 	Collider2D collider2d;
 
 	protected virtual void Start() {
@@ -43,8 +38,6 @@ public class CombatController : MonoBehaviour, IAttackLandListener, IHitListener
 		collider2d = GetComponent<Collider2D>();
 		buffer = GetComponent<AttackBuffer>();
 		shader = GetComponent<EntityShader>();
-
-		techEffect = Resources.Load<GameObject>("Runtime/TechEffect");
 		
 		graphTraverser = new AttackGraphTraverser(this);
 	}
@@ -72,15 +65,6 @@ public class CombatController : MonoBehaviour, IAttackLandListener, IHitListener
 		if (groundData.hitGround || wallData.hitWall) {
 			RefreshAirAttacks();
 		}
-
-		if (!techLockout && player.stunned && !canTech) {
-			if (input.ButtonDown(Buttons.SPECIAL) || input.ButtonDown(Buttons.PARRY)) {
-				canTech = true;
-				Invoke(nameof(EndTechWindow), techWindow);
-			}
-		}
-
-		CheckForTech();
 	}
 
 	public virtual void CheckAttackInputs() {
@@ -97,44 +81,6 @@ public class CombatController : MonoBehaviour, IAttackLandListener, IHitListener
 		}
 	}
 
-	void CheckForTech() {
-		if (player.stunned && (groundData.hitGround || wallData.hitWall)) {
-			if (!techLockout && canTech) {
-				OnTech();
-			}
-		}
-	}
-
-	protected virtual void OnTech() {
-		if (wallData.touchingWall) {
-			rb2d.velocity = Vector2.zero;
-			player.RefreshAirMovement();
-			RefreshAirAttacks();
-			Instantiate(
-				techEffect,
-				transform.position + new Vector3(wallData.direction * collider2d.bounds.extents.x, 0, 0),
-				Quaternion.identity,
-				null
-			);
-		} else if (groundData.grounded) {
-			rb2d.velocity = new Vector2(
-				player.movement.runSpeed * Mathf.Sign(input.HorizontalInput()),
-				0
-			);
-			Instantiate(
-				techEffect,
-				transform.position + Vector3.down*collider2d.bounds.extents.y,
-				Quaternion.identity,
-				null
-			);
-		}
-		animator.SetTrigger("TechSuccess");
-		shader.FlashCyan();
-		canTech = false;
-		CancelInvoke(nameof(EndTechWindow));
-		player.CancelStun();
-	}
-
 	public void EndGroundStunAnimation() {
 		if (Mathf.Abs(input.HorizontalInput()) > 0.2f) {
 			rb2d.velocity = new Vector2(
@@ -147,11 +93,7 @@ public class CombatController : MonoBehaviour, IAttackLandListener, IHitListener
 		}
 	}
 
-	void EndTechWindow() {
-		canTech = false;
-		techLockout = true;
-		this.WaitAndExecute(() => techLockout = false, techLockoutLength);
-	}
+	public virtual void OnTech() {}
 
 	public void OnHit(AttackHitbox attack) {
 		DI(attack);
