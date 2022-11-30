@@ -217,7 +217,6 @@ public class ValCombatController : CombatController, IHitListener {
 	}
 
 	public override void RefreshAirAttacks() {
-		base.RefreshAirAttacks();
 		canFlipKick = true;
 	}
 

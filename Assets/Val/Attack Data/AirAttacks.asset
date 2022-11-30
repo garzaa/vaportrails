@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Knife Hand
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -56, y: -632}
+  position: {x: -56, y: -664}
   ports:
     keys:
     - onLand
@@ -68,12 +68,12 @@ MonoBehaviour:
   onHit:
     type: 0
     direction: 0
-  timeOffset: 0
   onLand:
     type: 0
     direction: 0
   allowFlip: 0
   singleUse: 0
+  landingLagFrames: 2
 --- !u!114 &-7042432427910524947
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -87,7 +87,7 @@ MonoBehaviour:
   m_Name: Falling Leaf Kick
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -56, y: 280}
+  position: {x: -56, y: 312}
   ports:
     keys:
     - onLand
@@ -142,12 +142,12 @@ MonoBehaviour:
   onHit:
     type: 0
     direction: 0
-  timeOffset: 0
   onLand:
     type: 0
     direction: 0
   allowFlip: 0
   singleUse: 0
+  landingLagFrames: 1
 --- !u!114 &-6885289937481435947
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -216,12 +216,12 @@ MonoBehaviour:
   onHit:
     type: 0
     direction: 0
-  timeOffset: 0
   onLand:
     type: 0
     direction: 0
   allowFlip: 0
   singleUse: 0
+  landingLagFrames: 4
 --- !u!114 &-6690191480983078567
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -325,12 +325,12 @@ MonoBehaviour:
   onHit:
     type: 0
     direction: 0
-  timeOffset: 0
   onLand:
     type: 0
     direction: 0
   allowFlip: 0
   singleUse: 0
+  landingLagFrames: 4
 --- !u!114 &-4208440387906325956
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -428,12 +428,12 @@ MonoBehaviour:
   onHit:
     type: 0
     direction: 0
-  timeOffset: 0
   onLand:
     type: 0
     direction: 0
   allowFlip: 0
   singleUse: 0
+  landingLagFrames: 2
 --- !u!114 &-2126959507096117593
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -493,11 +493,6 @@ MonoBehaviour:
   - {fileID: 7016034450050395571}
   - {fileID: -2801933637361297788}
   - {fileID: -4208440387906325956}
-  animator: {fileID: 0}
-  buffer: {fileID: 0}
-  combatController: {fileID: 0}
-  grounded: 1
-  inputManager: {fileID: 0}
   stateMachineName: AirAttacks
 --- !u!114 &1175483536977120707
 MonoBehaviour:
@@ -512,7 +507,7 @@ MonoBehaviour:
   m_Name: Tornado Kick
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -56, y: 56}
+  position: {x: -56, y: 72}
   ports:
     keys:
     - onLand
@@ -567,12 +562,12 @@ MonoBehaviour:
   onHit:
     type: 0
     direction: 0
-  timeOffset: 0
   onLand:
     type: 0
     direction: 0
   allowFlip: 0
   singleUse: 0
+  landingLagFrames: 2
 --- !u!114 &6211059138720334733
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -754,7 +749,6 @@ MonoBehaviour:
   onHit:
     type: 0
     direction: 0
-  timeOffset: 0
   speedLinks:
   - type: 2
     direction: -2
@@ -773,7 +767,7 @@ MonoBehaviour:
   m_Name: Speed Aerial Back Kick
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -56, y: 520}
+  position: {x: -56, y: 552}
   ports:
     keys:
     - onLand
@@ -828,12 +822,12 @@ MonoBehaviour:
   onHit:
     type: 0
     direction: 0
-  timeOffset: 0
   onLand:
     type: 0
     direction: 0
   allowFlip: 0
   singleUse: 0
+  landingLagFrames: 2
 --- !u!114 &8918050907873563099
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -911,9 +905,9 @@ MonoBehaviour:
   onHit:
     type: 0
     direction: 0
-  timeOffset: 0
   onLand:
     type: 0
     direction: 0
   allowFlip: 1
   singleUse: 0
+  landingLagFrames: 2

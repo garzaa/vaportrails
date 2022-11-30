@@ -529,5 +529,4 @@ public class EntityController : Entity {
 	public void ExitCutscene(MonoBehaviour source) {
 		cutsceneSources.Remove(source);
 	}
-
 }

@@ -6,8 +6,8 @@ public class AirAttackNode : AttackNode {
     public AttackLink onLand;
 
     public bool allowFlip;
-
     public bool singleUse;
+    public int landingLagFrames = 2;
 
     public override bool Enabled(AttackGraphTraverser.Context context) {
         return base.Enabled(context) && context.CanAirAttack(name);
@@ -35,6 +35,7 @@ public class AirAttackNode : AttackNode {
             context.traverser.MoveNode(GetNode("onLand").Connection.node as CombatNode);
         } else {
             context.traverser.ExitGraph();
+            context.combatController.LandingLag(landingLagFrames/12f);
         }
     }    
 }

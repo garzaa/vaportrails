@@ -202,4 +202,17 @@ public class CombatController : MonoBehaviour, IAttackLandListener, IHitListener
 	}
 
 	virtual public void RefreshAirAttacks() {}
+
+	public void LandingLag(float time) {
+		animator.Play("LandingLag", 0);
+		animator.SetBool("LandingLag", true);
+		player.FreezeInputs();
+		this.WaitAndExecute(
+			() => {
+				animator.SetBool("LandingLag", false);
+				player.UnfreezeInputs();
+			}, 
+			time
+		);
+	}
 }
