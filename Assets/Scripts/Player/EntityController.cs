@@ -424,6 +424,13 @@ public class EntityController : Entity {
 		this.WaitAndExecute(() => techLockout = false, techLockoutLength);
 	}
 
+	protected override void GroundFlop() {
+		base.GroundFlop();
+		CancelInvoke(nameof(UnfreezeInputs));
+		FreezeInputs();
+		Invoke(nameof(UnfreezeInputs), 9f/12f);
+	}
+
 	void UpdateAnimator() {
         animator.SetBool("Grounded", groundData.grounded);
         animator.SetFloat("YSpeed", rb2d.velocity.y);

@@ -194,7 +194,11 @@ public class Entity : MonoBehaviour, IHitListener {
 		}
 	}
 
-	void GroundFlop() {
+	public void LeaveTumbleAnimation() {
+		animator.SetBool("Tumbling", false);
+	}
+
+	protected virtual void GroundFlop() {
 		landNoise?.PlayFrom(gameObject);
 		rb2d.velocity = Vector2.zero;
 		animator.Play("GroundFlop", 0);
