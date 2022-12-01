@@ -49,7 +49,7 @@ Shader "Custom2D/PerspectiveWater"
 				float4 vertex   : SV_POSITION;
 				fixed4 color    : COLOR;
 				float2 texcoord : TEXCOORD0;
-				float3 worldpos : float3;
+				float3 worldpos : TEXCOORD1;
 			};
 			
 			fixed4 _Color;
@@ -75,7 +75,6 @@ Shader "Custom2D/PerspectiveWater"
 			float4 _MainScale, _MoveSpeed;
 			float _HorizonDistance;
 
-			// TODO: JUST USE A GRADIENT YOU STUPID FUCK
 			fixed4 SampleSpriteTexture (float2 uv, float3 worldpos) {
 
 				// make uv x centered

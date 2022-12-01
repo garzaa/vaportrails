@@ -210,9 +210,10 @@ public class EntityController : Entity {
 			&& !stunned
 			&& !wallData.touchingWall
 			&& input.VerticalInput() == -1f
+			&& !stickDownLastFrame
 			&& rb2d.velocity.y<0
 			&& rb2d.velocity.y > movement.maxFallSpeed*0.75f
-			&& !stickDownLastFrame
+			&& inAttack
 		) {
 			Vector3 offset = ((Vector3) Random.insideUnitCircle + Vector3.down) * 0.5f;
 			Instantiate(fastfallSpark, transform.position + offset, Quaternion.identity);
