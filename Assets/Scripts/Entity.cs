@@ -221,6 +221,14 @@ public class Entity : MonoBehaviour, IHitListener {
 
 	protected virtual void Update() {
 		UpdateFootfallSound();
+		if (groundData.hitGround) {
+			if (animator.GetBool("Tumbling")) {
+				GroundFlop();
+			} else if (stunned && rb2d.velocity.magnitude<1f) {
+				UnStun();
+				GroundFlop();
+			}
+		}
 		if (groundData.hitGround && canGroundHitEffect) {
 			if (!stunned && defaultFootfall) {
 				FootfallSound();
