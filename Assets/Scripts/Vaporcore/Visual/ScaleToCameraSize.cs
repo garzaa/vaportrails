@@ -6,12 +6,20 @@ using System.Collections.Generic;
 public class ScaleToCameraSize : MonoBehaviour {
 
 	Camera cam;
+	Vector3 scale;
+
+	public bool x = true;
+	public bool y = true;
 
 	void Start() {
 		cam = Camera.main;
+		scale = transform.localScale;
 	}
 
 	void Update() {
-		transform.localScale = new Vector2(2f*cam.orthographicSize*cam.aspect, 2f*cam.orthographicSize);
+		scale = transform.localScale;
+		if (y) scale.y = 2f*cam.orthographicSize;
+		if (x) scale.x = 2f*cam.orthographicSize*cam.aspect;
+		transform.localScale = scale;
 	}
 }
