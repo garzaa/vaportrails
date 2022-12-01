@@ -45,6 +45,8 @@ public class Entity : MonoBehaviour, IHitListener {
 	bool hitstopPriority;
     Coroutine hitstopRoutine;
 
+	RotateToVelocity launchRotation;
+
 	protected virtual void Awake() {
 		animator = GetComponent<Animator>();
 		if (suppressAnimatorWarnings) animator.logWarnings = false;
@@ -64,6 +66,7 @@ public class Entity : MonoBehaviour, IHitListener {
 		stunSmoke = Instantiate(Resources.Load<GameObject>("Runtime/StunSmoke"), this.transform).GetComponent<ParticleSystem>();
 		stunSmoke.transform.localPosition = Vector3.zero;
 		stunSmoke.Stop();
+		launchRotation = GetComponentInChildren<RotateToVelocity>();
 	}
 
     public void DoHitstop(float duration, Vector2 exitVelocity, bool priority=false) {
@@ -247,6 +250,10 @@ public class Entity : MonoBehaviour, IHitListener {
 			OnWallHit();
 		}
 		RectifyEntityCollision();
+		// if there's not a more complex animator vwith tumbling
+		if (launchRotation && !(this is EntityController)) {
+			launchRotation.enabled = stunned && !groundData.grounded;
+		}
 	}
 
 	void RectifyEntityCollision() {
