@@ -37,7 +37,7 @@ public class GroundCheck : MonoBehaviour {
         col = GetComponent<Collider2D>();
         overlapBoxSize = new Vector2();
         // 1 pixel down from the bottom of the player collider
-        overlapBoxSize.y = 1f/16f;
+        overlapBoxSize.y = 1f/64f;
     }
 
     void Update() {
@@ -133,11 +133,21 @@ public class GroundCheck : MonoBehaviour {
     }
 
     RaycastHit2D LeftGrounded() {
-        return DefaultLinecast(col.BottomLeftCorner());
+        RaycastHit2D hit = DefaultLinecast(col.BottomLeftCorner());
+        if (hit.collider && Vector3.Angle(hit.normal, Vector3.up) > 40f) {
+            return new RaycastHit2D();
+        }
+
+        return hit;
     }
 
     RaycastHit2D RightGrounded() {
-        return DefaultLinecast(col.BottomRightCorner());
+        RaycastHit2D hit = DefaultLinecast(col.BottomRightCorner());
+        if (hit.collider && Vector3.Angle(hit.normal, Vector3.up) > 40f) {
+            return new RaycastHit2D();
+        }
+
+        return hit;
     }
 
     void RefreshGroundData(GroundData groundData) {

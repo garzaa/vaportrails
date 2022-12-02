@@ -37,6 +37,7 @@ public class Entity : MonoBehaviour, IHitListener {
 	
 	bool canGroundHitEffect = true;
 	public bool staggerable = true;
+	public bool takesEnvironmentDamage = true;
 	
 	bool canFlip = true;
 
@@ -46,6 +47,9 @@ public class Entity : MonoBehaviour, IHitListener {
     Coroutine hitstopRoutine;
 
 	RotateToVelocity launchRotation;
+
+	GameObject lastSafeObject;
+	Vector3 lastSafeOffset;
 
 	protected virtual void Awake() {
 		animator = GetComponent<Animator>();
@@ -120,26 +124,37 @@ public class Entity : MonoBehaviour, IHitListener {
 		d.transform.localScale = transform.localScale;
 	}
 
-	public void OnHit(AttackHitbox attack) { 
+	public void CanBeHit(AttackHitbox attack) {
+		if (!takesEnvironmentDamage && attack is EnvironmentHitbox) return;
+	}
+
+	public void OnHit(AttackHitbox hitbox) {
 		if (staggerable) {
-			Vector2 v = GetKnockback(attack);
+			Vector2 v = GetKnockback(hitbox);
 			// heavier people get knocked back less
 			rb2d.velocity = v * (1f/rb2d.mass);
 
 			// flip to attack
-			float attackX = attack.transform.position.x;
+			float attackX = hitbox.transform.position.x;
 			if (facingRight && attackX<transform.position.x) {
 				Flip();
 			} else if (!facingRight && attackX>transform.position.x) {
 				Flip();
 			}
-			if (attack.data.stunLength > 0) {
-				StunFor(attack.data.stunLength, attack.data.hitstop);
+			if (hitbox.data.stunLength > 0) {
+				StunFor(hitbox.data.stunLength, hitbox.data.hitstop);
 			}
-			DoHitstop(attack.data.hitstop, rb2d.velocity);
+			DoHitstop(hitbox.data.hitstop, rb2d.velocity);
 			shader.FlashWhite();
+			
+			// if it's envirodamage, return to safety
+			if (hitbox is EnvironmentHitbox) {
+				CancelInvoke(nameof(ReturnToSafety));
+				Invoke(nameof(ReturnToSafety), 0.5f);
+			}
+
 		} else {
-			shader.FlinchOnce(GetKnockback(attack));
+			shader.FlinchOnce(GetKnockback(hitbox));
 		}
 	}
 
@@ -168,6 +183,7 @@ public class Entity : MonoBehaviour, IHitListener {
 	}
 
 	public void CancelStun() {
+		CancelInvoke(nameof(UnStun));
 		UnStun();
 	}
 
@@ -176,7 +192,6 @@ public class Entity : MonoBehaviour, IHitListener {
 		if (groundData.grounded) {
 			animator.SetBool("Tumbling", false);
 		} else {
-			animator.SetBool("Tumbling", true);
 		}
 		stunned = false;
 		rb2d.sharedMaterial = defaultMaterial;
@@ -188,7 +203,7 @@ public class Entity : MonoBehaviour, IHitListener {
 		if (hitGround && animator.GetBool("Tumbling")) {
 			GroundFlop();
 		}
-		else if (stunned) {
+		else if (stunned && hitGround) {
 			if (rb2d.velocity.magnitude > 1f) {
 				StunBounce(collision.contacts[0].normal);
 			} else {
@@ -199,9 +214,11 @@ public class Entity : MonoBehaviour, IHitListener {
 
 	public void LeaveTumbleAnimation() {
 		animator.SetBool("Tumbling", false);
+		UnStun();
 	}
 
 	protected virtual void GroundFlop() {
+		animator.SetBool("Tumbling", false);
 		landNoise?.PlayFrom(gameObject);
 		rb2d.velocity = Vector2.zero;
 		animator.Play("GroundFlop", 0);
@@ -215,6 +232,10 @@ public class Entity : MonoBehaviour, IHitListener {
 		} else {
 			CancelStun();
 		}
+		// since you can tech off the initial launch state tumbling will never be unset
+		// also tumbling is set to true if stun expires in the air
+		// future: differentiate between stun auto-expiring and being canceled
+		animator.SetBool("Tumbling", false);
 	}
 
 	void StunBounce(Vector3 collisionNormal) {
@@ -254,9 +275,14 @@ public class Entity : MonoBehaviour, IHitListener {
 		if (launchRotation && !(this is EntityController)) {
 			launchRotation.enabled = stunned && !groundData.grounded;
 		}
+
+		if (groundData.hitGround) {
+			StartCoroutine(SaveLastSafePosition());
+		}
 	}
 
 	void RectifyEntityCollision() {
+		if (!staggerable) return;
 		// push self away if standing on top of someone
 		if (stunned) return;
 		overlapResults = Physics2D.OverlapBoxAll(
@@ -336,5 +362,33 @@ public class Entity : MonoBehaviour, IHitListener {
 
 	public void AddAttackImpulse(Vector2 impulse) {
 		rb2d.AddForce(impulse * ForwardVector(), ForceMode2D.Impulse);
+	}
+	
+	IEnumerator SaveLastSafePosition() {
+		if ((!groundData.grounded && !groundData.onLedge) || !wallData.touchingWall) {
+			yield break;
+		}
+
+		// if stunned, wait
+		if (stunned) {
+			yield return new WaitForSeconds(0.2f);
+			StartCoroutine(SaveLastSafePosition());
+			yield break;
+		}
+
+		GameObject currentGround = groundData.groundObject;
+		if (currentGround?.GetComponent<UnsafeGround>()) {
+			yield break;
+		}
+
+		// get offset, in case it's moving
+		Vector3 currentOffset = transform.position - currentGround.transform.position;
+		lastSafeObject = currentGround;
+		lastSafeOffset = currentOffset;
+	}
+
+	protected virtual void ReturnToSafety() {
+		transform.position = lastSafeObject.transform.position + lastSafeOffset;
+		UnStun();
 	}
 }

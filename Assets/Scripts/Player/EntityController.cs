@@ -382,6 +382,7 @@ public class EntityController : Entity {
 	}
 
 	public virtual void OnTech() {
+		animator.SetBool("Tumbling", false);
 		if (wallData.touchingWall) {
 			rb2d.velocity = Vector2.zero;
 			RefreshAirMovement();
@@ -602,5 +603,10 @@ public class EntityController : Entity {
 
 	public void ExitCutscene(MonoBehaviour source) {
 		cutsceneSources.Remove(source);
+	}
+
+	protected override void ReturnToSafety() {
+		base.ReturnToSafety();
+		GroundFlop();
 	}
 }

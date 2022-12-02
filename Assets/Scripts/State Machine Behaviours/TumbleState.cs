@@ -7,6 +7,7 @@ public class TumbleState : StateMachineBehaviour {
 		if (entity == null) {
 			entity = animator.GetComponent<Entity>();
 		}
+		animator.SetBool("Tumbling", true);
 	}
 
 	public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
