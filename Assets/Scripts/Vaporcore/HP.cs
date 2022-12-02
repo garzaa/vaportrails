@@ -5,8 +5,8 @@ using System.Collections.Generic;
 using Sirenix.OdinInspector;
 
 public class HP : MonoBehaviour, IHitListener {
-	[SerializeField] SubscriptableInt current;
-	[SerializeField] SubscriptableInt max;
+	public SubscriptableInt current;
+	public SubscriptableInt max;
 	public UnityEvent OnZero;
 	
 	public bool renderHealthbar = true;

@@ -47,8 +47,7 @@ public class EntityController : Entity {
 	bool canShortHop;
 	float inputX;
 	float landingRecovery = 1;
-	float fallStart;
-	float ySpeedLastFrame;
+
 	bool stickDownLastFrame;
 	bool keepJumpSpeed;
 	Coroutine keepJumpSpeedRoutine;
@@ -123,7 +122,6 @@ public class EntityController : Entity {
 				FlipToWall();
 			}
         } else if (groundData.hitGround) {
-			if (fallStart-transform.position.y > 1 && landNoise) landNoise.PlayFrom(this.gameObject);
 			RefreshAirMovement();
 		}
 
@@ -131,11 +129,6 @@ public class EntityController : Entity {
 			justLeftWall = true;
 			this.WaitAndExecute(()=>justLeftWall=false, bufferDuration*2);
 		}
-
-		if (ySpeedLastFrame>=0 && rb2d.velocity.y<0) {
-			fallStart = transform.position.y;
-		} 
-		ySpeedLastFrame = rb2d.velocity.y;
 
 		if (groundData.ledgeStep && !speeding && !movingForwards) {
 			rb2d.velocity = new Vector2(0, rb2d.velocity.y);
@@ -405,6 +398,8 @@ public class EntityController : Entity {
 			);
 		}
 		CancelStun();
+		CancelInvoke(nameof(UnfreezeInputs));
+		UnfreezeInputs();
 		UpdateAnimator();
 		if (input.HasHorizontalInput()) {
 			animator.SetTrigger("TechSuccess");
@@ -603,10 +598,5 @@ public class EntityController : Entity {
 
 	public void ExitCutscene(MonoBehaviour source) {
 		cutsceneSources.Remove(source);
-	}
-
-	protected override void ReturnToSafety() {
-		base.ReturnToSafety();
-		GroundFlop();
 	}
 }

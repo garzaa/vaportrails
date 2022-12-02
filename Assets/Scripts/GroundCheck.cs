@@ -5,11 +5,9 @@ using System.Collections;
 
 public class GroundCheck : MonoBehaviour {
     public GroundData groundData = new GroundData();
-    public bool skipFirstLanding = true;
 
     public UnityEvent onLedgeStep;
 
-    bool firstLanding = true;
     [SerializeField] bool detecting = true;
     
     Collider2D col;
@@ -31,7 +29,7 @@ public class GroundCheck : MonoBehaviour {
 
     // avoid physics jank
     const float minHitInterval = 0.3f;
-    float lastHitTime = 0f;
+    float lastHitTime = -1000f;
 
     void Awake() {
         col = GetComponent<Collider2D>();
@@ -55,11 +53,6 @@ public class GroundCheck : MonoBehaviour {
             if (Time.time-lastHitTime > minHitInterval) {
                 groundData.hitGround = true;
                 lastHitTime = Time.time;
-            }
-            if (skipFirstLanding && firstLanding) {
-                firstLanding = false;
-                skipFirstLanding = false;
-                groundData.hitGround = false;
             }
         }
 

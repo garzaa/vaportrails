@@ -51,6 +51,9 @@ public class Entity : MonoBehaviour, IHitListener {
 	GameObject lastSafeObject;
 	Vector3 lastSafeOffset;
 
+	float fallStart = 0;
+	float ySpeedLastFrame = 0;
+
 	protected virtual void Awake() {
 		animator = GetComponent<Animator>();
 		if (suppressAnimatorWarnings) animator.logWarnings = false;
@@ -131,8 +134,15 @@ public class Entity : MonoBehaviour, IHitListener {
 	public void OnHit(AttackHitbox hitbox) {
 		if (staggerable) {
 			Vector2 v = GetKnockback(hitbox);
-			// heavier people get knocked back less
-			rb2d.velocity = v * (1f/rb2d.mass);
+			// if it's envirodamage, return to safety
+			if (hitbox is EnvironmentHitbox) {
+				rb2d.velocity = Vector2.zero;
+				CancelInvoke(nameof(ReturnToSafety));
+				Invoke(nameof(ReturnToSafety), hitbox.data.hitstop);
+			} else {
+				// heavier people get knocked back less
+				rb2d.velocity = v * (1f/rb2d.mass);
+			}
 
 			// flip to attack
 			float attackX = hitbox.transform.position.x;
@@ -147,11 +157,6 @@ public class Entity : MonoBehaviour, IHitListener {
 			DoHitstop(hitbox.data.hitstop, rb2d.velocity);
 			shader.FlashWhite();
 			
-			// if it's envirodamage, return to safety
-			if (hitbox is EnvironmentHitbox) {
-				CancelInvoke(nameof(ReturnToSafety));
-				Invoke(nameof(ReturnToSafety), 0.5f);
-			}
 
 		} else {
 			shader.FlinchOnce(GetKnockback(hitbox));
@@ -253,7 +258,7 @@ public class Entity : MonoBehaviour, IHitListener {
 				GroundFlop();
 			}
 		}
-		if (groundData.hitGround && canGroundHitEffect) {
+		if (groundData.hitGround && canGroundHitEffect && fallStart-transform.position.y > 1) {
 			if (!stunned && defaultFootfall) {
 				FootfallSound();
 			}
@@ -279,6 +284,11 @@ public class Entity : MonoBehaviour, IHitListener {
 		if (groundData.hitGround) {
 			StartCoroutine(SaveLastSafePosition());
 		}
+
+		if (ySpeedLastFrame>=0 && rb2d.velocity.y<0) {
+			fallStart = transform.position.y;
+		} 
+		ySpeedLastFrame = rb2d.velocity.y;
 	}
 
 	void RectifyEntityCollision() {
@@ -365,11 +375,11 @@ public class Entity : MonoBehaviour, IHitListener {
 	}
 	
 	IEnumerator SaveLastSafePosition() {
-		if ((!groundData.grounded && !groundData.onLedge) || !wallData.touchingWall) {
+		if ((!groundData.grounded && !groundData.onLedge) || wallData.touchingWall) {
 			yield break;
 		}
 
-		// if stunned, wait
+		// if hit some envirodamage and is still grounded for some reason, wait
 		if (stunned) {
 			yield return new WaitForSeconds(0.2f);
 			StartCoroutine(SaveLastSafePosition());
@@ -387,8 +397,9 @@ public class Entity : MonoBehaviour, IHitListener {
 		lastSafeOffset = currentOffset;
 	}
 
-	protected virtual void ReturnToSafety() {
+	void ReturnToSafety() {
 		transform.position = lastSafeObject.transform.position + lastSafeOffset;
 		UnStun();
+		GroundFlop();
 	}
 }
