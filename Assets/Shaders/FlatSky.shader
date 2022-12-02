@@ -71,7 +71,7 @@ Shader "Custom2D/FlatSky"
 			float4 _NearScale, _FarScale;
 			float4 _MainScale, _MoveSpeed, _Offset;
 
-			fixed4 SampleSpriteTexture (float2 uv)
+			fixed4 SampleSpriteTexture (float2 uv, fixed4 tint)
 			{
 				float textureYPos = uv.y;
 
@@ -89,14 +89,19 @@ Shader "Custom2D/FlatSky"
 				fixed4 c = tex2D (_MainTex, uv);
 
 				// then do the color ramp
-				c = tex2D(_ColorRamp, fixed2(c.r * uv.y, 0));
+				// tend towards the ramp top based on tint alpha (for dynamically showing/clearing skies);
+				float rampPos = c.r * uv.y;
+				rampPos = lerp(rampPos, 1, 1-tint.a);
+				c = tex2D(_ColorRamp, fixed2(rampPos, 0));
+
+				c.rgb *= tint.rgb;
 
 				return c;
 			}
 
 			fixed4 frag(v2f IN) : SV_Target
 			{
-				fixed4 c = SampleSpriteTexture (IN.texcoord) * IN.color;
+				fixed4 c = SampleSpriteTexture (IN.texcoord, IN.color);
 				c.rgb *= c.a;
 				return c;
 			}
