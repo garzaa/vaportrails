@@ -131,7 +131,7 @@ public class Terminal : MonoBehaviour, IPointerDownHandler {
             } else {
                 foreach (PlayerInput input in inputSources) {
                     if (input.gameObject.name.Equals(args[1])) {
-                        CameraMainTarget(input.transform);
+                        CameraMainTarget(input.gameObject);
                         // the way controls work here:
                         // every PlayerInput/Entity pair corresponds to a Player in rewired
                         // and we just swap Controller 0 between all the players
@@ -295,8 +295,8 @@ public class Terminal : MonoBehaviour, IPointerDownHandler {
         return null;
     }
 
-    void CameraMainTarget(Transform t) {
-        GameObject.Find("PlayerTargetGroup").GetComponent<CinemachineTargetGroup>().m_Targets[0].target = t;
+    void CameraMainTarget(GameObject g) {
+        GameObject.FindObjectOfType<CameraInterface>().SetMainTarget(g);
     }
 
     void ClearInput() {

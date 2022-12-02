@@ -101,9 +101,9 @@ Shader "Custom2D/FlatSky"
 
 			fixed4 frag(v2f IN) : SV_Target
 			{
-				fixed4 c = SampleSpriteTexture (IN.texcoord, IN.color);
-				c.rgb *= c.a;
-				return c;
+				fixed4 outColor = SampleSpriteTexture (IN.texcoord, IN.color);
+				outColor.rgb *= outColor.a;
+				return outColor;
 			}
 		ENDCG
 		}

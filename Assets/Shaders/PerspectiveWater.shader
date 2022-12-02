@@ -87,7 +87,7 @@ Shader "Custom2D/PerspectiveWater"
 				// ok this can't be linear
 				// it needs to increase massively and then decrease a bit
 				float logCurve = log(uv.y)+1;
-				float powerCurve = pow(uv.y, 10);
+				float powerCurve = pow(uv.y, 8);
 
 				// closer UVs use more of the worldPosition
 				uv.x = lerp(uv.x, worldpos.x, 1-logCurve);
