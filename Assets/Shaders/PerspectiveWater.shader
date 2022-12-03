@@ -10,7 +10,6 @@ Shader "Custom2D/PerspectiveWater"
 		_MainScale ("Main Scale", Vector) = (1, 1, 0, 0)
 		_HorizonDistance ("Horizon Distance", Float) = 4
 		_MoveSpeed ("Move Speed", Vector) = (0, 0, 0, 0)
-		_DistanceRamp ("Distance Ramp", 2D) = "white" {}
 	}
 
 	SubShader
@@ -94,7 +93,7 @@ Shader "Custom2D/PerspectiveWater"
 
 				//return lerp(float4(1, 0, 0, 1), float4(0, 0.5, 1, 1), 1-logCurve);
 
-				uv.y *= powerCurve*_HorizonDistance;
+				uv.y = powerCurve*_HorizonDistance;
 				// multiplying it by the right value makes a curve
 				uv.x /= lerp(0, _HorizonDistance, 1-logCurve);
 

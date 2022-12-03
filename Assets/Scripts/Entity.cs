@@ -136,6 +136,7 @@ public class Entity : MonoBehaviour, IHitListener {
 			Vector2 v = GetKnockback(hitbox);
 			// if it's envirodamage, return to safety
 			if (hitbox is EnvironmentHitbox) {
+				// transition to air hurt isn't happening here...why
 				rb2d.velocity = Vector2.zero;
 				CancelInvoke(nameof(ReturnToSafety));
 				Invoke(nameof(ReturnToSafety), hitbox.data.hitstop);
@@ -156,8 +157,6 @@ public class Entity : MonoBehaviour, IHitListener {
 			}
 			DoHitstop(hitbox.data.hitstop, rb2d.velocity);
 			shader.FlashWhite();
-			
-
 		} else {
 			shader.FlinchOnce(GetKnockback(hitbox));
 		}
@@ -178,6 +177,7 @@ public class Entity : MonoBehaviour, IHitListener {
 	public void StunFor(float seconds, float hitstopDuration) {
 		animator.SetTrigger("OnHit");
 		stunned = true;
+		Debug.Log("entering stun animation");
 		animator.SetBool("Stunned", true);
 		animator.SetBool("Tumbling", false);
 		rb2d.sharedMaterial = bouncyStunMaterial;
@@ -193,6 +193,7 @@ public class Entity : MonoBehaviour, IHitListener {
 	}
 
 	void UnStun() {
+		Debug.Log("leaving stun animations");
 		animator.SetBool("Stunned", false);
 		if (groundData.grounded) {
 			animator.SetBool("Tumbling", false);
