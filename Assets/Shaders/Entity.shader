@@ -9,6 +9,7 @@ Shader "Custom2D/Entity"
 		[PerRendererData] cyanFlashTime ("cyanFlashTime", Float) = -100
 		[PerRendererData] flinchWeight ("flinchWeight", Float) = 0
 		[PerRendererData] flinchDirection ("flinchDirection", Vector) = (0, 0, 0, 0)
+		[PerRendererData] whiteFlashWeight ("whiteFlashWeight", Float) = 0
 	}
 
 	SubShader
@@ -79,6 +80,7 @@ Shader "Custom2D/Entity"
 			float _AlphaSplitEnabled;
 			float whiteFlashTime;
 			float cyanFlashTime;
+			float whiteFlashWeight;
 
 			fixed4 SampleSpriteTexture (float2 uv)
 			{
@@ -102,11 +104,17 @@ Shader "Custom2D/Entity"
 				return c;
 			}
 
+			fixed4 ContinuousWhiteFlash(fixed4 c) {
+				c.rgb = lerp(c.rgb, fixed3(1, 1, 1), saturate(sin(_Time.w*20)*0.5*whiteFlashWeight));
+				return c;
+			}
+
 			fixed4 frag(v2f IN) : SV_Target
 			{
 				fixed4 c = SampleSpriteTexture (IN.texcoord) * IN.color;
 				c = WhiteFlash(c);
 				c = CyanFlash(c);
+				c = ContinuousWhiteFlash(c);
 				c.rgb *= c.a;
 				return c;
 			}

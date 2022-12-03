@@ -413,6 +413,8 @@ public class EntityController : Entity {
 		// freeze inputs for a sec while teching
 		FreezeInputs();
 		Invoke(nameof(UnfreezeInputs), 0.5f);
+		SetInvincible(true);
+		this.WaitAndExecute(() => SetInvincible(false), 0.5f);
 	}
 
 	void EndTechWindow() {

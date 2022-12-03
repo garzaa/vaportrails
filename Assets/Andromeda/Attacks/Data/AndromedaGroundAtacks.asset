@@ -73,7 +73,67 @@ MonoBehaviour:
   onHit:
     type: 0
     direction: 0
-  timeOffset: 0
+--- !u!114 &-5329584105262048504
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93af5be29414da440814eeb14596c6e5, type: 3}
+  m_Name: Razor Storm
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -152, y: 280}
+  ports:
+    keys:
+    - input
+    - links
+    - onHit
+    values:
+    - _fieldName: input
+      _node: {fileID: -5329584105262048504}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: speedLinks 0
+        node: {fileID: -2076936626023422332}
+        reroutePoints: []
+      - fieldName: speedLinks 1
+        node: {fileID: -2076936626023422332}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: links
+      _node: {fileID: -5329584105262048504}
+      _typeQualifiedName: AttackLink[], Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: onHit
+      _node: {fileID: -5329584105262048504}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+  attackData: {fileID: 11400000, guid: b8faf240874b4bb42a257b3a828b84da, type: 2}
+  input:
+    type: 0
+    direction: 0
+  links: []
+  onHit:
+    type: 0
+    direction: 0
 --- !u!114 &-4485824062387828946
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -132,7 +192,6 @@ MonoBehaviour:
   onHit:
     type: 0
     direction: 0
-  timeOffset: 0
 --- !u!114 &-3701931120875062896
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -206,7 +265,6 @@ MonoBehaviour:
   onHit:
     type: 0
     direction: 0
-  timeOffset: 0
 --- !u!114 &-2076936626023422332
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -232,6 +290,8 @@ MonoBehaviour:
     - onHit
     - links 4
     - input
+    - speedLinks 0
+    - speedLinks 1
     values:
     - _fieldName: speedLinks
       _node: {fileID: -2076936626023422332}
@@ -329,6 +389,30 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
+    - _fieldName: speedLinks 0
+      _node: {fileID: -2076936626023422332}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: input
+        node: {fileID: -5329584105262048504}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 1
+    - _fieldName: speedLinks 1
+      _node: {fileID: -2076936626023422332}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: input
+        node: {fileID: -5329584105262048504}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 1
   attackData: {fileID: 0}
   input:
     type: 0
@@ -347,8 +431,11 @@ MonoBehaviour:
   onHit:
     type: 0
     direction: 0
-  timeOffset: 0
-  speedLinks: []
+  speedLinks:
+  - type: 1
+    direction: 0
+  - type: 2
+    direction: 0
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -370,11 +457,7 @@ MonoBehaviour:
   - {fileID: 8801320611016985274}
   - {fileID: 3411624471137251866}
   - {fileID: 2704641078139956176}
-  animator: {fileID: 0}
-  buffer: {fileID: 0}
-  combatController: {fileID: 0}
-  grounded: 1
-  inputManager: {fileID: 0}
+  - {fileID: -5329584105262048504}
   stateMachineName: GroundAttacks
 --- !u!114 &2704641078139956176
 MonoBehaviour:
@@ -434,7 +517,6 @@ MonoBehaviour:
   onHit:
     type: 0
     direction: 0
-  timeOffset: 0
 --- !u!114 &3411624471137251866
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -540,7 +622,6 @@ MonoBehaviour:
   onHit:
     type: 0
     direction: 0
-  timeOffset: 0
 --- !u!114 &8801320611016985274
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -605,4 +686,3 @@ MonoBehaviour:
   onHit:
     type: 0
     direction: 0
-  timeOffset: 0

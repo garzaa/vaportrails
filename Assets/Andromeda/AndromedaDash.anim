@@ -525,6 +525,40 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     path: AndromedaRig/Hips/Far Leg
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: {x: -0.026046753, y: 0.139, z: 0}
+        inSlope: {x: 0, y: 0, z: 0}
+        outSlope: {x: 0, y: 0, z: 0}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334}
+        outWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334}
+      - serializedVersion: 3
+        time: 0.083333336
+        value: {x: 0.075, y: 0.121, z: 0}
+        inSlope: {x: 1.2122805, y: -0.174, z: 0}
+        outSlope: {x: 1.2122805, y: -0.174, z: 0}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334}
+        outWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334}
+      - serializedVersion: 3
+        time: 0.16666667
+        value: {x: 0.176, y: 0.11, z: 0}
+        inSlope: {x: 0, y: 0, z: 0}
+        outSlope: {x: 0, y: 0, z: 0}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334}
+        outWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334}
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    path: DashFlare
   m_ScaleCurves: []
   m_FloatCurves:
   - curve:
@@ -545,6 +579,25 @@ AnimationClip:
     attribute: m_Enabled
     path: AndromedaRig/Hips/Chest/Head
     classID: 1818360609
+    script: {fileID: 0}
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: Infinity
+        outSlope: Infinity
+        tangentMode: 103
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: m_Enabled
+    path: DashFlare
+    classID: 212
     script: {fileID: 0}
   m_PPtrCurves:
   - curve:
@@ -570,6 +623,21 @@ AnimationClip:
     path: AndromedaRig/Hips/Chest/Near Arm/Near Forearm/Near Hand
     classID: 212
     script: {fileID: 0}
+  - curve:
+    - time: 0
+      value: {fileID: -633882799, guid: 30705bf6d3bee06468e75d9e81981f90, type: 3}
+    - time: 0.083333336
+      value: {fileID: -1214424649, guid: 30705bf6d3bee06468e75d9e81981f90, type: 3}
+    - time: 0.16666667
+      value: {fileID: 157455111, guid: 30705bf6d3bee06468e75d9e81981f90, type: 3}
+    - time: 0.25
+      value: {fileID: -1214424649, guid: 30705bf6d3bee06468e75d9e81981f90, type: 3}
+    - time: 0.33333334
+      value: {fileID: 157455111, guid: 30705bf6d3bee06468e75d9e81981f90, type: 3}
+    attribute: m_Sprite
+    path: DashFlare
+    classID: 212
+    script: {fileID: 0}
   m_SampleRate: 12
   m_WrapMode: 0
   m_Bounds:
@@ -579,6 +647,13 @@ AnimationClip:
     genericBindings:
     - serializedVersion: 2
       path: 709940675
+      attribute: 1
+      script: {fileID: 0}
+      typeID: 4
+      customType: 0
+      isPPtrCurve: 0
+    - serializedVersion: 2
+      path: 2408999911
       attribute: 1
       script: {fileID: 0}
       typeID: 4
@@ -648,6 +723,13 @@ AnimationClip:
       customType: 0
       isPPtrCurve: 0
     - serializedVersion: 2
+      path: 2408999911
+      attribute: 3305885265
+      script: {fileID: 0}
+      typeID: 212
+      customType: 0
+      isPPtrCurve: 0
+    - serializedVersion: 2
       path: 3165020690
       attribute: 0
       script: {fileID: 0}
@@ -663,6 +745,13 @@ AnimationClip:
       isPPtrCurve: 1
     - serializedVersion: 2
       path: 3604933225
+      attribute: 0
+      script: {fileID: 0}
+      typeID: 212
+      customType: 23
+      isPPtrCurve: 1
+    - serializedVersion: 2
+      path: 2408999911
       attribute: 0
       script: {fileID: 0}
       typeID: 212
@@ -778,12 +867,17 @@ AnimationClip:
     - {fileID: -1304240267, guid: d6fc35a137bda9d46b1bc36abbd9b3f2, type: 3}
     - {fileID: -1108010666, guid: d6fc35a137bda9d46b1bc36abbd9b3f2, type: 3}
     - {fileID: -368723918, guid: d6fc35a137bda9d46b1bc36abbd9b3f2, type: 3}
+    - {fileID: -633882799, guid: 30705bf6d3bee06468e75d9e81981f90, type: 3}
+    - {fileID: -1214424649, guid: 30705bf6d3bee06468e75d9e81981f90, type: 3}
+    - {fileID: 157455111, guid: 30705bf6d3bee06468e75d9e81981f90, type: 3}
+    - {fileID: -1214424649, guid: 30705bf6d3bee06468e75d9e81981f90, type: 3}
+    - {fileID: 157455111, guid: 30705bf6d3bee06468e75d9e81981f90, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.33333334
+    m_StopTime: 0.4166667
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -2562,6 +2656,136 @@ AnimationClip:
       m_RotationOrder: 4
     attribute: localEulerAnglesRaw.z
     path: AndromedaRig/Hips/Far Leg
+    classID: 4
+    script: {fileID: 0}
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: Infinity
+        outSlope: Infinity
+        tangentMode: 103
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: m_Enabled
+    path: DashFlare
+    classID: 212
+    script: {fileID: 0}
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: -0.026046753
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.083333336
+        value: 0.075
+        inSlope: 1.2122805
+        outSlope: 1.2122805
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.16666667
+        value: 0.176
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: m_LocalPosition.x
+    path: DashFlare
+    classID: 4
+    script: {fileID: 0}
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0.139
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.083333336
+        value: 0.121
+        inSlope: -0.174
+        outSlope: -0.174
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.16666667
+        value: 0.11
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: m_LocalPosition.y
+    path: DashFlare
+    classID: 4
+    script: {fileID: 0}
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.083333336
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.16666667
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: m_LocalPosition.z
+    path: DashFlare
     classID: 4
     script: {fileID: 0}
   m_EulerEditorCurves:

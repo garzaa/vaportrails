@@ -8,6 +8,10 @@ Shader "Custom2D/MovingOverlay"
         _Mask2 ("Mask2", Color) = (1,1,1,1)
         _Overlay ("Overlay Texture", 2D) = "white" {}
         _Speed ("Move Speed", Vector) = (1, 1, 0, 0)
+		_AlphaRamp ("Alpha Ramp", 2D) = "white" {}
+		_AlphaTexture ("Alpha Texture", 2D) = "white" {}
+        _AlphaTextureSpeed ("Alpha Texture Speed", Vector) = (0, 0, 0, 0)
+		_AlphaCutoff ("Alpha Cutoff", Range(0.0, 1.0)) = 0.5
 	}
 
 	SubShader
@@ -64,11 +68,14 @@ Shader "Custom2D/MovingOverlay"
 
 			sampler2D _MainTex;
             sampler2D _Overlay;
+			sampler2D _AlphaRamp, _AlphaTexture;
             float4 _MainTex_TexelSize;
             float4 _Overlay_TexelSize;
             fixed4 _Mask1;
             fixed4 _Mask2;
-            float4 _Speed;
+            float4 _Speed, _AlphaTextureSpeed;
+			float4 _AlphaTexture_ST, _AlphaRamp_ST;
+			float _AlphaCutoff;
 
 			fixed4 SampleSpriteTexture (float2 uv)
 			{
@@ -91,6 +98,13 @@ Shader "Custom2D/MovingOverlay"
                 if (any(compareColor(c, _Mask1, 0.1) || compareColor(c, _Mask2, 0.1))) {
                     c.rgb = lerp(c.rgb, overlay.rgb, overlay.a);
                 }
+
+				// TODO: then overlay with the alpha ramp and the alpha texture
+				// if below 50%, clip it?
+			float ramp = tex2D(_AlphaRamp, IN.texcoord/_AlphaRamp_ST + _AlphaRamp_ST.zw);
+				float tex = tex2D(_AlphaTexture, IN.texcoord/_AlphaTexture_ST + (_Time.w * _AlphaTextureSpeed));
+
+				clip(ramp*tex - _AlphaCutoff);
 				
 				c.rgb *= c.a;
 

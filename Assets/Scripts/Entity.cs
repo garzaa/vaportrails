@@ -38,6 +38,7 @@ public class Entity : MonoBehaviour, IHitListener {
 	bool canGroundHitEffect = true;
 	public bool staggerable = true;
 	public bool takesEnvironmentDamage = true;
+	bool invincible = false;
 	
 	bool canFlip = true;
 
@@ -58,7 +59,6 @@ public class Entity : MonoBehaviour, IHitListener {
 		animator = GetComponent<Animator>();
 		if (suppressAnimatorWarnings) animator.logWarnings = false;
         rb2d = GetComponent<Rigidbody2D>();
-		rb2d.interpolation = RigidbodyInterpolation2D.Extrapolate;
 		shader = GetComponent<EntityShader>();
         groundMask = 1 << LayerMask.NameToLayer(Layers.Ground);
         collider2d = GetComponent<Collider2D>();
@@ -127,9 +127,21 @@ public class Entity : MonoBehaviour, IHitListener {
 		d.transform.localScale = transform.localScale;
 	}
 
+	public void SetInvincible(bool b) {
+		if (b) {
+			invincible = true;
+			shader.StartFlashingWhite();
+		} else {
+			invincible = false;
+			shader.StopFlashingWhite();
+		}
+	}
+
 	public void CanBeHit(AttackHitbox attack) {
+		if (invincible) return;
 		if (!takesEnvironmentDamage && attack is EnvironmentHitbox) return;
 	}
+
 
 	public void OnHit(AttackHitbox hitbox) {
 		if (staggerable) {
@@ -143,15 +155,15 @@ public class Entity : MonoBehaviour, IHitListener {
 			} else {
 				// heavier people get knocked back less
 				rb2d.velocity = v * (1f/rb2d.mass);
+				// flip to attack
+				float attackX = hitbox.transform.position.x;
+				if (facingRight && attackX<transform.position.x) {
+					Flip();
+				} else if (!facingRight && attackX>transform.position.x) {
+					Flip();
+				}
 			}
 
-			// flip to attack
-			float attackX = hitbox.transform.position.x;
-			if (facingRight && attackX<transform.position.x) {
-				Flip();
-			} else if (!facingRight && attackX>transform.position.x) {
-				Flip();
-			}
 			if (hitbox.data.stunLength > 0) {
 				StunFor(hitbox.data.stunLength, hitbox.data.hitstop);
 			}
@@ -177,7 +189,6 @@ public class Entity : MonoBehaviour, IHitListener {
 	public void StunFor(float seconds, float hitstopDuration) {
 		animator.SetTrigger("OnHit");
 		stunned = true;
-		Debug.Log("entering stun animation");
 		animator.SetBool("Stunned", true);
 		animator.SetBool("Tumbling", false);
 		rb2d.sharedMaterial = bouncyStunMaterial;
@@ -193,7 +204,6 @@ public class Entity : MonoBehaviour, IHitListener {
 	}
 
 	void UnStun() {
-		Debug.Log("leaving stun animations");
 		animator.SetBool("Stunned", false);
 		if (groundData.grounded) {
 			animator.SetBool("Tumbling", false);
@@ -293,7 +303,7 @@ public class Entity : MonoBehaviour, IHitListener {
 	}
 
 	void RectifyEntityCollision() {
-		if (!staggerable) return;
+		if (!staggerable || invincible) return;
 		// push self away if standing on top of someone
 		if (stunned) return;
 		overlapResults = Physics2D.OverlapBoxAll(

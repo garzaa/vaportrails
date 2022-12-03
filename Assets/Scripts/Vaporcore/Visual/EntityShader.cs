@@ -30,6 +30,18 @@ public class EntityShader : MonoBehaviour {
 		ExecuteChange(block => block.SetFloat("cyanFlashTime", Time.unscaledTime));
 	}
 
+	public void StartFlashingWhite() {
+		ExecuteChange(block => {
+			block.SetFloat("whiteFlashWeight", 1);
+		});
+	}
+
+	public void StopFlashingWhite() {
+		ExecuteChange(block => {
+			block.SetFloat("whiteFlashWeight", 0);
+		});
+	}
+
 	void ExecuteChange(Action<MaterialPropertyBlock> action) {
 		for (int i=0; i<renderers.Count; i++) {
 			renderers[i].GetPropertyBlock(propertyBlocks[i]);
