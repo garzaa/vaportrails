@@ -360,14 +360,15 @@ public class EntityController : Entity {
 	}
 
 	void CheckForTech() {
-		if (!techLockout && stunned && !canTech) {
+		if (!techLockout && !canTech) {
 			if (input.ButtonDown(Buttons.SPECIAL) || input.ButtonDown(Buttons.PARRY)) {
 				canTech = true;
+				CancelInvoke(nameof(EndTechWindow));
 				Invoke(nameof(EndTechWindow), techWindow);
 			}
 		}
 		
-		if (stunned && (groundData.hitGround || wallData.hitWall)) {
+		if ((stunned || animator.GetBool("Tumbling")) && (groundData.hitGround || wallData.hitWall)) {
 			if (!techLockout && canTech) {
 				OnTech();
 			}

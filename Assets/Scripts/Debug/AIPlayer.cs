@@ -47,14 +47,8 @@ public class AIPlayer : MonoBehaviour {
 	}
 
 	public void StartGhost(Ghost ghost) {
-		PlayerInput input = null;
- 		foreach (PlayerInput i in GameObject.FindObjectsOfType<PlayerInput>()) {
-			if (i != puppetInput) {
-				input = i;
-				break;
-			}
-		}
-		StartGhost(ghost.Load(), input.gameObject);
+		PlayerInput opponent = PlayerInput.GetPlayerOneInput();
+		StartGhost(ghost.Load(), opponent.gameObject);
 	}
 
 	public void StartGhost(Ghostfile ghostFile, GameObject opponent) {

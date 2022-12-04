@@ -44,6 +44,7 @@ public class Subway : MonoBehaviour {
 		foreach (SubwayCar car in cars) {
 			car.DisableBoarding();
 		}
+		// this needs to happen after the subway starts so the player is boarded/moved
 		StartCoroutine(SubwayRoutine());
 	}
 

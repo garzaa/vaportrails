@@ -3,15 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using Newtonsoft.Json.Utilities;
 
+// https://github.com/jilleJr/Newtonsoft.Json-for-Unity/wiki/Fix-AOT-using-AotHelper
 public class AotTypeEnforcer : MonoBehaviour {
 	void Awake() {
-		AotHelper.EnsureList<System.Object>();
-		AotHelper.EnsureType<Ghost>();
-		AotHelper.EnsureType<Ghostfile>();
-		AotHelper.EnsureType<FrameInput>();
-		AotHelper.EnsureList<FrameInput>();
-		AotHelper.EnsureType<WeightedFrameInput>();
-		AotHelper.EnsureList<WeightedFrameInput>();
-		AotHelper.EnsureDictionary<int, List<WeightedFrameInput>>();
+        AotHelper.EnsureList<int>();
 	}
 }
