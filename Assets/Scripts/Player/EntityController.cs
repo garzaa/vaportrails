@@ -591,7 +591,6 @@ public class EntityController : Entity {
 	}
 
 	public void EnterCutscene(MonoBehaviour source, bool halt=true) {
-		// TODO: add a camera look target for the cutscene source
 		if (halt) {
 			rb2d.velocity = Vector2.zero;
 			animator.Play("Idle", 0);

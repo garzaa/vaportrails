@@ -24,7 +24,7 @@ public class NPC : Interactable {
 		// player should enter cutscene
 		// oh yeah that should be passed through actually
 		dialogueUI.AddLines(GetLastConversations().GetNextConversation());
-		dialogueUI.Open(player);
+		dialogueUI.Open(player, this.gameObject);
 	}
 
 	ConversationContainer GetLastConversations() {

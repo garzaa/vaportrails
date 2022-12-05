@@ -13,7 +13,7 @@ public class HP : MonoBehaviour, IHitListener {
 	[ShowIf(nameof(renderHealthbar))]
 	public float verticalOffset = 0.8f;
 
-	void Start() {
+	void Awake() {
 		if (renderHealthbar) {
 			// don't have it appear from player stats modification
 			StartCoroutine(AddHealthbar());

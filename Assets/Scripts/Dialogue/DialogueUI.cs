@@ -21,6 +21,8 @@ public class DialogueUI : MonoBehaviour {
 
 	Queue<DialogueLine> currentLines = new Queue<DialogueLine>();
 	PlayerInput playerInput;
+	GameObject dialogueSource;
+	CameraInterface cameraInterface;
 
 	void Awake() {
 		animator = GetComponent<Animator>();
@@ -28,6 +30,7 @@ public class DialogueUI : MonoBehaviour {
 		// defaults to player 0
 		playerInput = PlayerInput.GetPlayerOneInput();
 		dialogueRenderSound = Resources.Load<AudioResource>("Runtime/DialogueRenderSound");
+		cameraInterface = GameObject.FindObjectOfType<CameraInterface>();
 	}
 
 	void Update() {
@@ -76,7 +79,7 @@ public class DialogueUI : MonoBehaviour {
 		}
 	}
 
-	public void Open(EntityController player) {
+	public void Open(EntityController player, GameObject caller) {
 		open = true;
 		if (currentPlayer && currentPlayer!=player) {
 			currentPlayer.ExitCutscene(this);
@@ -85,12 +88,18 @@ public class DialogueUI : MonoBehaviour {
 		currentPlayer = player;
 		animator.SetBool("Shown", true);
 		NextLineOrClose();
+		if (dialogueSource) cameraInterface.RemoveFramingTarget(dialogueSource);
+		dialogueSource = caller;
+		cameraInterface.AddFramingTarget(caller);
 	}
 
 	public void Close() {
 		open = false;
-		if (currentPlayer) currentPlayer.ExitCutscene(this);
+		if (currentPlayer) {
+			currentPlayer.ExitCutscene(this);
+		}
 		animator.SetBool("Shown", false);
 		dialogueRenderSound.PlayFrom(this.gameObject);
+		cameraInterface.RemoveFramingTarget(dialogueSource);
 	}
 }

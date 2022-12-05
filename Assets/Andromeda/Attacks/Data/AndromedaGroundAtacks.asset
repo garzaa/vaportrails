@@ -101,9 +101,6 @@ MonoBehaviour:
       - fieldName: speedLinks 0
         node: {fileID: -2076936626023422332}
         reroutePoints: []
-      - fieldName: speedLinks 1
-        node: {fileID: -2076936626023422332}
-        reroutePoints: []
       _direction: 0
       _connectionType: 0
       _typeConstraint: 0
@@ -291,7 +288,6 @@ MonoBehaviour:
     - links 4
     - input
     - speedLinks 0
-    - speedLinks 1
     values:
     - _fieldName: speedLinks
       _node: {fileID: -2076936626023422332}
@@ -401,18 +397,6 @@ MonoBehaviour:
       _connectionType: 1
       _typeConstraint: 0
       _dynamic: 1
-    - _fieldName: speedLinks 1
-      _node: {fileID: -2076936626023422332}
-      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      connections:
-      - fieldName: input
-        node: {fileID: -5329584105262048504}
-        reroutePoints: []
-      _direction: 1
-      _connectionType: 1
-      _typeConstraint: 0
-      _dynamic: 1
   attackData: {fileID: 0}
   input:
     type: 0
@@ -433,8 +417,6 @@ MonoBehaviour:
     direction: 0
   speedLinks:
   - type: 1
-    direction: 0
-  - type: 2
     direction: 0
 --- !u!114 &11400000
 MonoBehaviour:

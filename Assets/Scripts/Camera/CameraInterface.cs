@@ -12,6 +12,7 @@ public class CameraInterface : MonoBehaviour {
 	[SerializeField] CinemachineVirtualCamera worldLookCam;
 	[SerializeField] GameObject editorCameraPoint;
 	[SerializeField] GameObject originalPlayerTarget;
+	[SerializeField] CinemachineTargetGroup targetGroupFollow;
 	#pragma warning restore 0649
 
 
@@ -46,5 +47,14 @@ public class CameraInterface : MonoBehaviour {
 
 	public void ResetMainTarget() {
 		mainCam.m_Follow = originalPlayerTarget.transform;
-	} 
+	}
+
+	public void AddFramingTarget(GameObject g) {
+		targetGroupFollow.AddMember(g.transform, 0.5f, 0);
+		mainCam.m_Follow = targetGroupFollow.transform;
+	}
+
+	public void RemoveFramingTarget(GameObject g) {
+		targetGroupFollow.RemoveMember(g.transform);
+	}
 }
