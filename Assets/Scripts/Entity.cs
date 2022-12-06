@@ -54,6 +54,8 @@ public class Entity : MonoBehaviour, IHitListener {
 
 	float fallStart = 0;
 	float ySpeedLastFrame = 0;
+	
+	protected const float groundFlopStunTime = 9f/12f;
 
 	protected virtual void Awake() {
 		animator = GetComponent<Animator>();
@@ -216,30 +218,28 @@ public class Entity : MonoBehaviour, IHitListener {
 
 	void OnCollisionEnter2D(Collision2D collision) {
 		bool hitGround = Vector3.Angle(collision.contacts[0].normal, Vector3.up) < 0.1f;
-		if (hitGround && animator.GetBool("Tumbling")) {
-			GroundFlop();
+		if (stunned || animator.GetBool("Tumbling")) {
+			StunImpact(hitGround);
 		}
-		else if (stunned && hitGround) {
-			if (rb2d.velocity.magnitude > 1f) {
-				StunBounce(collision.contacts[0].normal);
-			} else {
-				GroundFlop();
-			}
-		}
+	}
+
+	protected virtual void StunImpact(bool hitGround) {
+		if ((animator.GetBool("Tumbling") || rb2d.velocity.x<5f) && hitGround) GroundFlop();
+		else StunBounce();
 	}
 
 	public void LeaveTumbleAnimation() {
 		animator.SetBool("Tumbling", false);
-		UnStun();
 	}
 
 	protected virtual void GroundFlop() {
+		UnStun();
 		animator.SetBool("Tumbling", false);
 		landNoise?.PlayFrom(gameObject);
 		rb2d.velocity = Vector2.zero;
-		animator.Play("GroundFlop", 0);
 		CancelInvoke(nameof(ExecuteTech));
-		Invoke(nameof(ExecuteTech), 9f/12f);
+		Invoke(nameof(ExecuteTech), groundFlopStunTime);
+		animator.Play("GroundFlop", 0);
 	}
 
 	void ExecuteTech() {
@@ -254,21 +254,13 @@ public class Entity : MonoBehaviour, IHitListener {
 		animator.SetBool("Tumbling", false);
 	}
 
-	void StunBounce(Vector3 collisionNormal) {
+	void StunBounce() {
 		landNoise?.PlayFrom(gameObject);
 		animator.SetBool("Tumbling", true);
 	}
 
 	protected virtual void Update() {
 		UpdateFootfallSound();
-		if (groundData.hitGround) {
-			if (animator.GetBool("Tumbling")) {
-				GroundFlop();
-			} else if (stunned && rb2d.velocity.magnitude<1f) {
-				UnStun();
-				GroundFlop();
-			}
-		}
 		if (groundData.hitGround && canGroundHitEffect && fallStart-transform.position.y > 1) {
 			if (!stunned && defaultFootfall) {
 				FootfallSound();

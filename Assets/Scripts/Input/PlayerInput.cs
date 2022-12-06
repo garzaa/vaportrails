@@ -7,8 +7,6 @@ public class PlayerInput : MonoBehaviour {
     Player player = null;
     static bool polling = false;
 
-    Vector2 ls;
-
     public int playerNum = 0;
     Controller lastActiveController;
 
@@ -32,10 +30,6 @@ public class PlayerInput : MonoBehaviour {
     public void DisableHumanControl() {
         player.controllers.hasKeyboard = false;
         player.controllers.RemoveController(ControllerType.Joystick, 0);
-    }
-
-    void Update() {
-        ls = LeftStick();
     }
 
     void ShowHideMouse(InputActionEventData actionData) {

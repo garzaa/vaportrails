@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Events;
 
 public class EntityController : Entity {
 	
@@ -68,6 +69,10 @@ public class EntityController : Entity {
 	bool techLockout = false;
 	GameObject techEffect;
 
+	public UnityEvent TechSuccess;
+	public UnityEvent TechLockout;
+	public UnityEvent TechMiss;
+
 	override protected void Awake() {
 		base.Awake();
 		input = GetComponent<PlayerInput>();
@@ -90,7 +95,7 @@ public class EntityController : Entity {
 		Jump();
 		UpdateAnimator();
 		UpdateEffects();
-		CheckForTech();
+		UpdateTechInputs();
 	}
 
 	void FixedUpdate() {
@@ -359,9 +364,9 @@ public class EntityController : Entity {
 		keepJumpSpeedRoutine = StartCoroutine(KeepJumpSpeedRoutine());
 	}
 
-	void CheckForTech() {
-		if (!techLockout && !canTech) {
-			if (input.ButtonDown(Buttons.SPECIAL) || input.ButtonDown(Buttons.PARRY)) {
+	void UpdateTechInputs() {
+		if (input.ButtonDown(Buttons.SPECIAL) || input.ButtonDown(Buttons.PARRY)) {
+			if (!techLockout && !canTech) {
 				canTech = true;
 				CancelInvoke(nameof(EndTechWindow));
 				Invoke(nameof(EndTechWindow), techWindow);
@@ -369,13 +374,25 @@ public class EntityController : Entity {
 		}
 		
 		if ((stunned || animator.GetBool("Tumbling")) && (groundData.hitGround || wallData.hitWall)) {
-			if (!techLockout && canTech) {
-				OnTech();
-			}
+
 		}
 	}
 
+	protected override void StunImpact(bool hitGround) {
+		if (!techLockout && canTech) {
+			TechSuccess.Invoke();
+			OnTech();
+			return;
+		} else if (techLockout) {
+			TechLockout.Invoke();
+		} else if (!canTech) {
+			TechMiss.Invoke();
+		}
+		base.StunImpact(hitGround);
+	}
+
 	public virtual void OnTech() {
+		CancelStun();
 		animator.SetBool("Tumbling", false);
 		if (wallData.touchingWall) {
 			rb2d.velocity = Vector2.zero;
@@ -386,7 +403,7 @@ public class EntityController : Entity {
 				Quaternion.identity,
 				null
 			);
-		} else if (groundData.grounded) {
+		} else {
 			rb2d.velocity = new Vector2(
 				movement.runSpeed * Mathf.Sign(input.HorizontalInput()),
 				0
@@ -398,7 +415,6 @@ public class EntityController : Entity {
 				null
 			);
 		}
-		CancelStun();
 		CancelInvoke(nameof(UnfreezeInputs));
 		UnfreezeInputs();
 		UpdateAnimator();
@@ -426,9 +442,9 @@ public class EntityController : Entity {
 
 	protected override void GroundFlop() {
 		base.GroundFlop();
-		CancelInvoke(nameof(UnfreezeInputs));
 		FreezeInputs();
-		Invoke(nameof(UnfreezeInputs), 9f/12f);
+		CancelInvoke(nameof(UnfreezeInputs));
+		Invoke(nameof(UnfreezeInputs), groundFlopStunTime);
 	}
 
 	void UpdateAnimator() {
@@ -599,6 +615,12 @@ public class EntityController : Entity {
 	}
 
 	public void ExitCutscene(MonoBehaviour source) {
+		// space to continue counts as a jump input this frame
+		StartCoroutine(ExitCutsceneNextFrame(source));
+	}
+
+	IEnumerator ExitCutsceneNextFrame(MonoBehaviour source) {
+		yield return new WaitForEndOfFrame();
 		cutsceneSources.Remove(source);
 	}
 }
