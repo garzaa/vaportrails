@@ -19,15 +19,36 @@ public class SpriteRigger : MonoBehaviour {
 
         TextureImporter baseImporter = GetImporter(baseAtlas);
         TextureImporter overrideImporter = GetImporter(overrideAtlas);
+        overrideImporter.spriteImportMode = SpriteImportMode.Multiple;
 
-        baseImporter.spritesheet.CopyTo(overrideImporter.spritesheet, 0);
-        AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(overrideAtlas));
-        AssetDatabase.Refresh();
+        List<SpriteMetaData> newMetaData = new List<SpriteMetaData>();
+        foreach (SpriteMetaData baseData in baseImporter.spritesheet) {
+            SpriteMetaData m = new SpriteMetaData();
+            m.alignment = baseData.alignment;
+            m.border = baseData.border;
+            m.name = GetOverrideName(baseData.name);
+            m.pivot = baseData.pivot;
+            m.rect = baseData.rect;
+            newMetaData.Add(m);
+        }
+        overrideImporter.spritesheet = newMetaData.ToArray();
+        Debug.Log(newMetaData.ToArray().Length);
+        overrideImporter.SaveAndReimport();
+        AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(overrideAtlas), ImportAssetOptions.ForceUpdate);
+        // this isn't getting updated for some reason
+        overrideImporter = GetImporter(overrideAtlas);
+        Debug.Log(overrideImporter.spritesheet.Count());
 
         // oghh does this have to be in resources
-        Dictionary<string, Sprite> baseSprites = Resources.LoadAll<Sprite>(baseAtlas.name).ToDictionary(s => s.name, s => s);
-        Dictionary<string, Sprite> overrideSprites = Resources.LoadAll<Sprite>(overrideAtlas.name).ToDictionary(s => s.name, s => s);
-
+        // guess so
+        // JUST USE THE SLICING METHOD FROM BEFORE
+        // AND SAVE THE OVERRIDE TEXTURE AT RUNTIME
+        // or wait, fuck, the base won't exist
+        // save a serialized dictionary of sprite bases and overrides? would that be too much?
+        Dictionary<string, Sprite> baseSprites = LoadSpritesFromTexture(baseAtlas);
+        Debug.Log(baseSprites.Count);
+        Dictionary<string, Sprite> overrideSprites = LoadSpritesFromTexture(overrideAtlas);
+        Debug.Log(overrideSprites.Count);
         // NOW look through the sprite renderer children
         // and get the corresponding names
         // or even just indices in the sprite slicer
@@ -35,13 +56,23 @@ public class SpriteRigger : MonoBehaviour {
             // only do the ones matching the base texture
             // then apply the override
             if (spriteRenderer.sprite.texture.name == baseAtlas.name) {
-                spriteRenderer.sprite = overrideSprites[spriteRenderer.sprite.name];
+                spriteRenderer.sprite = overrideSprites[GetOverrideName(spriteRenderer.sprite.name)];
             }
         }
     }
 
+    string GetOverrideName(string spriteName) {
+        return overrideAtlas.name + " " + spriteName;
+    }
+
     TextureImporter GetImporter(Texture2D t) {
         return AssetImporter.GetAtPath(AssetDatabase.GetAssetPath(t)) as TextureImporter;
+    }
+
+    Dictionary<string, Sprite> LoadSpritesFromTexture(Texture2D t) {
+        return AssetDatabase.LoadAllAssetsAtPath(AssetDatabase.GetAssetPath(t))
+            .OfType<Sprite>()
+            .ToDictionary(sprite => sprite.name, sprite => sprite);
     }
 }
 
