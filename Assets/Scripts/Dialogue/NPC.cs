@@ -11,6 +11,7 @@ public class NPC : Interactable {
 	void Awake() {
 		dialogueUI = GameObject.FindObjectOfType<DialogueUI>();
 		newPromptSprite = Resources.Load<Sprite>("Runtime/UnreadNPCPrompt");
+		base.sprite = Resources.Load<Sprite>("Runtime/BaseNPCPrompt");
 	}
 
 	protected override Sprite GetSprite() {

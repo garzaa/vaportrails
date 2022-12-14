@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Events;
 
 public class DialogueUI : MonoBehaviour {
 	Animator animator;
@@ -23,6 +24,8 @@ public class DialogueUI : MonoBehaviour {
 	PlayerInput playerInput;
 	GameObject dialogueSource;
 	CameraInterface cameraInterface;
+
+	UnityEvent queuedEvent;
 
 	void Awake() {
 		animator = GetComponent<Animator>();
@@ -50,6 +53,8 @@ public class DialogueUI : MonoBehaviour {
 	}
 
 	void NextLineOrClose() {
+		queuedEvent?.Invoke();
+		queuedEvent = null;
 		if (currentLines.Count > 0) {
 			ShowLine(currentLines.Dequeue());
 		} else {
@@ -77,6 +82,8 @@ public class DialogueUI : MonoBehaviour {
 			speakerNameContainer.SetActive(false);
 			speechBubbleTail.SetActive(false);
 		}
+		if (line.eventOnLineEnd) queuedEvent = line.callback;
+		else line.callback.Invoke();
 	}
 
 	public void Open(EntityController player, GameObject caller) {

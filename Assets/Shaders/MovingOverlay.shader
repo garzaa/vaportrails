@@ -101,7 +101,7 @@ Shader "Custom2D/MovingOverlay"
 
 				// TODO: then overlay with the alpha ramp and the alpha texture
 				// if below 50%, clip it?
-			float ramp = tex2D(_AlphaRamp, IN.texcoord/_AlphaRamp_ST + _AlphaRamp_ST.zw);
+				float ramp = tex2D(_AlphaRamp, IN.texcoord/_AlphaRamp_ST + _AlphaRamp_ST.zw);
 				float tex = tex2D(_AlphaTexture, IN.texcoord/_AlphaTexture_ST + (_Time.w * _AlphaTextureSpeed));
 
 				clip(ramp*tex - _AlphaCutoff);
