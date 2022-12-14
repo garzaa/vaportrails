@@ -2,7 +2,7 @@ Shader "Custom2D/MovingTexture"
 {
 	Properties
 	{
-		_MainTex ("Sprite Texture", 2D) = "white" {}
+		[PerRendererData] _MainTex ("Sprite Texture", 2D) = "white" {}
 		_Color ("Tint", Color) = (1,1,1,1)
         _Speed ("Move Speed", Vector) = (1, 1, 0, 0)
 	}
@@ -71,7 +71,7 @@ Shader "Custom2D/MovingTexture"
 
 			fixed4 frag(v2f IN) : SV_Target
 			{
-				fixed4 c = SampleSpriteTexture (IN.texcoord + _Speed.xy) * IN.color;
+				fixed4 c = SampleSpriteTexture (IN.texcoord + _Speed.xy*_Time.w) * IN.color;
 				c.rgb *= c.a;
 				return c;
 			}
