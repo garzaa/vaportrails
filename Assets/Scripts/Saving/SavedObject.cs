@@ -7,6 +7,7 @@ using System;
 
 public abstract class SavedObject : MonoBehaviour {
 
+	[Tooltip("Use state shared between scenes for objects with this hierarchichal name.")]
 	public bool useGlobalNamespace;
 
 	private Dictionary<string, object> properties = new Dictionary<string, object>();

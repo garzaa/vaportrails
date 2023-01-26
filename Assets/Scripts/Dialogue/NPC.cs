@@ -23,7 +23,6 @@ public class NPC : Interactable {
 
 	public override void OnInteract(EntityController player) {
 		// player should enter cutscene
-		// oh yeah that should be passed through actually
 		dialogueUI.AddLines(GetLastConversations().GetNextConversation());
 		dialogueUI.Open(player, this.gameObject);
 	}
@@ -31,7 +30,7 @@ public class NPC : Interactable {
 	ConversationContainer GetLastConversations() {
 		ConversationContainer[] conversationContainers = GetComponentsInChildren<ConversationContainer>();
 		// if conversations are stateful, get the last one
-		// this will default to the default conversation
+		// this will default to the default conversation since it also looks at self
 		return conversationContainers[conversationContainers.Length-1];
 	}
 }

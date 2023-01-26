@@ -55,6 +55,7 @@ public class EntityController : Entity {
 
 	public bool inAttack => currentAttack != null;
 	[SerializeField] protected AttackData currentAttack;
+	public AttackData GetAttack() => currentAttack;
 	protected PlayerInput input;
 	ToonMotion toonMotion;
 	GameObject wallJumpDust;
@@ -247,11 +248,11 @@ public class EntityController : Entity {
 			rb2d.velocity = new Vector2(rb2d.velocity.x, movement.shortHopCutoffVelocity);
 		}
 
-		if ((currentAttack && !currentAttack.jumpCancelable) && input.ButtonDown(Buttons.JUMP)) {
+		if ((currentAttack && !currentAttack.moveCancelable) && input.ButtonDown(Buttons.JUMP)) {
 			BufferJump();
 		}
 
-		if ((!currentAttack && frozeInputs) || (currentAttack && !currentAttack.jumpCancelable)) return;
+		if ((!currentAttack && frozeInputs) || (currentAttack && !currentAttack.moveCancelable)) return;
 
 		void GroundJump() {
 			bufferedJump = false;

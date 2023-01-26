@@ -32,7 +32,6 @@ public class NestAnimClips : MonoBehaviour {
                     AssetDatabase.AddObjectToAsset( newClip, anim_controller );
                     AssetDatabase.ImportAsset( AssetDatabase.GetAssetPath( newClip ) );
                     oldToNew[old] = newClip;
-                    Debug.Log( "Nested animation clip: " + newClip.name );
                 }
     
                 state.state.motion = oldToNew[old];
