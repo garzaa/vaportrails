@@ -14,6 +14,9 @@ ScriptedImporter:
   - first:
       213: 9100353928830035662
     second: busybox portrait_3
+  - first:
+      213: 21300000
+    second: busybox portrait
   externalObjects: {}
   serializedVersion: 2
   userData: 
@@ -113,12 +116,17 @@ ScriptedImporter:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 128
+        width: 512
         height: 128
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      _outline: []
+      _outline:
+      - array:
+        - {x: -256, y: 64}
+        - {x: -256, y: -64}
+        - {x: 256, y: -64}
+        - {x: 256, y: 64}
       _physicsShape: []
       tesselationDetail: 0
       bones: []
@@ -188,7 +196,9 @@ ScriptedImporter:
     filterMode: 0
     generatePhysicsShape: 0
   exportFormat: 1
+  exportToNamedFolder: 1
   exportNameTemplate: '[name] (imported)'
+  _tempExplicitExportDirectory: 
   debugMode: 0
   references:
     version: 2

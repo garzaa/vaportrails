@@ -20,6 +20,9 @@ ScriptedImporter:
   - first:
       213: 4723336935383764546
     second: flynn portrait new_5
+  - first:
+      213: 21300000
+    second: flynn portrait new
   externalObjects: {}
   serializedVersion: 2
   userData: 
@@ -160,11 +163,16 @@ ScriptedImporter:
         x: 0
         y: 0
         width: 128
-        height: 128
+        height: 768
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      _outline: []
+      _outline:
+      - array:
+        - {x: -64, y: 384}
+        - {x: -64, y: -384}
+        - {x: 64, y: -384}
+        - {x: 64, y: 384}
       _physicsShape: []
       tesselationDetail: 0
       bones: []
@@ -234,7 +242,9 @@ ScriptedImporter:
     filterMode: 0
     generatePhysicsShape: 0
   exportFormat: 1
+  exportToNamedFolder: 1
   exportNameTemplate: '[name] (imported)'
+  _tempExplicitExportDirectory: 
   debugMode: 0
   references:
     version: 2

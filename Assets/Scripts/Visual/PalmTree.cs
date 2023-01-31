@@ -15,6 +15,8 @@ public class PalmTree : MonoBehaviour, IWindReceiver {
 	[Range(-1, 1)] public float direction = -1;
 	public GameObject treetop;
 
+	Vector2 noiseOrigin;
+
 
 	LineRenderer lineRenderer;
 
@@ -23,6 +25,7 @@ public class PalmTree : MonoBehaviour, IWindReceiver {
 	void Start() {
 		lineRenderer = GetComponent<LineRenderer>();
 		lineRenderer.useWorldSpace = false;
+		noiseOrigin = (Vector2) transform.position;
 		RegenerateTrunk();
 	}
 
@@ -41,6 +44,9 @@ public class PalmTree : MonoBehaviour, IWindReceiver {
 		float a = 1/segmentsPerTile;
 		float c;
 		float heightLoss = 0;
+		// this exists to keep it from going nuts as speed changes
+		// we only want to compare it to position last frame, not since the start
+		noiseOrigin += Vector2.right * windSpeed * Time.time * Time.deltaTime;
 		for (int i=0; i<points.Length; i++) {
 			// right at the base, no distortion
 			if (i <= 2) {
@@ -49,9 +55,10 @@ public class PalmTree : MonoBehaviour, IWindReceiver {
 			}
 
 			// look up distortion X via the noise texture
-			noiseCoord = points[i] + transform.position;
-			noiseCoord += Vector2.one * windSpeed * Time.time;
+			noiseCoord = noiseOrigin + (Vector2) points[i];
 			noiseCoord /= windSize;
+
+			// noiseCoord can't be straight-up, it has to be from the last frame
 			offset = windTexture.GetPixelBilinear(noiseCoord.x, noiseCoord.y).r;
 			// map from 0 1 to -1 1
 			offset = offset*2 - 1;
