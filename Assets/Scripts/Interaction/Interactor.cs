@@ -38,7 +38,7 @@ public class Interactor : MonoBehaviour {
 		) {
 			// deal with them leaving the collider on this frame as a result of interaction
 			foreach (Interactable i in new List<Interactable>(interactables)) {
-				entity.FlipTo(i.gameObject);
+				entity.FlipTo(i.GetFlipPoint());
 				i.OnInteract(entity);
 			}
 		}

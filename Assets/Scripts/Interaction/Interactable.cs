@@ -33,4 +33,9 @@ public abstract class Interactable : MonoBehaviour {
 	public virtual void OnExit() {
 		prompt.SetActive(false);
 	}
+
+	public GameObject GetFlipPoint() {
+		if (optionalPromptPoint) return optionalPromptPoint;
+		return gameObject;
+	}
 }
