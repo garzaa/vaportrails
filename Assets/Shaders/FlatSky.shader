@@ -75,8 +75,6 @@ Shader "Custom2D/FlatSky"
 			{
 				float textureYPos = uv.y;
 
-				uv += _Time.x * _MoveSpeed;
-				uv += _Offset.xy;
 
 				// make uv x start at 0.5 instead?
 				// map uv.x from 0-1 to -1 - 1
@@ -86,7 +84,10 @@ Shader "Custom2D/FlatSky"
 				// return lerp(float4(1, 0, 0, 1), float4(0, 0, 1, 1), textureYPos);
 
 				uv.x = (uv.x*2) - 1;
+				uv += _Offset.xy;
+				uv += _Time.x * _MoveSpeed;
 				fixed4 c = tex2D (_MainTex, uv);
+
 
 				// then do the color ramp
 				// tend towards the ramp top based on tint alpha (for dynamically showing/clearing skies);
