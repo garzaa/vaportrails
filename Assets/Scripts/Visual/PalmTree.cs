@@ -16,7 +16,7 @@ public class PalmTree : MonoBehaviour, IWindReceiver {
 	public GameObject treetop;
 
 	Vector2 noiseOrigin;
-
+	Animator palmFrondAnimator;
 
 	LineRenderer lineRenderer;
 
@@ -27,6 +27,7 @@ public class PalmTree : MonoBehaviour, IWindReceiver {
 		lineRenderer.useWorldSpace = false;
 		noiseOrigin = (Vector2) transform.position;
 		RegenerateTrunk();
+		palmFrondAnimator = treetop.GetComponent<Animator>();
 	}
 
 	public void Wind(float speed, float size, float strength, float dir) {
@@ -34,6 +35,10 @@ public class PalmTree : MonoBehaviour, IWindReceiver {
 		windSize = size;
 		windStrength = strength;
 		direction = dir;
+
+		palmFrondAnimator.SetFloat("WindDirection", dir);
+		palmFrondAnimator.SetFloat("WindSpeed", speed/30);
+		palmFrondAnimator.SetLayerWeight(1, strength/1.7f);
 	}
 
 	void Update() {
