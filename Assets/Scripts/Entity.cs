@@ -219,13 +219,20 @@ public class Entity : MonoBehaviour, IHitListener {
 	void OnCollisionEnter2D(Collision2D collision) {
 		bool hitGround = Vector3.Angle(collision.contacts[0].normal, Vector3.up) < 0.1f;
 		if (stunned || animator.GetBool("Tumbling")) {
+			// this will sometimes make the player get up on a ground hit
 			StunImpact(hitGround);
 		}
 	}
 
 	protected virtual void StunImpact(bool hitGround) {
-		if ((animator.GetBool("Tumbling") || rb2d.velocity.x<5f) && hitGround) GroundFlop();
-		else StunBounce();
+		if ((animator.GetBool("Tumbling") || rb2d.velocity.x<5f) && hitGround) {
+			Debug.Log("ground flop");
+			GroundFlop();
+		}
+		else {
+			Debug.Log("stun bounce");
+			StunBounce();
+		}
 	}
 
 	public void LeaveTumbleAnimation() {
@@ -233,6 +240,9 @@ public class Entity : MonoBehaviour, IHitListener {
 	}
 
 	protected virtual void GroundFlop() {
+		// entity will just get out of the ground flop animation half the time (but still be frozen)
+		// this is caused by a transition from any state to fall? hello???
+		// solution was to put a nofallinterrupt on the ground flop state
 		UnStun();
 		animator.SetBool("Tumbling", false);
 		landNoise?.PlayFrom(gameObject);

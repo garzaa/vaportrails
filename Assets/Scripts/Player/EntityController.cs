@@ -367,7 +367,7 @@ public class EntityController : Entity {
 
 	void UpdateTechInputs() {
 		if (input.ButtonDown(Buttons.SPECIAL) || input.ButtonDown(Buttons.PARRY)) {
-			if (!techLockout && !canTech) {
+			if (!techLockout && !canTech && stunned) {
 				canTech = true;
 				CancelInvoke(nameof(EndTechWindow));
 				Invoke(nameof(EndTechWindow), techWindow);
@@ -603,7 +603,10 @@ public class EntityController : Entity {
 
 	public void EndDashCooldown() {
 		if (canDash) return;
-		shader.FlashCyan();
+		// don't flash cyan if it's an enemy not being controlled
+		if (input.GetPlayer().controllers.hasKeyboard) {
+			shader.FlashCyan();
+		}
 		canDash = true;
 	}
 

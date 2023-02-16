@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using Sirenix.OdinInspector;
 
 [RequireComponent(typeof(LineRenderer))]
-[ExecuteInEditMode]
 public class PalmTree : MonoBehaviour, IWindReceiver {
 	public float tileHeight = 3;
 	public int segmentsPerTile = 4;
@@ -35,10 +34,12 @@ public class PalmTree : MonoBehaviour, IWindReceiver {
 		windSize = size;
 		windStrength = strength;
 		direction = dir;
-
-		palmFrondAnimator.SetFloat("WindDirection", dir);
-		palmFrondAnimator.SetFloat("WindSpeed", speed/30);
-		palmFrondAnimator.SetLayerWeight(1, strength/1.7f);
+		
+		if (!palmFrondAnimator) {
+			palmFrondAnimator.SetFloat("WindDirection", dir);
+			palmFrondAnimator.SetFloat("WindSpeed", speed/30);
+			palmFrondAnimator.SetLayerWeight(1, strength/1.7f);
+		}
 	}
 
 	void Update() {

@@ -85,7 +85,9 @@ Shader "Custom2D/FlatSky"
 
 				uv.x = (uv.x*2) - 1;
 				uv += _Offset.xy;
-				uv += _Time.x * _MoveSpeed;
+
+				uv += _Time.x * _MoveSpeed * 0.1;
+
 				fixed4 c = tex2D (_MainTex, uv);
 
 
