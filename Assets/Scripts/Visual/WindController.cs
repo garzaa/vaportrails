@@ -12,7 +12,7 @@ public class WindController : MonoBehaviour {
 
 	float pWindSpeed, pWindSize, pWindStrength, pDirection;
 
-	List<IWindReceiver> windReceivers;
+	List<IWindReceiver> windReceivers = new List<IWindReceiver>();
 
 	void Start() {
 		windReceivers = GameObject.FindObjectsOfType<MonoBehaviour>().OfType<IWindReceiver>().ToList();

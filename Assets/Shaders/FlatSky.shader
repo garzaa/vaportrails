@@ -9,8 +9,10 @@ Shader "Custom2D/FlatSky"
 		_MainScale ("Main Scale", Vector) = (1, 1, 0, 0)
 		_NearScale ("Near Scale", Vector) = (0.5, 0.5, 0, 0)
 		_FarScale ("Far Scale", Vector) = (5, 5, 0, 0)
-		_MoveSpeed ("Move Speed", Vector) = (0, 0, 0, 0)
+		_StrengthMultiplier("StrMultiplier", Float) = 1
 		_Offset ("Offset", Vector) = (0, 0, 0, 0)
+
+		_BaseUV("Script UV", Vector) = (0, 0, 0, 0)
 	}
 
 	SubShader
@@ -70,6 +72,8 @@ Shader "Custom2D/FlatSky"
 			sampler2D _ColorRamp;
 			float4 _NearScale, _FarScale;
 			float4 _MainScale, _MoveSpeed, _Offset;
+			float _StrengthMultiplier;
+			float4 _BaseUV;
 
 			fixed4 SampleSpriteTexture (float2 uv, fixed4 tint)
 			{
@@ -85,8 +89,7 @@ Shader "Custom2D/FlatSky"
 
 				uv.x = (uv.x*2) - 1;
 				uv += _Offset.xy;
-
-				uv += _Time.x * _MoveSpeed * 0.1;
+				uv += _BaseUV * _StrengthMultiplier * 0.001;
 
 				fixed4 c = tex2D (_MainTex, uv);
 

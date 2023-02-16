@@ -35,7 +35,7 @@ public class PalmTree : MonoBehaviour, IWindReceiver {
 		windStrength = strength;
 		direction = dir;
 		
-		if (!palmFrondAnimator) {
+		if (palmFrondAnimator) {
 			palmFrondAnimator.SetFloat("WindDirection", dir);
 			palmFrondAnimator.SetFloat("WindSpeed", speed/30);
 			palmFrondAnimator.SetLayerWeight(1, strength/1.7f);
@@ -52,7 +52,7 @@ public class PalmTree : MonoBehaviour, IWindReceiver {
 		float heightLoss = 0;
 		// this exists to keep it from going nuts as speed changes
 		// we only want to compare it to position last frame, not since the start
-		noiseOrigin += Vector2.right * (windSpeed * Time.deltaTime);
+		noiseOrigin += Vector2.right * (windSpeed * Time.deltaTime) * direction;
 		for (int i=0; i<points.Length; i++) {
 			// right at the base, no distortion
 			if (i <= 2) {

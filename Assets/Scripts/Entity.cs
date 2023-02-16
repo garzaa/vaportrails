@@ -219,7 +219,6 @@ public class Entity : MonoBehaviour, IHitListener {
 	void OnCollisionEnter2D(Collision2D collision) {
 		bool hitGround = Vector3.Angle(collision.contacts[0].normal, Vector3.up) < 0.1f;
 		if (stunned || animator.GetBool("Tumbling")) {
-			// this will sometimes make the player get up on a ground hit
 			StunImpact(hitGround);
 		}
 	}
