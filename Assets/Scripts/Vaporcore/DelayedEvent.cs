@@ -20,7 +20,7 @@ public class DelayedEvent : MonoBehaviour {
 
 	[System.Serializable]
 	public class TimedEvent {
-		public UnityEvent callback;
 		public float delay;
+		public UnityEvent callback;
 	}	
 }
