@@ -7,7 +7,7 @@ public class DelayedEvent : MonoBehaviour {
 
 	public TimedEvent[] events;
 
-	public void Invoke() {
+	public void Raise() {
 		foreach (TimedEvent timedEvent in events) {
 			StartCoroutine(DelayAndFire(timedEvent.delay, timedEvent.callback));
 		}
