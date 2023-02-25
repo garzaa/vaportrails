@@ -225,7 +225,6 @@ public class Entity : MonoBehaviour, IHitListener {
 
 	protected virtual void StunImpact(bool hitGround) {
 		if ((animator.GetBool("Tumbling") || rb2d.velocity.x<5f) && hitGround) {
-			Debug.Log("ground flop");
 			GroundFlop();
 		}
 		else {
