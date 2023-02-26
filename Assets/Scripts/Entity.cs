@@ -39,6 +39,7 @@ public class Entity : MonoBehaviour, IHitListener {
 	public bool staggerable = true;
 	public bool takesEnvironmentDamage = true;
 	bool invincible = false;
+	bool inGroundFlop = false;
 	
 	bool canFlip = true;
 
@@ -251,9 +252,11 @@ public class Entity : MonoBehaviour, IHitListener {
 		CancelInvoke(nameof(ExecuteTech));
 		Invoke(nameof(ExecuteTech), groundFlopStunTime);
 		animator.Play("GroundFlop", 0);
+		inGroundFlop = true;
 	}
 
 	void ExecuteTech() {
+		inGroundFlop = false;
 		if (GetComponent<EntityController>()) {
 			GetComponent<EntityController>().OnTech();
 		} else {
@@ -303,6 +306,14 @@ public class Entity : MonoBehaviour, IHitListener {
 			fallStart = transform.position.y;
 		} 
 		ySpeedLastFrame = rb2d.velocity.y;
+		
+		if (inGroundFlop && groundData.grounded && stunned) {
+			AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+			if (!stateInfo.IsName("Base Layer.GroundFlop")) {
+				animator.Play("GroundFlop");
+				this.WaitAndExecute(() => inGroundFlop = false, groundFlopStunTime);
+			}
+		}
 	}
 
 	void RectifyEntityCollision() {

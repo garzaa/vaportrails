@@ -148,7 +148,8 @@ public class EntityController : Entity {
 	}
 
 	void FlipToWall() {
-		// flip to the wall
+		if (inAttack) return;
+
 		if (facingRight && wallData.direction>0) {
 			Flip();
 		} else if (!facingRight && wallData.direction<0) {
@@ -210,7 +211,7 @@ public class EntityController : Entity {
 			&& !wallData.touchingWall
 			&& input.VerticalInput() == -1f
 			&& !stickDownLastFrame
-			&& rb2d.velocity.y<0
+			&& rb2d.velocity.y<=0
 			&& rb2d.velocity.y > movement.maxFallSpeed*0.75f
 			&& inAttack
 		) {
@@ -248,11 +249,16 @@ public class EntityController : Entity {
 			rb2d.velocity = new Vector2(rb2d.velocity.x, movement.shortHopCutoffVelocity);
 		}
 
-		if ((currentAttack && !currentAttack.moveCancelable) && input.ButtonDown(Buttons.JUMP)) {
-			BufferJump();
+		// allow jump-canceling moves if player is touching the wall
+		bool onWall = !groundData.grounded && wallData.touchingWall;
+
+		if (currentAttack && !onWall) {
+			if ((!currentAttack.moveCancelable) && input.ButtonDown(Buttons.JUMP)) {
+				BufferJump();
+			}
 		}
 
-		if ((!currentAttack && frozeInputs) || (currentAttack && !currentAttack.moveCancelable)) return;
+		if ((!currentAttack && frozeInputs) || (currentAttack && !currentAttack.moveCancelable && !onWall)) return;
 
 		void GroundJump() {
 			bufferedJump = false;
@@ -272,22 +278,22 @@ public class EntityController : Entity {
 
 		void WallJump() {
             bufferedJump = false;
-			// assume player is facing the wall and needs to be flipped away from it
 			jumpNoise.PlayFrom(this.gameObject);
 			float v = movement.jumpSpeed;
 			// if inputting towards wall, jump up it
+			// but always push player away from the wall
 			if (wallData.direction * inputX > 0) {
-				rb2d.velocity = new Vector2((facingRight ? v : -v)*1.0f, Mathf.Max(v, rb2d.velocity.y));
+				rb2d.velocity = new Vector2((-wallData.direction * v)*1.0f, Mathf.Max(v, rb2d.velocity.y));
 				animator.SetTrigger("Backflip");
 				airControlMod = 0.2f;
 			} else {
-				rb2d.velocity = new Vector2((facingRight ? v : -v)*1.5f, Mathf.Max(v, rb2d.velocity.y));
+				rb2d.velocity = new Vector2((-wallData.direction * v)*1.5f, Mathf.Max(v, rb2d.velocity.y));
 				animator.SetTrigger("WallJump");
 				airControlMod = 0.0f;
 			}
 			GameObject w = Instantiate(wallJumpDust);
-			w.transform.position = new Vector2(facingRight ? collider2d.bounds.min.x : collider2d.bounds.max.x, transform.position.y);
-			w.transform.localScale = new Vector3(facingRight ? 1 : -1, 1, 1);
+			w.transform.position = new Vector2(wallData.direction > 0 ? collider2d.bounds.min.x : collider2d.bounds.max.x, transform.position.y);
+			w.transform.localScale = new Vector3(wallData.direction > 0 ? 1 : -1, 1, 1);
 			canShortHop = false;
 			SetJustJumped();
 		}
@@ -547,6 +553,7 @@ public class EntityController : Entity {
 		UnfreezeInputs();
 		currentAttack = null;
 		Jump(executeIfBuffered: true);
+		if (wallData.touchingWall) FlipToWall();
 	}
 
 	public void OnAttackNodeEnter(AttackNode attackNode) {

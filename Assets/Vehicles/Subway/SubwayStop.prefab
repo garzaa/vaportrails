@@ -194,7 +194,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.5, y: 1}
   m_EdgeRadius: 0
 --- !u!114 &1360911968196660132
 MonoBehaviour:
@@ -335,7 +335,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.5, y: 1}
   m_EdgeRadius: 0
 --- !u!114 &1360911968293320312
 MonoBehaviour:
@@ -2237,7 +2237,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.5, y: 1}
   m_EdgeRadius: 0
 --- !u!114 &1360911969260480790
 MonoBehaviour:
@@ -3669,7 +3669,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b18025a63290ac14996188622cf6c9b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stopDestination: Highway Terminal
+  stopDestination:
+    sceneAsset: {fileID: 0}
+    scenePath: 
+  prevStop:
+    sceneAsset: {fileID: 0}
+    scenePath: 
   nextStop:
     sceneAsset: {fileID: 0}
     scenePath: 
@@ -3926,7 +3931,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.5, y: 1}
   m_EdgeRadius: 0
 --- !u!114 &1360911970148806368
 MonoBehaviour:
@@ -4099,7 +4104,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.5, y: 1}
   m_EdgeRadius: 0
 --- !u!114 &1360911970183561915
 MonoBehaviour:
@@ -4187,7 +4192,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.5, y: 1}
   m_EdgeRadius: 0
 --- !u!114 &1360911970211930607
 MonoBehaviour:
@@ -5273,7 +5278,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6603927368101799702, guid: 5de3b9c7461ca32498b7596a76ddfe22, type: 3}
       propertyPath: m_SortingOrder
-      value: -55
+      value: -110
       objectReference: {fileID: 0}
     - target: {fileID: 6603927368101799702, guid: 5de3b9c7461ca32498b7596a76ddfe22, type: 3}
       propertyPath: m_SortingLayerID
@@ -5409,7 +5414,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6603927368714816909, guid: 5de3b9c7461ca32498b7596a76ddfe22, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.5001302
+      value: -0.5000105
       objectReference: {fileID: 0}
     - target: {fileID: 6603927368720867477, guid: 5de3b9c7461ca32498b7596a76ddfe22, type: 3}
       propertyPath: m_SortingLayer
