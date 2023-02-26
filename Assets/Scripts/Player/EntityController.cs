@@ -605,16 +605,19 @@ public class EntityController : Entity {
 		if (canDash) return;
 		// don't flash cyan if it's an enemy not being controlled
 		if (input.GetPlayer().controllers.hasKeyboard) {
-			shader.FlashCyan();
+			shader.FlashCyan();	
 		}
 		canDash = true;
 	}
 
-	public void EnterCutscene(MonoBehaviour source, bool halt=true) {
-		if (halt) {
-			rb2d.velocity = Vector2.zero;
-			animator.Play("Idle", 0);
-		}
+	public void EnterCutscene(MonoBehaviour source) {
+		// also exit combat stance if there's a combat controller...ough
+		rb2d.velocity = Vector2.zero;
+		animator.Play("Idle", 0);
+		EnterCutsceneNoHalt(source);
+	}
+
+	public void EnterCutsceneNoHalt(MonoBehaviour source) {
 		cutsceneSources.Add(source);
 	}
 

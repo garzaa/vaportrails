@@ -96,7 +96,7 @@ public class DialogueUI : MonoBehaviour {
 		currentPlayer = player;
 		animator.SetBool("Shown", true);
 		NextLineOrClose();
-		if (dialogueSource) cameraInterface.RemoveFramingTarget(dialogueSource);
+	if (dialogueSource) cameraInterface.RemoveFramingTarget(dialogueSource);
 		dialogueSource = caller;
 		cameraInterface.AddFramingTarget(caller);
 	}

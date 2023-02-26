@@ -16,8 +16,6 @@ public class NestAnimClips : MonoBehaviour {
         // Get all objects currently in Controller asset, we'll destroy them later
         UnityEngine.Object[] objects = AssetDatabase.LoadAllAssetsAtPath(AssetDatabase.GetAssetPath(anim_controller));
 
-        List<UnityEngine.Object> olds = new List<UnityEngine.Object>();
-    
         AssetDatabase.SaveAssets();
     
         // Add animations from all animation layers, without duplicating them
@@ -37,8 +35,6 @@ public class NestAnimClips : MonoBehaviour {
                 }
     
                 state.state.motion = oldToNew[old];
-
-                olds.Add(old);
             }
         }
     
@@ -49,10 +45,5 @@ public class NestAnimClips : MonoBehaviour {
             }
         }
         AssetDatabase.SaveAssets();
-
-        // destroy the old unlinked animation clip
-        foreach (Object o in olds) {
-            if (o is AnimationClip) UnityEngine.Object.Destroy(o);
-        }
     }
 }
