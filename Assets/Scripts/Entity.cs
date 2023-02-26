@@ -47,6 +47,8 @@ public class Entity : MonoBehaviour, IHitListener {
 
 	bool hitstopPriority;
     Coroutine hitstopRoutine;
+	float duration;
+	Vector2 exitVelocity;
 
 	RotateToVelocity launchRotation;
 
@@ -81,14 +83,22 @@ public class Entity : MonoBehaviour, IHitListener {
 
     public void DoHitstop(float duration, Vector2 exitVelocity, bool priority=false, bool selfFlinch = false) {
         if (hitstopPriority && !priority) return;
-		if (hitstopRoutine != null) StopCoroutine(hitstopRoutine);
+		if (hitstopRoutine != null) {
+			// don't get stuck in 0 speed from last hitstop
+			rb2d.constraints = RigidbodyConstraints2D.FreezeRotation;
+			rb2d.velocity = exitVelocity;
+			StopCoroutine(hitstopRoutine);
+		}
+
+		this.duration = duration;
+		this.exitVelocity = exitVelocity;
 		animator.speed = 0f;
 		rb2d.constraints = RigidbodyConstraints2D.FreezeAll;
 		if (selfFlinch) shader.Flinch(exitVelocity, duration);
-		hitstopRoutine = StartCoroutine(EndHitstop(duration, exitVelocity));
+		hitstopRoutine = StartCoroutine(EndHitstop());
     }
 
-    IEnumerator EndHitstop(float duration, Vector2 exitVelocity) {
+    IEnumerator EndHitstop() {
         yield return new WaitForSeconds(duration);
 		rb2d.constraints = RigidbodyConstraints2D.FreezeRotation;
 		rb2d.velocity = exitVelocity;
@@ -424,7 +434,6 @@ public class Entity : MonoBehaviour, IHitListener {
 
 	void ReturnToSafety() {
 		transform.position = lastSafeObject.transform.position + lastSafeOffset;
-		UnStun();
 		GroundFlop();
 	}
 }
