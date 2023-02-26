@@ -168,6 +168,10 @@ public class Entity : MonoBehaviour, IHitListener {
 
 			if (hitbox.data.stunLength > 0) {
 				StunFor(hitbox.data.stunLength, hitbox.data.hitstop);
+				if (hitbox is EnvironmentHitbox) {
+					// instant tumble for return to safety
+					animator.SetBool("Tumbling", true);
+				}
 			}
 			DoHitstop(hitbox.data.hitstop, rb2d.velocity, selfFlinch: true);
 			shader.FlashWhite();
