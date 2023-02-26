@@ -23,6 +23,7 @@ public class Transition : ScriptableObject {
     public class SubwayTransition : NullableTransitionValue {
         public SceneReference scene;
         public float xOffset = 0;
+        public string previousScenePath;
     }
 
     public class PlayerPositionTransition : NullableTransitionValue {

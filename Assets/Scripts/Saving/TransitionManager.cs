@@ -18,8 +18,14 @@ public class TransitionManager : SavedObject {
 
 	protected override void Initialize() {
 		if (transition.subway) {
-			Subway subway = GameObject.FindObjectOfType<Subway>();
-			subway.LoadRidingPlayer(transition.subway);
+			// find the subway where the previous scene corresponds to the current scene's name
+			Subway[] subways = GameObject.FindObjectsOfType<Subway>();
+			foreach (Subway subway in subways) {
+				if (subway.prevStop == null || subway.prevStop.ScenePath == transition.subway.previousScenePath) {
+					subway.LoadRidingPlayer(transition.subway);
+					break;
+				}
+			}
 		} else if (transition.position) {
 			PlayerInput.GetPlayerOneInput().gameObject.transform.position = transition.position.vec2;
 		}

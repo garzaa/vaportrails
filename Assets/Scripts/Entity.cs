@@ -78,12 +78,12 @@ public class Entity : MonoBehaviour, IHitListener {
 		launchRotation = GetComponentInChildren<RotateToVelocity>();
 	}
 
-    public void DoHitstop(float duration, Vector2 exitVelocity, bool priority=false) {
+    public void DoHitstop(float duration, Vector2 exitVelocity, bool priority=false, bool selfFlinch = false) {
         if (hitstopPriority && !priority) return;
 		if (hitstopRoutine != null) StopCoroutine(hitstopRoutine);
 		animator.speed = 0f;
 		rb2d.constraints = RigidbodyConstraints2D.FreezeAll;
-		shader.Flinch(exitVelocity, duration);
+		if (selfFlinch) shader.Flinch(exitVelocity, duration);
 		hitstopRoutine = StartCoroutine(EndHitstop(duration, exitVelocity));
     }
 
@@ -169,7 +169,7 @@ public class Entity : MonoBehaviour, IHitListener {
 			if (hitbox.data.stunLength > 0) {
 				StunFor(hitbox.data.stunLength, hitbox.data.hitstop);
 			}
-			DoHitstop(hitbox.data.hitstop, rb2d.velocity);
+			DoHitstop(hitbox.data.hitstop, rb2d.velocity, selfFlinch: true);
 			shader.FlashWhite();
 		} else {
 			shader.FlinchOnce(GetKnockback(hitbox));
@@ -228,7 +228,6 @@ public class Entity : MonoBehaviour, IHitListener {
 			GroundFlop();
 		}
 		else {
-			Debug.Log("stun bounce");
 			StunBounce();
 		}
 	}

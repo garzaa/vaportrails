@@ -428,9 +428,11 @@ public class EntityController : Entity {
 		canTech = false;
 		CancelInvoke(nameof(EndTechWindow));
 		GetComponent<CombatController>()?.OnTech();
-		// freeze inputs for a sec while teching
-		FreezeInputs();
-		Invoke(nameof(UnfreezeInputs), 0.5f);
+		// freeze inputs for a sec while teching ON GROUND
+		if (groundData.grounded) {
+			FreezeInputs();
+			Invoke(nameof(UnfreezeInputs), 0.5f);
+		}
 		SetInvincible(true);
 		this.WaitAndExecute(() => SetInvincible(false), 0.5f);
 	}
@@ -611,7 +613,7 @@ public class EntityController : Entity {
 	}
 
 	public void EnterCutscene(MonoBehaviour source) {
-		// also exit combat stance if there's a combat controller...ough
+		GetComponent<ValCombatController>()?.DisableAttackStance();
 		rb2d.velocity = Vector2.zero;
 		animator.Play("Idle", 0);
 		EnterCutsceneNoHalt(source);

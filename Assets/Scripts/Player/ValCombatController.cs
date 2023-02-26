@@ -212,7 +212,7 @@ public class ValCombatController : CombatController, IHitListener {
 		Invoke(nameof(DisableAttackStance), combatStanceLength);
 	}
 
-	void DisableAttackStance() {
+	public void DisableAttackStance() {
 		combatLayerWeight = 0;
 	}
 

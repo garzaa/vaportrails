@@ -14,7 +14,7 @@ public class DelayedEvent : MonoBehaviour {
 	}
 
 	IEnumerator DelayAndFire(float delay, UnityEvent callback) {
-		yield return new WaitForSeconds(delay);
+		yield return new WaitForSecondsRealtime(delay);
 		callback.Invoke();
 	}
 
