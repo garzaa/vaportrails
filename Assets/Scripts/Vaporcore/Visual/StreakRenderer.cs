@@ -18,7 +18,7 @@ public class StreakRenderer : LineRendererEditor {
     }
 
     void Update() {
-       if (continuous) SetPoints();
+       if (continuous || Application.isEditor) SetPoints();
     }
 
     void LateUpdate() {

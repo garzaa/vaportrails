@@ -4,13 +4,13 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class TargetContainer : MonoBehaviour, IHitListener {
-	SpriteRenderer[] targets;
+	Animator[] targets;
 
 	public bool hideAllOnStart = false;
 	public UnityEvent OnAllBreak;
 
 	void Start() {
-		targets = GetComponentsInChildren<SpriteRenderer>();
+		targets = GetComponentsInChildren<Animator>();
 
 		if (hideAllOnStart) {
 			SetTargets(false);
@@ -18,27 +18,26 @@ public class TargetContainer : MonoBehaviour, IHitListener {
 	}
 
 	public void Reset() {
-		foreach (SpriteRenderer target in targets) {
+		foreach (Animator target in targets) {
 			SetTargets(true);
 		}
 	}
 
 	public void OnHit(AttackHitbox attack) {
-		foreach (SpriteRenderer target in targets) {
-			if (target.enabled) {
-				return;
-			}
+		StartCoroutine(CheckAll());
+	}
+
+	IEnumerator CheckAll() {
+		yield return new WaitForEndOfFrame();
+		foreach (Animator target in targets) {
+			if (target.GetComponent<SpriteRenderer>().enabled) yield break;
 		}
 		OnAllBreak.Invoke();
 	}
 
 	void SetTargets(bool b) {
-		foreach (SpriteRenderer target in targets) {
-			target.enabled = b;
-			// also re-enable their hitboxes
-			target.GetComponent<Collider2D>().enabled = b;
-			// and then potential streaks back to the main box
-			target.GetComponent<LineRenderer>().enabled = b;
+		foreach (Animator target in targets) {
+			target.SetTrigger(b ? "Show" : "Hide");
 		}
 	}
 }
