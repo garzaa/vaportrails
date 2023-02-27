@@ -86,9 +86,8 @@ public class Entity : MonoBehaviour, IHitListener {
     public void DoHitstop(float duration, Vector2 exitVelocity, bool priority=false, bool selfFlinch = false) {
         if (hitstopPriority && !priority) return;
 		if (hitstopRoutine != null) {
-			// don't get stuck in 0 speed from last hitstop
-			// why is it still happening damn
 			StopCoroutine(hitstopRoutine);
+			hitstopRoutine = null;
 		} else {
 			hitstopExitVelocity = exitVelocity;
 		}
@@ -106,6 +105,7 @@ public class Entity : MonoBehaviour, IHitListener {
 		rb2d.velocity = hitstopExitVelocity;
         hitstopPriority = false;
         animator.speed = 1;
+		hitstopRoutine = null;
     }
 
     void InterruptHitstop() {
