@@ -17,6 +17,8 @@ public class Subway : MonoBehaviour {
 	public string lineName;
 	public Text[] infoBoards;
 
+	public GameObject stopNames;
+
 	public SubwayDirection leaveDirection;
 	public SubwayDirection arriveDirection;
 
@@ -44,8 +46,7 @@ public class Subway : MonoBehaviour {
 		playerDummy.SetActive(false);
 
 		string[] splitPath = stopDestination.ScenePath.Split('/');
-		// .unity
-		finalStopName = splitPath[splitPath.Length-1].Split('.')[0];
+		finalStopName = splitPath[splitPath.Length-1].Split('.')[0]; // .unity
 	}
 
 	void Start() {
@@ -53,6 +54,9 @@ public class Subway : MonoBehaviour {
 			car.DisableBoarding();
 		}
 		StartCoroutine(SubwayRoutine());
+		foreach (Text stopName in stopNames.GetComponentsInChildren<Text>()) {
+			stopName.text = SceneManager.GetActiveScene().name;
+		}
 	}
 
 	void Update() {
