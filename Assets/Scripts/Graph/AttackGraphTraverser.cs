@@ -51,7 +51,7 @@ public class AttackGraphTraverser {
 
 	Context context;
 
-	CombatNode currentNode;
+	public CombatNode currentNode { get; private set; }
 	int currentFrame;
 	bool enteredCurrentNode = false;
 	float nodeSwitchTime;

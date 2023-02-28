@@ -344,7 +344,7 @@ MonoBehaviour:
   m_Name: Air Parry
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -488, y: 472}
+  position: {x: -520, y: 520}
   ports:
     keys:
     - input
@@ -363,77 +363,6 @@ MonoBehaviour:
   input:
     type: 0
     direction: 0
---- !u!114 &-2801933637361297788
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f560ccef1c7828547a8ca9ba50993c96, type: 3}
-  m_Name: Orca Flip
-  m_EditorClassIdentifier: 
-  graph: {fileID: 11400000}
-  position: {x: -776, y: -664}
-  ports:
-    keys:
-    - onLand
-    - input
-    - links
-    - onHit
-    values:
-    - _fieldName: onLand
-      _node: {fileID: -2801933637361297788}
-      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      connections: []
-      _direction: 1
-      _connectionType: 1
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: input
-      _node: {fileID: -2801933637361297788}
-      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      connections: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: links
-      _node: {fileID: -2801933637361297788}
-      _typeQualifiedName: AttackLink[], Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      connections: []
-      _direction: 1
-      _connectionType: 1
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: onHit
-      _node: {fileID: -2801933637361297788}
-      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      connections: []
-      _direction: 1
-      _connectionType: 1
-      _typeConstraint: 0
-      _dynamic: 0
-  attackData: {fileID: 11400000, guid: 946bbb747f219bd499b9b3e9911cc32c, type: 2}
-  input:
-    type: 0
-    direction: 0
-  links: []
-  onHit:
-    type: 0
-    direction: 0
-  onLand:
-    type: 0
-    direction: 0
-  allowFlip: 0
-  singleUse: 0
-  landingLagFrames: 2
 --- !u!114 &-2126959507096117593
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -468,6 +397,93 @@ MonoBehaviour:
   input:
     type: 0
     direction: 0
+--- !u!114 &-584801055051049929
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a90562b3932e0174c8cb4015e2e261fb, type: 3}
+  m_Name: Orca Flip
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -664, y: -760}
+  ports:
+    keys:
+    - instantCancel
+    - onLand
+    - input
+    - links
+    - onHit
+    values:
+    - _fieldName: instantCancel
+      _node: {fileID: -584801055051049929}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: input
+        node: {fileID: 8918050907873563099}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: onLand
+      _node: {fileID: -584801055051049929}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: input
+      _node: {fileID: -584801055051049929}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: links
+      _node: {fileID: -584801055051049929}
+      _typeQualifiedName: AttackLink[], Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: onHit
+      _node: {fileID: -584801055051049929}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+  attackData: {fileID: 11400000, guid: 946bbb747f219bd499b9b3e9911cc32c, type: 2}
+  input:
+    type: 0
+    direction: 0
+  links: []
+  onHit:
+    type: 0
+    direction: 0
+  onLand:
+    type: 0
+    direction: 0
+  allowFlip: 0
+  singleUse: 1
+  landingLagFrames: 2
+  instantCancel:
+    type: 2
+    direction: -2
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -491,8 +507,8 @@ MonoBehaviour:
   - {fileID: 1175483536977120707}
   - {fileID: -6885289937481435947}
   - {fileID: 7016034450050395571}
-  - {fileID: -2801933637361297788}
   - {fileID: -4208440387906325956}
+  - {fileID: -584801055051049929}
   stateMachineName: AirAttacks
 --- !u!114 &1175483536977120707
 MonoBehaviour:
@@ -871,6 +887,9 @@ MonoBehaviour:
         reroutePoints: []
       - fieldName: speedLinks 0
         node: {fileID: 6211059138720334733}
+        reroutePoints: []
+      - fieldName: instantCancel
+        node: {fileID: -584801055051049929}
         reroutePoints: []
       _direction: 0
       _connectionType: 0

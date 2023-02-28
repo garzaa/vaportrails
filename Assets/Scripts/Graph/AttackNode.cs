@@ -70,7 +70,7 @@ public class AttackNode : CombatNode {
         BufferedAttack attack = context.buffer.Peek();
         for (int i=0; i<attackLinks.Length; i++) {
             AttackLink link = attackLinks[i];
-            if (link.type==attack.type && attack.HasDirection(link.direction)) {
+            if (AttackBuffer.Match(attack, link)) {
                 CombatNode next = GetNode(portListName+" "+i).Connection.node as CombatNode;
                 if (next.Enabled(context)) {
                     if (link.direction != AttackDirection.ANY) {

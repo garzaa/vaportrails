@@ -3,7 +3,6 @@ using XNode;
 using System.Collections.Generic;
      
 abstract public class CombatNode : Node {
-
     virtual public void OnNodeEnter(AttackGraphTraverser.Context context) {}
 
     virtual public void NodeUpdate(AttackGraphTraverser.Context context) {}

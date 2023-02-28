@@ -78,6 +78,10 @@ public class AttackBuffer : MonoBehaviour {
 	public bool Ready() {
 		return bufferedAttacks.Count > 0;
 	}
+
+    public static bool Match(BufferedAttack attack, AttackLink link) {
+        return link.type == attack.type && attack.HasDirection(link.direction);
+    }
 }
 
 public class BufferedAttack {

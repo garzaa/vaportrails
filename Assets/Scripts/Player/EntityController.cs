@@ -136,7 +136,8 @@ public class EntityController : Entity {
 			this.WaitAndExecute(()=>justLeftWall=false, bufferDuration*2);
 		}
 
-		if (groundData.ledgeStep && !speeding && !movingForwards) {
+		// stop at the end of ledges (but allow edge canceling)
+		if (groundData.ledgeStep && !speeding && !input.HasHorizontalInput()) {
 			rb2d.velocity = new Vector2(0, rb2d.velocity.y);
 		}
 	}
@@ -179,7 +180,8 @@ public class EntityController : Entity {
 					float f = groundData.groundCollider != null ? groundData.groundCollider.friction : movement.airFriction;
 					rb2d.AddForce(Vector2.right * rb2d.mass * movement.gndAcceleration * inputX * f*f);
 				} else {	
-					rb2d.AddForce(Vector2.right * rb2d.mass * movement.airAcceleration * inputX * airControlMod);
+					float attackMod = inAttack ? 0.5f : 1f;
+					rb2d.AddForce(Vector2.right * rb2d.mass * movement.airAcceleration * inputX * airControlMod * attackMod);
 				}
 			}
         } else {
@@ -205,7 +207,7 @@ public class EntityController : Entity {
 			rb2d.velocity = new Vector2(rb2d.velocity.x, movement.maxWallSlideSpeed);
 		}
 
-		// fast fall
+		// fastfall
 		if (!groundData.grounded
 			&& !stunned
 			&& !wallData.touchingWall

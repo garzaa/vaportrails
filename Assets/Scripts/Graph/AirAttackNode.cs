@@ -35,7 +35,7 @@ public class AirAttackNode : AttackNode {
             context.traverser.MoveNode(GetNode("onLand").Connection.node as CombatNode);
         } else {
             context.traverser.ExitGraph();
-            context.combatController.LandingLag(landingLagFrames/12f);
+            if (landingLagFrames > 0) context.combatController.LandingLag(landingLagFrames/12f);
         }
     }    
 }

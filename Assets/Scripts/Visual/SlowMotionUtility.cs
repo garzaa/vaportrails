@@ -5,10 +5,12 @@ using System.Collections.Generic;
 public class SlowMotionUtility : MonoBehaviour {
 
 	public void FreezeFor(float duration) {
+		if (Time.timeScale != 1) return;
 		StartCoroutine(_SlowMotionFor(0.1f, duration));
 	}
 
 	public void SlowMotionFor(float duration) {
+		if (Time.timeScale != 1) return;
 		StartCoroutine(_SlowMotionFor(0.5f, duration));
 	}
 
