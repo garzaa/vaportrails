@@ -59,7 +59,6 @@ public class AttackHitbox : MonoBehaviour {
 		if (attacksPlayer && !hurtbox.gameObject.CompareTag(Tags.Player) && !indiscriminate) return false;
 
 		if (hurtboxesHitThisActive.Contains(hurtbox)) {
-			print("already hit "+hurtbox.gameObject.name);
 			return false;
 		}
 

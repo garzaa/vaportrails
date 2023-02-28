@@ -5,6 +5,7 @@ using UnityEngine.Events;
 
 [System.Serializable]
 public class DialogueLine {
+	// add a character with name, portrait selections, font?
 	public string speakerName;
 	public Sprite portrait;
 	[TextArea] public string text;

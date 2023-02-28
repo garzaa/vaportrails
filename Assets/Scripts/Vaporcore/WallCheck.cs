@@ -53,7 +53,7 @@ public class WallCheck : MonoBehaviour {
 		);
 		Debug.DrawLine(topStart, topStart+(Vector2.left*distance), Color.cyan);
 		Debug.DrawLine(bottomStart, bottomStart+(Vector2.left*distance), Color.cyan);
-		if ((topHit.collider!=null || bottomHit.collider!=null) && midHit.collider!=null) {
+		if (topHit.collider!=null || bottomHit.collider!=null || midHit.collider!=null) {
 			wallData.direction = -1;
 			touchingwallThisFrame = true;
 		}
