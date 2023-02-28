@@ -9478,7 +9478,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 99735383}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.2025506, y: 1.5325792, z: 0}
+  m_LocalPosition: {x: 3.4347346, y: 2.9751182, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -11089,13 +11089,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2828389539320751097, guid: df318d9009829a34781aaa920593e61d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.50006104
+      objectReference: {fileID: 0}
     - target: {fileID: 4160817345173324201, guid: df318d9009829a34781aaa920593e61d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 11.012753
+      value: 17.173664
       objectReference: {fileID: 0}
     - target: {fileID: 4160817345173324201, guid: df318d9009829a34781aaa920593e61d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 7.6628957
+      value: 14.875597
       objectReference: {fileID: 0}
     - target: {fileID: 7770972732134617660, guid: df318d9009829a34781aaa920593e61d, type: 3}
       propertyPath: m_AnchorMax.y
@@ -11215,11 +11219,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7770972733150071081, guid: df318d9009829a34781aaa920593e61d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 11.012753
+      value: 17.173664
       objectReference: {fileID: 0}
     - target: {fileID: 7770972733150071081, guid: df318d9009829a34781aaa920593e61d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 7.6628957
+      value: 14.875597
       objectReference: {fileID: 0}
     - target: {fileID: 7770972733150071092, guid: df318d9009829a34781aaa920593e61d, type: 3}
       propertyPath: orthographic size
@@ -11375,11 +11379,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7770972734024709621, guid: df318d9009829a34781aaa920593e61d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 11.012753
+      value: 17.173664
       objectReference: {fileID: 0}
     - target: {fileID: 7770972734024709621, guid: df318d9009829a34781aaa920593e61d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 7.6628957
+      value: 14.875597
       objectReference: {fileID: 0}
     - target: {fileID: 7770972734033973496, guid: df318d9009829a34781aaa920593e61d, type: 3}
       propertyPath: m_SizeDelta.y
@@ -13934,8 +13938,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1226626657}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -4.761468, z: 0}
-  m_LocalScale: {x: 20, y: -9.522936, z: 1}
+  m_LocalPosition: {x: 0, y: -8.367819, z: 0}
+  m_LocalScale: {x: 20, y: -16.735638, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 437713039}
@@ -14756,7 +14760,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1295936472}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 11.012753, y: 7.6628957, z: 0}
+  m_LocalPosition: {x: 17.173664, y: 14.875597, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -20462,7 +20466,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1618923827}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 11.012753, y: 7.6628957, z: 0}
+  m_LocalPosition: {x: 17.173664, y: 14.875597, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -20789,6 +20793,18 @@ MonoBehaviour:
               m_IntArgument: 0
               m_FloatArgument: 0
               m_StringArgument: 
+              m_BoolArgument: 1
+            m_CallState: 2
+          - m_Target: {fileID: 2121791531}
+            m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+            m_MethodName: SetTrigger
+            m_Mode: 5
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: Descend
               m_BoolArgument: 1
             m_CallState: 2
       eventOnLineEnd: 1
@@ -21291,8 +21307,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1686690743}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -4.761468, z: 0}
-  m_LocalScale: {x: 20, y: -9.522936, z: 1}
+  m_LocalPosition: {x: 0, y: -8.367819, z: 0}
+  m_LocalScale: {x: 20, y: -16.735638, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 114326989}
@@ -21597,6 +21613,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1642475787}
     m_Modifications:
+    - target: {fileID: 423141560338040944, guid: 0a27ae2570c62d2418996bc8243c9930, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.5000198
+      objectReference: {fileID: 0}
     - target: {fileID: 1360911968350955864, guid: 0a27ae2570c62d2418996bc8243c9930, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -22156,6 +22176,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1642475787}
     m_Modifications:
+    - target: {fileID: 423141560338040944, guid: 0a27ae2570c62d2418996bc8243c9930, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.49999046
+      objectReference: {fileID: 0}
     - target: {fileID: 1360911968375115094, guid: 0a27ae2570c62d2418996bc8243c9930, type: 3}
       propertyPath: m_SortingOrder
       value: -56
@@ -23730,7 +23754,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2017662000}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 11.012753, y: 7.6628957, z: 0}
+  m_LocalPosition: {x: 17.173664, y: 14.875597, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -23990,6 +24014,11 @@ Transform:
 --- !u!1 &2121791530 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8009526084400392839, guid: ae7e14a96b99ae741a9bbf1a5d3c2759, type: 3}
+  m_PrefabInstance: {fileID: 2121791528}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &2121791531 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 8009526084400392849, guid: ae7e14a96b99ae741a9bbf1a5d3c2759, type: 3}
   m_PrefabInstance: {fileID: 2121791528}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &2121791542 stripped
