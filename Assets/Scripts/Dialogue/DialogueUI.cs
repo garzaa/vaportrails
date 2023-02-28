@@ -27,6 +27,8 @@ public class DialogueUI : MonoBehaviour {
 
 	UnityEvent queuedEvent;
 
+	AudioSource audioSource;
+
 	void Awake() {
 		animator = GetComponent<Animator>();
 		slowRenderer = GetComponentInChildren<SlowRenderer>();
@@ -34,6 +36,7 @@ public class DialogueUI : MonoBehaviour {
 		playerInput = PlayerInput.GetPlayerOneInput();
 		dialogueRenderSound = Resources.Load<AudioResource>("Runtime/DialogueRenderSound");
 		cameraInterface = GameObject.FindObjectOfType<CameraInterface>();
+		audioSource = GetComponent<AudioSource>();
 	}
 
 	void Update() {
@@ -63,8 +66,14 @@ public class DialogueUI : MonoBehaviour {
 	}
 
 	void ShowLine(DialogueLine line) {
-		dialogueRenderSound.PlayFrom(this.gameObject);
-		slowRenderer.Render(line.text);
+		bool hasVoice = line.character?.voice;
+		if (!hasVoice) {
+			dialogueRenderSound.PlayFrom(this.gameObject);
+			slowRenderer.Render(line.text);
+		} else {
+			audioSource.clip = line.character.voice;
+			slowRenderer.Render(line.text, wordCallback: () => audioSource.Play());
+		}
 		if (line.portrait) {
 			portraitContainer.SetActive(true);
 			speakerPortrait.sprite = line.portrait;

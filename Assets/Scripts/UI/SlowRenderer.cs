@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 public class SlowRenderer : MonoBehaviour {
 
@@ -14,14 +15,22 @@ public class SlowRenderer : MonoBehaviour {
 	const float letterDelay = 0.01f;
 	static readonly char[] pauses = {'.', '!', ',', '?', '\n'};
 
+	Action wordCallback;
+
 	void Awake() {
 		target = GetComponent<Text>();
 	}
 
 	public void Render(string t) {
+		Render(t, null);
+	}
+
+	public void Render(string t, Action wordCallback) {
 		target.text = "";
 		letterIndex = 0;
 		textToRender = t;
+		// this happens on a dialogue line open...why
+		this.wordCallback = wordCallback;
 		renderRoutine = StartCoroutine(SlowRender());
 	}
 
@@ -29,10 +38,15 @@ public class SlowRenderer : MonoBehaviour {
 		StopCoroutine(renderRoutine);
 		renderRoutine = null;
 		target.text = textToRender;
+		wordCallback = null;
 	}
 
 	IEnumerator SlowRender() {
+		if (wordCallback != null) wordCallback();
 		while (letterIndex < textToRender.Length) {
+			if (wordCallback != null && letterIndex > 0 && textToRender[letterIndex-1] == ' ') {
+				wordCallback();
+			}
 			target.text = textToRender.Substring(0, letterIndex+1) + MakeInvisibleText();
 			int scalar = 1;
 			if (IsPause(textToRender[letterIndex])) {
@@ -42,6 +56,7 @@ public class SlowRenderer : MonoBehaviour {
 			yield return new WaitForSecondsRealtime(letterDelay * scalar);
 		}
 		renderRoutine = null;
+		wordCallback = null;
 		yield break;
 	}
 
