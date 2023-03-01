@@ -1,13 +1,15 @@
-Shader "Custom2D/AlphaStencil"
+// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+Shader "Custom2D/AndromedaLaser"
 {
 	Properties
 	{
 		[PerRendererData] _MainTex ("Sprite Texture", 2D) = "white" {}
 		_Color ("Tint", Color) = (1,1,1,1)
 		[MaterialToggle] PixelSnap ("Pixel snap", Float) = 0
-		_AlphaCutoff("Alpha Cutoff", Range(0.0, 1.0)) = 0.0
 
-		_DissolveTex ("Dissolve Texture", 2D) = "white" {}
+		_XSpeed ("X Speed", Float) = 0
+		_YSpeed ("Y Speed", Float) = 0
 
 		[Header(Stencil)]
 		_Stencil ("Ref Val [0;255]", Float) = 0
@@ -15,8 +17,6 @@ Shader "Custom2D/AlphaStencil"
 		_WriteMask ("WriteMask [0;255]", Int) = 255
 		[Enum(UnityEngine.Rendering.CompareFunction)] _StencilComp ("Draw Comparison (Draw If Ref <?> Buffer)", Int) = 3
 		[Enum(UnityEngine.Rendering.StencilOp)] _StencilOp ("Buffer Operation (if comparison success)", Int) = 0
-		// [Enum(UnityEngine.Rendering.StencilOp)] _StencilFail ("Stencil Fail", Int) = 0
-		// [Enum(UnityEngine.Rendering.StencilOp)] _StencilZFail ("Stencil ZFail", Int) = 0
 	}
 
 	SubShader
@@ -28,8 +28,6 @@ Shader "Custom2D/AlphaStencil"
 			WriteMask [_WriteMask]
 			Comp [_StencilComp]
 			Pass [_StencilOp]
-			// Fail [_StencilFail]
-			// ZFail [_StencilZFail]
 		}
 
 		Tags
@@ -41,10 +39,10 @@ Shader "Custom2D/AlphaStencil"
 			"CanUseSpriteAtlas"="True"
 		}
 
+
 		Cull Off
 		Lighting Off
-		ZWrite Off
-		Blend One OneMinusSrcAlpha
+		Blend SrcAlpha One
 
 		Pass
 		{
@@ -84,28 +82,30 @@ Shader "Custom2D/AlphaStencil"
 			}
 
 			sampler2D _MainTex;
-			sampler2D _DissolveTex;
-			float4 _DissolveTex_ST;
-			float _AlphaCutoff;
+			sampler2D _AlphaTex;
+			float _AlphaSplitEnabled;
+
+			float _XSpeed;
+			float _YSpeed;
+
+			fixed4 SampleSpriteTexture (float2 uv)
+			{
+				uv.x = (uv.x + (_Time.w * _XSpeed));
+				uv.y = (uv.y + (_Time.w * _YSpeed));
+
+				fixed4 color = tex2D (_MainTex, uv);
+
+#if UNITY_TEXTURE_ALPHASPLIT_ALLOWED
+				if (_AlphaSplitEnabled)
+					color.a = tex2D (_AlphaTex, uv).r;
+#endif //UNITY_TEXTURE_ALPHASPLIT_ALLOWED
+
+				return color;
+			}
 
 			fixed4 frag(v2f IN) : SV_Target
 			{
-				fixed4 c = tex2D (_MainTex, IN.texcoord);
-
-				// then multiply by the dissolve texture lookup
-				float2 d_uv = IN.texcoord.xy * _DissolveTex_ST.xy + (_DissolveTex_ST.zw * _Time.x);
-				fixed d = tex2D(_DissolveTex, d_uv).a;
-
-				c.a *= d;
-
-				c *= IN.color;
-
-				if (c.a < _AlphaCutoff) {
-					discard;
-				}
-
-				c.a = 1;
-
+				fixed4 c = SampleSpriteTexture (IN.texcoord) * IN.color;
 				c.rgb *= c.a;
 				return c;
 			}

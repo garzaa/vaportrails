@@ -1,13 +1,10 @@
-Shader "Custom2D/AlphaStencil"
+Shader "Custom2D/TransparentAlphaStencil"
 {
 	Properties
 	{
 		[PerRendererData] _MainTex ("Sprite Texture", 2D) = "white" {}
 		_Color ("Tint", Color) = (1,1,1,1)
 		[MaterialToggle] PixelSnap ("Pixel snap", Float) = 0
-		_AlphaCutoff("Alpha Cutoff", Range(0.0, 1.0)) = 0.0
-
-		_DissolveTex ("Dissolve Texture", 2D) = "white" {}
 
 		[Header(Stencil)]
 		_Stencil ("Ref Val [0;255]", Float) = 0
@@ -43,7 +40,7 @@ Shader "Custom2D/AlphaStencil"
 
 		Cull Off
 		Lighting Off
-		ZWrite Off
+
 		Blend One OneMinusSrcAlpha
 
 		Pass
@@ -92,20 +89,7 @@ Shader "Custom2D/AlphaStencil"
 			{
 				fixed4 c = tex2D (_MainTex, IN.texcoord);
 
-				// then multiply by the dissolve texture lookup
-				float2 d_uv = IN.texcoord.xy * _DissolveTex_ST.xy + (_DissolveTex_ST.zw * _Time.x);
-				fixed d = tex2D(_DissolveTex, d_uv).a;
-
-				c.a *= d;
-
 				c *= IN.color;
-
-				if (c.a < _AlphaCutoff) {
-					discard;
-				}
-
-				c.a = 1;
-
 				c.rgb *= c.a;
 				return c;
 			}
