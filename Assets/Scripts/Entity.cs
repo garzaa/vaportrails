@@ -185,6 +185,10 @@ public class Entity : MonoBehaviour, IHitListener {
 				if (hitbox is EnvironmentHitbox) {
 					// instant tumble for return to safety
 					animator.SetBool("Tumbling", true);
+				} else {
+					if (!groundData.grounded) {
+						animator.Update(1f);
+					}
 				}
 			}
 			DoHitstop(hitbox.data.hitstop, rb2d.velocity, selfFlinch: true);
