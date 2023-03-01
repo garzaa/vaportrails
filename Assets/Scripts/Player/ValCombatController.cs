@@ -206,6 +206,7 @@ public class ValCombatController : CombatController, IHitListener {
 	void StartAttackStance() {
 		combatLayerWeight = 1;
 		animator.SetLayerWeight(1, 1);
+		animator.SetFloat("AttackStance", 1);
 		if (IsInvoking(nameof(DisableAttackStance))) {
 			CancelInvoke(nameof(DisableAttackStance));
 		}
@@ -214,6 +215,7 @@ public class ValCombatController : CombatController, IHitListener {
 
 	public void DisableAttackStance() {
 		combatLayerWeight = 0;
+		animator.SetFloat("AttackStance", 0);
 	}
 
 	public override void RefreshAirAttacks() {

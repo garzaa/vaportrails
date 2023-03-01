@@ -13,12 +13,20 @@ public class RotateToVelocity : MonoBehaviour {
     }
 
     void LateUpdate() {
+        // if in hitstop
+        if (rb2d.constraints == RigidbodyConstraints2D.FreezeAll) {
+            return;
+        }
+        SetAngleForVelocity(rb2d.velocity);
+    }
+
+    public void SetAngleForVelocity(Vector2 v) {
         this.transform.eulerAngles = new Vector3(
             0,
             0,
             Vector2.SignedAngle(
                 Vector2.right,
-                rb2d.velocity
+                v
             ) + offset
         );
     }

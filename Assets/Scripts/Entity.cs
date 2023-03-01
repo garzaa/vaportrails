@@ -188,6 +188,7 @@ public class Entity : MonoBehaviour, IHitListener {
 				} else {
 					if (!groundData.grounded) {
 						animator.Update(1f);
+						launchRotation.SetAngleForVelocity(rb2d.velocity);
 					}
 				}
 			}
@@ -328,7 +329,7 @@ public class Entity : MonoBehaviour, IHitListener {
 		if (inGroundFlop && groundData.grounded) {
 			AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
 			if (!stateInfo.IsName("Base Layer.GroundFlop")) {
-				animator.Play("GroundFlop");
+				animator.Play("GroundFlop", 0, 0.5f);
 			}
 		}
 	}
