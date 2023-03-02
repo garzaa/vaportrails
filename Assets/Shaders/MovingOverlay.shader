@@ -71,6 +71,7 @@ Shader "Custom2D/MovingOverlay"
 			sampler2D _AlphaRamp, _AlphaTexture;
             float4 _MainTex_TexelSize;
             float4 _Overlay_TexelSize;
+			float4 _Overlay_ST;
             fixed4 _Mask1;
             fixed4 _Mask2;
             float4 _Speed, _AlphaTextureSpeed;
@@ -92,7 +93,7 @@ Shader "Custom2D/MovingOverlay"
                 // get the mask color
                 // it's gonna be a different size texture, so normalize to pixels for uv lookup
                 fixed2 maskUV = (IN.texcoord / _MainTex_TexelSize) * _Overlay_TexelSize;
-                fixed4 overlay = tex2D (_Overlay, IN.texcoord + (_Time.w * _Speed));
+                fixed4 overlay = tex2D (_Overlay, IN.texcoord + (_Time.w * _Speed) * _Overlay_ST.xy);
 
                 // if there's a match with either mask color
                 if (any(compareColor(c, _Mask1, 0.1) || compareColor(c, _Mask2, 0.1))) {
@@ -101,7 +102,7 @@ Shader "Custom2D/MovingOverlay"
 
 				// TODO: then overlay with the alpha ramp and the alpha texture
 				// if below 50%, clip it?
-			float ramp = tex2D(_AlphaRamp, IN.texcoord/_AlphaRamp_ST + _AlphaRamp_ST.zw);
+				float ramp = tex2D(_AlphaRamp, IN.texcoord/_AlphaRamp_ST + _AlphaRamp_ST.zw);
 				float tex = tex2D(_AlphaTexture, IN.texcoord/_AlphaTexture_ST + (_Time.w * _AlphaTextureSpeed));
 
 				clip(ramp*tex - _AlphaCutoff);

@@ -153,7 +153,7 @@ public class CombatController : MonoBehaviour, IAttackLandListener, IHitListener
 			() => {
 				animator.SetBool("LandingLag", false);
 				player.UnfreezeInputs();
-			}, 
+			},
 			time
 		);
 	}

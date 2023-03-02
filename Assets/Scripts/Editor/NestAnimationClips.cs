@@ -15,7 +15,7 @@ public class NestAnimClips : MonoBehaviour {
     
         // Get all objects currently in Controller asset, we'll destroy them later
         UnityEngine.Object[] objects = AssetDatabase.LoadAllAssetsAtPath(AssetDatabase.GetAssetPath(anim_controller));
-    
+
         AssetDatabase.SaveAssets();
     
         // Add animations from all animation layers, without duplicating them
@@ -32,7 +32,6 @@ public class NestAnimClips : MonoBehaviour {
                     AssetDatabase.AddObjectToAsset( newClip, anim_controller );
                     AssetDatabase.ImportAsset( AssetDatabase.GetAssetPath( newClip ) );
                     oldToNew[old] = newClip;
-                    Debug.Log( "Nested animation clip: " + newClip.name );
                 }
     
                 state.state.motion = oldToNew[old];

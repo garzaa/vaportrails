@@ -9,8 +9,10 @@ Shader "Custom2D/FlatSky"
 		_MainScale ("Main Scale", Vector) = (1, 1, 0, 0)
 		_NearScale ("Near Scale", Vector) = (0.5, 0.5, 0, 0)
 		_FarScale ("Far Scale", Vector) = (5, 5, 0, 0)
-		_MoveSpeed ("Move Speed", Vector) = (0, 0, 0, 0)
+		_StrengthMultiplier("StrMultiplier", Float) = 1
 		_Offset ("Offset", Vector) = (0, 0, 0, 0)
+
+		_BaseUV("Script UV", Vector) = (0, 0, 0, 0)
 	}
 
 	SubShader
@@ -49,6 +51,7 @@ Shader "Custom2D/FlatSky"
 				float4 vertex   : SV_POSITION;
 				fixed4 color    : COLOR;
 				float2 texcoord  : TEXCOORD0;
+				float3 worldPos : TEXCOORD1;
 			};
 			
 			fixed4 _Color;
@@ -59,9 +62,11 @@ Shader "Custom2D/FlatSky"
 				OUT.vertex = UnityObjectToClipPos(IN.vertex);
 				OUT.texcoord = IN.texcoord;
 				OUT.color = IN.color * _Color;
+				OUT.worldPos = mul(unity_ObjectToWorld, IN.vertex);
 				#ifdef PIXELSNAP_ON
 				OUT.vertex = UnityPixelSnap (OUT.vertex);
 				#endif
+
 
 				return OUT;
 			}
@@ -70,13 +75,12 @@ Shader "Custom2D/FlatSky"
 			sampler2D _ColorRamp;
 			float4 _NearScale, _FarScale;
 			float4 _MainScale, _MoveSpeed, _Offset;
+			float _StrengthMultiplier;
+			float4 _BaseUV;
 
-			fixed4 SampleSpriteTexture (float2 uv, fixed4 tint)
+			fixed4 SampleSpriteTexture (float2 uv, fixed4 tint, v2f IN)
 			{
 				float textureYPos = uv.y;
-
-				uv += _Time.x * _MoveSpeed;
-				uv += _Offset.xy;
 
 				// make uv x start at 0.5 instead?
 				// map uv.x from 0-1 to -1 - 1
@@ -86,11 +90,15 @@ Shader "Custom2D/FlatSky"
 				// return lerp(float4(1, 0, 0, 1), float4(0, 0, 1, 1), textureYPos);
 
 				uv.x = (uv.x*2) - 1;
+				uv += _Offset.xy;
+				uv += _BaseUV * _StrengthMultiplier * 0.001;
+
 				fixed4 c = tex2D (_MainTex, uv);
+
 
 				// then do the color ramp
 				// tend towards the ramp top based on tint alpha (for dynamically showing/clearing skies);
-				float rampPos = c.r * uv.y;
+				float rampPos = c.r * uv.y * tint.a;
 				rampPos = lerp(rampPos, 1, 1-tint.a);
 				c = tex2D(_ColorRamp, fixed2(rampPos, 0));
 
@@ -101,7 +109,7 @@ Shader "Custom2D/FlatSky"
 
 			fixed4 frag(v2f IN) : SV_Target
 			{
-				fixed4 outColor = SampleSpriteTexture (IN.texcoord, IN.color);
+				fixed4 outColor = SampleSpriteTexture (IN.texcoord, IN.color, IN);
 				outColor.rgb *= outColor.a;
 				return outColor;
 			}

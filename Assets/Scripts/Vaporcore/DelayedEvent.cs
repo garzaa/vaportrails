@@ -7,20 +7,20 @@ public class DelayedEvent : MonoBehaviour {
 
 	public TimedEvent[] events;
 
-	public void Invoke() {
+	public void Raise() {
 		foreach (TimedEvent timedEvent in events) {
 			StartCoroutine(DelayAndFire(timedEvent.delay, timedEvent.callback));
 		}
 	}
 
 	IEnumerator DelayAndFire(float delay, UnityEvent callback) {
-		yield return new WaitForSeconds(delay);
+		yield return new WaitForSecondsRealtime(delay);
 		callback.Invoke();
 	}
 
 	[System.Serializable]
 	public class TimedEvent {
-		public UnityEvent callback;
 		public float delay;
+		public UnityEvent callback;
 	}	
 }

@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Subway : MonoBehaviour {
@@ -10,10 +11,13 @@ public class Subway : MonoBehaviour {
 		RIGHT = 1,
 	}
 
-	public string stopDestination;
+	public SceneReference stopDestination;
+	public SceneReference prevStop;
 	public SceneReference nextStop;
 	public string lineName;
 	public Text[] infoBoards;
+
+	public GameObject stopNames;
 
 	public SubwayDirection leaveDirection;
 	public SubwayDirection arriveDirection;
@@ -30,6 +34,8 @@ public class Subway : MonoBehaviour {
 
 	int cycleLength = 10 + 10 + 10 + 10;
 
+	string finalStopName = "";
+
 	void Awake() {
 		cars = GetComponentsInChildren<SubwayCar>();
 		animator = GetComponent<Animator>();
@@ -38,6 +44,9 @@ public class Subway : MonoBehaviour {
 		animator.SetFloat("ArriveDirection", (float) arriveDirection);
 		playerOne = PlayerInput.GetPlayerOneInput();
 		playerDummy.SetActive(false);
+
+		string[] splitPath = stopDestination.ScenePath.Split('/');
+		finalStopName = splitPath[splitPath.Length-1].Split('.')[0]; // .unity
 	}
 
 	void Start() {
@@ -45,6 +54,9 @@ public class Subway : MonoBehaviour {
 			car.DisableBoarding();
 		}
 		StartCoroutine(SubwayRoutine());
+		foreach (Text stopName in stopNames.GetComponentsInChildren<Text>()) {
+			stopName.text = SceneManager.GetActiveScene().name;
+		}
 	}
 
 	void Update() {
@@ -63,7 +75,9 @@ public class Subway : MonoBehaviour {
 		}
 		for (;;) {
 			ArriveAtStation();
-			SetInfoText(NextStopTime(0));
+			int delay = Random.Range(0, 1);
+			SetInfoText(NextStopTime(delay));
+			yield return new WaitForSeconds(delay);
 			// arrive time + wait at station time
 			yield return new WaitForSeconds(10);
 			LeaveStation();
@@ -104,7 +118,7 @@ public class Subway : MonoBehaviour {
 	}
 
 	string RouteInfo() {
-		return $"{lineName} line to {stopDestination}";
+		return $"{lineName} line to {finalStopName}";
 	}
 
 	string FormatSeconds(int seconds) {
@@ -149,9 +163,9 @@ public class Subway : MonoBehaviour {
 
 	public void FinishDepartAnimation() {
 		if (holdingPlayer) {
-			// set the subway transition and DO IT
 			Transition.SubwayTransition subway = new Transition.SubwayTransition();
 			subway.scene = nextStop;
+			subway.previousScenePath = SceneManager.GetActiveScene().path;
 			subway.xOffset = playerDummy.transform.localPosition.x;
 			GameObject.FindObjectOfType<TransitionManager>().SubwayTransition(subway);
 		} 

@@ -29,7 +29,7 @@ public class PauseMenu : MonoBehaviour {
 
 	void Open() {
 		pauseUI.SetActive(true);
-		player.EnterCutscene(this, halt: false);
+		player.EnterCutsceneNoHalt(this);
 		Time.timeScale = 0f;
 	}
 

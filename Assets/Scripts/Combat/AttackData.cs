@@ -11,7 +11,7 @@ public class AttackData : ScriptableObject {
 	[SerializeField] Vector2 knockback = Vector2.one;
 
 	public int IASA;
-	public bool jumpCancelable;
+	public bool moveCancelable;
 	public float stunLength = 0.5f;
 	public float hitstop = 0.05f;
 	public GameObject hitmarker;

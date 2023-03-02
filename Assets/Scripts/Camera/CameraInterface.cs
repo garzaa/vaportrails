@@ -46,7 +46,7 @@ public class CameraInterface : MonoBehaviour {
 	}
 
 	public void ResetMainTarget() {
-		mainCam.m_Follow = originalPlayerTarget.transform;
+		SetMainTarget(originalPlayerTarget);
 	}
 
 	public void AddFramingTarget(GameObject g) {

@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Events;
 
 public class DialogueUI : MonoBehaviour {
 	Animator animator;
@@ -24,6 +25,10 @@ public class DialogueUI : MonoBehaviour {
 	GameObject dialogueSource;
 	CameraInterface cameraInterface;
 
+	UnityEvent queuedEvent;
+
+	AudioSource audioSource;
+
 	void Awake() {
 		animator = GetComponent<Animator>();
 		slowRenderer = GetComponentInChildren<SlowRenderer>();
@@ -31,6 +36,7 @@ public class DialogueUI : MonoBehaviour {
 		playerInput = PlayerInput.GetPlayerOneInput();
 		dialogueRenderSound = Resources.Load<AudioResource>("Runtime/DialogueRenderSound");
 		cameraInterface = GameObject.FindObjectOfType<CameraInterface>();
+		audioSource = GetComponent<AudioSource>();
 	}
 
 	void Update() {
@@ -50,6 +56,8 @@ public class DialogueUI : MonoBehaviour {
 	}
 
 	void NextLineOrClose() {
+		queuedEvent?.Invoke();
+		queuedEvent = null;
 		if (currentLines.Count > 0) {
 			ShowLine(currentLines.Dequeue());
 		} else {
@@ -58,11 +66,18 @@ public class DialogueUI : MonoBehaviour {
 	}
 
 	void ShowLine(DialogueLine line) {
-		dialogueRenderSound.PlayFrom(this.gameObject);
-		slowRenderer.Render(line.text);
+		bool hasVoice = line.character?.voice;
+		if (!hasVoice) {
+			dialogueRenderSound.PlayFrom(this.gameObject);
+			slowRenderer.Render(line.text);
+		} else {
+			audioSource.clip = line.character.voice;
+			slowRenderer.Render(line.text, wordCallback: () => audioSource.Play());
+		}
 		if (line.portrait) {
 			portraitContainer.SetActive(true);
 			speakerPortrait.sprite = line.portrait;
+			speakerPortrait.SetNativeSize();
 		} else {
 			portraitContainer.SetActive(false);
 		}
@@ -77,9 +92,12 @@ public class DialogueUI : MonoBehaviour {
 			speakerNameContainer.SetActive(false);
 			speechBubbleTail.SetActive(false);
 		}
+		if (line.eventOnLineEnd) queuedEvent = line.callback;
+		else line.callback.Invoke();
 	}
 
 	public void Open(EntityController player, GameObject caller) {
+		// TODO: tear out all this multiplayer bullshit and do it for all players (or all human players or something)
 		open = true;
 		if (currentPlayer && currentPlayer!=player) {
 			currentPlayer.ExitCutscene(this);
@@ -88,7 +106,7 @@ public class DialogueUI : MonoBehaviour {
 		currentPlayer = player;
 		animator.SetBool("Shown", true);
 		NextLineOrClose();
-		if (dialogueSource) cameraInterface.RemoveFramingTarget(dialogueSource);
+	if (dialogueSource) cameraInterface.RemoveFramingTarget(dialogueSource);
 		dialogueSource = caller;
 		cameraInterface.AddFramingTarget(caller);
 	}

@@ -206,14 +206,16 @@ public class ValCombatController : CombatController, IHitListener {
 	void StartAttackStance() {
 		combatLayerWeight = 1;
 		animator.SetLayerWeight(1, 1);
+		animator.SetFloat("AttackStance", 1);
 		if (IsInvoking(nameof(DisableAttackStance))) {
 			CancelInvoke(nameof(DisableAttackStance));
 		}
 		Invoke(nameof(DisableAttackStance), combatStanceLength);
 	}
 
-	void DisableAttackStance() {
+	public void DisableAttackStance() {
 		combatLayerWeight = 0;
+		animator.SetFloat("AttackStance", 0);
 	}
 
 	public override void RefreshAirAttacks() {

@@ -39,6 +39,7 @@ public class Entity : MonoBehaviour, IHitListener {
 	public bool staggerable = true;
 	public bool takesEnvironmentDamage = true;
 	bool invincible = false;
+	bool inGroundFlop = false;
 	
 	bool canFlip = true;
 
@@ -46,6 +47,8 @@ public class Entity : MonoBehaviour, IHitListener {
 
 	bool hitstopPriority;
     Coroutine hitstopRoutine;
+	float duration;
+	Vector2 hitstopExitVelocity;
 
 	RotateToVelocity launchRotation;
 
@@ -54,6 +57,8 @@ public class Entity : MonoBehaviour, IHitListener {
 
 	float fallStart = 0;
 	float ySpeedLastFrame = 0;
+
+	Coroutine safetySaver;
 	
 	protected const float groundFlopStunTime = 9f/12f;
 
@@ -78,21 +83,29 @@ public class Entity : MonoBehaviour, IHitListener {
 		launchRotation = GetComponentInChildren<RotateToVelocity>();
 	}
 
-    public void DoHitstop(float duration, Vector2 exitVelocity, bool priority=false) {
+    public void DoHitstop(float duration, Vector2 exitVelocity, bool priority=false, bool selfFlinch = false) {
         if (hitstopPriority && !priority) return;
-		if (hitstopRoutine != null) StopCoroutine(hitstopRoutine);
+		if (hitstopRoutine != null) {
+			StopCoroutine(hitstopRoutine);
+			hitstopRoutine = null;
+		} else {
+			hitstopExitVelocity = exitVelocity;
+		}
+
+		this.duration = duration;
 		animator.speed = 0f;
 		rb2d.constraints = RigidbodyConstraints2D.FreezeAll;
-		shader.Flinch(exitVelocity, duration);
-		hitstopRoutine = StartCoroutine(EndHitstop(duration, exitVelocity));
+		if (selfFlinch) shader.Flinch(exitVelocity, duration);
+		hitstopRoutine = StartCoroutine(EndHitstop());
     }
 
-    IEnumerator EndHitstop(float duration, Vector2 exitVelocity) {
+    IEnumerator EndHitstop() {
         yield return new WaitForSeconds(duration);
 		rb2d.constraints = RigidbodyConstraints2D.FreezeRotation;
-		rb2d.velocity = exitVelocity;
+		rb2d.velocity = hitstopExitVelocity;
         hitstopPriority = false;
         animator.speed = 1;
+		hitstopRoutine = null;
     }
 
     void InterruptHitstop() {
@@ -153,6 +166,7 @@ public class Entity : MonoBehaviour, IHitListener {
 				// transition to air hurt isn't happening here...why
 				rb2d.velocity = Vector2.zero;
 				CancelInvoke(nameof(ReturnToSafety));
+				if (safetySaver != null) StopCoroutine(safetySaver);
 				Invoke(nameof(ReturnToSafety), hitbox.data.hitstop);
 			} else {
 				// heavier people get knocked back less
@@ -168,8 +182,17 @@ public class Entity : MonoBehaviour, IHitListener {
 
 			if (hitbox.data.stunLength > 0) {
 				StunFor(hitbox.data.stunLength, hitbox.data.hitstop);
+				if (hitbox is EnvironmentHitbox) {
+					// instant tumble for return to safety
+					animator.SetBool("Tumbling", true);
+				} else {
+					if (!groundData.grounded) {
+						animator.Update(1f);
+						launchRotation.SetAngleForVelocity(rb2d.velocity);
+					}
+				}
 			}
-			DoHitstop(hitbox.data.hitstop, rb2d.velocity);
+			DoHitstop(hitbox.data.hitstop, rb2d.velocity, selfFlinch: true);
 			shader.FlashWhite();
 		} else {
 			shader.FlinchOnce(GetKnockback(hitbox));
@@ -224,8 +247,12 @@ public class Entity : MonoBehaviour, IHitListener {
 	}
 
 	protected virtual void StunImpact(bool hitGround) {
-		if ((animator.GetBool("Tumbling") || rb2d.velocity.x<5f) && hitGround) GroundFlop();
-		else StunBounce();
+		if ((animator.GetBool("Tumbling") || rb2d.velocity.x<5f) && hitGround) {
+			GroundFlop();
+		}
+		else {
+			StunBounce();
+		}
 	}
 
 	public void LeaveTumbleAnimation() {
@@ -233,6 +260,9 @@ public class Entity : MonoBehaviour, IHitListener {
 	}
 
 	protected virtual void GroundFlop() {
+		// entity will just get out of the ground flop animation half the time (but still be frozen)
+		// this is caused by a transition from any state to fall? hello???
+		// solution was to put a nofallinterrupt on the ground flop state
 		UnStun();
 		animator.SetBool("Tumbling", false);
 		landNoise?.PlayFrom(gameObject);
@@ -240,9 +270,12 @@ public class Entity : MonoBehaviour, IHitListener {
 		CancelInvoke(nameof(ExecuteTech));
 		Invoke(nameof(ExecuteTech), groundFlopStunTime);
 		animator.Play("GroundFlop", 0);
+		inGroundFlop = true;
+		this.WaitAndExecute(() => inGroundFlop = false, groundFlopStunTime);
 	}
 
 	void ExecuteTech() {
+		inGroundFlop = false;
 		if (GetComponent<EntityController>()) {
 			GetComponent<EntityController>().OnTech();
 		} else {
@@ -285,13 +318,20 @@ public class Entity : MonoBehaviour, IHitListener {
 		}
 
 		if (groundData.hitGround) {
-			StartCoroutine(SaveLastSafePosition());
+			safetySaver = StartCoroutine(SaveLastSafePosition());
 		}
 
 		if (ySpeedLastFrame>=0 && rb2d.velocity.y<0) {
 			fallStart = transform.position.y;
 		} 
 		ySpeedLastFrame = rb2d.velocity.y;
+		
+		if (inGroundFlop && groundData.grounded) {
+			AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+			if (!stateInfo.IsName("Base Layer.GroundFlop")) {
+				animator.Play("GroundFlop", 0, 0.5f);
+			}
+		}
 	}
 
 	void RectifyEntityCollision() {
@@ -378,14 +418,7 @@ public class Entity : MonoBehaviour, IHitListener {
 	}
 	
 	IEnumerator SaveLastSafePosition() {
-		if ((!groundData.grounded && !groundData.onLedge) || wallData.touchingWall) {
-			yield break;
-		}
-
-		// if hit some envirodamage and is still grounded for some reason, wait
-		if (stunned) {
-			yield return new WaitForSeconds(0.2f);
-			StartCoroutine(SaveLastSafePosition());
+		if (!groundData.grounded || groundData.onLedge || wallData.touchingWall || stunned) {
 			yield break;
 		}
 
@@ -394,15 +427,25 @@ public class Entity : MonoBehaviour, IHitListener {
 			yield break;
 		}
 
+		Vector3 savedPos = transform.position;
+		Vector3 groundPos = currentGround.transform.position;
+
+		// if the player's about to slide off and hit envirodamage
+		yield return new WaitForSeconds(0.5f);
+
 		// get offset, in case it's moving
-		Vector3 currentOffset = transform.position - currentGround.transform.position;
+		Vector3 currentOffset = savedPos - groundPos;
 		lastSafeObject = currentGround;
 		lastSafeOffset = currentOffset;
 	}
 
 	void ReturnToSafety() {
+		Vector3 lastPos = transform.position;
 		transform.position = lastSafeObject.transform.position + lastSafeOffset;
-		UnStun();
+		// flip so they're looking at the last position
+		if (Forward() * (lastPos.x - transform.position.x) < 0) {
+			_Flip();
+		}
 		GroundFlop();
 	}
 }

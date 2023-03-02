@@ -55,6 +55,7 @@ public class EntityController : Entity {
 
 	public bool inAttack => currentAttack != null;
 	[SerializeField] protected AttackData currentAttack;
+	public AttackData GetAttack() => currentAttack;
 	protected PlayerInput input;
 	ToonMotion toonMotion;
 	GameObject wallJumpDust;
@@ -135,7 +136,8 @@ public class EntityController : Entity {
 			this.WaitAndExecute(()=>justLeftWall=false, bufferDuration*2);
 		}
 
-		if (groundData.ledgeStep && !speeding && !movingForwards) {
+		// stop at the end of ledges (but allow edge canceling)
+		if (groundData.ledgeStep && !speeding && !input.HasHorizontalInput()) {
 			rb2d.velocity = new Vector2(0, rb2d.velocity.y);
 		}
 	}
@@ -147,7 +149,8 @@ public class EntityController : Entity {
 	}
 
 	void FlipToWall() {
-		// flip to the wall
+		if (inAttack) return;
+
 		if (facingRight && wallData.direction>0) {
 			Flip();
 		} else if (!facingRight && wallData.direction<0) {
@@ -177,7 +180,8 @@ public class EntityController : Entity {
 					float f = groundData.groundCollider != null ? groundData.groundCollider.friction : movement.airFriction;
 					rb2d.AddForce(Vector2.right * rb2d.mass * movement.gndAcceleration * inputX * f*f);
 				} else {	
-					rb2d.AddForce(Vector2.right * rb2d.mass * movement.airAcceleration * inputX * airControlMod);
+					float attackMod = inAttack ? 0.5f : 1f;
+					rb2d.AddForce(Vector2.right * rb2d.mass * movement.airAcceleration * inputX * airControlMod * attackMod);
 				}
 			}
         } else {
@@ -203,13 +207,13 @@ public class EntityController : Entity {
 			rb2d.velocity = new Vector2(rb2d.velocity.x, movement.maxWallSlideSpeed);
 		}
 
-		// fast fall
+		// fastfall
 		if (!groundData.grounded
 			&& !stunned
 			&& !wallData.touchingWall
 			&& input.VerticalInput() == -1f
 			&& !stickDownLastFrame
-			&& rb2d.velocity.y<0
+			&& rb2d.velocity.y<=0
 			&& rb2d.velocity.y > movement.maxFallSpeed*0.75f
 			&& inAttack
 		) {
@@ -247,11 +251,16 @@ public class EntityController : Entity {
 			rb2d.velocity = new Vector2(rb2d.velocity.x, movement.shortHopCutoffVelocity);
 		}
 
-		if ((currentAttack && !currentAttack.jumpCancelable) && input.ButtonDown(Buttons.JUMP)) {
-			BufferJump();
+		// allow jump-canceling moves if player is touching the wall
+		bool onWall = !groundData.grounded && wallData.touchingWall;
+
+		if (currentAttack && !onWall) {
+			if ((!currentAttack.moveCancelable) && input.ButtonDown(Buttons.JUMP)) {
+				BufferJump();
+			}
 		}
 
-		if ((!currentAttack && frozeInputs) || (currentAttack && !currentAttack.jumpCancelable)) return;
+		if ((!currentAttack && frozeInputs) || (currentAttack && !currentAttack.moveCancelable && !onWall)) return;
 
 		void GroundJump() {
 			bufferedJump = false;
@@ -271,22 +280,22 @@ public class EntityController : Entity {
 
 		void WallJump() {
             bufferedJump = false;
-			// assume player is facing the wall and needs to be flipped away from it
 			jumpNoise.PlayFrom(this.gameObject);
 			float v = movement.jumpSpeed;
 			// if inputting towards wall, jump up it
+			// but always push player away from the wall
 			if (wallData.direction * inputX > 0) {
-				rb2d.velocity = new Vector2((facingRight ? v : -v)*1.0f, Mathf.Max(v, rb2d.velocity.y));
+				rb2d.velocity = new Vector2((-wallData.direction * v)*1.0f, Mathf.Max(v, rb2d.velocity.y));
 				animator.SetTrigger("Backflip");
 				airControlMod = 0.2f;
 			} else {
-				rb2d.velocity = new Vector2((facingRight ? v : -v)*1.5f, Mathf.Max(v, rb2d.velocity.y));
+				rb2d.velocity = new Vector2((-wallData.direction * v)*1.5f, Mathf.Max(v, rb2d.velocity.y));
 				animator.SetTrigger("WallJump");
 				airControlMod = 0.0f;
 			}
 			GameObject w = Instantiate(wallJumpDust);
-			w.transform.position = new Vector2(facingRight ? collider2d.bounds.min.x : collider2d.bounds.max.x, transform.position.y);
-			w.transform.localScale = new Vector3(facingRight ? 1 : -1, 1, 1);
+			w.transform.position = new Vector2(wallData.direction > 0 ? collider2d.bounds.min.x : collider2d.bounds.max.x, transform.position.y);
+			w.transform.localScale = new Vector3(wallData.direction > 0 ? 1 : -1, 1, 1);
 			canShortHop = false;
 			SetJustJumped();
 		}
@@ -309,6 +318,7 @@ public class EntityController : Entity {
 			jumpNoise.PlayFrom(this.gameObject);
 			airControlMod = 1;
 			canShortHop = false;
+			currentAirDashes = movement.maxAirDashes;
 			SetJustJumped();
 		}
 
@@ -366,7 +376,7 @@ public class EntityController : Entity {
 
 	void UpdateTechInputs() {
 		if (input.ButtonDown(Buttons.SPECIAL) || input.ButtonDown(Buttons.PARRY)) {
-			if (!techLockout && !canTech) {
+			if (!techLockout && !canTech && stunned) {
 				canTech = true;
 				CancelInvoke(nameof(EndTechWindow));
 				Invoke(nameof(EndTechWindow), techWindow);
@@ -427,9 +437,11 @@ public class EntityController : Entity {
 		canTech = false;
 		CancelInvoke(nameof(EndTechWindow));
 		GetComponent<CombatController>()?.OnTech();
-		// freeze inputs for a sec while teching
-		FreezeInputs();
-		Invoke(nameof(UnfreezeInputs), 0.5f);
+		// freeze inputs for a sec while teching ON GROUND
+		if (groundData.grounded) {
+			FreezeInputs();
+			Invoke(nameof(UnfreezeInputs), 0.5f);
+		}
 		SetInvincible(true);
 		this.WaitAndExecute(() => SetInvincible(false), 0.5f);
 	}
@@ -544,6 +556,7 @@ public class EntityController : Entity {
 		UnfreezeInputs();
 		currentAttack = null;
 		Jump(executeIfBuffered: true);
+		if (wallData.touchingWall) FlipToWall();
 	}
 
 	public void OnAttackNodeEnter(AttackNode attackNode) {
@@ -602,15 +615,21 @@ public class EntityController : Entity {
 
 	public void EndDashCooldown() {
 		if (canDash) return;
-		shader.FlashCyan();
+		// don't flash cyan if it's an enemy not being controlled
+		if (input.GetPlayer().controllers.hasKeyboard) {
+			shader.FlashCyan();	
+		}
 		canDash = true;
 	}
 
-	public void EnterCutscene(MonoBehaviour source, bool halt=true) {
-		if (halt) {
-			rb2d.velocity = Vector2.zero;
-			animator.Play("Idle", 0);
-		}
+	public void EnterCutscene(MonoBehaviour source) {
+		GetComponent<ValCombatController>()?.DisableAttackStance();
+		rb2d.velocity = Vector2.zero;
+		animator.Play("Idle", 0);
+		EnterCutsceneNoHalt(source);
+	}
+
+	public void EnterCutsceneNoHalt(MonoBehaviour source) {
 		cutsceneSources.Add(source);
 	}
 
