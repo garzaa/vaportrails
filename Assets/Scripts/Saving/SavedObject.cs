@@ -29,6 +29,7 @@ public abstract class SavedObject : MonoBehaviour {
 
 	public void BeforeSave() {
 		SaveToProperties(ref properties);
+		// TODO: look thru properties, get vectors, and sanitize them
 	}
 
 	public void AfterDiskLoad() {

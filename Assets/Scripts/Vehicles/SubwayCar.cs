@@ -8,7 +8,7 @@ public class SubwayCar : MonoBehaviour {
 	Animator anim;
 
 	AudioSource audioSource;
-	public AudioSource[] doorNoise;
+	public AudioSource doorNoise;
 
 	EventOnInteract[] doorInteracts;
 
@@ -19,16 +19,12 @@ public class SubwayCar : MonoBehaviour {
 	}
 
 	public void CloseDoors() {
-		foreach (AudioSource audio in doorNoise) {
-			audio.PlayOneShot(doorClose);
-		}
+		if (doorNoise != null) doorNoise.PlayOneShot(doorClose);
 		anim.SetBool("DoorsOpen", false);
 	}
 
 	public void OpenDoors() {
-		foreach (AudioSource audio in doorNoise) {
-			audio.PlayOneShot(doorOpen);
-		}
+		if (doorNoise != null) doorNoise.PlayOneShot(doorOpen);
 		anim.SetBool("DoorsOpen", true);
 	}
 
