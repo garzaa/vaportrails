@@ -77,6 +77,7 @@ public class DialogueUI : MonoBehaviour {
 		if (line.portrait) {
 			portraitContainer.SetActive(true);
 			speakerPortrait.sprite = line.portrait;
+			speakerPortrait.SetNativeSize();
 		} else {
 			portraitContainer.SetActive(false);
 		}
