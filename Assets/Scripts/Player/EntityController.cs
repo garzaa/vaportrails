@@ -48,6 +48,9 @@ public class EntityController : Entity {
 	bool canShortHop;
 	float inputX;
 	float landingRecovery = 1;
+	Vector2 velocityLastUpdate;
+	float wallKickBoost = 0.25f;
+	GameObject wallKickHitmarker;
 
 	bool stickDownLastFrame;
 	bool keepJumpSpeed;
@@ -70,9 +73,12 @@ public class EntityController : Entity {
 	bool techLockout = false;
 	GameObject techEffect;
 
+	// todo: this is just for training gym HUD, find more uses or take it out
 	public UnityEvent TechSuccess;
 	public UnityEvent TechLockout;
 	public UnityEvent TechMiss;
+
+	Vector3 velocityLastFrame;
 
 	override protected void Awake() {
 		base.Awake();
@@ -82,6 +88,7 @@ public class EntityController : Entity {
 		fastfallSpark = Resources.Load<GameObject>("Runtime/FastfallSpark");
 		speedDust = Resources.Load<GameObject>("Runtime/SpeedDust").GetComponentInChildren<ParticleSystem>();
 		techEffect = Resources.Load<GameObject>("Runtime/TechEffect");
+		wallKickHitmarker = Resources.Load<GameObject>("Runtime/DefaultHitmarker");
 		GetComponentInChildren<ToonMotion>().ignoreGameobjects.Add(speedDust.transform.parent.gameObject);
 		// p = mv
 		RefreshAirMovement();
@@ -101,6 +108,7 @@ public class EntityController : Entity {
 
 	void FixedUpdate() {
 		ApplyMovement();
+		velocityLastUpdate = rb2d.velocity;
 	}
 
 	void Move() {
@@ -144,19 +152,50 @@ public class EntityController : Entity {
 
 	override protected void OnWallHit() {
 		if (!stunned && !animator.GetBool("Tumbling")) FlipToWall();
+		WallKick();
 		fMod = 1;
 		RefreshAirMovement();
 	}
 
+	public void OnWallKickExit() {
+		if (wallData.touchingWall) {
+			FlipToWall();
+		}
+	}
+
 	void FlipToWall() {
 		if (inAttack) return;
-
 		if (facingRight && wallData.direction>0) {
 			Flip();
 		} else if (!facingRight && wallData.direction<0) {
 			Flip();
 		}
 		toonMotion.ForceUpdate();
+	}
+
+	void WallKick() {
+		if (WasSpeeding() && rb2d.velocity.y > 0.1 && input.VerticalInput() >= 0) {
+			DisableFlip();
+			if (wallData.direction * Forward() < 0) {
+				_Flip();
+			}
+			animator.Play("WallKick");
+			jumpNoise.PlayFrom(this.gameObject);
+			bufferedJump = false;
+			shader.FlashWhite();
+			FlipToWall();
+			float preCollisionSpeed = Mathf.Abs(velocityLastUpdate.x);
+			rb2d.velocity = new Vector2(
+				0,
+				movement.jumpSpeed + (preCollisionSpeed * wallKickBoost)
+			);
+			GameObject w = Instantiate(wallJumpDust);
+			w.transform.position = new Vector2(wallData.direction > 0 ? collider2d.bounds.min.x : collider2d.bounds.max.x, transform.position.y);
+			w.transform.localScale = new Vector3(wallData.direction > 0 ? 1 : -1, 1, 1);
+			Instantiate(wallKickHitmarker, w.transform.position, Quaternion.identity);
+			canShortHop = false;
+			SetJustJumped();
+		}
 	}
 
 	void ApplyMovement() {
@@ -262,71 +301,6 @@ public class EntityController : Entity {
 
 		if ((!currentAttack && frozeInputs) || (currentAttack && !currentAttack.moveCancelable && !onWall)) return;
 
-		void GroundJump() {
-			bufferedJump = false;
-			jumpNoise.PlayFrom(this.gameObject);
-			if (!wallData.touchingWall) {
-				if ((movingForwards && inputBackwards) || (movingBackwards && !inputForwards)) {
-					animator.SetTrigger("Backflip");
-				} else {
-					animator.SetTrigger("Jump");
-				}
-			}
-			canShortHop = true;
-			JumpDust();
-            rb2d.velocity = new Vector2(rb2d.velocity.x, Mathf.Max(movement.jumpSpeed, rb2d.velocity.y));
-			SetJustJumped();
-        }
-
-		void WallJump() {
-            bufferedJump = false;
-			jumpNoise.PlayFrom(this.gameObject);
-			float v = movement.jumpSpeed;
-			// if inputting towards wall, jump up it
-			// but always push player away from the wall
-			if (wallData.direction * inputX > 0) {
-				rb2d.velocity = new Vector2((-wallData.direction * v)*1.0f, Mathf.Max(v, rb2d.velocity.y));
-				animator.SetTrigger("Backflip");
-				airControlMod = 0.2f;
-			} else {
-				rb2d.velocity = new Vector2((-wallData.direction * v)*1.5f, Mathf.Max(v, rb2d.velocity.y));
-				animator.SetTrigger("WallJump");
-				airControlMod = 0.0f;
-			}
-			GameObject w = Instantiate(wallJumpDust);
-			w.transform.position = new Vector2(wallData.direction > 0 ? collider2d.bounds.min.x : collider2d.bounds.max.x, transform.position.y);
-			w.transform.localScale = new Vector3(wallData.direction > 0 ? 1 : -1, 1, 1);
-			canShortHop = false;
-			SetJustJumped();
-		}
-
-		void AirJump() {
-			if (groundData.distance<0.3f) {
-				// if player is falling and about to hit ground, don't buffer an airjump
-				GroundJump();
-				return;
-			}
-			BufferJump(); // in case about to hit a wall
-			currentAirJumps--;
-			rb2d.velocity = new Vector2(rb2d.velocity.x, Mathf.Max(movement.jumpSpeed, rb2d.velocity.y));
-			JumpDust();
-			if (movingBackwards || inputBackwards) {
-				animator.SetTrigger("Backflip");
-			} else {
-				animator.SetTrigger("AirJump");
-			}
-			jumpNoise.PlayFrom(this.gameObject);
-			airControlMod = 1;
-			canShortHop = false;
-			currentAirDashes = movement.maxAirDashes;
-			SetJustJumped();
-		}
-
-		void BufferJump() {
-			bufferedJump = true;
-			this.WaitAndExecute(() => bufferedJump = false, bufferDuration);
-		}
-
 		if (keepJumpSpeed && !frozeInputs) {
 			rb2d.velocity = new Vector2(
 				rb2d.velocity.x,
@@ -355,6 +329,75 @@ public class EntityController : Entity {
 				AirJump();
             }
         }
+	}
+
+	void BufferJump() {
+		bufferedJump = true;
+		this.WaitAndExecute(() => bufferedJump = false, bufferDuration);
+	}
+
+	void GroundJump() {
+		bufferedJump = false;
+		jumpNoise.PlayFrom(this.gameObject);
+		if (!wallData.touchingWall) {
+			if ((movingForwards && inputBackwards) || (movingBackwards && !inputForwards)) {
+				animator.SetTrigger("Backflip");
+			} else {
+				animator.SetTrigger("Jump");
+			}
+		}
+		canShortHop = true;
+		JumpDust();
+		rb2d.velocity = new Vector2(rb2d.velocity.x, Mathf.Max(movement.jumpSpeed, rb2d.velocity.y));
+		SetJustJumped();
+	}
+
+	void WallJump() {
+		bufferedJump = false;
+		jumpNoise.PlayFrom(this.gameObject);
+		float v = movement.jumpSpeed;
+		// if inputting towards wall, jump up it
+		// but always push player away from the wall
+		if (wallData.direction * inputX > 0) {
+			rb2d.velocity = new Vector2((-wallData.direction * v)*1.0f, Mathf.Max(v, rb2d.velocity.y));
+			animator.SetTrigger("Backflip");
+			airControlMod = 0.2f;
+		} else {
+			rb2d.velocity = new Vector2((-wallData.direction * v)*1.5f, Mathf.Max(v, rb2d.velocity.y));
+			animator.SetTrigger("WallJump");
+			airControlMod = 0.0f;
+		}
+		// flip away from the wall
+		if (wallData.direction * Forward() > 0) {
+			_Flip();
+		}
+		GameObject w = Instantiate(wallJumpDust);
+		w.transform.position = new Vector2(wallData.direction > 0 ? collider2d.bounds.min.x : collider2d.bounds.max.x, transform.position.y);
+		w.transform.localScale = new Vector3(wallData.direction > 0 ? 1 : -1, 1, 1);
+		canShortHop = false;
+		SetJustJumped();
+	}
+
+	void AirJump() {
+		if (groundData.distance<0.3f) {
+			// if player is falling and about to hit ground, don't buffer an airjump
+			GroundJump();
+			return;
+		}
+		BufferJump(); // in case about to hit a wall
+		currentAirJumps--;
+		rb2d.velocity = new Vector2(rb2d.velocity.x, Mathf.Max(movement.jumpSpeed, rb2d.velocity.y));
+		JumpDust();
+		if (movingBackwards || inputBackwards) {
+			animator.SetTrigger("Backflip");
+		} else {
+			animator.SetTrigger("AirJump");
+		}
+		jumpNoise.PlayFrom(this.gameObject);
+		airControlMod = 1;
+		canShortHop = false;
+		currentAirDashes = movement.maxAirDashes;
+		SetJustJumped();
 	}
 
 	IEnumerator KeepJumpSpeedRoutine() {
@@ -578,6 +621,10 @@ public class EntityController : Entity {
 	public bool IsSpeeding() {
 		// this can jitter due to fixed update stuff
 		return Mathf.Abs(rb2d.velocity.x) > movement.runSpeed + 1.5f;
+	}
+
+	bool WasSpeeding() {
+		return Mathf.Abs(velocityLastUpdate.x) > movement.runSpeed + 1.5f;
 	}
 
 	public void SetFmod(float f) {
