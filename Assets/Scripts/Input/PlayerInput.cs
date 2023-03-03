@@ -56,16 +56,16 @@ public class PlayerInput : MonoBehaviour {
         return player.GetAxis(Buttons.V_AXIS);
     }
 
-    public bool ButtonDown(string buttonName) {
-        return !polling && player.GetButtonDown(buttonName);
+    public bool ButtonDown(int b) {
+        return !polling && player.GetButtonDown(b);
     }
 
-    public bool Button(string buttonName) {
-        return !polling && player.GetButton(buttonName);
+    public bool Button(int b) {
+        return !polling && player.GetButton(b);
     }
 
-    public bool ButtonUp(string buttonName) {
-        return !polling && player.GetButtonUp(buttonName);
+    public bool ButtonUp(int b) {
+        return !polling && player.GetButtonUp(b);
     }
 
     public bool GenericContinueInput() {
@@ -140,30 +140,25 @@ public class PlayerInput : MonoBehaviour {
 	}
 }
 
-// TODO: use RewiredConsts with action axes
 public static class Buttons {
-    public static readonly string H_AXIS = "Horizontal";
-    public static readonly string V_AXIS = "Vertical";
-    public static readonly string JUMP   = "Jump";
-    public static readonly string ATTACK = "Attack";
-    public static readonly string PUNCH  = "Punch";
-    public static readonly string KICK   = "Kick";
-    public static readonly string INVENTORY = "Inventory";
-    public static readonly string WALK = "Walk";
+    public static readonly int H_AXIS = RewiredConsts.Action.Horizontal;
+    public static readonly int V_AXIS = RewiredConsts.Action.Vertical;
+    public static readonly int JUMP   = RewiredConsts.Action.Jump;
+    public static readonly int PUNCH  = RewiredConsts.Action.Punch;
+    public static readonly int KICK   = RewiredConsts.Action.Kick;
+    public static readonly int INVENTORY = RewiredConsts.Action.Inventory;
 
-    public static readonly string SPECIAL    = "Special";
-    public static readonly string PROJECTILE = "Projectile";
-    public static readonly string INTERACT   = "Interact";
-    public static readonly string PARRY      = "Parry";
-    public static readonly string SURF       = "Surf";
+    public static readonly int SPECIAL    = RewiredConsts.Action.Special;
+    public static readonly int PROJECTILE = RewiredConsts.Action.Projectile;
+    public static readonly int INTERACT   = RewiredConsts.Action.Interact;
+    public static readonly int PARRY      = RewiredConsts.Action.Parry;
 
-    public static readonly string CONFIRM = "Confirm";
-    public static readonly string PAUSE   = "Start";
-    public static readonly string TABLEFT = "Tab Left";
-    public static readonly string TABRIGHT = "Tab Right";
+    public static readonly int PAUSE   = RewiredConsts.Action.Start;
+    public static readonly int TABLEFT = RewiredConsts.Action.TabLeft;
+    public static readonly int TABRIGHT = RewiredConsts.Action.TabRight;
 
-    public static readonly string UI_X = "UIHorizontal";
-    public static readonly string UI_Y = "UIVertical";
-    public static readonly string UI_CANCEL = "UICancel";
-    public static readonly string UI_SUBMIT = "UISubmit";
+    public static readonly int UI_X = RewiredConsts.Action.UIHorizontal;
+    public static readonly int UI_Y = RewiredConsts.Action.UIVertical;
+    public static readonly int UI_CANCEL = RewiredConsts.Action.UICancel;
+    public static readonly int UI_SUBMIT = RewiredConsts.Action.UISubmit;
 }
