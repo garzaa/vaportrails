@@ -18,6 +18,8 @@ public class InputRecorder : MonoBehaviour {
 	protected HashSet<int> actionIDs = new HashSet<int>();
 	protected List<FrameInput> frameInputs = new List<FrameInput>();
 
+	HashSet<int> seenActions = new HashSet<int>();
+
 	public const float pollInterval = 1f/12f;
 	float lastPollTime;
 
@@ -30,6 +32,7 @@ public class InputRecorder : MonoBehaviour {
 	public void Arm(PlayerInput input) {
 		this.input = input;
 		player = input.GetPlayer();
+		seenActions.Clear();
 	}
 
 	public void StartRecording() {
@@ -74,6 +77,11 @@ public class InputRecorder : MonoBehaviour {
 	}
 
 	virtual protected void SaveInput(InputActionEventData e) {
+		if (!seenActions.Contains(e.actionId)) {
+			seenActions.Add(e.actionId);
+			Debug.Log("saved new action: "+e.actionName);
+		}
+		// don't save it if it's UI...HOW
 		if (ReInput.mapping.GetAction(e.actionId).type.Equals(InputActionType.Axis)) {
 			actionIDAxes[e.actionId] = (int) Mathf.Sign(e.GetAxis());
 		} else {

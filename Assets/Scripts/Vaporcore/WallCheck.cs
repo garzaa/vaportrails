@@ -6,14 +6,14 @@ public class WallCheck : MonoBehaviour {
 
 	#pragma warning disable 0649
 	Collider2D targetCollider;
-	public float groundGap = 0.1f;
+	public float groundGap = 1f/64f;
 	#pragma warning restore 0649
 	const bool drawDebug = true;
 
 	public WallCheckData wallData = new WallCheckData();
 
 	int layerMask = Layers.GroundMask;
-	const float extendDistance = .08f;
+	const float extendDistance = 1f/64f;
 	bool touchingWallLastFrame = false;
 
 	void Start() {		

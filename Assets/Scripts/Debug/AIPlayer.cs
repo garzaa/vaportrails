@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Rewired;
 using System.Linq;
+using System;
 
 [RequireComponent(typeof(PuppetInput))]
 public class AIPlayer : MonoBehaviour {
@@ -141,7 +142,7 @@ public class AIPlayer : MonoBehaviour {
 	}
 
 	public FrameInput ChooseWeightedInput(List<WeightedFrameInput> inputs) {
-		float v = Random.value;
+		float v = UnityEngine.Random.value;
 		foreach (WeightedFrameInput weightedInput in inputs) {
 			v -= weightedInput.normalizedWeight;
 			if (v < 0) {
@@ -169,7 +170,11 @@ public class AIPlayer : MonoBehaviour {
 				actionID,
 				skipDisabledMaps: false
 			);
-			buttonMaps[actionID] = map.elementIdentifierId;
+			try {
+				buttonMaps[actionID] = map.elementIdentifierId;
+			} catch (NullReferenceException) {
+				Debug.LogWarning("No button map for action "+ ReInput.mapping.GetAction(actionID).name + ", ID "+ actionID);
+			}
 		}
 	}
 }

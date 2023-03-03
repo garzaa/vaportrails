@@ -106,9 +106,12 @@ public class EntityController : Entity {
 		UpdateTechInputs();
 	}
 
+	void UpdateLastVelocity() {
+		velocityLastUpdate = rb2d.velocity;
+	}
+
 	void FixedUpdate() {
 		ApplyMovement();
-		velocityLastUpdate = rb2d.velocity;
 	}
 
 	void Move() {
@@ -174,7 +177,7 @@ public class EntityController : Entity {
 	}
 
 	void WallKick() {
-		if (WasSpeeding() && rb2d.velocity.y > 0.1 && input.VerticalInput() >= 0) {
+		if (WasSpeeding() && rb2d.velocity.y > 0.1 && input.Button(Buttons.JUMP)) {
 			DisableFlip();
 			if (wallData.direction * Forward() < 0) {
 				_Flip();
@@ -323,7 +326,7 @@ public class EntityController : Entity {
 					return;
 				}
                 GroundJump();
-            } else if (wallData.touchingWall || (justLeftWall && rb2d.velocity.y<=0)) {
+            } else if (wallData.touchingWall || (justLeftWall && rb2d.velocity.y<=0 && !IsSpeeding())) {
 				WallJump();
 			} else if (!wallData.touchingWall && !groundData.grounded && currentAirJumps > 0) {
 				AirJump();
@@ -573,6 +576,8 @@ public class EntityController : Entity {
 			Mathf.Max(rb2d.velocity.y, 0)
 		);
 		if (!groundData.grounded) currentAirDashes--;
+		// called here because sometimes a dash can happen between physics steps
+		UpdateLastVelocity();
 
 		this.WaitAndExecute(EndDashCooldown, movement.dashCooldown);
 	}
