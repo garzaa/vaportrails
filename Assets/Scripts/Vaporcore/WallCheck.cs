@@ -16,6 +16,10 @@ public class WallCheck : MonoBehaviour {
 	const float extendDistance = 1f/64f;
 	bool touchingWallLastFrame = false;
 
+	// avoid physics jank
+    const float minHitInterval = 0.3f;
+	float lastHitTime = -1000f;
+
 	void Start() {		
 		targetCollider = GetComponent<Collider2D>();
 	}
@@ -83,7 +87,10 @@ public class WallCheck : MonoBehaviour {
 		}
 
 		if (!touchingWallLastFrame && touchingwallThisFrame) {
-			wallData.hitWall = true;
+			if (Time.time-lastHitTime > minHitInterval) {
+				wallData.hitWall = true;
+				lastHitTime = Time.time;
+			}
 		}
 
 		if (touchingWallLastFrame && !touchingwallThisFrame) {

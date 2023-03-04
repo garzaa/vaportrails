@@ -48,7 +48,7 @@ public class EntityController : Entity {
 	bool canShortHop;
 	float inputX;
 	float landingRecovery = 1;
-	Vector2 velocityLastUpdate;
+	float storedSpeed;
 	float wallKickBoost = 0.25f;
 	GameObject wallKickHitmarker;
 
@@ -78,8 +78,6 @@ public class EntityController : Entity {
 	public UnityEvent TechLockout;
 	public UnityEvent TechMiss;
 
-	Vector3 velocityLastFrame;
-
 	override protected void Awake() {
 		base.Awake();
 		input = GetComponent<PlayerInput>();
@@ -107,11 +105,12 @@ public class EntityController : Entity {
 	}
 
 	void UpdateLastVelocity() {
-		velocityLastUpdate = rb2d.velocity;
+		if (Mathf.Abs(rb2d.velocity.x) > 1) storedSpeed = Mathf.Abs(rb2d.velocity.x);
 	}
 
 	void FixedUpdate() {
 		ApplyMovement();
+		UpdateLastVelocity();
 	}
 
 	void Move() {
@@ -120,7 +119,7 @@ public class EntityController : Entity {
 		inputForwards = input.HasHorizontalInput() && !inputBackwards;
 		movingBackwards = Mathf.Abs(rb2d.velocity.x) > 0.01 && rb2d.velocity.x * -transform.localScale.x < 0;
 		movingForwards = input.HasHorizontalInput() && ((facingRight && rb2d.velocity.x > 0) || (!facingRight && rb2d.velocity.x < 0));
-		airControlMod = Mathf.MoveTowards(airControlMod, 1, 1f * Time.deltaTime);
+		airControlMod = Mathf.MoveTowards(airControlMod, 1, 0.5f * Time.deltaTime);
 
 		// allow moving during air attacks
 		if (frozeInputs && !(currentAttack!=null && !groundData.grounded)) {
@@ -179,8 +178,8 @@ public class EntityController : Entity {
 	void WallKick() {
 		// hack for not giving a wallkick ability yet
 		if (!input.isHuman) return;
-		// has to be off the ground
-		if (WasSpeeding() && rb2d.velocity.y > 0.1 && currentAirJumps==movement.maxAirJumps) {
+		if (stunned || frozeInputs) return;
+		if (WasSpeeding() && rb2d.velocity.y > 0.1) {
 			DisableFlip();
 			if (wallData.direction * Forward() < 0) {
 				_Flip();
@@ -190,7 +189,7 @@ public class EntityController : Entity {
 			bufferedJump = false;
 			shader.FlashWhite();
 			FlipToWall();
-			float preCollisionSpeed = Mathf.Abs(velocityLastUpdate.x);
+			float preCollisionSpeed = storedSpeed;
 			rb2d.velocity = new Vector2(
 				0,
 				movement.jumpSpeed + (preCollisionSpeed * wallKickBoost)
@@ -382,7 +381,7 @@ public class EntityController : Entity {
 			animator.SetTrigger("Backflip");
 			airControlMod = 0.2f;
 		} else {
-			rb2d.velocity = new Vector2((-wallData.direction * movement.runSpeed)+1.4f, Mathf.Max(v, rb2d.velocity.y));
+			rb2d.velocity = new Vector2((-wallData.direction * movement.runSpeed)+1.5f, Mathf.Max(v, rb2d.velocity.y));
 			animator.SetTrigger("WallJump");
 			airControlMod = 0.0f;
 		}
@@ -646,7 +645,7 @@ public class EntityController : Entity {
 	}
 
 	bool WasSpeeding() {
-		return Mathf.Abs(velocityLastUpdate.x) > movement.runSpeed + 1.5f;
+		return storedSpeed >= movement.runSpeed + 1.5f;
 	}
 
 	public void SetFmod(float f) {
