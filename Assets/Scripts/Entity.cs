@@ -361,6 +361,9 @@ public class Entity : MonoBehaviour, IHitListener {
 	}
 
 	void UpdateFootfallSound() {
+		if (!groundData.grounded) {
+			return;
+		}
         if (groundData.groundCollider != groundColliderLastFrame) {
             FootfallSound s = groundData.groundCollider.GetComponent<FootfallSound>();
             if (s != null) {

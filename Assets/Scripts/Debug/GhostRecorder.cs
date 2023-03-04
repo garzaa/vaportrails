@@ -22,7 +22,6 @@ public class GhostRecorder : InputRecorder {
 		base.Arm(self);
 		this.self = self.gameObject;
 		this.enemy = enemy.gameObject;
-		this.player = input.GetPlayer();
 		snapshot.Initialize(self.gameObject, enemy.gameObject);
 	}
 

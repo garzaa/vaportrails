@@ -14,14 +14,14 @@ public class GroundCheck : MonoBehaviour {
 
     int defaultLayerMask = Layers.GroundMask;
 
-    RaycastHit2D leftGrounded;
-    RaycastHit2D rightGrounded;
+    RaycastHit2D leftHit;
+    RaycastHit2D rightHit;
+    bool leftGrounded, rightGrounded;
     Collider2D groundCollider;
     bool grounded;
     bool onLedge;
     Vector2 currentNormal = Vector2.up;
     Vector2 bottomCenter;
-    Vector2 overlapBoxSize;
     GameObject currentGround;
 
     List<RaycastHit2D> platforms = new List<RaycastHit2D>();
@@ -33,19 +33,23 @@ public class GroundCheck : MonoBehaviour {
 
     void Awake() {
         col = GetComponent<Collider2D>();
-        overlapBoxSize = new Vector2();
-        // 1 pixel down from the bottom of the player collider
-        overlapBoxSize.y = 1f/64f;
     }
 
-    void Update() {
+    void FixedUpdate() {
         RefreshGroundData(groundData);
 
-        leftGrounded = LeftGrounded();
-        rightGrounded = RightGrounded();
-        groundCollider = GetGroundCollider();
-        grounded = detecting && (groundCollider != null) && (leftGrounded || rightGrounded);
-        onLedge = leftGrounded ^ rightGrounded;
+        leftHit = LeftGrounded();
+        rightHit = RightGrounded();
+
+        leftGrounded = leftHit.collider != null;
+        rightGrounded = rightHit.collider != null;
+
+        grounded = detecting && (leftGrounded || rightGrounded);
+        onLedge = leftGrounded ^ leftGrounded;
+
+        if (leftGrounded) groundCollider = leftHit.collider;
+        else if (rightGrounded) groundCollider = rightHit.collider;
+        else groundCollider = null;
 
         if (groundData.grounded && !grounded) {
             groundData.leftGround = true;
@@ -98,23 +102,6 @@ public class GroundCheck : MonoBehaviour {
         return platforms;
     }
 
-    Collider2D GetGroundCollider() {
-        // this can change based on animation state, so recompute it here to be safe
-        overlapBoxSize.x = col.bounds.size.x * 0.95f;
-
-        // get bottom center of box collider
-        bottomCenter = (Vector2) col.bounds.center + (Vector2.down * col.bounds.extents.y);
-
-        Collider2D hit = Physics2D.OverlapBox(
-            bottomCenter,
-            overlapBoxSize,
-            0,
-            defaultLayerMask
-        );
-
-        return hit;
-    }
-
     RaycastHit2D[] GetPlatforms(Vector2 corner) {
         return Physics2D.CircleCastAll(
             corner,
@@ -126,24 +113,16 @@ public class GroundCheck : MonoBehaviour {
     }
 
     RaycastHit2D LeftGrounded() {
-        RaycastHit2D hit = DefaultLinecast(col.BottomLeftCorner());
-        if (hit.collider && Vector3.Angle(hit.normal, Vector3.up) > 40f) {
-            return new RaycastHit2D();
-        }
-
-        return hit;
+        return DefaultLinecast(col.BottomLeftCorner());
     }
 
     RaycastHit2D RightGrounded() {
-        RaycastHit2D hit = DefaultLinecast(col.BottomRightCorner());
-        if (hit.collider && Vector3.Angle(hit.normal, Vector3.up) > 40f) {
-            return new RaycastHit2D();
-        }
-
-        return hit;
+        return DefaultLinecast(col.BottomRightCorner());
     }
 
     void RefreshGroundData(GroundData groundData) {
+        groundData.groundCollider = null;
+        groundData.groundObject = null;
         groundData.leftGround = false;
         groundData.hitGround = false;
         groundData.ledgeStep = false;

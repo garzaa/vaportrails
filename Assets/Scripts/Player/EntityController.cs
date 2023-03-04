@@ -278,6 +278,19 @@ public class EntityController : Entity {
 		} else {
 			fMod = 0.1f;
 		}
+
+		// if falling down through a platform (ground distance above feet)
+		// that distance can vary due to physics and/or float precision
+		if (rb2d.velocity.y<0 && (groundData.distance)<collider2d.bounds.extents.y) {
+			// then snap to its top
+			float diff = collider2d.bounds.extents.y - groundData.distance;
+			rb2d.MovePosition(rb2d.position + ((diff+0.1f) * Vector2.up));
+			// cancel downward velocity
+			rb2d.velocity = new Vector2(
+				rb2d.velocity.x,
+				0.1f
+			);
+		}
 	}
 
 	public void DisableShortHop() {
@@ -533,6 +546,7 @@ public class EntityController : Entity {
 			landingRecovery = -1;
 			// TODO: move this to ValController or something
 			// also only make it happen if fall distance is more than 0.2 because subway
+			// oh and platform bumps now, this is real
 			HairForwards();
 		}
 

@@ -9,7 +9,6 @@ using System.Collections.Generic;
 
 public class InputRecorder : MonoBehaviour {
 	protected PlayerInput input;
-	protected Player player;
 
 	public bool recording { get; private set; }
 	public GameObject recordingIndicator;
@@ -31,7 +30,6 @@ public class InputRecorder : MonoBehaviour {
 
 	public void Arm(PlayerInput input) {
 		this.input = input;
-		player = input.GetPlayer();
 		seenActions.Clear();
 	}
 

@@ -20,7 +20,7 @@ public class WallCheck : MonoBehaviour {
 		targetCollider = GetComponent<Collider2D>();
 	}
 
-	void Update() {
+	void FixedUpdate() {
 		RefreshWallData(wallData);
 
 		Vector2 startPoint = (Vector2) targetCollider.transform.position + targetCollider.offset;

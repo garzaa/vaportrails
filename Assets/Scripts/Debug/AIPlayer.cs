@@ -71,7 +71,7 @@ public class AIPlayer : MonoBehaviour {
 				SetInput(inputs);
 			}
 			lastFrame = currentFrame;
-			if (currentFrame == currentReplay.length-1) {
+			if (currentFrame >= currentReplay.length-1) {
 				Terminal.Log("Replay on "+gameObject.name+" finished, stopping and zeroing inputs");
 				StopReplay();
 			}

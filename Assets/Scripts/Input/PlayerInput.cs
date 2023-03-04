@@ -8,7 +8,6 @@ public class PlayerInput : MonoBehaviour {
 
     Controller lastActiveController;
 
-    // use this as the switch to route input asks between the ComputerController and the RewiredPlayer
     [SerializeField] bool humanControl = false;
     public bool isHuman => humanControl;
 
