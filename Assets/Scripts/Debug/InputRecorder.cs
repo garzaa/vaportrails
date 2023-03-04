@@ -37,7 +37,7 @@ public class InputRecorder : MonoBehaviour {
 
 	public void StartRecording() {
 		recordingCounter++;
-		lastPollTime = Time.unscaledTime;
+		lastPollTime = Time.time;
 		recordingIndicator.SetActive(true);
 		recording = true;
 		input.GetPlayer().AddInputEventDelegate(
@@ -70,9 +70,9 @@ public class InputRecorder : MonoBehaviour {
 
 	protected void Update() {
 		if (Terminal.IsOpen()) return;
-		if (recording && (Time.unscaledTime > lastPollTime+pollInterval)) {
+		if (recording && (Time.time > lastPollTime+pollInterval)) {
 			SaveSnapshot();
-			lastPollTime = Time.unscaledTime;
+			lastPollTime = Time.time;
 		}
 	}
 

@@ -81,7 +81,7 @@ public class AttackGraphTraverser {
 	public void MoveNode(CombatNode node) {
 		currentNode = node;
 		enteredCurrentNode = false;
-		nodeSwitchTime = Time.unscaledTime;
+		nodeSwitchTime = Time.time;
 		context.combatController.OnCombatNodeEnter(currentNode);
 		context.attackLanded = false;
 		node.OnNodeEnter(context);
@@ -137,7 +137,7 @@ public class AttackGraphTraverser {
 
 		if (!nameCorresponds && !enteredCurrentNode) {
             // in case something went wrong, unlock the player
-            if (Time.unscaledTime-nodeSwitchTime > nodeSwitchGracePeriod) {
+            if (Time.time-nodeSwitchTime > nodeSwitchGracePeriod) {
                 ExitGraph();
             }
 			// wait for animator state to actually propagate

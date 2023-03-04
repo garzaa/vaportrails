@@ -5,17 +5,28 @@ using System.Linq;
 
 public class PlayerInput : MonoBehaviour {
     Player player = null;
-    static bool polling = false;
 
-    public int playerNum = 0;
     Controller lastActiveController;
 
+    // use this as the switch to route input asks between the ComputerController and the RewiredPlayer
+    [SerializeField] bool humanControl = false;
+    public bool isHuman => humanControl;
+
+    public ComputerController comControl { get; private set; }
+
 	void Awake() {
-        player = ReInput.players.GetPlayer(playerNum);
+        player = ReInput.players.GetPlayer(0);
+        comControl = new ComputerController();
     }
 
     void Start() {
-        if (playerNum == 0) player.AddInputEventDelegate(ShowHideMouse, UpdateLoopType.Update);
+        player.AddInputEventDelegate(ShowHideMouse, UpdateLoopType.Update);
+        player.controllers.hasKeyboard = true;
+        player.controllers.AddController(ControllerType.Joystick, 0, true);
+    }
+
+    void Update() {
+        comControl.Update();
     }
 
     public Player GetPlayer() {
@@ -23,18 +34,37 @@ public class PlayerInput : MonoBehaviour {
     }
 
     public void EnableHumanControl() {
-        player.controllers.hasKeyboard = true;
-        player.controllers.AddController(ControllerType.Joystick, 0, true);
+        humanControl = true;
     }
 
     public void DisableHumanControl() {
-        player.controllers.hasKeyboard = false;
-        player.controllers.RemoveController(ControllerType.Joystick, 0);
+        humanControl = false;
     }
 
     void ShowHideMouse(InputActionEventData actionData) {
+        if (!humanControl) return;
         lastActiveController = player.controllers.GetLastActiveController();
         Cursor.visible = (lastActiveController?.type == Rewired.ControllerType.Mouse);
+    }
+
+    public float GetAxis(int axisId) {
+        if (humanControl) return player.GetAxis(axisId);
+        else return comControl.GetAxis(axisId);
+    }
+
+    public bool ButtonDown(int b) {
+        if (humanControl) return player.GetButtonDown(b);
+        else return comControl.GetButtonDown(b);
+    }
+
+    public bool Button(int b) {
+        if (humanControl) return player.GetButton(b);
+        else return comControl.GetButton(b);
+    }
+
+    public bool ButtonUp(int b) {
+        if (humanControl) return player.GetButtonUp(b);
+        else return comControl.GetButtonUp(b);
     }
 
     public bool HasHorizontalInput() {
@@ -42,30 +72,18 @@ public class PlayerInput : MonoBehaviour {
     }
 
     public float HorizontalInput() {
-        return player.GetAxis(Buttons.H_AXIS);
+        return GetAxis(Buttons.H_AXIS);
     }
 
     public Vector2 UINav() {
         return new Vector2(
-            player.GetAxis(Buttons.UI_X),
-            player.GetAxis(Buttons.UI_Y)
+            GetAxis(Buttons.UI_X),
+            GetAxis(Buttons.UI_Y)
         );
     }
 
     public float VerticalInput() {
-        return player.GetAxis(Buttons.V_AXIS);
-    }
-
-    public bool ButtonDown(int b) {
-        return !polling && player.GetButtonDown(b);
-    }
-
-    public bool Button(int b) {
-        return !polling && player.GetButton(b);
-    }
-
-    public bool ButtonUp(int b) {
-        return !polling && player.GetButtonUp(b);
+        return GetAxis(Buttons.V_AXIS);
     }
 
     public bool GenericContinueInput() {
@@ -90,30 +108,15 @@ public class PlayerInput : MonoBehaviour {
         );
     }
 
-    public Vector2 RightStick() {
-        return new Vector2(
-            player.GetAxis("Right-Horizontal"),
-            player.GetAxis("Right-Vertical")
-        );
-    }
-
     public Vector2 LeftStick() {
         return new Vector2(
-            player.GetAxis(Buttons.H_AXIS),
-            player.GetAxis(Buttons.V_AXIS)
+            GetAxis(Buttons.H_AXIS),
+            GetAxis(Buttons.V_AXIS)
         );
     }
 
     public Vector2 MoveVector() {
         return new Vector2(HorizontalInput(), VerticalInput());
-    }
-
-    public void OnButtonPollStart() {
-        PlayerInput.polling = true;    
-    }
-
-    public void OnButtonPollEnd() {
-        PlayerInput.polling = false;
     }
 
     public static float GetInputBufferDuration() {
@@ -135,7 +138,7 @@ public class PlayerInput : MonoBehaviour {
 
     public static PlayerInput GetPlayerOneInput() {
 		return GameObject.FindObjectsOfType<PlayerInput>()
-			.Where(x => x.playerNum == 0)
+			.Where(x => x.humanControl)
 			.First();
 	}
 }

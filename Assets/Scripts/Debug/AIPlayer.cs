@@ -5,15 +5,13 @@ using Rewired;
 using System.Linq;
 using System;
 
-[RequireComponent(typeof(PuppetInput))]
 public class AIPlayer : MonoBehaviour {
 	
-	PuppetInput puppetInput;
-	Player player;
+	ComputerController comControl;
+	PlayerInput playerInput;
 
 	public Replay currentReplay { get; private set; }
 	FrameInput currentInput;
-	Controller puppetController;
 
 	Dictionary<int, List<WeightedFrameInput>> ghost;
 	FrameInput lastGhostInput;
@@ -26,23 +24,14 @@ public class AIPlayer : MonoBehaviour {
 
 	const float reactionTime = 1f/4f;
 
-	// action ID to button/axis ID
-	Dictionary<int, int> buttonMaps = new Dictionary<int, int>();
-	Dictionary<int, int> axisMaps = new Dictionary<int, int>();
-
-	void Start() {
-		puppetInput = GetComponent<PuppetInput>();
-		if (!puppetInput) {
-			puppetInput = gameObject.AddComponent<PuppetInput>();
-		}
-		player = ReInput.players.GetPlayer(GetComponent<PlayerInput>().playerNum);
-		puppetInput.EnableInput();
-		puppetController = puppetInput.controller;
+	void Awake() {
+		playerInput = GetComponent<PlayerInput>();
+		comControl = playerInput.comControl;
 	}
 
 	public void PlayReplay(Replay replay) {
-		Start();
-		startTime = Time.unscaledTime;
+		playerInput.DisableHumanControl();
+		startTime = Time.time;
 		currentReplay = replay;
 		lastFrame = 0;
 	}
@@ -53,7 +42,7 @@ public class AIPlayer : MonoBehaviour {
 	}
 
 	public void StartGhost(Ghostfile ghostFile, GameObject opponent) {
-		Start();
+		playerInput.DisableHumanControl();
 		snapshotSaver.Initialize(this.gameObject, opponent);
 		ghost = ghostFile.ghost;
 		this.opponent = opponent;
@@ -61,23 +50,25 @@ public class AIPlayer : MonoBehaviour {
 
 	public void StopReplay() {
 		currentReplay = null;
-		puppetInput.ZeroInput();
+		comControl.Zero();
+		playerInput.EnableHumanControl();
 		lastFrame = 0;
 	}
 
 	public void StopGhost() {
 		ghost = null;
-		puppetInput.ZeroInput();
+		comControl.Zero();
+		playerInput.EnableHumanControl();
 	}
 
 	void Update() {
 		if (currentReplay != null) {
-			int currentFrame = (int) ((Time.unscaledTime-startTime)/(InputRecorder.pollInterval));
+			int currentFrame = (int) ((Time.time-startTime)/(InputRecorder.pollInterval));
 			// this needs to happen every frame according to Rewired docs
 			if (currentFrame<currentReplay.length) {
-				puppetInput.ZeroInput();
+				comControl.Zero();
 				FrameInput inputs = currentReplay.frameInputs[currentFrame];
-				SetPuppetInput(inputs);
+				SetInput(inputs);
 			}
 			lastFrame = currentFrame;
 			if (currentFrame == currentReplay.length-1) {
@@ -89,22 +80,17 @@ public class AIPlayer : MonoBehaviour {
 		}
 	}
 
-	void SetPuppetInput(FrameInput input) {
+	void SetInput(FrameInput input) {
 		foreach (KeyValuePair<int, int> IDAxis in input.actionIDAxes) {
-			// if not in the map, then do above
-			// otherwise just look it up
-			AddAxisMap(IDAxis.Key);
-			puppetInput.SetAxis(axisMaps[IDAxis.Key], IDAxis.Value);
+			comControl.SetActionAxis(IDAxis.Key, IDAxis.Value);
 		}
 		foreach (int actionID in input.actionIDs) {
-			AddButtonMap(actionID);
-			puppetInput.SetButton(buttonMaps[actionID]);
+			comControl.SetActionButton(actionID);
 
 			// if attack, attack towards player
 			if (PlayerInput.IsAttack(actionID)) {
-				AddAxisMap(RewiredConsts.Action.Horizontal);
-				puppetInput.SetAxis(
-					axisMaps[RewiredConsts.Action.Horizontal],
+				comControl.SetActionAxis(
+					RewiredConsts.Action.Horizontal,
 					Mathf.Sign(opponent.transform.position.x - transform.position.x)
 				);
 			}
@@ -116,17 +102,17 @@ public class AIPlayer : MonoBehaviour {
 		&& opponent.transform.position.x < transform.position.x) {
 			input.actionIDAxes[RewiredConsts.Action.Horizontal] *= -1;
 		}
-		SetPuppetInput(input);
+		SetInput(input);
 	}
 
 	void PlayGhost() {
-		puppetInput.ZeroInput();
-		if (Time.unscaledTime - reactionTime < lastGhostInputTime) {
-			SetPuppetInput(lastGhostInput);
+		comControl.Zero();
+		if (Time.time - reactionTime < lastGhostInputTime) {
+			SetInput(lastGhostInput);
 			return;
 		}
 
-		lastGhostInputTime = Time.unscaledTime;
+		lastGhostInputTime = Time.time;
 
 		int gameHash = snapshotSaver.GetGameStateHash();
 		FrameInput ghostInput;
@@ -150,31 +136,5 @@ public class AIPlayer : MonoBehaviour {
 			}
 		}
 		return inputs[inputs.Count-1].frameInput;
-	}
-
-	void AddAxisMap(int actionID) {
-		if (!axisMaps.ContainsKey(actionID)) {
-			ActionElementMap map = player.controllers.maps.GetFirstAxisMapWithAction(
-				ControllerType.Custom,
-				actionID,
-				skipDisabledMaps: false
-			);
-			axisMaps[actionID] = map.elementIdentifierId;
-		}
-	}
-
-	void AddButtonMap(int actionID) {
-		if (!buttonMaps.ContainsKey(actionID)) {
-			ActionElementMap map = player.controllers.maps.GetFirstButtonMapWithAction(
-				ControllerType.Custom,
-				actionID,
-				skipDisabledMaps: false
-			);
-			try {
-				buttonMaps[actionID] = map.elementIdentifierId;
-			} catch (NullReferenceException) {
-				Debug.LogWarning("No button map for action "+ ReInput.mapping.GetAction(actionID).name + ", ID "+ actionID);
-			}
-		}
 	}
 }

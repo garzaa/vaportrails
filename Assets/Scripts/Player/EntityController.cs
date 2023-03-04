@@ -177,7 +177,10 @@ public class EntityController : Entity {
 	}
 
 	void WallKick() {
-		if (WasSpeeding() && rb2d.velocity.y > 0.1 && input.Button(Buttons.JUMP)) {
+		// hack for not giving a wallkick ability yet
+		if (!input.isHuman) return;
+		// has to be off the ground
+		if (WasSpeeding() && rb2d.velocity.y > 0.1 && currentAirJumps==movement.maxAirJumps) {
 			DisableFlip();
 			if (wallData.direction * Forward() < 0) {
 				_Flip();
@@ -362,11 +365,11 @@ public class EntityController : Entity {
 		// if inputting towards wall, jump up it
 		// but always push player away from the wall
 		if (wallData.direction * inputX > 0) {
-			rb2d.velocity = new Vector2((-wallData.direction * v)*1.0f, Mathf.Max(v, rb2d.velocity.y));
+			rb2d.velocity = new Vector2((-wallData.direction * movement.runSpeed), Mathf.Max(v, rb2d.velocity.y));
 			animator.SetTrigger("Backflip");
 			airControlMod = 0.2f;
 		} else {
-			rb2d.velocity = new Vector2((-wallData.direction * v)*1.5f, Mathf.Max(v, rb2d.velocity.y));
+			rb2d.velocity = new Vector2((-wallData.direction * movement.runSpeed)+1.4f, Mathf.Max(v, rb2d.velocity.y));
 			animator.SetTrigger("WallJump");
 			airControlMod = 0.0f;
 		}
@@ -382,7 +385,7 @@ public class EntityController : Entity {
 	}
 
 	void AirJump() {
-		if (groundData.distance<0.3f) {
+		if (groundData.distance<0.2f) {
 			// if player is falling and about to hit ground, don't buffer an airjump
 			GroundJump();
 			return;
@@ -511,7 +514,7 @@ public class EntityController : Entity {
         animator.SetFloat("XSpeedMagnitude", Mathf.Abs(rb2d.velocity.x));
 		animator.SetBool("MovingBackward", movingBackwards);
 		// edge-raycasts can hit the wall
-		animator.SetBool("Wallsliding", wallData.touchingWall && groundData.distance > 0.5f);
+		animator.SetBool("Wallsliding", wallData.touchingWall && groundData.distance > 0.3f);
 		animator.SetFloat("RelativeXSpeed", rb2d.velocity.x * ForwardVector().x);
 		animator.SetFloat("GroundDistance", groundData.distance);
 
@@ -668,7 +671,7 @@ public class EntityController : Entity {
 	public void EndDashCooldown() {
 		if (canDash) return;
 		// don't flash cyan if it's an enemy not being controlled
-		if (input.GetPlayer().controllers.hasKeyboard) {
+		if (input.isHuman) {
 			shader.FlashCyan();	
 		}
 		canDash = true;
