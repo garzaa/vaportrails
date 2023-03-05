@@ -89,7 +89,6 @@ public class AIPlayer : MonoBehaviour {
 
 			// if attack, attack towards player
 			if (PlayerInput.IsAttack(actionID)) {
-				print("applying attack input");
 				comControl.SetActionAxis(
 					RewiredConsts.Action.Horizontal,
 					Mathf.Sign(opponent.transform.position.x - transform.position.x)

@@ -40,7 +40,7 @@ public class GameSnapshotSaver {
 			14: 	airjump left
 			15: 	dash online
 			16: 	touching wall
-			17-24: 	attack name hash
+			17-24: 	attack name hash -> does this actually give that much information?
 			25: 	whether attack just landed
 			26-31:  free space
 

@@ -24,7 +24,7 @@ public class WallCheck : MonoBehaviour {
 		targetCollider = GetComponent<Collider2D>();
 	}
 
-	void FixedUpdate() {
+	void Update() {
 		RefreshWallData(wallData);
 
 		Vector2 startPoint = (Vector2) targetCollider.transform.position + targetCollider.offset;
