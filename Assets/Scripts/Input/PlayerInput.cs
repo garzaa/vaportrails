@@ -24,8 +24,8 @@ public class PlayerInput : MonoBehaviour {
         player.controllers.AddController(ControllerType.Joystick, 0, true);
     }
 
-    void Update() {
-        comControl.Update();
+    void LateUpdate() {
+        comControl.LateUpdate();
     }
 
     public Player GetPlayer() {

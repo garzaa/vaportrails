@@ -60,7 +60,7 @@ public class Entity : MonoBehaviour, IHitListener {
 
 	Coroutine safetySaver;
 	
-	protected const float groundFlopStunTime = 9f/12f;
+	protected const float groundFlopStunTime = 6f/12f;
 
 	protected virtual void Awake() {
 		animator = GetComponent<Animator>();

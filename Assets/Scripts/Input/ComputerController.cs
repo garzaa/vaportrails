@@ -11,12 +11,26 @@ public class ComputerController {
 	Dictionary<int, float> axes = new Dictionary<int, float>();
 	Dictionary<int, bool> buttons = new Dictionary<int, bool>();
 
-	HashSet<int> bDowns = new HashSet<int>();
-	HashSet<int> bUps = new HashSet<int>();
+	// int: action
+	// bool: whether it's passed the 1-frame expiry deadline
+	Dictionary<int, bool> bDowns = new Dictionary<int, bool>();
+	Dictionary<int, bool> bUps = new Dictionary<int, bool>();
 
-	public void Update() {
-		bDowns.Clear();
-		bUps.Clear();
+	// there's no guarantee for button-down flushing after it's been read
+	// by input buffer that frame. so we do this instead of a flat clear
+	// lateupdate means it stays false for a frame
+	public void LateUpdate() {
+		IncrementAndPrune(bDowns);
+		IncrementAndPrune(bUps);
+	}
+
+	void IncrementAndPrune(Dictionary<int, bool> buttonEvents) {
+		// if anything's true, remove it
+		// otherwise make it true
+		foreach (int id in buttonEvents.Keys.ToList()) {
+			if (buttonEvents[id]) buttonEvents.Remove(id);
+			else buttonEvents[id] = true;
+		}
 	}
 
 	public void SetActionAxis(int actionID, float val) {
@@ -29,8 +43,8 @@ public class ComputerController {
 
 	public void SetActionButton(int actionID, bool b) {
 		bool oldB = GetButton(actionID);
-		if (b && !oldB) bDowns.Add(actionID);
-		else if (!b && oldB) bUps.Add(actionID);
+		if (b && !oldB) bDowns[actionID] = false;
+		else if (!b && oldB) bUps[actionID] = false;
 
 		buttons[actionID] = b;
 	}
@@ -41,11 +55,11 @@ public class ComputerController {
 	}
 
 	public bool GetButtonDown(int actionID) {
-		return bDowns.Contains(actionID);
+		return bDowns.ContainsKey(actionID);
 	}
 
 	public bool GetButtonUp(int actionID) {
-		return bUps.Contains(actionID);
+		return bUps.ContainsKey(actionID);
 	}
 
 	public float GetAxis(int actionID) {
