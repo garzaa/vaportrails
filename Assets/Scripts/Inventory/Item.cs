@@ -11,5 +11,15 @@ public class Item : ScriptableObject {
 
 	[TextArea]
 	public string description;
+
+	public GameObject pickupEvent;
+
+	public void OnPickup(GameObject player, bool quiet) {
+		if (pickupEvent) {
+			foreach (IPickup p in pickupEvent.GetComponents<IPickup>()) {
+				p.OnPickup(player, quiet);
+			}
+		}
+	}
 	
 }

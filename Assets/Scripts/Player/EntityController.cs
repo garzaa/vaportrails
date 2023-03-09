@@ -11,6 +11,8 @@ public class EntityController : Entity {
 	[SerializeField] bool faceRightOnStart;
 	#pragma warning restore 0649
 
+	HashSet <Ability> abilities = new HashSet<Ability>();
+
 	public MovementStats movement;
 
     const float bufferDuration = 0.1f;
@@ -371,6 +373,8 @@ public class EntityController : Entity {
 	}
 
 	void WallJump() {
+		if (!HasAbility(Ability.Walljump)) return;
+
 		bufferedJump = false;
 		jumpNoise.PlayFrom(this.gameObject);
 		float v = movement.jumpSpeed;
@@ -403,6 +407,9 @@ public class EntityController : Entity {
 			return;
 		}
 		BufferJump(); // in case about to hit a wall
+
+		if (!HasAbility(Ability.Airjump)) return;
+
 		currentAirJumps--;
 		rb2d.velocity = new Vector2(rb2d.velocity.x, Mathf.Max(movement.jumpSpeed, rb2d.velocity.y));
 		JumpDust();
@@ -709,5 +716,13 @@ public class EntityController : Entity {
 	IEnumerator ExitCutsceneNextFrame(MonoBehaviour source) {
 		yield return new WaitForEndOfFrame();
 		cutsceneSources.Remove(source);
+	}
+
+	public void AddAbility(Ability a) {
+		abilities.Add(a);
+	}
+
+	public bool HasAbility(Ability a) {
+		return abilities.Contains(a);
 	}
 }

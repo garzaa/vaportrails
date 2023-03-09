@@ -76,6 +76,7 @@ public class ValCombatController : CombatController, IHitListener {
 			&& groundData.grounded
 			&& currentEP.Get() > 0
 			&& hp.GetCurrent() < hp.GetMax()
+			&& player.HasAbility(Ability.Heal)
 		) {
 			EnterAttackGraph(groundAttackGraph, healNode);
 		}
@@ -97,6 +98,8 @@ public class ValCombatController : CombatController, IHitListener {
 
 	void Parry() {
 		if (player.frozeInputs) return;
+
+		if (!player.HasAbility(Ability.Parry)) return;
 
 		if (input.ButtonDown(Buttons.PARRY) && currentEP.Get() > 0) {
 			if (groundData.grounded) {
@@ -180,7 +183,9 @@ public class ValCombatController : CombatController, IHitListener {
 	}
 
 	void Shoot() {
-		if (player.frozeInputs && !graphTraverser.InGraph()) return;
+		if (player.frozeInputs && !player.inAttack) return;
+
+		if (!player.HasAbility(Ability.Projectile)) return;
 
 		if (input.ButtonDown(Buttons.PROJECTILE) && currentEP.Get() > 0) {
 			animator.SetBool("WhiteEyes", true);
@@ -251,6 +256,7 @@ public class ValCombatController : CombatController, IHitListener {
 			(!player.frozeInputs || graphTraverser.InGraph())
 			&& input.ButtonDown(Buttons.SPECIAL)
 			&& !wallData.touchingWall
+			&& player.HasAbility(Ability.FlipKick)
 		) {
 			// dash should take priority over everything else
 			// then orca flip only if there's a sizeable up input

@@ -21,6 +21,8 @@ public class DashModule : MonoBehaviour {
 	}
 
 	void Update() {
+		if (!entity.HasAbility(Ability.Dash)) return;
+
 		if (entity.stunned) return;
 
 		if (!canDash) return;
