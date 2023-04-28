@@ -328,7 +328,8 @@ public class EntityController : Entity {
 			);
 		}
 
-		if (groundData.hitGround && bufferedJump) {
+		if (groundData.hitGround && bufferedJump && !keepJumpSpeed) {
+			// if they didn't just jump (and the groundcheck hasn't had time to update)
             GroundJump();
             return;
         } else if (wallData.hitWall && bufferedJump) {
