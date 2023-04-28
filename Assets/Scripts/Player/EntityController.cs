@@ -723,6 +723,8 @@ public class EntityController : Entity {
 	}
 
 	public bool HasAbility(Ability a) {
-		return abilities.Contains(a);
+		return true;
+		// TODO: actually check for items when back from vacation
+		// return abilities.Contains(a);
 	}
 }

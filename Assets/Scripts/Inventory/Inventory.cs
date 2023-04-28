@@ -5,8 +5,7 @@ using System.Collections.Generic;
 public class Inventory : SavedObject {
 	[SerializeField]
 	List<StoredItem> items = new List<StoredItem>();
-
-
+	
 	protected override void LoadFromProperties() {
 		items = GetList<StoredItem>("items");
 	}

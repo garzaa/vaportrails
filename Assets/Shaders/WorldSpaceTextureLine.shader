@@ -6,6 +6,13 @@ Shader "Custom2D/WorldSpaceTextureLine"
 		_Color ("Tint", Color) = (1,1,1,1)
 		[Header(period speed amplitude onramp)]_WaveParams("Wave Params", Vector) = (1, 1, 1, 1)
 		_TextureSpeed("Texture Speed", Float) = 1
+
+		[Header(Stencil)]
+		_Stencil ("Ref Val [0;255]", Float) = 0
+		_ReadMask ("ReadMask [0;255]", Int) = 255
+		_WriteMask ("WriteMask [0;255]", Int) = 255
+		[Enum(UnityEngine.Rendering.CompareFunction)] _StencilComp ("Draw Comparison (Draw If Ref <?> Buffer)", Int) = 0
+		[Enum(UnityEngine.Rendering.StencilOp)] _StencilOp ("Buffer Operation (if comparison success)", Int) = 0
 	}
 
 	SubShader

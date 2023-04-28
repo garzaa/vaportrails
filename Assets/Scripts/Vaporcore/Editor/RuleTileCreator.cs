@@ -7,14 +7,14 @@ using UnityEngine;
 using System.Linq;
 using UnityEngine.Tilemaps;
 
-public class RuleTileCreator : MonoBehaviour {
-    static RuleTile.TilingRule currentRule;
+public class ExtraRuleTileCreator : MonoBehaviour {
+    static ExtraRuleTile.TilingRule currentRule;
     static Dictionary<Vector3Int, int> neighborDict = new Dictionary<Vector3Int, int>();
     static List<Sprite> sprites;
-    static RuleTile tile;
+    static ExtraRuleTile tile;
 
     [MenuItem("Assets/Create Rule Tile From Texture", true)]
-    static bool CanMakeRuleTile() {
+    static bool CanMakeExtraRuleTile() {
         if (Selection.activeObject is Texture2D) {
             Texture2D t = Selection.activeObject as Texture2D;
             return t.width==TiledBlockCreator.destWidth && t.height==TiledBlockCreator.destHeight;
@@ -23,17 +23,17 @@ public class RuleTileCreator : MonoBehaviour {
     }
 
     [MenuItem("Assets/Create Rule Tile From Texture")]
-    static void CreateRuleTileFromTexture() {
+    static void CreateExtraRuleTileFromTexture() {
         Initialize();
 
         string assetPath = AssetDatabase.GetAssetPath(Selection.activeObject);
         string ruleTilePath = BaseToOutputName(assetPath);
 
         bool saveNew = false;
-        tile = AssetDatabase.LoadAssetAtPath(ruleTilePath, typeof(RuleTile)) as RuleTile;
+        tile = AssetDatabase.LoadAssetAtPath(ruleTilePath, typeof(ExtraRuleTile)) as ExtraRuleTile;
         if(tile == null) {
             saveNew = true;
-            tile = ScriptableObject.CreateInstance("RuleTile") as RuleTile;
+            tile = ScriptableObject.CreateInstance("ExtraRuleTile") as ExtraRuleTile;
         } else {
             tile.m_TilingRules.Clear();
         }
@@ -195,7 +195,7 @@ public class RuleTileCreator : MonoBehaviour {
     static void AddSprite(int spriteIndex) {
         ApplyLastRule();
         neighborDict.Clear();
-        currentRule = new RuleTile.TilingRule();
+        currentRule = new ExtraRuleTile.TilingRule();
         currentRule.m_Sprites[0] = sprites[spriteIndex];
     }
 
@@ -232,7 +232,7 @@ public class RuleTileCreator : MonoBehaviour {
     }
 
     static void AddRule(int neighborIndex, bool neighborRule) {
-        AddRule(neighborIndex, neighborRule ? RuleTile.TilingRuleOutput.Neighbor.This : RuleTile.TilingRuleOutput.Neighbor.NotThis);
+        AddRule(neighborIndex, neighborRule ? ExtraRuleTile.TilingRuleOutput.Neighbor.This : ExtraRuleTile.TilingRuleOutput.Neighbor.NotThis);
     }
 
     static void AddRule(int neighborIndex, int neighborRule) {
@@ -240,7 +240,7 @@ public class RuleTileCreator : MonoBehaviour {
     }
 
     static void MirrorX() {
-        currentRule.m_RuleTransform = RuleTile.TilingRuleOutput.Transform.MirrorX;
+        currentRule.m_RuleTransform = ExtraRuleTile.TilingRuleOutput.Transform.MirrorX;
     }
 
     static void ApplyLastRule() {

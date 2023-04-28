@@ -24,7 +24,7 @@ public class AIPlayer : MonoBehaviour {
 
 	const float reactionTime = 1f/4f;
 
-	void Awake() {
+	void Start() {
 		playerInput = GetComponent<PlayerInput>();
 		comControl = playerInput.comControl;
 	}

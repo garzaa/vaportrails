@@ -6,20 +6,29 @@ using UnityEditor;
 using System.IO;
 
 public class TiledBlockCreator : MonoBehaviour {
-    const int tileSize = 64;
-    const int blocksPerTile = 2;
-    const int blockSize = tileSize / blocksPerTile;
-    const int xTiles = 7;
-    const int yTiles = 3;
+    static int tileSize = 16;
+    static int blocksPerTile = 2;
+    static int blockSize = tileSize / blocksPerTile;
+    static int xTiles = 7;
+    static int yTiles = 3;
     
-    public const int templateSize = 2 * tileSize;
-    public const int destWidth = xTiles * tileSize;
-    public const int destHeight = yTiles * tileSize;
+    static int templateSize = 2 * tileSize;
+    public static int destWidth = xTiles * tileSize;
+    public static int destHeight = yTiles * tileSize;
 
     static string assetPath;
     static Texture2D src;
     static Texture2D dest;
     static Vector2Int workingTile;
+
+    [MenuItem("Assets/Create Tiled Block", true)]
+    static bool CanMakeTiledBlock() {
+        if (Selection.activeObject is Texture2D) {
+            Texture2D t = Selection.activeObject as Texture2D;
+            return t.width == templateSize && t.height == templateSize;
+        }
+        return false;
+    }
 
     [MenuItem("Assets/Create Tiled Block")]
     static void CreateTiledBlockFromTexture() {
@@ -27,6 +36,7 @@ public class TiledBlockCreator : MonoBehaviour {
 
         PrepareBaseTexture();
         LoadBaseTexture();
+        SetParameters();
         CreateOutputTexture();
         CreateBlocks();
         CleanOldOutput();
@@ -40,6 +50,16 @@ public class TiledBlockCreator : MonoBehaviour {
 
     static void LoadBaseTexture() {
         src = Selection.activeObject as Texture2D;
+    }
+
+    static void SetParameters() {
+        // tile size can be variable
+        tileSize = src.width / 2;
+        blockSize = tileSize / blocksPerTile;
+        
+        templateSize = 2 * tileSize;
+        destWidth = xTiles * tileSize;
+        destHeight = yTiles * tileSize;
     }
 
     static void CreateOutputTexture() {
@@ -213,15 +233,6 @@ public class TiledBlockCreator : MonoBehaviour {
         Texture2D output = new Texture2D(xSize, ySize);
         output.filterMode = FilterMode.Point;
         return output;
-    }
-
-    [MenuItem("Assets/Create Tiled Block", true)]
-    static bool CanMakeTiledBlock() {
-        if (Selection.activeObject is Texture2D) {
-            Texture2D t = Selection.activeObject as Texture2D;
-            return t.width == templateSize && t.height == templateSize;
-        }
-        return false;
     }
 
     static void FillMiddle() {
