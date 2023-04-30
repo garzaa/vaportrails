@@ -80,8 +80,12 @@ public class DialogueUI : MonoBehaviour {
 			portraitContainer.SetActive(false);
 		}
 
-		if (!string.IsNullOrEmpty(line.speakerName)) {
-			speakerName.text = line.speakerName;
+		if (!string.IsNullOrEmpty(line.speakerName) || line.character) {
+			if (line.character) {
+				speakerName.text = line.character.name;
+			} else {
+				speakerName.text = line.speakerName;
+			}
 			speakerNameContainer.SetActive(true);
 			speechBubbleTail.SetActive(true);
 			// make the box resize to fit the new name
