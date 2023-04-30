@@ -10,8 +10,6 @@ public class DialogueUI : MonoBehaviour {
 	AudioResource dialogueRenderSound;
 	bool open;
 
-	EntityController currentPlayer;
-	
 	#pragma warning disable 0649
 	[SerializeField] Image speakerPortrait;
 	[SerializeField] Text speakerName;
@@ -96,15 +94,11 @@ public class DialogueUI : MonoBehaviour {
 		else line.callback.Invoke();
 	}
 
-	public void Open(EntityController player, GameObject caller) {
-		// TODO: tear out all this multiplayer bullshit and do it for all players (or all human players or something)
-		// get all players, make them all enter cutscenes from this source
+	public void Open(GameObject caller) {
+		foreach (EntityController entity in GameObject.FindObjectsOfType<EntityController>()) {
+			entity.EnterCutscene(this);
+		}
 		open = true;
-		if (currentPlayer && currentPlayer!=player) {
-			currentPlayer.ExitCutscene(this);
-		} 
-		player.EnterCutscene(this);
-		currentPlayer = player;
 		animator.SetBool("Shown", true);
 		NextLineOrClose();
 	if (dialogueSource) cameraInterface.RemoveFramingTarget(dialogueSource);
@@ -114,8 +108,8 @@ public class DialogueUI : MonoBehaviour {
 
 	public void Close() {
 		open = false;
-		if (currentPlayer) {
-			currentPlayer.ExitCutscene(this);
+		foreach (EntityController entity in GameObject.FindObjectsOfType<EntityController>()) {
+			entity.ExitCutscene(this);
 		}
 		animator.SetBool("Shown", false);
 		dialogueRenderSound.PlayFrom(this.gameObject);
