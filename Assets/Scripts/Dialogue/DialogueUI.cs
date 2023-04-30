@@ -98,6 +98,7 @@ public class DialogueUI : MonoBehaviour {
 
 	public void Open(EntityController player, GameObject caller) {
 		// TODO: tear out all this multiplayer bullshit and do it for all players (or all human players or something)
+		// get all players, make them all enter cutscenes from this source
 		open = true;
 		if (currentPlayer && currentPlayer!=player) {
 			currentPlayer.ExitCutscene(this);
