@@ -12,7 +12,11 @@ public abstract class Interactable : MonoBehaviour {
 	void Start() {
 		prompt = Instantiate(Resources.Load<GameObject>("Runtime/PromptBase"));
 		prompt.transform.parent = this.transform;
-		prompt.transform.position = this.transform.position + Vector3.up;
+		if (optionalPromptPoint != null) {
+			prompt.transform.position = optionalPromptPoint.transform.position;
+		} else {
+			prompt.transform.position = this.transform.position + Vector3.up;
+		}
 		prompt.SetActive(false);
 
 		hoverSound = Resources.Load<AudioResource>("Runtime/InteractHoverSound");

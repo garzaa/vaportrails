@@ -38,7 +38,7 @@ public class EntityController : Entity {
 	protected bool movingBackwards;
 	protected bool movingForwards;
 	// dash stuff is provided but it's up to the subcontroller to implement it
-	protected bool dashing;
+	public bool dashing { get; protected set; }
 	public bool canDash { get; protected set; }
 	protected int currentAirJumps;
 	protected int currentAirDashes;
@@ -497,7 +497,7 @@ public class EntityController : Entity {
 		CancelInvoke(nameof(UnfreezeInputs));
 		UnfreezeInputs();
 		UpdateAnimator();
-		if (input.HasHorizontalInput()) {
+		if (input.HasHorizontalInput() && groundData.grounded) {
 			animator.SetTrigger("TechSuccess");
 		} else {
 			animator.Play("Idle", 0);

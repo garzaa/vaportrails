@@ -17,6 +17,7 @@ public class MovementStats : ScriptableObject {
 	[SerializeField] float _dashSpeed = 6f;
 	[SerializeField] float _dashCooldown = 0.6f;
 	[SerializeField] float _shortHopCutoffVelocity = 2f;
+	[SerializeField] bool _dashCancel = true;
 
 	public float runSpeed => _runSpeed;
 	public float gndAcceleration => _gndAcceleration;
@@ -30,4 +31,5 @@ public class MovementStats : ScriptableObject {
 	public float dashSpeed => _dashSpeed;
 	public float dashCooldown => _dashCooldown;
 	public float shortHopCutoffVelocity => _shortHopCutoffVelocity;
+	public bool canDashCancel => _dashCancel;
 }
