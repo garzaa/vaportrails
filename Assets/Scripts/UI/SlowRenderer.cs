@@ -3,19 +3,21 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.Events;
 using System;
 
 public class SlowRenderer : MonoBehaviour {
-
 	Text target;
 	Coroutine renderRoutine;
 	public bool rendering => renderRoutine != null;
 	string textToRender;
 	int letterIndex;
-	const float letterDelay = 0.01f;
 	static readonly char[] pauses = {'.', '!', ',', '?', '\n'};
 
 	Action wordCallback;
+
+	public float letterDelay = 0.01f;
+	public UnityEvent RenderEnd;
 
 	void Awake() {
 		target = GetComponent<Text>();
@@ -39,6 +41,7 @@ public class SlowRenderer : MonoBehaviour {
 		renderRoutine = null;
 		target.text = textToRender;
 		wordCallback = null;
+		RenderEnd.Invoke();
 	}
 
 	IEnumerator SlowRender() {
