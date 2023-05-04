@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using Newtonsoft.Json.Linq;
+using System.Linq;
 using System;
 
 public abstract class SavedObject : MonoBehaviour {
@@ -29,7 +30,21 @@ public abstract class SavedObject : MonoBehaviour {
 
 	public void BeforeSave() {
 		SaveToProperties(ref properties);
-		// TODO: look thru properties, get vectors, and sanitize them
+		foreach (String s in properties.Keys.ToArray()) {
+			if (properties[s] is Vector3) {
+				SanitizeVector3(s, properties);
+			}
+		}
+	}
+
+	// putting a vanilla vec3 in a dict will result in a circular ref error
+	// w.r.t. normalization
+	void SanitizeVector3(string s, Dictionary<string, object> properties) {
+		Vector3 v = (Vector3) properties[s];
+		properties[s+"X"] = v.x;
+		properties[s+"Y"] = v.y;
+		properties[s+"Z"] = v.z;
+		properties.Remove(s);
 	}
 
 	public void AfterDiskLoad() {
@@ -46,7 +61,11 @@ public abstract class SavedObject : MonoBehaviour {
 		return $"{SceneManager.GetActiveScene().name}/{gameObject.GetHierarchicalName()}/{GetType().Name}";
 	}
 
-	protected T Get<T>(string key) {
+	protected T Get<T>(string key) {	
+		if (typeof(T).Equals(typeof(Vector3))) {
+			return (T) Convert.ChangeType(GetVector3(key), typeof(T));
+		}
+
 		var v = properties[key];
 		try {
 			return (T) v;
@@ -70,5 +89,13 @@ public abstract class SavedObject : MonoBehaviour {
 		} catch (InvalidCastException) {
 			return (v as JArray).ToObject<List<T>>();
 		}
+	}
+
+	Vector3 GetVector3(string key) {
+		return new Vector3(
+			Get<float>(key+"X"),
+			Get<float>(key+"Y"),
+			Get<float>(key+"Z")
+		);
 	}
 }

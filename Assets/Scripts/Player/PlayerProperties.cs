@@ -18,11 +18,7 @@ public class PlayerProperties : SavedObject {
 		hp.SetMax(Get<int>("maxHP"));
 		combatController.currentEP.Set(Get<int>("currentEP"));
 		combatController.maxEP.Set(Get<int>("maxEP"));
-		transform.position = new Vector3(
-			Get<float>("posX"),
-			Get<float>("posY"),
-			Get<float>("posZ")
-		);
+		transform.position = Get<Vector3>("pos");
 		bool right = Get<bool>("facingRight");
 		if ((right && !player.facingRight) || (!right && player.facingRight)) {
 			player._Flip();
@@ -34,10 +30,7 @@ public class PlayerProperties : SavedObject {
 		properties["maxHP"] = hp.GetMax();
 		properties["currentEP"] = combatController.currentEP.Get();
 		properties["maxEP"] = combatController.maxEP.Get();
-		// avoid circular ref errors with normalization
-		properties["posX"] = transform.position.x;
-		properties["posY"] = transform.position.y;
-		properties["posZ"] = transform.position.z;
+		properties["pos"] = transform.position;
 		properties["facingRight"] = player.facingRight;
 	}
 }
