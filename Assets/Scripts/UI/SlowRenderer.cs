@@ -14,6 +14,8 @@ public class SlowRenderer : MonoBehaviour {
 	int letterIndex;
 	static readonly char[] pauses = {'.', '!', ',', '?', '\n'};
 
+	[TextArea] public string initialText = "";
+
 	Action wordCallback;
 
 	public float letterDelay = 0.01f;
@@ -21,6 +23,12 @@ public class SlowRenderer : MonoBehaviour {
 
 	void Awake() {
 		target = GetComponent<Text>();
+	}
+
+	void OnEnable() {
+		if (!string.IsNullOrEmpty(initialText)) {
+			Render(initialText);
+		}
 	}
 
 	public void Render(string t) {
@@ -60,6 +68,7 @@ public class SlowRenderer : MonoBehaviour {
 		}
 		renderRoutine = null;
 		wordCallback = null;
+		RenderEnd.Invoke();
 		yield break;
 	}
 
