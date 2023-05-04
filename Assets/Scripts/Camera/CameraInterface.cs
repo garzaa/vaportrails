@@ -42,7 +42,7 @@ public class CameraInterface : MonoBehaviour {
 	}
 
 	public void SetMainTarget(GameObject target) {
-		mainCam.m_Follow = target.transform;
+		mainCam.Follow = target.transform;
 	}
 
 	public void ResetMainTarget() {
@@ -51,7 +51,6 @@ public class CameraInterface : MonoBehaviour {
 
 	public void AddFramingTarget(GameObject g) {
 		targetGroupFollow.AddMember(g.transform, 0.5f, 0);
-		mainCam.m_Follow = targetGroupFollow.transform;
 	}
 
 	public void RemoveFramingTarget(GameObject g) {
