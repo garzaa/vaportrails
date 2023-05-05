@@ -43,9 +43,7 @@ public class SaveManager : MonoBehaviour {
 
 	public void Load() {
 		saveContainer.SetSave(jsonSaver.LoadFile(slot));
-		foreach (SavedObject o in GameObject.FindObjectsOfType<SavedObject>()) {
-			o.AfterDiskLoad();
-		}
+		transitionManager.ReloadFromDisk();
 		transitionManager.LoadLastSavedScene();
 	}
 }

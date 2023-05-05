@@ -67,6 +67,7 @@ public class TransitionManager : SavedObject {
 
 	IEnumerator LoadAsync(string sceneName) {
 		FadeAudio(0);
+		animator.Play("ScreenFade");
 		yield return new WaitForSeconds(FADE_TIME);
 
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
