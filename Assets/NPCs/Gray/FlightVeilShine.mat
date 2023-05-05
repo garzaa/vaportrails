@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: AngrySkyBehind
-  m_Shader: {fileID: 4800000, guid: a51a7b7356899ff4aa635268bb8953b9, type: 3}
+  m_Name: FlightVeilShine
+  m_Shader: {fileID: 4800000, guid: 22101e8e2dd15374fab92b89f738aca1, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -24,10 +24,6 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _ColorRamp:
-        m_Texture: {fileID: 2800000, guid: 562bb8ff5d4af274d8994113446ede13, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -40,12 +36,16 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _DissolveTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _EmissionMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 3f35f3e5504a94f44a02c2f8c5ee39aa, type: 3}
+        m_Texture: {fileID: 2800000, guid: 547633b512821d743b67163576ee37a7, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -63,34 +63,29 @@ Material:
     m_Ints: []
     m_Floats:
     - PixelSnap: 0
+    - _AlphaCutoff: 0
     - _BumpScale: 1
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
-    - _FarScale: 17.8
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
-    - _MainScale: 1
     - _Metallic: 0
     - _Mode: 0
-    - _NearScale: 3.15
-    - _NoiseScale: 125.23
     - _OcclusionStrength: 1
     - _Parallax: 0.02
+    - _ReadMask: 255
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
-    - _StrengthMultiplier: 0.05
+    - _Stencil: 1
+    - _StencilComp: 3
+    - _StencilOp: 0
     - _UVSec: 0
+    - _WriteMask: 255
     - _ZWrite: 1
     m_Colors:
-    - _BaseUV: {r: -0.8475625, g: 0, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _FarScale: {r: 10.31, g: 32.96, b: 0, a: 0}
-    - _MainScale: {r: 0.08, g: 0.06, b: 0, a: 0}
-    - _MoveSpeed: {r: 0, g: 0, b: 0, a: 0}
-    - _NearScale: {r: 2.5, g: -11.7, b: 0, a: 0}
-    - _Offset: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
