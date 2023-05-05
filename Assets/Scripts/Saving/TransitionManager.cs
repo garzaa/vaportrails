@@ -16,7 +16,7 @@ public class TransitionManager : SavedObject {
 	protected override void LoadFromProperties() {}
 
 	public void LoadLastSavedScene() {
-		StartCoroutine(LoadAsync(Get<string>("scene")));
+		SceneManager.LoadScene(Get<string>("scene"));
 	}
 
 	protected override void SaveToProperties(ref Dictionary<string, object> properties) {
@@ -40,6 +40,8 @@ public class TransitionManager : SavedObject {
 		} else if (transition.position) {
 			PlayerInput.GetPlayerOneInput().gameObject.transform.position = transition.position.vec2;
 		}
+		
+		transition.Clear();
 	}
 
 	void Update() {
@@ -50,7 +52,6 @@ public class TransitionManager : SavedObject {
 	}
 
 	public void SubwayTransition(Transition.SubwayTransition subwayTransition) {
-		transition.Clear();
 		transition.subway = subwayTransition;
 		SceneManager.LoadScene(subwayTransition.scene);
 	}
@@ -65,9 +66,17 @@ public class TransitionManager : SavedObject {
 		SceneManager.LoadScene(scene.ScenePath);
 	}
 
+	public void StraightLoad(string scenePath) {
+		SceneManager.LoadScene(scenePath);
+	}
+
+	public void FadeToBlack() {
+		animator.Play("ScreenFade");
+	}
+
 	IEnumerator LoadAsync(string sceneName) {
 		FadeAudio(0);
-		animator.Play("ScreenFade");
+		FadeToBlack();
 		yield return new WaitForSeconds(FADE_TIME);
 
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);

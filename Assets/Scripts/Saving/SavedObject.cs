@@ -47,7 +47,7 @@ public abstract class SavedObject : MonoBehaviour {
 		properties.Remove(s);
 	}
 
-	public void ReloadFromDisk() {
+	public void AfterDiskLoad() {
 		Load();
 		if (hasSavedData) LoadFromProperties();
 	}

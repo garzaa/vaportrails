@@ -16,10 +16,6 @@ public class SaveManager : MonoBehaviour {
 		}
 	}
 
-	// TODO: on exit to main menu, autosave
-	// but only in certain areas (e.g. not during boss fights or cutscenes)
-	// maybe no saving during combat or a cutscene...perhaps...
-
 	void Awake() {
 		transitionManager = GameObject.FindObjectOfType<TransitionManager>();
 	}
@@ -27,7 +23,6 @@ public class SaveManager : MonoBehaviour {
 	void Update() {
 		if (Input.GetKeyDown(KeyCode.LeftBracket)) {
 			Save();
-			Debug.Log("saved");
 		} else if (Input.GetKeyDown(KeyCode.RightBracket)) {
 			Load();
 		}
@@ -42,8 +37,17 @@ public class SaveManager : MonoBehaviour {
 	}
 
 	public void Load() {
+		StartCoroutine(FadeAndLoad());
+	}
+
+	IEnumerator FadeAndLoad() {
+		transitionManager.FadeToBlack();
+		yield return new WaitForSeconds(0.5f);
 		saveContainer.SetSave(jsonSaver.LoadFile(slot));
-		transitionManager.ReloadFromDisk();
+		foreach (SavedObject o in GameObject.FindObjectsOfType<SavedObject>()) {
+			// when loading something like playerposition, if it's enabled don't jerk camera around
+			o.AfterDiskLoad();
+		}
 		transitionManager.LoadLastSavedScene();
 	}
 }
