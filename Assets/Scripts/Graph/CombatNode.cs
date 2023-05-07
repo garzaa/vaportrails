@@ -3,11 +3,14 @@ using XNode;
 using System.Collections.Generic;
      
 abstract public class CombatNode : Node {
+    public AnimationClip animationClip;
+
     virtual public void OnNodeEnter(AttackGraphTraverser.Context context) {}
 
     virtual public void NodeUpdate(AttackGraphTraverser.Context context) {}
 
     virtual public string GetAnimationStateName() {
+        if (animationClip != null) return animationClip.name;
         return this.name;
     }
 
