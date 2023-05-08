@@ -10,6 +10,8 @@ Shader "Custom2D/PerspectiveWater"
 		_MainScale ("Main Scale", Vector) = (1, 1, 0, 0)
 		_HorizonDistance ("Horizon Distance", Float) = 4
 		_MoveSpeed ("Move Speed", Vector) = (0, 0, 0, 0)
+		_TextureMoveSpeed ("Texture Change Speed", Vector) = (1, 1, 0, 0)
+		_PowerExponent ("Power Curve", int) = 8
 	}
 
 	SubShader
@@ -73,6 +75,8 @@ Shader "Custom2D/PerspectiveWater"
 			float4 _NearScale, _FarScale;
 			float4 _MainScale, _MoveSpeed;
 			float _HorizonDistance;
+			fixed4 _TextureMoveSpeed;
+			int _PowerExponent;
 
 			fixed4 SampleSpriteTexture (float2 uv, float3 worldpos) {
 
@@ -86,7 +90,7 @@ Shader "Custom2D/PerspectiveWater"
 				// ok this can't be linear
 				// it needs to increase massively and then decrease a bit
 				float logCurve = log(uv.y)+1;
-				float powerCurve = pow(uv.y, 8);
+				float powerCurve = pow(uv.y, _PowerExponent);
 
 				// closer UVs use more of the worldPosition
 				uv.x = lerp(uv.x, worldpos.x, 1-logCurve);
@@ -101,7 +105,7 @@ Shader "Custom2D/PerspectiveWater"
 
 				fixed4 c = tex2D (_NoiseTex, uv/_MainScale.xy);
 				// add another moving texture for extra noise
-				fixed4 c2 = tex2D(_NoiseTex, (uv+ fixed2(_Time.x/2, _Time.z/2))/_MainScale.xy/4 );
+				fixed4 c2 = tex2D(_NoiseTex, (uv+ fixed2(_Time.x/2 * _TextureMoveSpeed.x, _Time.z/2 * _TextureMoveSpeed.y))/_MainScale.xy/4 );
 
 				c = lerp(c, c2, c2.r*0.5);
 

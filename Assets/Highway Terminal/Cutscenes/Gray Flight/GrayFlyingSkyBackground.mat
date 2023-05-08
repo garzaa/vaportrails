@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: GrayFlyingSkyBackground
-  m_Shader: {fileID: 4800000, guid: a51a7b7356899ff4aa635268bb8953b9, type: 3}
+  m_Shader: {fileID: 4800000, guid: 5e3cb16d43e971b4181ac63c3b9a948d, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -25,7 +25,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ColorRamp:
-        m_Texture: {fileID: 2800000, guid: c2c872c9222d6f5478fa854142c4be93, type: 3}
+        m_Texture: {fileID: 2800000, guid: ee6c68f03c0c69147b9f015384189418, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
@@ -52,6 +52,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _NoiseTex:
+        m_Texture: {fileID: 2800000, guid: 3f35f3e5504a94f44a02c2f8c5ee39aa, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -71,6 +75,7 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
+    - _HorizonDistance: 2.24
     - _MainScale: 1
     - _Metallic: 0
     - _Mode: 0
@@ -78,6 +83,7 @@ Material:
     - _NoiseScale: 125.23
     - _OcclusionStrength: 1
     - _Parallax: 0.02
+    - _PowerExponent: 2.64
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
@@ -85,12 +91,14 @@ Material:
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _BaseUV: {r: -21.769989, g: -56.83992, b: 0, a: 0}
+    - _BaseUV: {r: 0, g: 0, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _FarScale: {r: 10.31, g: 32.96, b: 0, a: 0}
-    - _MainScale: {r: 0.08, g: 0.06, b: 0, a: 0}
-    - _MoveSpeed: {r: 0, g: 0, b: 0, a: 0}
-    - _NearScale: {r: 2.5, g: -11.7, b: 0, a: 0}
+    - _MainScale: {r: 51.32, g: 2, b: 0, a: 0}
+    - _MoveSpeed: {r: 8.65, g: 0, b: 0, a: 0}
+    - _NearScale: {r: 1, g: -11.7, b: 0, a: 0}
     - _Offset: {r: 0, g: 0, b: 0, a: 0}
+    - _Speed: {r: 0, g: 0, b: 0, a: 0}
+    - _TextureMoveSpeed: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
