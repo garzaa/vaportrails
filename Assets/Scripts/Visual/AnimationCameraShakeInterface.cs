@@ -5,7 +5,11 @@ using System.Collections.Generic;
 public class AnimationCameraShakeInterface : MonoBehaviour {
 	CameraShake shake;
 
-	public void Shake(Vector2 force) {
-		shake.CustomShake(force);
+	void Awake() {
+		shake = GameObject.FindObjectOfType<CameraShake>();
+	}
+
+	public void ShakeX(float force) {
+		shake.Shake(new Vector2(force, 0));
 	}
 }
