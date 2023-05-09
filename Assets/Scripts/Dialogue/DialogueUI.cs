@@ -81,7 +81,9 @@ public class DialogueUI : MonoBehaviour {
 		}
 
 		if (!string.IsNullOrEmpty(line.speakerName) || line.character) {
-			if (line.character) {
+			// if speaker name is set, it takes priority - hack for Val to voice the other characters until they get their own voices
+			// in the ending cutscene
+			if (line.character && string.IsNullOrEmpty(line.speakerName)) {
 				speakerName.text = line.character.name;
 			} else {
 				speakerName.text = line.speakerName;
