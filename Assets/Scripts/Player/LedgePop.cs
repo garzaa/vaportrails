@@ -14,13 +14,14 @@ public class LedgePop : MonoBehaviour {
     PlayerInput input;
     GroundCheck groundCheck;
 
-    void Start() {
+    void Awake() {
         col = GetComponent<Collider2D>();
         rb = GetComponent<Rigidbody2D>();
         layerMask = 1 << LayerMask.NameToLayer(Layers.Ground);
 
         player = GetComponent<EntityController>();
         groundCheck = GetComponent<GroundCheck>();
+        input = GetComponent<PlayerInput>();
     }
 
     void Update() {

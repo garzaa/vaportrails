@@ -10,6 +10,7 @@ public class CircleRenderer : LineRendererEditor {
 	[Range(0, 1)]
 	public float arcFraction = 1f;
 	public float radius = .10f;
+	public bool centerVertically = false;
 
 	int segmentsLastFrame;
 	float radiusLastFrame;
@@ -45,6 +46,9 @@ public class CircleRenderer : LineRendererEditor {
 				Mathf.Cos(angle)*radius, 
 				0
 			);
+			if (centerVertically) {
+				points[i].y -= radius;
+			}
 		}
 		line.SetPositions(points);
 	}

@@ -10,6 +10,7 @@ Shader "Custom2D/MovingClouds"
 		_MainScale ("Main Scale", Vector) = (1, 1, 0, 0)
 		_MoveSpeed ("Move Speed", Vector) = (0, 0, 0, 0)
 		_TextureMoveSpeed ("Texture Change Speed", Vector) = (1, 1, 0, 0)
+		_AlphaAdd("Add Alpha", Range(0.0, 1.0)) = 0.0
 	}
 
 	SubShader
@@ -73,20 +74,23 @@ Shader "Custom2D/MovingClouds"
 			float4 _NearScale, _FarScale;
 			float4 _MainScale, _MoveSpeed;
 			fixed4 _TextureMoveSpeed;
+			float _AlphaAdd;
 
 			fixed4 SampleSpriteTexture (float2 uv, float3 worldpos) {
 				uv += _Time.x * _MoveSpeed;
 
-				fixed4 c = tex2D (_NoiseTex, uv/_MainScale.xy);
+				fixed4 c1 = tex2D (_NoiseTex, uv/_MainScale.xy);
 				// add another moving texture for extra noise
 				fixed4 c2 = tex2D(_NoiseTex, (uv+ fixed2(_Time.x/2 * _TextureMoveSpeed.x, _Time.z/2 * _TextureMoveSpeed.y))/_MainScale.xy/4 );
 
-				c = lerp(c, c2, c2.r*0.5);
+				fixed4 c = lerp(c1, c2, c2.r*0.5);
 
 				// then do the color ramp
 				// horizontal: brightness
 				// vertical: camera distance
 				c = tex2D(_ColorRamp, fixed2(c.r, uv.y));
+				
+				c.a = saturate(c.a + _AlphaAdd);
 
 				return c;
 			}

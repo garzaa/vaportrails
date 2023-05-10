@@ -10,6 +10,10 @@ public class AnimationCameraShakeInterface : MonoBehaviour {
 	}
 
 	public void ShakeX(float force) {
-		shake.Shake(new Vector2(force, 0));
+		shake.Shake(Vector2.right * force);
+	}
+
+	public void ShakeY(float force) {
+		shake.Shake(Vector2.up * force);
 	}
 }

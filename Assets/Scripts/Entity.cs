@@ -421,10 +421,6 @@ public class Entity : MonoBehaviour, IHitListener {
 	}
 	
 	IEnumerator SaveLastSafePosition() {
-		if (!groundData.grounded || groundData.onLedge || wallData.touchingWall || stunned) {
-			yield break;
-		}
-
 		GameObject currentGround = groundData.groundObject;
 		if (currentGround?.GetComponent<UnsafeGround>()) {
 			yield break;
@@ -435,6 +431,10 @@ public class Entity : MonoBehaviour, IHitListener {
 
 		// if the player's about to slide off and hit envirodamage
 		yield return new WaitForSeconds(0.5f);
+
+		if (!groundData.grounded || groundData.onLedge || wallData.touchingWall || stunned) {
+			yield break;
+		}
 
 		// get offset, in case it's moving
 		Vector3 currentOffset = savedPos - groundPos;

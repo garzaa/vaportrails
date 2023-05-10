@@ -24,6 +24,7 @@ public class TransitionManager : SavedObject {
 	}
 
 	protected override void Initialize() {
+		AudioListener.volume = 0;
 		FadeAudio(1);
 		animator = GetComponent<Animator>();
 		animator.Play("ScreenUnfade");

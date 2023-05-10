@@ -133,12 +133,6 @@ public class EntityController : Entity {
                 justWalkedOffCliff = true;
                 this.WaitAndExecute(() => justWalkedOffCliff = false, bufferDuration);
             }
-
-			// the player can initiate walltouch on the ground
-			// and ground movement can override the wallflip
-			if (wallData.touchingWall) {
-				FlipToWall();
-			}
         } else if (groundData.hitGround) {
 			RefreshAirMovement();
 		}
@@ -152,19 +146,21 @@ public class EntityController : Entity {
 		if (groundData.ledgeStep && !speeding && !input.HasHorizontalInput()) {
 			rb2d.velocity = new Vector2(0, rb2d.velocity.y);
 		}
+
+		if (
+			wallData.touchingWall
+			&& !groundData.grounded
+			&& !inAttack
+			&& !(stunned || animator.GetBool("Tumbling")) 
+		) {
+			FlipToWall();
+		}
 	}
 
 	override protected void OnWallHit() {
-		if (!stunned && !animator.GetBool("Tumbling")) FlipToWall();
 		WallKick();
 		fMod = 1;
 		RefreshAirMovement();
-	}
-
-	public void OnWallKickExit() {
-		if (wallData.touchingWall) {
-			FlipToWall();
-		}
 	}
 
 	void FlipToWall() {
@@ -190,7 +186,6 @@ public class EntityController : Entity {
 			jumpNoise.PlayFrom(this.gameObject);
 			bufferedJump = false;
 			shader.FlashWhite();
-			FlipToWall();
 			float preCollisionSpeed = storedSpeed;
 			rb2d.velocity = new Vector2(
 				0,
@@ -628,7 +623,6 @@ public class EntityController : Entity {
 		UnfreezeInputs();
 		currentAttack = null;
 		Jump(executeIfBuffered: true);
-		if (wallData.touchingWall) FlipToWall();
 	}
 
 	public void OnAttackNodeEnter(AttackNode attackNode) {
