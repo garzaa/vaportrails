@@ -133,7 +133,7 @@ public class AttackGraphTraverser {
 			return false;
 		}
 
-		bool nameCorresponds = stateInfo.IsName("Base Layer."+currentGraph.stateMachineName+"."+currentNode.name);
+		bool nameCorresponds = stateInfo.IsName("Base Layer."+currentGraph.stateMachineName+"."+currentNode.GetAnimationStateName());
 
 		if (!nameCorresponds && !enteredCurrentNode) {
             // in case something went wrong, unlock the player

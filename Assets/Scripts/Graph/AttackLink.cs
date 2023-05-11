@@ -9,4 +9,8 @@ public class AttackLink {
         this.type = type;
         this.direction = direction;
     }
+
+	public override string ToString() {
+		return type.ToString() + " " + direction.ToString();
+	}
 }

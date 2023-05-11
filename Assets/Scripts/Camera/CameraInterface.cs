@@ -43,6 +43,7 @@ public class CameraInterface : MonoBehaviour {
 
 	public void SetMainTarget(GameObject target) {
 		mainCam.Follow = target.transform;
+		mainCam.LookAt = target.transform;
 	}
 
 	public void ResetMainTarget() {

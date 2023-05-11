@@ -21,6 +21,9 @@ public class AttackNode : CombatNode {
 
     override public void OnNodeEnter(AttackGraphTraverser.Context context) {
         base.OnNodeEnter(context);
+        if (FromBackwardsInput()) {
+            Debug.Log("from backwards input");
+        }
         if (!string.IsNullOrEmpty(GetAnimationStateName())) {
             context.animator.Play(GetAnimationStateName(), layer:0, normalizedTime:context.GetTimeOffset());
         }
@@ -94,5 +97,17 @@ public class AttackNode : CombatNode {
         }
 
         return null;
+    }
+
+    public bool FromBackwardsInput() {
+        return false;
+
+        // todo: figure this out later
+        /*
+        if (!GetInputPort("input").IsConnected) return false;
+        AttackLink l = GetNode("input").Connection.GetOutputValue() as AttackLink;
+        Debug.Log(l);
+        return false;
+        */
     }
 }
