@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class TransitionManager : SavedObject {
 	public Transition transition;
+	public GameObject hardLockCamera;
 
 	Animator animator;
 	float targetVolume = 1f;
@@ -24,6 +25,7 @@ public class TransitionManager : SavedObject {
 	}
 
 	protected override void Initialize() {
+		hardLockCamera.SetActive(true);
 		AudioListener.volume = 0;
 		FadeAudio(1);
 		animator = GetComponent<Animator>();
@@ -43,6 +45,12 @@ public class TransitionManager : SavedObject {
 		}
 		
 		transition.Clear();
+		StartCoroutine(DisableHardLock());
+	}
+
+	IEnumerator DisableHardLock() {
+		yield return new WaitForEndOfFrame();
+		hardLockCamera.SetActive(false);
 	}
 
 	void Update() {

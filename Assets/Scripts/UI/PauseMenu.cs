@@ -18,6 +18,9 @@ public class PauseMenu : MonoBehaviour {
 	}
 
 	void Update() {
+		// player is null if player's deactivated in a cutscene
+		// cutscene == no pausing
+		if (!player) return;
 		if (input.ButtonDown(Buttons.PAUSE)) {
 			if (!pauseUI.activeSelf && !player.inCutscene) {
 				Open();
