@@ -11,7 +11,7 @@ public class AnimationEventInterface : MonoBehaviour {
 		e.Raise();
 	}
 
-	public void RaiseChildSceneEvent(int index) {
+	public void RaiseSceneEvent(int index) {
 		events[index].Invoke();
 	}
 }

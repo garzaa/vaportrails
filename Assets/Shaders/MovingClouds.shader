@@ -3,6 +3,7 @@ Shader "Custom2D/MovingClouds"
 	Properties
 	{
 		[PerRendererData] _MainTex ("Sprite Texture", 2D) = "white" {}
+		_AlphaMask ("Alpha Mask", 2D) = "white" {}
 		_NoiseTex ("Noise Texture", 2D) = "white" {}
 	 	_ColorRamp ("Color Ramp", 2D) = "white" {}
 		_Color ("Tint", Color) = (1,1,1,1)
@@ -75,6 +76,7 @@ Shader "Custom2D/MovingClouds"
 			float4 _MainScale, _MoveSpeed;
 			fixed4 _TextureMoveSpeed;
 			float _AlphaAdd;
+			sampler2D _AlphaMask;
 
 			fixed4 SampleSpriteTexture (float2 uv, float3 worldpos) {
 				uv += _Time.x * _MoveSpeed;
@@ -91,6 +93,10 @@ Shader "Custom2D/MovingClouds"
 				c = tex2D(_ColorRamp, fixed2(c.r, uv.y));
 				
 				c.a = saturate(c.a + _AlphaAdd);
+
+				// now sample the alpha mask, clip if it's 0
+				clip(tex2D(_AlphaMask, uv).a - 0.1);
+
 
 				return c;
 			}
