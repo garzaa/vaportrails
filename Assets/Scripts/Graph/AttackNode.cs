@@ -6,6 +6,7 @@ using XNode;
 [NodeWidth(270)]
 public class AttackNode : CombatNode {
 	public AttackData attackData;
+    [SerializeField] bool fromBackwardsInput;
 
     [Input(backingValue=ShowBackingValue.Never)] 
     public AttackLink input;
@@ -100,14 +101,6 @@ public class AttackNode : CombatNode {
     }
 
     public bool FromBackwardsInput() {
-        return false;
-
-        // todo: figure this out later
-        /*
-        if (!GetInputPort("input").IsConnected) return false;
-        AttackLink l = GetNode("input").Connection.GetOutputValue() as AttackLink;
-        Debug.Log(l);
-        return false;
-        */
+        return fromBackwardsInput;
     }
 }

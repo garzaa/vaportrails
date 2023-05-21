@@ -631,7 +631,7 @@ public class EntityController : Entity {
 		FreezeInputs();
 		// bespoke for divekick animation
 		bool allowFlip = (attackNode is AirAttackNode && (attackNode as AirAttackNode).allowFlip);
-		if ((groundData.grounded || allowFlip) && (attackData && !attackData.fromBackwardsInput)) {
+		if ((groundData.grounded || allowFlip) && (attackData && !attackNode.FromBackwardsInput())) {
 			float actualInputX = input.HorizontalInput();
 			if (facingRight && actualInputX<0) {
 				Flip();

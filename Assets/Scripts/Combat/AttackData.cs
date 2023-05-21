@@ -30,8 +30,6 @@ public class AttackData : ScriptableObject {
 	[Range(0, 1)]
 	public float diRatio = 1f;
 
-	public bool fromBackwardsInput = false;
-
 	public int GetDamage() {
 		return damage;
 	}
