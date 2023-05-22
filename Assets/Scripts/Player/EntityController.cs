@@ -417,7 +417,7 @@ public class EntityController : Entity {
 		jumpNoise.PlayFrom(this.gameObject);
 		airControlMod = 1;
 		canShortHop = false;
-		currentAirDashes = movement.maxAirDashes;
+		// currentAirDashes = movement.maxAirDashes;
 		SetJustJumped();
 	}
 
