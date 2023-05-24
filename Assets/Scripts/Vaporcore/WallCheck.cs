@@ -20,8 +20,17 @@ public class WallCheck : MonoBehaviour {
     const float minHitInterval = 0.3f;
 	float lastHitTime = -1000f;
 
+	const float angleTolerance = 5f;
+
 	void Start() {		
 		targetCollider = GetComponent<Collider2D>();
+	}
+
+	bool IsWall(RaycastHit2D hit) {
+		return (
+			hit.collider != null
+			&& (Mathf.Abs(90 - Vector2.Angle(Vector2.up, hit.normal)) < angleTolerance)
+		);
 	}
 
 	void Update() {
@@ -57,7 +66,7 @@ public class WallCheck : MonoBehaviour {
 		);
 		Debug.DrawLine(topStart, topStart+(Vector2.left*distance), Color.cyan);
 		Debug.DrawLine(bottomStart, bottomStart+(Vector2.left*distance), Color.cyan);
-		if (topHit.collider!=null || bottomHit.collider!=null || midHit.collider!=null) {
+		if (IsWall(topHit) || IsWall(bottomHit) || IsWall(midHit)) {
 			wallData.direction = -1;
 			touchingwallThisFrame = true;
 		}
@@ -81,7 +90,7 @@ public class WallCheck : MonoBehaviour {
 			distance: distance,
 			layerMask: layerMask
 		);
-		if ((topHit.collider!=null || bottomHit.collider!=null) && midHit.collider!=null) {
+		if (IsWall(topHit) || IsWall(bottomHit) || IsWall(midHit)) {
 			wallData.direction = 1;
 			touchingwallThisFrame = true;
 		}

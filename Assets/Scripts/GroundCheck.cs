@@ -31,8 +31,14 @@ public class GroundCheck : MonoBehaviour {
     const float minHitInterval = 0.3f;
     float lastHitTime = -1000f;
 
+    const float groundCastLength = 0.5f;
+    const float maxClimbAngle = 45;
+
+    Rigidbody2D rb2d;
+
     void Awake() {
         col = GetComponent<Collider2D>();
+        rb2d = GetComponent<Rigidbody2D>();
     }
 
     void FixedUpdate() {
@@ -130,22 +136,38 @@ public class GroundCheck : MonoBehaviour {
     }
 
     Vector2 GetGroundNormal() {
-        Vector2 start = transform.position;
-        Vector2 end = (Vector2) transform.position + Vector2.down*0.5f;
-
-        RaycastHit2D hit = Physics2D.Linecast(
-            start,
-            end,
+        Vector2 start = new Vector2(transform.position.x, transform.position.y);
+        
+        // cast forward from just above the bottom point
+        // to see if they're moving up onto a slope
+        RaycastHit2D forwardHit = Physics2D.Raycast(
+            start + (Vector2.down * (col.bounds.extents.y - 0.01f)),
+            Vector2.left * transform.lossyScale.x,
+            col.bounds.extents.x + Mathf.Abs(rb2d.velocity.x * Time.fixedDeltaTime),
             defaultLayerMask
         );
 
-        if (hit.transform != null) {
-            Debug.DrawLine(start, hit.point, Color.red);
-            return hit.normal;
-        } else {
-            Debug.DrawLine(start, end, Color.green);
-            return Vector2.up;
+        Debug.DrawLine(start, start + Vector2.left * transform.lossyScale.x, Color.red);
+
+        if (forwardHit && Vector2.Angle(Vector2.up, forwardHit.normal) < maxClimbAngle) {
+            Debug.DrawLine(start, forwardHit.point, Color.yellow);
+            return forwardHit.normal;
         }
+
+        RaycastHit2D downHit = Physics2D.Raycast(
+            start,
+            Vector2.down,
+            col.bounds.extents.y + groundCastLength,
+            defaultLayerMask
+        );
+
+
+        if (downHit) {
+            Debug.DrawLine(start, downHit.point, Color.blue);
+            return downHit.normal;
+        }
+
+        return Vector2.up;
     }
 
     RaycastHit2D DefaultLinecast(Vector2 origin) {
@@ -161,8 +183,20 @@ public class GroundCheck : MonoBehaviour {
     }
 
     float GetGroundDistance() {
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 99, defaultLayerMask);
-        return hit.transform ? hit.distance : 99;
+        // this has to start from the forward edge of the collider
+        Vector2 start = transform.position;// new Vector2(col.bounds.max.x*transform.lossyScale.x, col.bounds.min.y);
+        // then move it forward
+        start += Vector2.right * transform.lossyScale.x * col.bounds.extents.x;
+        RaycastHit2D hit = Physics2D.Raycast(
+            start,
+            Vector2.down,
+            99,
+            defaultLayerMask
+        );
+        if (hit) {
+            Debug.DrawLine(start, hit.point, Color.green);
+        }
+        return hit ? hit.distance : 99;
     }
 
     public void DisableFor(float seconds) {

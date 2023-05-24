@@ -405,11 +405,11 @@ public class Entity : MonoBehaviour, IHitListener {
 		}
 	}
 
-	public Vector2Int ForwardVector() {
-		return new Vector2Int(
+	public Vector2 ForwardVector() {
+		return new Vector2(
             Forward(),
             1
-        );
+        ).Rotate(groundData.normalRotation);
 	}
 
 	public int Forward() {

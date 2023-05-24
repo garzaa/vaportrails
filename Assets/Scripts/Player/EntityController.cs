@@ -80,6 +80,11 @@ public class EntityController : Entity {
 	public UnityEvent TechLockout;
 	public UnityEvent TechMiss;
 
+	// slope control
+	float angleLastStep = 0;
+	public float angleStepDiff => groundData.normalRotation - angleLastStep;
+	float jumpTime = -10;
+
 	override protected void Awake() {
 		base.Awake();
 		input = GetComponent<PlayerInput>();
@@ -113,6 +118,7 @@ public class EntityController : Entity {
 	void FixedUpdate() {
 		ApplyMovement();
 		UpdateLastVelocity();
+		angleLastStep = groundData.normalRotation;
 	}
 
 	void Move() {
@@ -214,12 +220,21 @@ public class EntityController : Entity {
 			return;
 		}
 
+		if ((groundData.grounded || groundData.leftGround) && (angleStepDiff != 0) && (Time.unscaledTime - jumpTime > 0.5f)) {
+			// if they've just moved onto a lower slope which would ordinarily put them in the air
+			shader.FlashWhite();
+			rb2d.velocity = rb2d.velocity.Rotate(angleStepDiff);
+			// TODO they still get popped into the air on an uphill start sometimes
+		}
+
         if (inputX!=0) {
 			if (!speeding || (movingForwards && inputBackwards) || (movingBackwards && inputForwards)) {
 				if (groundData.grounded) {
 					// if ground is a platform that's been destroyed/disabled
 					float f = groundData.groundCollider != null ? groundData.groundCollider.friction : movement.airFriction;
-					rb2d.AddForce(Vector2.right * rb2d.mass * movement.gndAcceleration * inputX * f*f);
+					Vector2 v = Vector2.right * rb2d.mass * movement.gndAcceleration * inputX * f*f;
+					v = v.Rotate(groundData.normalRotation);
+					rb2d.AddForce(v);
 				} else {	
 					float attackMod = inAttack ? 0.5f : 1f;
 					rb2d.AddForce(Vector2.right * rb2d.mass * movement.airAcceleration * inputX * airControlMod * attackMod);
@@ -277,7 +292,7 @@ public class EntityController : Entity {
 
 		// if falling down through a platform (ground distance above feet)
 		// that distance can vary due to physics and/or float precision
-		if (rb2d.velocity.y<0 && (groundData.distance)<collider2d.bounds.extents.y) {
+		if (rb2d.velocity.y<0 && (groundData.distance)<collider2d.bounds.extents.y && groundData.platforms.Count > 0) {
 			// then snap to its top
 			float diff = collider2d.bounds.extents.y - groundData.distance;
 			rb2d.MovePosition(rb2d.position + ((diff+0.1f) * Vector2.up));
@@ -286,6 +301,13 @@ public class EntityController : Entity {
 				rb2d.velocity.x,
 				0.1f
 			);
+		}
+
+		// don't slide on slopes
+		if (!movingBackwards && !movingForwards && groundData.normalRotation != 0) {
+			if (rb2d.velocity.sqrMagnitude < 0.1) {
+				rb2d.velocity = Vector2.zero;
+			}
 		}
 	}
 
@@ -299,6 +321,11 @@ public class EntityController : Entity {
 
 	void Jump(bool executeIfBuffered=false) {
 		if (stunned) return;
+
+		// debounce jump inputs, but keep it buffered
+		if (Time.unscaledTime < jumpTime+0.2f) {
+			return;
+		}
 
 		if (input.ButtonUp(Buttons.JUMP) && rb2d.velocity.y > movement.shortHopCutoffVelocity && canShortHop) {
 			keepJumpSpeed = false;
@@ -364,7 +391,7 @@ public class EntityController : Entity {
 		}
 		canShortHop = true;
 		JumpDust();
-		rb2d.velocity = new Vector2(rb2d.velocity.x, Mathf.Max(movement.jumpSpeed, rb2d.velocity.y));
+		rb2d.velocity = new Vector2(rb2d.velocity.x, rb2d.velocity.y + movement.jumpSpeed);
 		SetJustJumped();
 	}
 
@@ -590,8 +617,10 @@ public class EntityController : Entity {
 		if ((inputForwards && movingForwards) || (inputBackwards && movingBackwards)) {
 			speed = Mathf.Max(Mathf.Abs(rb2d.velocity.x)+movement.dashSpeed, speed);
 		}
+		Vector2 v = new Vector2(speed * Mathf.Sign(input.HorizontalInput()), 0);
+		v.Rotate(groundData.normalRotation);
 		rb2d.velocity = new Vector2(
-			speed * Mathf.Sign(input.HorizontalInput()),
+			v.x,
 			Mathf.Max(rb2d.velocity.y, 0)
 		);
 		if (!groundData.grounded) currentAirDashes--;

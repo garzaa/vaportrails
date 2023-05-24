@@ -1654,7 +1654,6 @@ AnimatorState:
   - {fileID: -2631466436988241958}
   m_StateMachineBehaviours:
   - {fileID: 5955271225939952288}
-  - {fileID: 9109080355011067662}
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -2156,6 +2155,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c55635a4ad6a884dbbe77f77136d48d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1101 &-2254064523037945761
+AnimatorStateTransition:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_Conditions:
+  - m_ConditionMode: 4
+    m_ConditionEvent: YSpeed
+    m_EventTreshold: 0
+  m_DstStateMachine: {fileID: 0}
+  m_DstState: {fileID: -2745782287145422302}
+  m_Solo: 0
+  m_Mute: 0
+  m_IsExit: 0
+  serializedVersion: 3
+  m_TransitionDuration: 0.25
+  m_TransitionOffset: 0
+  m_ExitTime: 0.75
+  m_HasExitTime: 1
+  m_HasFixedDuration: 1
+  m_InterruptionSource: 0
+  m_OrderedInterruption: 1
+  m_CanTransitionToSelf: 1
 --- !u!206 &-2205154683425125491
 BlendTree:
   m_ObjectHideFlags: 1
@@ -3836,7 +3860,8 @@ AnimatorState:
   m_Name: Jump
   m_Speed: 1
   m_CycleOffset: 0
-  m_Transitions: []
+  m_Transitions:
+  - {fileID: -2254064523037945761}
   m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
@@ -5766,22 +5791,6 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
---- !u!114 &9109080355011067662
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d437c17dc4b16d346bfc4063d9a2ef13, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 5
-  pickMax: 1
-  onEnter: 0
-  onUpdate: 1
 --- !u!1101 &9112262260704427739
 AnimatorStateTransition:
   m_ObjectHideFlags: 1

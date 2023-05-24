@@ -184,7 +184,6 @@ public class ExtraRuleTileCreator : MonoBehaviour {
         Right(true);
         Bottom(true);
 
-
         ApplyLastRule();
         if (saveNew) {
             AssetDatabase.CreateAsset(tile,ruleTilePath);
