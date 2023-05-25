@@ -6,7 +6,7 @@ using UnityEditor;
 using System.IO;
 
 public class TiledBlockCreator : MonoBehaviour {
-    static int tileSize = 16;
+    static int tileSize = 64;
     static int blocksPerTile = 2;
     static int blockSize = tileSize / blocksPerTile;
     static int xTiles = 7;
@@ -36,7 +36,7 @@ public class TiledBlockCreator : MonoBehaviour {
 
         PrepareBaseTexture();
         LoadBaseTexture();
-        SetParameters();
+        // SetParameters();
         CreateOutputTexture();
         CreateBlocks();
         CleanOldOutput();

@@ -23,7 +23,6 @@ public class AttackNode : CombatNode {
     override public void OnNodeEnter(AttackGraphTraverser.Context context) {
         base.OnNodeEnter(context);
         if (FromBackwardsInput()) {
-            Debug.Log("from backwards input");
         }
         if (!string.IsNullOrEmpty(GetAnimationStateName())) {
             context.animator.Play(GetAnimationStateName(), layer:0, normalizedTime:context.GetTimeOffset());

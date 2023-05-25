@@ -9,17 +9,17 @@ using System.Collections.Generic;
 [CreateAssetMenu]
 public class ExtraRuleTile : RuleTile {
 	public GameObject tileObject;
-	public ExtraRuleTile[] tileWith;
+	public TileBase[] tileWith;
 
 	public override void GetTileData(Vector3Int position, ITilemap tilemap, ref TileData tileData) {
 		base.GetTileData(position, tilemap, ref tileData);
 	}
 
 	public override bool RuleMatch(int neighbor, TileBase other) {
-		if (tileWith != null && tileWith.Length>0 && other is ExtraRuleTile) {
+		if (tileWith != null && tileWith.Length>0) {
 			ExtraRuleTile otherTile = other as ExtraRuleTile;
 			bool canTile = otherTile == this;
-			foreach (ExtraRuleTile canTileWith in tileWith) {
+			foreach (TileBase canTileWith in tileWith) {
 				canTile |= (other == canTileWith);
 			}
 

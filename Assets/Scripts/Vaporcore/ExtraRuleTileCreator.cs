@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
+using System;
 using System.IO;
 using UnityEngine;
 using System.Linq;
@@ -12,6 +13,9 @@ public class ExtraRuleTileCreator : MonoBehaviour {
     static Dictionary<Vector3Int, int> neighborDict = new Dictionary<Vector3Int, int>();
     static List<Sprite> sprites;
     static ExtraRuleTile tile;
+
+    public List<Sprite> publicSprites;
+    static ExtraRuleTileCreator self;
 
     [MenuItem("Assets/Create Rule Tile From Texture", true)]
     static bool CanMakeExtraRuleTile() {
@@ -38,8 +42,13 @@ public class ExtraRuleTileCreator : MonoBehaviour {
             tile.m_TilingRules.Clear();
         }
     
+        // need to sort this by name? hello??
         sprites = AssetDatabase.LoadAllAssetsAtPath(assetPath).Where(x => x is Sprite).Cast<Sprite>().ToList();
-        
+        sprites = sprites.OrderBy(x => int.Parse(x.name)).ToList();
+        foreach (Sprite s in sprites) {
+            print(s.name);
+        }
+
         // sprite 12 is the no-neighbor one, they're 0-indexed
         tile.m_DefaultColliderType = UnityEngine.Tilemaps.Tile.ColliderType.Grid;
         tile.m_DefaultSprite = sprites[12];

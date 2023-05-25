@@ -161,6 +161,15 @@ public class EntityController : Entity {
 		) {
 			FlipToWall();
 		}
+
+		// don't slide on slopes
+		if (inputX == 0 && groundData.normalRotation != 0 && rb2d.velocity.sqrMagnitude < 2f) {
+			// make it a full-friction material
+			rb2d.sharedMaterial = frictionSlopeMaterial;
+		} else if (rb2d.sharedMaterial != bouncyStunMaterial) {
+			// otherwise make it the default material
+			rb2d.sharedMaterial = defaultMaterial;
+		}
 	}
 
 	override protected void OnWallHit() {
@@ -220,11 +229,13 @@ public class EntityController : Entity {
 			return;
 		}
 
-		if ((groundData.grounded || groundData.leftGround) && (angleStepDiff != 0) && (Time.unscaledTime - jumpTime > 0.5f)) {
-			// if they've just moved onto a lower slope which would ordinarily put them in the air
-			shader.FlashWhite();
-			rb2d.velocity = rb2d.velocity.Rotate(angleStepDiff);
-			// TODO they still get popped into the air on an uphill start sometimes
+		if ((groundData.grounded) && (angleStepDiff != 0) && (Time.unscaledTime - jumpTime > 0.5f)) {
+			// if they're moving onto flat ground from a downwards slope, let physics take care of it
+			// otherwise they might get popped into the air
+			// but if they're NOT moving onto flat ground from a downwards slope, follow the hill corner
+			if (!(groundData.normalRotation == 0 && rb2d.velocity.y <= 0.1)) {
+				rb2d.velocity = rb2d.velocity.Rotate(angleStepDiff);
+			}
 		}
 
         if (inputX!=0) {
@@ -301,13 +312,6 @@ public class EntityController : Entity {
 				rb2d.velocity.x,
 				0.1f
 			);
-		}
-
-		// don't slide on slopes
-		if (!movingBackwards && !movingForwards && groundData.normalRotation != 0) {
-			if (rb2d.velocity.sqrMagnitude < 0.1) {
-				rb2d.velocity = Vector2.zero;
-			}
 		}
 	}
 
@@ -391,7 +395,7 @@ public class EntityController : Entity {
 		}
 		canShortHop = true;
 		JumpDust();
-		rb2d.velocity = new Vector2(rb2d.velocity.x, rb2d.velocity.y + movement.jumpSpeed);
+		rb2d.velocity = new Vector2(rb2d.velocity.x, Mathf.Max(rb2d.velocity.y, 0) + movement.jumpSpeed);
 		SetJustJumped();
 	}
 
