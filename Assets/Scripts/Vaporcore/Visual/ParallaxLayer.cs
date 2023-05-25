@@ -33,7 +33,7 @@ public class ParallaxLayer : MonoBehaviour {
 		}
 
 		Move();
-		PixelPerfectClamp(transform.position, 16);
+		PixelPerfectClamp(transform.position, 64);
 		previousCameraPosition = cameraTransform.position;
 	}
 

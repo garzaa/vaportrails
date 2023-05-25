@@ -48,7 +48,7 @@ public class TransitionManager : SavedObject {
 		StartCoroutine(DisableHardLock());
 	}
 
-	IEnumerator DisableHardLock() {
+IEnumerator DisableHardLock() {
 		yield return new WaitForEndOfFrame();
 		hardLockCamera.SetActive(false);
 	}
