@@ -172,6 +172,7 @@ public class Subway : MonoBehaviour {
 	}
 
 	// called from interaction
+	// TODO: if player boards from the air, they get ALL Messed up
 	public void BoardPlayer() {
 		// hide player
 		player.SetActive(false);
