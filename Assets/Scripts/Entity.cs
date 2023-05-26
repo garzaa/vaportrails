@@ -296,13 +296,16 @@ public class Entity : MonoBehaviour, IHitListener {
 
 	protected virtual void Update() {
 		UpdateFootfallSound();
-		if (groundData.hitGround && canGroundHitEffect && fallStart-transform.position.y > 1) {
+		if (groundData.hitGround && canGroundHitEffect && fallStart-transform.position.y > 0.25f) {
 			if (!stunned && defaultFootfall) {
 				FootfallSound();
 			}
 			LandDust();
 			canGroundHitEffect = false;
 			this.WaitAndExecute(() => canGroundHitEffect=true, 0.1f);
+			if (fallStart - transform.position.y > 7) {
+				GameObject.FindObjectOfType<CameraShake>().XSmallShake();
+			}
 		}
 		if (wallData.hitWall) {
 			landNoise?.PlayFrom(this.gameObject);

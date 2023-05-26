@@ -140,6 +140,9 @@ public class EntityController : Entity {
                 this.WaitAndExecute(() => justWalkedOffCliff = false, bufferDuration);
             }
         } else if (groundData.hitGround) {
+			if (currentAirDashes == 0 && canDash) {
+				shader.FlashCyan();
+			}
 			RefreshAirMovement();
 		}
 
@@ -174,6 +177,10 @@ public class EntityController : Entity {
 
 	override protected void OnWallHit() {
 		WallKick();
+		// if hitting the wall from a burnt-out airdash state
+		if (currentAirDashes == 0 && canDash) {
+			shader.FlashCyan();
+		}
 		fMod = 1;
 		RefreshAirMovement();
 	}
@@ -270,7 +277,7 @@ public class EntityController : Entity {
 			rb2d.velocity = new Vector2(rb2d.velocity.x, movement.maxFallSpeed);
 		}
 
-		if (wallData.touchingWall && rb2d.velocity.y < movement.maxWallSlideSpeed) {
+		if (wallData.touchingWall && rb2d.velocity.y < movement.maxWallSlideSpeed && wallData.collider.friction >= 0.2f) {
 			rb2d.velocity = new Vector2(rb2d.velocity.x, movement.maxWallSlideSpeed);
 		}
 
@@ -401,6 +408,8 @@ public class EntityController : Entity {
 
 	void WallJump() {
 		if (!HasAbility(Ability.Walljump)) return;
+
+		if (wallData.touchingWall && wallData.collider.friction < 0.2) return;
 
 		bufferedJump = false;
 		jumpNoise.PlayFrom(this.gameObject);
@@ -719,8 +728,8 @@ public class EntityController : Entity {
 	public void EndDashCooldown() {
 		if (canDash) return;
 		// don't flash cyan if it's an enemy not being controlled
-		if (input.isHuman) {
-			shader.FlashCyan();	
+		if (input.isHuman && (groundData.grounded || wallData.touchingWall)) {
+			shader.FlashCyan();
 		}
 		canDash = true;
 	}

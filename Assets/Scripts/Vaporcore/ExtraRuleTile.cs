@@ -8,7 +8,6 @@ using System.Collections.Generic;
 
 [CreateAssetMenu]
 public class ExtraRuleTile : RuleTile {
-	public GameObject tileObject;
 	public TileBase[] tileWith;
 
 	public override void GetTileData(Vector3Int position, ITilemap tilemap, ref TileData tileData) {
@@ -31,6 +30,20 @@ public class ExtraRuleTile : RuleTile {
 
 		return base.RuleMatch(neighbor, other);
 	}
+
+	[ContextMenu("Apply Default Object")]
+    void ApplyDefaultObject() {
+        foreach (TilingRule rule in m_TilingRules) {
+			rule.m_GameObject = m_DefaultGameObject;
+		}
+    }
+
+	[ContextMenu("Apply Base Collider Type")]
+    void ApplyColliderRule() {
+		foreach (TilingRule rule in m_TilingRules) {
+			rule.m_ColliderType = m_DefaultColliderType;
+		}
+    }
 }
 
 #if UNITY_EDITOR
