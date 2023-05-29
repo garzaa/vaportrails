@@ -437,7 +437,7 @@ public class EntityController : Entity {
 	}
 
 	void AirJump() {
-		if (groundData.distance<0.2f) {
+		if (groundData.distance<0.4f) {
 			// if player is falling and about to hit ground, don't buffer an airjump
 			GroundJump();
 			return;
