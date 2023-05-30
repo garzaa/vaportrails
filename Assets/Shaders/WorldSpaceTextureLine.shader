@@ -6,6 +6,7 @@ Shader "Custom2D/WorldSpaceTextureLine"
 		_Color ("Tint", Color) = (1,1,1,1)
 		[Header(period speed amplitude onramp)]_WaveParams("Wave Params", Vector) = (1, 1, 1, 1)
 		_TextureSpeed("Texture Speed", Float) = 1
+		_AmpWave("Amplitude Wave", Range(0, 1)) = 0
 
 		[Header(Stencil)]
 		_Stencil ("Ref Val [0;255]", Float) = 0
@@ -71,11 +72,16 @@ Shader "Custom2D/WorldSpaceTextureLine"
 			sampler2D _MainTex;
             float4 _MainTex_ST;
 			float _TextureSpeed;
+			float _AmpWave;
 
 			fixed4 SampleSpriteTexture (float2 uv)
 			{
 				float offset = sin(uv.x / _WaveParams.x + (_Time.x * _WaveParams.y)) * _WaveParams.z;
 				offset *= saturate(lerp(0, 1, uv.x / _WaveParams.w));
+
+				// move slider to the right to pinch the ends of the waves
+				offset *= lerp(1, sin(uv.x * 3.14159265f), _AmpWave);
+
 				uv.y += offset;
 				uv.x += _TextureSpeed * _Time.x;
 				fixed4 color = tex2D (_MainTex, uv);
