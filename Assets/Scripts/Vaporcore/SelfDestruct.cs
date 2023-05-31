@@ -20,6 +20,9 @@ public class SelfDestruct : MonoBehaviour {
 	}
 
 	public void Destroy(float time = 0f) {
+		if (time == 0) {
+			Destroy(this.gameObject);
+		}
 		timeOut = StartCoroutine(DestroyIn(time));
 	}
 

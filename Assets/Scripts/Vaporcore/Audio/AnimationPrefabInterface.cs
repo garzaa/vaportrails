@@ -6,6 +6,6 @@ public class AnimationPrefabInterface : MonoBehaviour {
 	public GameObject effectPoint;
 
 	public void InstantiateEffect(GameObject effect) {
-		Instantiate(effect, effectPoint.transform.position, Quaternion.identity, this.transform);
+		Instantiate(effect, effectPoint.transform.position, Quaternion.identity, null);
 	}
 }
