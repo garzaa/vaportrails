@@ -8,4 +8,8 @@ public class AnimationPrefabInterface : MonoBehaviour {
 	public void InstantiateEffect(GameObject effect) {
 		Instantiate(effect, effectPoint.transform.position, Quaternion.identity, null);
 	}
+	
+	public void InstantiateFollowingEffect(GameObject effect) {
+		Instantiate(effect, effectPoint.transform.position, Quaternion.identity, effectPoint.transform.parent);
+	}
 }

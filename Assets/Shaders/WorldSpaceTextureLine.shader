@@ -4,9 +4,14 @@ Shader "Custom2D/WorldSpaceTextureLine"
 	{
 		_MainTex ("Sprite Texture", 2D) = "white" {}
 		_Color ("Tint", Color) = (1,1,1,1)
+
 		[Header(period speed amplitude onramp)]_WaveParams("Wave Params", Vector) = (1, 1, 1, 1)
 		_TextureSpeed("Texture Speed", Float) = 1
 		_AmpWave("Amplitude Wave", Range(0, 1)) = 0
+
+		[Header(Alpha)]
+		_AlphaRamp ("Alpha Ramp ", 2D) = "white" {}
+		_AlphaCutoff ("Alpha Cutoff", Range(0.0, 1.0)) = 0.0
 
 		[Header(Stencil)]
 		_Stencil ("Ref Val [0;255]", Float) = 0
@@ -74,8 +79,14 @@ Shader "Custom2D/WorldSpaceTextureLine"
 			float _TextureSpeed;
 			float _AmpWave;
 
+			sampler2D _AlphaRamp;
+			float _AlphaCutoff;
+
 			fixed4 SampleSpriteTexture (float2 uv)
 			{
+				// sample the alpha ramp before fucking with the UVs
+				float a = tex2D(_AlphaRamp, uv).a;
+
 				float offset = sin(uv.x / _WaveParams.x + (_Time.x * _WaveParams.y)) * _WaveParams.z;
 				offset *= saturate(lerp(0, 1, uv.x / _WaveParams.w));
 
@@ -85,6 +96,10 @@ Shader "Custom2D/WorldSpaceTextureLine"
 				uv.y += offset;
 				uv.x += _TextureSpeed * _Time.x;
 				fixed4 color = tex2D (_MainTex, uv);
+
+				// if alpharamp.a * color.a < cutoff, clip
+				clip((a * color.a) - _AlphaCutoff);
+
 				return color;
 			}
 

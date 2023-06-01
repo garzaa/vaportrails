@@ -75,12 +75,12 @@ Shader "Custom2D/MovingOverlay"
             fixed4 _Mask1;
             fixed4 _Mask2;
             float4 _Speed, _AlphaTextureSpeed;
-			float4 _AlphaTexture_ST, _AlphaRamp_ST;
+			float4 _AlphaTexture_ST, _AlphaRamp_ST, _MainTex_ST;
 			float _AlphaCutoff;
 
 			fixed4 SampleSpriteTexture (float2 uv)
 			{
-				fixed4 color = tex2D (_MainTex, uv);
+				fixed4 color = tex2D (_MainTex, uv * _MainTex_ST.xy + _MainTex_ST.zw);
 
 				return color;
 			}
