@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[ExecuteInEditMode]
 public class Spinner : MonoBehaviour {
     public float rps;
     public bool unscaled;
@@ -17,7 +18,7 @@ public class Spinner : MonoBehaviour {
         float t = unscaled ? Time.unscaledTime : Time.time;
 
         // animator speed added for entity hitstop
-        if (t > lastUpdate && (animator!=null && animator.speed > 0)) {
+        if (t > lastUpdate && !(animator!=null && animator.speed == 0)) {
             Vector3 r = transform.localRotation.eulerAngles;
             r.z = ((rps * t * 360)) % 360;
             transform.localRotation = Quaternion.Euler(r);
