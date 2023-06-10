@@ -12,6 +12,7 @@ Shader "Custom2D/MovingClouds"
 		_MoveSpeed ("Move Speed", Vector) = (0, 0, 0, 0)
 		_TextureMoveSpeed ("Texture Change Speed", Vector) = (1, 1, 0, 0)
 		_AlphaAdd("Add Alpha", Range(0.0, 1.0)) = 0.0
+		_AlphaCutoff("Alpha Cutoff", Range(0.0, 1.0)) = 0.0
 	}
 
 	SubShader
@@ -25,7 +26,7 @@ Shader "Custom2D/MovingClouds"
 			"CanUseSpriteAtlas"="True"
 		}
 
-		Cull Off
+		Cull Back // for the reentry burn variant
 		Lighting Off
 		ZWrite Off
 		Blend One OneMinusSrcAlpha
@@ -77,8 +78,10 @@ Shader "Custom2D/MovingClouds"
 			fixed4 _TextureMoveSpeed;
 			float _AlphaAdd;
 			sampler2D _AlphaMask;
+			float _AlphaCutoff;
 
 			fixed4 SampleSpriteTexture (float2 uv, float3 worldpos) {
+				float yPos = uv.y;
 				uv += _Time.x * _MoveSpeed;
 
 				fixed4 c1 = tex2D (_NoiseTex, uv/_MainScale.xy);
@@ -87,16 +90,21 @@ Shader "Custom2D/MovingClouds"
 
 				fixed4 c = lerp(c1, c2, c2.r*0.5);
 
-				// then do the color ramp
-				// horizontal: brightness
-				// vertical: camera distance
-				c = tex2D(_ColorRamp, fixed2(c.r, uv.y));
+				c = tex2D(_ColorRamp, fixed2(c.r, yPos));
 				
 				c.a = saturate(c.a + _AlphaAdd);
 
 				// now sample the alpha mask, clip if it's 0
 				clip(tex2D(_AlphaMask, uv).a - 0.1);
 
+				if (_AlphaCutoff > 0) {
+					if (c.a <= _AlphaCutoff) {
+						discard;
+					} else {
+
+						c.a = 1;
+					}
+				}
 
 				return c;
 			}
