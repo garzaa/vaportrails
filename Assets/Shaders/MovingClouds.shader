@@ -29,7 +29,7 @@ Shader "Custom2D/MovingClouds"
 		Cull Back // for the reentry burn variant
 		Lighting Off
 		ZWrite Off
-		Blend One OneMinusSrcAlpha
+		Blend One One
 
 		Pass
 		{
