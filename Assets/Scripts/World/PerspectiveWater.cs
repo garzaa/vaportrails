@@ -28,7 +28,7 @@ public class PerspectiveWater : MonoBehaviour {
 		scale.y = distance;
 
 		// and widen it to the camera width if in-game
-		if (Application.isPlaying) scale.x = 2*cam.orthographicSize*cam.aspect;
+		if (Application.isPlaying) scale.x = 2*cam.orthographicSize*cam.aspect + 0.2f;
 		else scale.x = 20;
 
 		waterSprite.transform.localScale = scale;
