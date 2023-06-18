@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class TransitionManager : SavedObject {
 	public Transition transition;
 	public GameObject hardLockCamera;
+	public bool skipIntroFadeThisScene = false;
 
 	Animator animator;
 	float targetVolume = 1f;
@@ -29,7 +30,10 @@ public class TransitionManager : SavedObject {
 		AudioListener.volume = 0;
 		FadeAudio(1);
 		animator = GetComponent<Animator>();
-		animator.Play("ScreenUnfade");
+
+		if (!skipIntroFadeThisScene) {
+			animator.Play("ScreenUnfade");
+		}
 
 		if (transition.subway) {
 			// find the subway where the previous scene corresponds to the current scene's name
@@ -48,7 +52,7 @@ public class TransitionManager : SavedObject {
 		StartCoroutine(DisableHardLock());
 	}
 
-IEnumerator DisableHardLock() {
+	IEnumerator DisableHardLock() {
 		yield return new WaitForEndOfFrame();
 		hardLockCamera.SetActive(false);
 	}
@@ -69,10 +73,8 @@ IEnumerator DisableHardLock() {
 
 	public void PositionTransition() {}
 
-	// called from events, basically
-	public void SceneTransition(SceneReference scene) {
-		animator.Play("ScreenFade");
-		SceneManager.LoadScene(scene.ScenePath);
+	public void SceneTransition(string scenePath) {
+		StartCoroutine(LoadAsync(scenePath));
 	}
 
 	public void StraightLoad(string scenePath) {
