@@ -52,6 +52,7 @@ public class Entity : MonoBehaviour, IHitListener {
 	Vector2 hitstopExitVelocity;
 
 	RotateToVelocity launchRotation;
+	Spinner launchTumble;
 
 	GameObject lastSafeObject;
 	Vector3 lastSafeOffset;
@@ -83,6 +84,12 @@ public class Entity : MonoBehaviour, IHitListener {
 		stunSmoke.transform.localPosition = Vector3.zero;
 		stunSmoke.Stop();
 		launchRotation = GetComponentInChildren<RotateToVelocity>();
+		if (launchRotation) {
+			launchTumble = launchRotation.gameObject.AddComponent<Spinner>();
+			launchTumble.resetOnDisable = true;
+			launchTumble.rps = -1.5f;
+			launchTumble.enabled = false;
+		}
 	}
 
     public void DoHitstop(float duration, Vector2 exitVelocity, bool priority=false, bool selfFlinch = false) {
@@ -337,6 +344,8 @@ public class Entity : MonoBehaviour, IHitListener {
 				animator.Play("GroundFlop", 0, 0.5f);
 			}
 		}
+
+		if (launchTumble) launchTumble.enabled = animator.GetBool("Tumbling");
 	}
 
 	void RectifyEntityCollision() {

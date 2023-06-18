@@ -21515,6 +21515,7 @@ MonoBehaviour:
   segments: 64
   arcFraction: 0.311
   radius: 0.6
+  centerVertically: 0
 --- !u!1 &8009526084338143353
 GameObject:
   m_ObjectHideFlags: 0
@@ -21707,6 +21708,7 @@ MonoBehaviour:
     touchingWall: 0
     hitWall: 0
     leftWall: 0
+    collider: {fileID: 0}
 --- !u!114 &8009526084400392843
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22475,6 +22477,7 @@ MonoBehaviour:
   segments: 64
   arcFraction: 0.513
   radius: 0.75
+  centerVertically: 0
 --- !u!1 &8009526084504791409
 GameObject:
   m_ObjectHideFlags: 0
@@ -23169,6 +23172,7 @@ MonoBehaviour:
   segments: 64
   arcFraction: 0.513
   radius: 0.75
+  centerVertically: 0
 --- !u!1 &8009526084857033615
 GameObject:
   m_ObjectHideFlags: 0
@@ -23852,7 +23856,6 @@ GameObject:
   - component: {fileID: 8009526085421180592}
   - component: {fileID: 8009526085421180595}
   - component: {fileID: 8009526085421180594}
-  - component: {fileID: 8009526085421180597}
   m_Layer: 7
   m_Name: AndromedaRig
   m_TagString: Untagged
@@ -23928,21 +23931,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb2d: {fileID: 8009526084400392847}
   offset: -90
---- !u!114 &8009526085421180597
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8009526085421180590}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 358d46ccce780ca4c88f142d57a1b0b5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rps: -1.5
-  unscaled: 0
-  resetOnDisable: 1
 --- !u!1 &8009526085427848295
 GameObject:
   m_ObjectHideFlags: 0
@@ -24429,6 +24417,7 @@ MonoBehaviour:
   segments: 64
   arcFraction: 0.513
   radius: 0.9
+  centerVertically: 0
 --- !u!1 &8009526085686482940
 GameObject:
   m_ObjectHideFlags: 0

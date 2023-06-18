@@ -251,7 +251,7 @@ public class EntityController : Entity {
 					// if ground is a platform that's been destroyed/disabled
 					float f = groundData.groundCollider != null ? groundData.groundCollider.friction : movement.airFriction;
 					Vector2 v = Vector2.right * rb2d.mass * movement.gndAcceleration * inputX * f*f;
-					v = v.Rotate(groundData.normalRotation);
+					v = v.Rotate(groundData.normalRotation); 
 					rb2d.AddForce(v);
 				} else {	
 					float attackMod = inAttack ? 0.5f : 1f;
@@ -277,7 +277,7 @@ public class EntityController : Entity {
 			rb2d.velocity = new Vector2(rb2d.velocity.x, movement.maxFallSpeed);
 		}
 
-		if (wallData.touchingWall && rb2d.velocity.y < movement.maxWallSlideSpeed && wallData.collider.friction >= 0.2f) {
+		if (wallData.touchingWall && rb2d.velocity.y < movement.maxWallSlideSpeed) {
 			rb2d.velocity = new Vector2(rb2d.velocity.x, movement.maxWallSlideSpeed);
 		}
 
