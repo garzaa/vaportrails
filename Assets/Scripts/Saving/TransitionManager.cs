@@ -31,7 +31,9 @@ public class TransitionManager : SavedObject {
 		FadeAudio(1);
 		animator = GetComponent<Animator>();
 
-		if (!skipIntroFadeThisScene) {
+		if (skipIntroFadeThisScene) {
+			animator.Play("ScreenUnfaded");
+		} else {
 			animator.Play("ScreenUnfade");
 		}
 

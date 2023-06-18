@@ -10,6 +10,8 @@ public class PauseMenu : MonoBehaviour {
 
 	GameObject pauseUI;
 
+	public SceneReference mainMenuScene;
+
 	void Awake() {
 		input = PlayerInput.GetPlayerOneInput();
 		player = input.GetComponent<EntityController>();
@@ -50,5 +52,10 @@ public class PauseMenu : MonoBehaviour {
 
 	public void Quit() {
 		Application.Quit();
+	}
+
+	public void MainMenu() {
+		Close();
+		GameObject.FindObjectOfType<TransitionManager>().SceneTransition(mainMenuScene.ScenePath);
 	}
 }
