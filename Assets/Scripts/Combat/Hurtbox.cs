@@ -31,7 +31,9 @@ public class Hurtbox : MonoBehaviour {
 	}
 
 	public void OnHitConfirm(AttackHitbox attack) {
-		hitSoundOverride?.PlayFrom(gameObject);
+		if (hitSoundOverride != null) {
+			hitSoundOverride.PlayFrom(gameObject);
+		}
 		hitEvent.Invoke();
 		
 		foreach (IHitListener hitListener in hitListeners) {

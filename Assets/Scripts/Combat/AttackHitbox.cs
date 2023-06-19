@@ -100,7 +100,7 @@ public class AttackHitbox : MonoBehaviour {
 			if (col.enabled) currentActiveCollider = col;
 		}
 
-		if (data.hitSound) data.hitSound.PlayFrom(gameObject);
+		if (data.hitSound && hurtbox.hitSoundOverride == null) data.hitSound.PlayFrom(gameObject);
 		if (data.hitmarker) {
 			if (spawnHitmarkerAtCenter) Instantiate(data.hitmarker, transform.position, Quaternion.identity);
 			else Instantiate(
