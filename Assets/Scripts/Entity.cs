@@ -63,6 +63,7 @@ public class Entity : MonoBehaviour, IHitListener {
 	Coroutine safetySaver;
 	
 	protected const float groundFlopStunTime = 6f/12f;
+	static readonly Vector2 footFallZoneCast = new Vector2(0.25f, 0.5f);
 
 	protected virtual void Awake() {
 		animator = GetComponent<Animator>();
@@ -378,7 +379,15 @@ public class Entity : MonoBehaviour, IHitListener {
 		if (!groundData.grounded) {
 			return;
 		}
-        if (groundData.groundCollider != groundColliderLastFrame) {
+		Collider2D zone = Physics2D.OverlapBox(transform.position, footFallZoneCast, 0, Layers.FootfallZonesMask);
+		if (zone != null) {
+			currentFootfall = zone.GetComponent<FootfallZone>().footfallSound;
+			// use this to force a groundcollider -> footstep update on zone leave
+			groundColliderLastFrame = null;
+			return;
+		}
+		
+		if (groundData.groundCollider != groundColliderLastFrame) {
             FootfallSound s = groundData.groundCollider.GetComponent<FootfallSound>();
             if (s != null) {
                 currentFootfall = s.sound;
