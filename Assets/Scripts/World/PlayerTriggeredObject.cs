@@ -4,9 +4,18 @@ using UnityEngine;
 using UnityEngine.Events;
 
 public class PlayerTriggeredObject : MonoBehaviour {
+	List<IPlayerEnterListener> listeners;
+	
+	void Start() {
+		listeners = new List<IPlayerEnterListener>(GetComponentsInParent<IPlayerEnterListener>());
+	}
+
 	void OnTriggerEnter2D(Collider2D other) {
 		if (other.CompareTag(Tags.Player)) {
 			OnPlayerEnter(other);
+			foreach (IPlayerEnterListener l in listeners) {
+				l.OnPlayerEnter(other);
+			}
 		}
 	}
 

@@ -26,8 +26,6 @@ public class EditorCameraFollower : MonoBehaviour {
             !Application.isPlaying
             && Camera.current != null
             && Camera.current.transform != null
-            // this needs to be checked or else it'll jump when the cursor leaves scene view
-            && EditorWindow.mouseOverWindow?.titleContent.text == "Scene"
         );
     }
 

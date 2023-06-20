@@ -28,7 +28,6 @@ namespace UnityEngine.Tilemaps {
                 return true;
             }
             instantiatedGameObject.transform.rotation = tilemap.GetTransformMatrix(position).rotation;
-            Debug.Log(instantiatedGameObject.transform.rotation.eulerAngles.z);
             return true;
         }
     }
