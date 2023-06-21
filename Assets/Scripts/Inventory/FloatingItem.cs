@@ -2,7 +2,6 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-[RequireComponent(typeof(PlayerTriggeredObject))]
 public class FloatingItem : SavedEnabled, IPlayerEnterListener {
 	public Item item;
 	public Sprite takenSprite;
@@ -10,10 +9,7 @@ public class FloatingItem : SavedEnabled, IPlayerEnterListener {
 	public GameObject pickupEffect;
 	SpriteRenderer spriteRenderer;
 
-	SavedEnabled s;
-
 	void Awake() {
-		s = GetComponent<SavedEnabled>();
 		if (takenSprite) {
 			spriteRenderer = gameObject.AddComponent<SpriteRenderer>();
 			spriteRenderer.sprite = takenSprite;
@@ -21,17 +17,22 @@ public class FloatingItem : SavedEnabled, IPlayerEnterListener {
 		}
 	}
 
-	void Start() {
-
+	protected override void LoadFromProperties() {
+		base.LoadFromProperties();
+		if (!Get<bool>("enabled")) {
+			if (takenSprite) {
+				spriteRenderer.enabled = true;
+			}
+		}
 	}
 
 	public void OnPlayerEnter(Collider2D player) {
 		// spawn the effect, play sound
 		pickupSound.PlayFrom(gameObject);
-		Instantiate(pickupEffect, transform.position, Quaternion.identity, this.transform);
+		Instantiate(pickupEffect, transform.position, Quaternion.identity);
 
 		// persistent-disable the child item with the hitbox
-		s.Disable();
+		Disable();
 
 		// if there's a taken sprite then do that
 		if (takenSprite) {

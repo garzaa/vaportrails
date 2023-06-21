@@ -172,7 +172,7 @@ public class GroundCheck : MonoBehaviour {
 
     RaycastHit2D DefaultLinecast(Vector2 origin) {
         Vector2 start = origin + Vector2.up * 0.05f;
-        Vector2 end = origin + (-currentNormal * 0.1f);
+        Vector2 end = origin + (-currentNormal * 0.25f);
 
         Debug.DrawLine(start, end, Color.red);
         return Physics2D.Linecast(

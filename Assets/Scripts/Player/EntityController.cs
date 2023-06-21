@@ -227,7 +227,10 @@ public class EntityController : Entity {
 
 		void SlowOnFriction() {
             float f = groundData.grounded ? groundData.groundCollider.friction : movement.airFriction;
+			// rotate the vector to ground normal, take x component and slow it, rotate back
+            rb2d.velocity = rb2d.velocity.Rotate(-groundData.normalRotation);
             rb2d.velocity = new Vector2(rb2d.velocity.x * (1 - (f*f*fMod)), rb2d.velocity.y);
+            rb2d.velocity = rb2d.velocity.Rotate(groundData.normalRotation);
         }
 
 		if (dashing) {
@@ -236,7 +239,11 @@ public class EntityController : Entity {
 			return;
 		}
 
-		if ((groundData.grounded) && (angleStepDiff != 0) && (Time.unscaledTime - jumpTime > 0.5f)) {
+        if (groundData.hitGround) {
+            // on a ground hit, rotate the velocity to the slope normal
+            // since it wasn't being rotated the previous step
+            rb2d.velocity = rb2d.velocity.Rotate(groundData.normalRotation);
+		} else if ((groundData.grounded) && (angleStepDiff != 0) && (Time.unscaledTime - jumpTime > 0.5f)) {
 			// if they're moving onto flat ground from a downwards slope, let physics take care of it
 			// otherwise they might get popped into the air
 			// but if they're NOT moving onto flat ground from a downwards slope, follow the hill corner

@@ -10,8 +10,12 @@ public class PlayerTriggeredObject : MonoBehaviour {
 		listeners = new List<IPlayerEnterListener>(GetComponentsInParent<IPlayerEnterListener>());
 	}
 
+	bool IsPlayer(Collider2D other) {
+		return other.CompareTag(Tags.Player) && other.GetComponent<EntityController>() != null;
+	}
+
 	void OnTriggerEnter2D(Collider2D other) {
-		if (other.CompareTag(Tags.Player)) {
+		if (IsPlayer(other)) {
 			OnPlayerEnter(other);
 			foreach (IPlayerEnterListener l in listeners) {
 				l.OnPlayerEnter(other);
@@ -20,7 +24,7 @@ public class PlayerTriggeredObject : MonoBehaviour {
 	}
 
 	void OnTriggerExit2D(Collider2D other) {
-		if (other.CompareTag(Tags.Player)) {
+		if (IsPlayer(other)) {
 			OnPlayerExit(other);
 		}
 	}
