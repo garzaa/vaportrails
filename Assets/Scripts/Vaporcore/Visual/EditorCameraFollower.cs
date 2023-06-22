@@ -5,19 +5,13 @@ using UnityEditor;
 [ExecuteInEditMode]
 public class EditorCameraFollower : MonoBehaviour {
 
-    Vector3 lastPos = Vector3.zero;
-
     void OnEnable() {
         EditorApplication.update += Update;
     }
 
     void Update() {
         if (CanFollow()) {
-            Vector3 currentPos = Camera.current.transform.position;
-            if (!currentPos.Equals(lastPos)) {
-                this.transform.position = (Vector2) Camera.current.transform.position;
-            }
-            lastPos = Camera.current.transform.position;
+            this.transform.position = (Vector2) SceneView.lastActiveSceneView.camera.transform.position;
         }
     }
     
