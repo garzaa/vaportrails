@@ -638,18 +638,16 @@ public class EntityController : Entity {
 		canDash = false;
 		dashing = true;
 		fMod = 0;
-		// dash at the max direction indicated by the stick
-		// if already moving in that way, make it additive
+
+		// dash at the max direction indicated by the stick, additive even if backwards
 		float speed = movement.runSpeed+movement.dashSpeed;
-		if ((inputForwards && movingForwards) || (inputBackwards && movingBackwards)) {
-			speed = Mathf.Max(Mathf.Abs(rb2d.velocity.x)+movement.dashSpeed, speed);
-		}
+		speed = Mathf.Max(Mathf.Abs(rb2d.velocity.x)+movement.dashSpeed, speed);
+
 		Vector2 v = new Vector2(speed * Mathf.Sign(input.HorizontalInput()), 0);
 		v.Rotate(groundData.normalRotation);
-		rb2d.velocity = new Vector2(
-			v.x,
-			Mathf.Max(rb2d.velocity.y, 0)
-		);
+		if (!groundData.grounded) v.y = Mathf.Max(rb2d.velocity.y, 0);
+
+		rb2d.velocity = v;
 		if (!groundData.grounded) currentAirDashes--;
 		// called here because sometimes a dash can happen between physics steps
 		UpdateLastVelocity();
