@@ -454,7 +454,8 @@ public class Entity : MonoBehaviour, IHitListener {
 		Vector3 groundPos = currentGround.transform.position;
 
 		// if the player's about to slide off and hit envirodamage
-		yield return new WaitForSeconds(0.5f);
+		// wait for that to fire
+		yield return new WaitForSeconds(1f);
 
 		if (!groundData.grounded || groundData.onLedge || wallData.touchingWall || stunned) {
 			yield break;

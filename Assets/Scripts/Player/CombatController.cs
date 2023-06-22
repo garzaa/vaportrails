@@ -87,10 +87,10 @@ public class CombatController : MonoBehaviour, IAttackLandListener, IHitListener
 				player.movement.runSpeed * Mathf.Sign(input.HorizontalInput()),
 				0
 			);
-			animator.SetTrigger("TechSuccess");
-			GetComponent<EntityShader>().FlashCyan();
-			player.CancelStun();
 		}
+		animator.SetTrigger("TechSuccess");
+		GetComponent<EntityShader>().FlashCyan();
+		player.CancelStun();
 	}
 
 	public virtual void OnTech() {}

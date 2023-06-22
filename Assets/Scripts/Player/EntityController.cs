@@ -199,6 +199,7 @@ public class EntityController : Entity {
 		// hack for not giving a wallkick ability yet
 		if (!input.isHuman) return;
 		if (stunned || frozeInputs) return;
+		if (wallData.collider.friction < 0.2) return;
 		if (WasSpeeding() && rb2d.velocity.y > 0.1) {
 			DisableFlip();
 			if (wallData.direction * Forward() < 0) {
@@ -416,11 +417,17 @@ public class EntityController : Entity {
 	void WallJump() {
 		if (!HasAbility(Ability.Walljump)) return;
 
-		if (wallData.touchingWall && wallData.collider.friction < 0.2) return;
-
 		bufferedJump = false;
 		jumpNoise.PlayFrom(this.gameObject);
 		float v = movement.jumpSpeed;
+
+		if (wallData.touchingWall && wallData.collider.friction < 0.2) {
+			// if on ice, push off the wall to get in the air, but don't actually jump
+			rb2d.velocity = new Vector2((-wallData.direction * movement.runSpeed)+1.5f, Mathf.Max(0, rb2d.velocity.y));
+			animator.SetTrigger("WallJump");
+			airControlMod = 0.0f;
+		}
+
 		// if inputting towards wall, jump up it
 		// but always push player away from the wall
 		if (wallData.direction * inputX > 0) {
@@ -471,7 +478,7 @@ public class EntityController : Entity {
 	IEnumerator KeepJumpSpeedRoutine() {
 		keepJumpSpeed = true;
 		// v = v0 + at
-		float timeToZero = -movement.jumpSpeed/Physics2D.gravity.y;
+		float timeToZero = -rb2d.velocity.y/Physics2D.gravity.y;
 		yield return new WaitForSeconds(timeToZero);
 		keepJumpSpeed = false;
 	}
@@ -526,7 +533,7 @@ public class EntityController : Entity {
 			);
 		} else {
 			rb2d.velocity = new Vector2(
-				movement.runSpeed * Mathf.Sign(input.HorizontalInput()),
+				input.HasHorizontalInput() ? movement.runSpeed * Mathf.Sign(input.HorizontalInput()) : 0,
 				0
 			);
 			Instantiate(

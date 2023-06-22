@@ -11,7 +11,7 @@ Shader "Custom2D/MaskDistortion"
 
 		[Header(Background)]
 		_BumpAmt   ("Distortion Strength", Range(0, 0.5)) = 0.1
-		_LerpMult ("Tend Towards BG", Range(0, 1)) = 0
+		_LerpMult ("Tend Towards BG", Range(-1, 1)) = 0
 	}
 
 	SubShader
@@ -137,7 +137,7 @@ Shader "Custom2D/MaskDistortion"
 					offset.x = flipIfOdd(c.g);
 					offset.y = flipIfOdd(c.b);
 
-					lerpAmt = 0.6 + (_LerpMult * 0.4);
+					lerpAmt = 0.5 + (_LerpMult * 0.5);
                 }
 
 				i.uvgrab.xy += ((offset * _BumpAmt) * i.uvgrab.z);
