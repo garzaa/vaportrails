@@ -341,6 +341,7 @@ public class Entity : MonoBehaviour, IHitListener {
 		}
 
 		if (groundData.hitGround) {
+			if (safetySaver != null) StopCoroutine(safetySaver);
 			safetySaver = StartCoroutine(SaveLastSafePosition());
 		}
 
