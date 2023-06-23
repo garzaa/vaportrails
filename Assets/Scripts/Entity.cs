@@ -464,7 +464,7 @@ public class Entity : MonoBehaviour, IHitListener {
 		Vector3 groundPos = currentGround.transform.position;
 
 		// if the player's about to slide off and hit envirodamage
-		// wait for that to fire
+		// wait for that to fire and cancel this coroutine
 		yield return new WaitForSeconds(1f);
 
 		if (!groundData.grounded || groundData.onLedge || wallData.touchingWall || stunned || groundData.normalRotation!=0) {

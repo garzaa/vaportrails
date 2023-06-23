@@ -63,7 +63,6 @@ public class AIPlayer : MonoBehaviour {
 		ghost = null;
 		comControl.Zero();
 		if (humanBeforeGhost) playerInput.EnableHumanControl();
-		playerInput.EnableHumanControl();
 	}
 
 	void Update() {
