@@ -24,13 +24,13 @@ public class GridTilemapUtils : MonoBehaviour {
         GameObject t = new GameObject(tilemapName);
         t.transform.parent = this.transform;
         t.AddComponent<Tilemap>();
-        t.transform.position = Vector3.zero;
+        t.transform.localPosition = Vector3.zero;
 
         TilemapRenderer tr = t.AddComponent<TilemapRenderer>();
         tr.sortingLayerName = sortingLayer;
         tr.sortingOrder = sortingOrder;
 
-    t.AddComponent<TilemapUtils>();
+        t.AddComponent<TilemapUtils>();
 
         if (addCollider) AddCollider(t);
     }

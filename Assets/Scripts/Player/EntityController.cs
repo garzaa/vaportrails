@@ -410,6 +410,9 @@ public class EntityController : Entity {
 		}
 		canShortHop = true;
 		JumpDust();
+		if (IsSpeeding() && groundData.normalRotation != 0) {
+			HighJumpDust();
+		}
 		rb2d.velocity = new Vector2(rb2d.velocity.x, Mathf.Max(rb2d.velocity.y, 0) + movement.jumpSpeed);
 		SetJustJumped();
 	}
@@ -426,18 +429,18 @@ public class EntityController : Entity {
 			rb2d.velocity = new Vector2((-wallData.direction * movement.runSpeed)+1.5f, Mathf.Max(0, rb2d.velocity.y));
 			animator.SetTrigger("WallJump");
 			airControlMod = 0.0f;
-		}
-
-		// if inputting towards wall, jump up it
-		// but always push player away from the wall
-		if (wallData.direction * inputX > 0) {
-			rb2d.velocity = new Vector2((-wallData.direction * movement.runSpeed), Mathf.Max(v, rb2d.velocity.y));
-			animator.SetTrigger("Backflip");
-			airControlMod = 0.2f;
 		} else {
-			rb2d.velocity = new Vector2((-wallData.direction * movement.runSpeed)+1.5f, Mathf.Max(v, rb2d.velocity.y));
-			animator.SetTrigger("WallJump");
-			airControlMod = 0.0f;
+			// if inputting towards wall, jump up it
+			// but always push player away from the wall
+			if (wallData.direction * inputX > 0) {
+				rb2d.velocity = new Vector2((-wallData.direction * movement.runSpeed), Mathf.Max(v, rb2d.velocity.y));
+				animator.SetTrigger("Backflip");
+				airControlMod = 0.2f;
+			} else {
+				rb2d.velocity = new Vector2((-wallData.direction * movement.runSpeed)+1.5f, Mathf.Max(v, rb2d.velocity.y));
+				animator.SetTrigger("WallJump");
+				airControlMod = 0.0f;
+			}
 		}
 		// flip away from the wall
 		if (wallData.direction * Forward() > 0) {

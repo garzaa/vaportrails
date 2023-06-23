@@ -30,6 +30,7 @@ public class Entity : MonoBehaviour, IHitListener {
 	protected PhysicsMaterial2D defaultMaterial;
 
 	static GameObject jumpDust;
+	static GameObject highJumpDust;
 	protected static GameObject landDust;
 	protected static PhysicsMaterial2D bouncyStunMaterial;
 	protected static PhysicsMaterial2D frictionSlopeMaterial;
@@ -76,6 +77,7 @@ public class Entity : MonoBehaviour, IHitListener {
         groundData = groundCheck.groundData;
 		wallData = GetComponent<WallCheck>().wallData;
 		if (!jumpDust) jumpDust = Resources.Load<GameObject>("Runtime/JumpDust");
+		if (!highJumpDust) highJumpDust = Resources.Load<GameObject>("Runtime/HighJumpDust");
 		if (!landDust) landDust = Resources.Load<GameObject>("Runtime/LandDust");
 		if (!footfallDust) footfallDust = Resources.Load<GameObject>("Runtime/FootfallDust");
 		if (!bouncyStunMaterial) bouncyStunMaterial = Resources.Load<PhysicsMaterial2D>("Runtime/BounceEntity");
@@ -130,6 +132,14 @@ public class Entity : MonoBehaviour, IHitListener {
 			collider2d.bounds.min.y
 		);
 		Instantiate(jumpDust, pos, Quaternion.identity, null);
+	}
+
+	public void HighJumpDust() {
+		Vector2 pos = new Vector2(
+			transform.position.x,
+			collider2d.bounds.min.y
+		);
+		Instantiate(highJumpDust, pos, Quaternion.identity, null);
 	}
 
 	public void LandDust() {
