@@ -6,7 +6,6 @@ using UnityEngine.Events;
 public class EntityController : Entity {
 	
 	#pragma warning disable 0649
-	[SerializeField] GameObject playerRig;
 	[SerializeField] AudioResource jumpNoise;
 	[SerializeField] bool faceRightOnStart;
 	#pragma warning restore 0649
@@ -94,11 +93,12 @@ public class EntityController : Entity {
 		speedDust = Resources.Load<GameObject>("Runtime/SpeedDust").GetComponentInChildren<ParticleSystem>();
 		techEffect = Resources.Load<GameObject>("Runtime/TechEffect");
 		wallKickHitmarker = Resources.Load<GameObject>("Runtime/DefaultHitmarker");
-		GetComponentInChildren<ToonMotion>().ignoreGameobjects.Add(speedDust.transform.parent.gameObject);
+		GetComponentInChildren<ToonMotion>()?.ignoreGameobjects.Add(speedDust.transform.parent.gameObject);
 		// p = mv
 		RefreshAirMovement();
 		canDash = true;
 		if (!facingRight && faceRightOnStart) _Flip();
+		animator.logWarnings = false;
 	}
 
 	override protected void Update() {
@@ -140,7 +140,7 @@ public class EntityController : Entity {
                 this.WaitAndExecute(() => justWalkedOffCliff = false, bufferDuration);
             }
         } else if (groundData.hitGround) {
-			if (currentAirDashes == 0 && canDash) {
+			if (currentAirDashes == 0 && canDash && movement.maxAirDashes > 0) {
 				shader.FlashCyan();
 			}
 			RefreshAirMovement();
@@ -178,7 +178,7 @@ public class EntityController : Entity {
 	override protected void OnWallHit() {
 		WallKick();
 		// if hitting the wall from a burnt-out airdash state
-		if (currentAirDashes == 0 && canDash) {
+		if (currentAirDashes == 0 && canDash && movement.maxAirDashes > 0) {
 			shader.FlashCyan();
 		}
 		fMod = 1;
@@ -192,7 +192,7 @@ public class EntityController : Entity {
 		} else if (!facingRight && wallData.direction<0) {
 			Flip();
 		}
-		toonMotion.ForceUpdate();
+		toonMotion?.ForceUpdate();
 	}
 
 	void WallKick() {
@@ -524,6 +524,7 @@ public class EntityController : Entity {
 	}
 
 	public virtual void OnTech() {
+		if (!allowTech) return;
 		CancelStun();
 		animator.SetBool("Tumbling", false);
 		if (wallData.touchingWall) {
@@ -616,7 +617,7 @@ public class EntityController : Entity {
 	
 	IEnumerator UpdateToonMotion() {
 		yield return new WaitForEndOfFrame();
-		toonMotion.ForceUpdate();
+		toonMotion?.ForceUpdate();
 	}
 
 	void UpdateEffects() {

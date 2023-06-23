@@ -9,6 +9,7 @@ public class Ghost : ScriptableObject {
 	Ghostfile ghostCache;
 
 	void OnEnable() {
+		if (ghostfile == null) return;
 		ghostCache = JsonConvert.DeserializeObject<Ghostfile>(ghostfile.text);
 	}
 

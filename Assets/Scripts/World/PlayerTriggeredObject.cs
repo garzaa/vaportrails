@@ -25,6 +25,9 @@ public class PlayerTriggeredObject : MonoBehaviour {
 
 	void OnTriggerExit2D(Collider2D other) {
 		if (IsPlayer(other)) {
+			foreach (IPlayerEnterListener l in listeners) {
+				l.OnPlayerExit();
+			}
 			OnPlayerExit(other);
 		}
 	}

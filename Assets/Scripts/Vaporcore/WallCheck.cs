@@ -33,7 +33,6 @@ public class WallCheck : MonoBehaviour {
 		);
 
 		if (isWall) wallData.collider = hit.collider;
-
 		return isWall;
 	}
 
@@ -97,6 +96,8 @@ public class WallCheck : MonoBehaviour {
 		if (CheckAndStoreWall(topHit) || CheckAndStoreWall(bottomHit) || CheckAndStoreWall(midHit)) {
 			wallData.direction = 1;
 			touchingwallThisFrame = true;
+		} else {
+			touchingwallThisFrame = false;
 		}
 
 		if (!touchingWallLastFrame && touchingwallThisFrame) {

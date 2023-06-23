@@ -40,6 +40,7 @@ public class Entity : MonoBehaviour, IHitListener {
 	bool canGroundHitEffect = true;
 	public bool staggerable = true;
 	public bool takesEnvironmentDamage = true;
+	[SerializeField] protected bool allowTech = true;
 	bool invincible = false;
 	bool inGroundFlop = false;
 	
@@ -295,6 +296,7 @@ public class Entity : MonoBehaviour, IHitListener {
 	}
 
 	void ExecuteTech() {
+		if (!allowTech) return;
 		inGroundFlop = false;
 		if (GetComponent<EntityController>()) {
 			GetComponent<EntityController>().OnTech();

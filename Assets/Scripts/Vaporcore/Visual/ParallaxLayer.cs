@@ -33,7 +33,6 @@ public class ParallaxLayer : MonoBehaviour {
 		}
 
 		Move();
-		PixelPerfectClamp(transform.position, 64);
 		previousCameraPosition = cameraTransform.position;
 	}
 
@@ -49,10 +48,5 @@ public class ParallaxLayer : MonoBehaviour {
 	void Move() {
 		distance = cameraTransform.position - previousCameraPosition;
 		transform.localPosition += Vector3.Scale(distance, speed);
-	}
-
-	private Vector3 PixelPerfectClamp(Vector3 locationVector, float pixelsPerUnit) {
-		Vector3 vectorInPixels = new Vector3(Mathf.CeilToInt(locationVector.x * pixelsPerUnit), Mathf.CeilToInt(locationVector.y * pixelsPerUnit), Mathf.CeilToInt(locationVector.z * pixelsPerUnit));
-		return vectorInPixels / pixelsPerUnit;
 	}
 }

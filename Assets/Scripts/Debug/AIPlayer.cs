@@ -23,7 +23,7 @@ public class AIPlayer : MonoBehaviour {
 	float startTime;
 	int lastFrame;
 
-	const float reactionTime = 1f/4f;
+	public float reactionTime = 1f/4f;
 
 	void Start() {
 		playerInput = GetComponent<PlayerInput>();
@@ -110,8 +110,8 @@ public class AIPlayer : MonoBehaviour {
 	}
 
 	void PlayGhost() {
-		comControl.Zero();
 		if (Time.time - reactionTime < lastGhostInputTime) {
+			comControl.Zero();
 			SetInput(lastGhostInput);
 			return;
 		}
