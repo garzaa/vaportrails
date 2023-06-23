@@ -24,9 +24,9 @@ namespace UnityEngine.Tilemaps {
 
         public override bool StartUp(Vector3Int position, ITilemap tilemap, GameObject instantiatedGameObject) {
             if (instantiatedGameObject == null) {
-                return true;
+                return false;
             }
-            instantiatedGameObject.transform.rotation = tilemap.GetTransformMatrix(position).rotation;
+            instantiatedGameObject.transform.localRotation = tilemap.GetTransformMatrix(position).rotation;
             return true;
         }
     }
