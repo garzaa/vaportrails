@@ -236,7 +236,8 @@ public class EntityController : Entity {
 
 		if (dashing) {
 			float magnitude = Mathf.Max(Mathf.Abs(rb2d.velocity.x), movement.dashSpeed);
-			rb2d.velocity = new Vector2(magnitude * Mathf.Sign(rb2d.velocity.x), Mathf.Max(rb2d.velocity.y, 0));
+			float y = groundData.grounded ? rb2d.velocity.y : Mathf.Max(rb2d.velocity.y, 0);
+			rb2d.velocity = new Vector2(magnitude * Mathf.Sign(rb2d.velocity.x), y);
 			return;
 		}
 
