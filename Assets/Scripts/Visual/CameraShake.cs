@@ -18,12 +18,6 @@ public class CameraShake : MonoBehaviour {
 		source = GetComponent<CinemachineImpulseSource>();
 	}
 
-	void Update() {
-		if (Input.GetKeyDown(KeyCode.K)) {
-			Shake(small);
-		}
-	}
-
 	public void Shake(Vector2 force) {
 		source.GenerateImpulse(force);
 	}
