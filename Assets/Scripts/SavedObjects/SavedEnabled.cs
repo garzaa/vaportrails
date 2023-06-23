@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class SavedEnabled : SavedObject {
-	bool childrenActive;
+	bool childrenActive = true;
 
 	protected override void LoadFromProperties() {
 		SetEnabled(Get<bool>("enabled"));
