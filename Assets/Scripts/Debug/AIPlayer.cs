@@ -18,6 +18,7 @@ public class AIPlayer : MonoBehaviour {
 	GameObject opponent;
 	float lastGhostInputTime = 0;
 	GameSnapshotSaver snapshotSaver = new GameSnapshotSaver();
+	bool humanBeforeGhost = false;
 	
 	float startTime;
 	int lastFrame;
@@ -42,6 +43,9 @@ public class AIPlayer : MonoBehaviour {
 	}
 
 	public void StartGhost(Ghostfile ghostFile, GameObject opponent) {
+		// it needs to be initialized if it's added this frame at runtime
+		if (playerInput == null) Start();
+		if (playerInput.isHuman) humanBeforeGhost = true;
 		playerInput.DisableHumanControl();
 		snapshotSaver.Initialize(this.gameObject, opponent);
 		ghost = ghostFile.ghost;
@@ -51,13 +55,14 @@ public class AIPlayer : MonoBehaviour {
 	public void StopReplay() {
 		currentReplay = null;
 		comControl.Zero();
-		playerInput.EnableHumanControl();
+		if (humanBeforeGhost) playerInput.EnableHumanControl();
 		lastFrame = 0;
 	}
 
 	public void StopGhost() {
 		ghost = null;
 		comControl.Zero();
+		if (humanBeforeGhost) playerInput.EnableHumanControl();
 		playerInput.EnableHumanControl();
 	}
 

@@ -467,7 +467,7 @@ public class Entity : MonoBehaviour, IHitListener {
 		// wait for that to fire
 		yield return new WaitForSeconds(1f);
 
-		if (!groundData.grounded || groundData.onLedge || wallData.touchingWall || stunned) {
+		if (!groundData.grounded || groundData.onLedge || wallData.touchingWall || stunned || groundData.normalRotation!=0) {
 			yield break;
 		}
 

@@ -40,7 +40,7 @@ public class GameSnapshotSaver {
 			14: 	airjump left
 			15: 	dash online
 			16: 	touching wall
-			17-24: 	attack name hash -> does this actually give that much information?
+			17-24: 	attack name hash -> taken out because it muddies the waters
 			25: 	whether attack just landed
 			26-31:  free space
 
@@ -78,10 +78,10 @@ public class GameSnapshotSaver {
 
 		if (playerInfo.wallCheck.touchingWall) i |= 1 << 16;
 
-		if (playerInfo.inAttack) {
-			byte byteHash = playerInfo.GetShortState();
-			i |= byteHash << 17;
-		}
+		// if (playerInfo.inAttack) {
+		// 	byte byteHash = playerInfo.GetShortState();
+		// 	i |= byteHash << 17;
+		// }
 
 		if (playerInfo.attackLanded) i |= 1 << 25;
 
