@@ -7,3 +7,4 @@ public class RandomAnimationStartTime : MonoBehaviour {
 		GetComponent<Animator>().Update(Random.Range(0, 20));
 	}
 }
+
