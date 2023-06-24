@@ -41,6 +41,8 @@ public class Entity : MonoBehaviour, IHitListener {
 	public bool staggerable = true;
 	public bool takesEnvironmentDamage = true;
 	[SerializeField] protected bool allowTech = true;
+	[SerializeField] bool returnToSafety = true;
+	public GameObject deathEffect;
 	bool invincible = false;
 	bool inGroundFlop = false;
 	
@@ -66,6 +68,9 @@ public class Entity : MonoBehaviour, IHitListener {
 	
 	protected const float groundFlopStunTime = 6f/12f;
 	static readonly Vector2 footFallZoneCast = new Vector2(0.25f, 0.5f);
+
+	public bool inCutscene => cutsceneSources.Count > 0;
+	protected HashSet<MonoBehaviour> cutsceneSources = new HashSet<MonoBehaviour>();
 
 	protected virtual void Awake() {
 		animator = GetComponent<Animator>();
@@ -112,10 +117,10 @@ public class Entity : MonoBehaviour, IHitListener {
 		hitstopRoutine = StartCoroutine(EndHitstop());
     }
 
-    IEnumerator EndHitstop() {
+    protected virtual IEnumerator EndHitstop() {
         yield return new WaitForSeconds(duration);
 		rb2d.constraints = RigidbodyConstraints2D.FreezeRotation;
-		rb2d.velocity = hitstopExitVelocity;
+		if (!inCutscene) rb2d.velocity = hitstopExitVelocity;
         hitstopPriority = false;
         animator.speed = 1;
 		hitstopRoutine = null;
@@ -140,7 +145,8 @@ public class Entity : MonoBehaviour, IHitListener {
 			transform.position.x,
 			collider2d.bounds.min.y
 		);
-		Instantiate(highJumpDust, pos, Quaternion.identity, null);
+		GameObject g = Instantiate(highJumpDust, pos, Quaternion.identity, null);
+		g.transform.rotation = Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.up, rb2d.velocity));
 	}
 
 	public void LandDust() {
@@ -183,7 +189,7 @@ public class Entity : MonoBehaviour, IHitListener {
 		if (staggerable) {
 			Vector2 v = GetKnockback(hitbox);
 			// if it's envirodamage, return to safety
-			if (hitbox is EnvironmentHitbox) {
+			if (hitbox is EnvironmentHitbox && returnToSafety) {
 				// transition to air hurt isn't happening here...why
 				rb2d.velocity = Vector2.zero;
 				CancelInvoke(nameof(ReturnToSafety));
@@ -209,7 +215,7 @@ public class Entity : MonoBehaviour, IHitListener {
 				} else {
 					if (!groundData.grounded) {
 						animator.Update(1f);
-						launchRotation.SetAngleForVelocity(rb2d.velocity);
+						launchRotation?.SetAngleForVelocity(rb2d.velocity);
 					}
 				}
 			}
@@ -352,7 +358,7 @@ public class Entity : MonoBehaviour, IHitListener {
 		} 
 		ySpeedLastFrame = rb2d.velocity.y;
 		
-		if (inGroundFlop && groundData.grounded) {
+		if (inGroundFlop && groundData.grounded && allowTech) {
 			AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
 			if (!stateInfo.IsName("Base Layer.GroundFlop")) {
 				animator.Play("GroundFlop", 0, 0.5f);
@@ -488,5 +494,24 @@ public class Entity : MonoBehaviour, IHitListener {
 			_Flip();
 		}
 		GroundFlop();
+	}
+
+	public void Die() {
+		if (deathEffect) {
+			Instantiate(deathEffect, transform.position, Quaternion.identity);
+			deathEffect.transform.parent = null;
+			deathEffect.transform.localScale = transform.localScale;
+		}
+		Destroy(this.gameObject);
+	}
+
+	public void EnterCutscene(MonoBehaviour source) {
+		GetComponent<ValCombatController>()?.DisableAttackStance();
+		rb2d.velocity = Vector2.zero;
+		EnterCutsceneNoHalt(source);
+	}
+
+	public void EnterCutsceneNoHalt(MonoBehaviour source) {
+		cutsceneSources.Add(source);
 	}
 }

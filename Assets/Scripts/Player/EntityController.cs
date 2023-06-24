@@ -10,7 +10,7 @@ public class EntityController : Entity {
 	[SerializeField] bool faceRightOnStart;
 	#pragma warning restore 0649
 
-	HashSet <Ability> abilities = new HashSet<Ability>();
+	public List<Ability> abilities = new List<Ability>();
 
 	public MovementStats movement;
 
@@ -29,8 +29,6 @@ public class EntityController : Entity {
 		}
 	}
 	[SerializeField] private bool _frozeInputs;
-
-	public bool inCutscene => cutsceneSources.Count > 0;
 
 	protected bool inputBackwards;
 	protected bool inputForwards;
@@ -66,8 +64,6 @@ public class EntityController : Entity {
 	GameObject fastfallSpark;
 	ParticleSystem speedDust;
 
-	HashSet<MonoBehaviour> cutsceneSources = new HashSet<MonoBehaviour>();
-
 	const float techWindow = 0.3f;
 	const float techLockoutLength = 0.6f;
 	bool canTech = false;
@@ -98,7 +94,6 @@ public class EntityController : Entity {
 		RefreshAirMovement();
 		canDash = true;
 		if (!facingRight && faceRightOnStart) _Flip();
-		animator.logWarnings = false;
 	}
 
 	override protected void Update() {
@@ -411,10 +406,10 @@ public class EntityController : Entity {
 		}
 		canShortHop = true;
 		JumpDust();
+		rb2d.velocity = new Vector2(rb2d.velocity.x, Mathf.Max(rb2d.velocity.y, 0) + movement.jumpSpeed);
 		if (IsSpeeding() && groundData.normalRotation != 0) {
 			HighJumpDust();
 		}
-		rb2d.velocity = new Vector2(rb2d.velocity.x, Mathf.Max(rb2d.velocity.y, 0) + movement.jumpSpeed);
 		SetJustJumped();
 	}
 
@@ -751,17 +746,6 @@ public class EntityController : Entity {
 		canDash = true;
 	}
 
-	public void EnterCutscene(MonoBehaviour source) {
-		GetComponent<ValCombatController>()?.DisableAttackStance();
-		rb2d.velocity = Vector2.zero;
-		animator.Play("Idle", 0);
-		EnterCutsceneNoHalt(source);
-	}
-
-	public void EnterCutsceneNoHalt(MonoBehaviour source) {
-		cutsceneSources.Add(source);
-	}
-
 	public void ExitCutscene(MonoBehaviour source) {
 		// space to continue counts as a jump input this frame
 		StartCoroutine(ExitCutsceneNextFrame(source));
@@ -777,8 +761,6 @@ public class EntityController : Entity {
 	}
 
 	public bool HasAbility(Ability a) {
-		return true;
-		// TODO: actually check for items when back from vacation
-		// return abilities.Contains(a);
+		return abilities.Contains(a);
 	}
 }

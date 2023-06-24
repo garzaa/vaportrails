@@ -13,13 +13,13 @@ public class ValCameraPoint : MonoBehaviour {
 		groundData = GetComponentInParent<GroundCheck>().groundData;
 	}
 
-	void Update() {
-		float yPos = groundData.grounded ? groundOffset : 0;
+	// void Update() {
+	// 	float yPos = groundData.grounded ? groundOffset : 0;
 
-		transform.localPosition = Vector3.MoveTowards(
-			transform.localPosition,
-			Vector3.up * yPos,
-			1f * Time.deltaTime
-		);
-	}
+	// 	transform.localPosition = Vector3.MoveTowards(
+	// 		transform.localPosition,
+	// 		Vector3.up * yPos,
+	// 		1f * Time.deltaTime
+	// 	);
+	// }
 }

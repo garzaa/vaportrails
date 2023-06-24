@@ -101,6 +101,7 @@ public class DialogueUI : MonoBehaviour {
 	}
 
 	public void Open(GameObject caller) {
+		// TODO: this doesn't work if something else is already open, figure out how to actually queue them
 		foreach (EntityController entity in GameObject.FindObjectsOfType<EntityController>()) {
 			entity.EnterCutscene(this);
 		}

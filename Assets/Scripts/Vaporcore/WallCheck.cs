@@ -22,6 +22,8 @@ public class WallCheck : MonoBehaviour {
 
 	const float angleTolerance = 5f;
 
+	bool touchingwallThisFrame = false;
+
 	void Start() {		
 		targetCollider = GetComponent<Collider2D>();
 	}
@@ -43,7 +45,7 @@ public class WallCheck : MonoBehaviour {
 		Vector2 actualSize = new Vector2(targetCollider.bounds.size.x, targetCollider.bounds.size.y-(2*groundGap));
 
 		float distance = targetCollider.bounds.size.x/2f + extendDistance;
-		bool touchingwallThisFrame = false;
+		touchingwallThisFrame = false;
 
 		Vector2 topStart = startPoint+(Vector2.up*actualSize.y*0.5f);
 		Vector2 bottomStart = startPoint+(Vector2.down*actualSize.y*0.5f);
@@ -96,8 +98,6 @@ public class WallCheck : MonoBehaviour {
 		if (CheckAndStoreWall(topHit) || CheckAndStoreWall(bottomHit) || CheckAndStoreWall(midHit)) {
 			wallData.direction = 1;
 			touchingwallThisFrame = true;
-		} else {
-			touchingwallThisFrame = false;
 		}
 
 		if (!touchingWallLastFrame && touchingwallThisFrame) {

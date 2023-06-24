@@ -21765,9 +21765,12 @@ MonoBehaviour:
   suppressAnimatorWarnings: 1
   staggerable: 1
   takesEnvironmentDamage: 1
-  playerRig: {fileID: 8009526085421180590}
+  allowTech: 1
+  returnToSafety: 1
+  deathEffect: {fileID: 0}
   jumpNoise: {fileID: 11400000, guid: 8b27eba3fe91c8d4c9b28c89a0309a77, type: 2}
   faceRightOnStart: 0
+  abilities: 0000000002000000
   movement: {fileID: 11400000, guid: 1f3fb417133c242478c10a7956f998ec, type: 2}
   _frozeInputs: 0
   currentAttack: {fileID: 0}
@@ -21896,6 +21899,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b36ab4f884c7e243850793f060d8e1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  reactionTime: 0.25
 --- !u!114 &8009526084400392854
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24962,6 +24966,7 @@ MonoBehaviour:
   direction: {x: -1, y: 0}
   maxDistance: 10
   disableIfMiss: 1
+  rotateToSurface: 0
 --- !u!120 &8009526085949944275
 LineRenderer:
   m_ObjectHideFlags: 0

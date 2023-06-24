@@ -5,6 +5,8 @@ using System.Collections.Generic;
 public class Inventory : SavedObject {
 	[SerializeField]
 	List<StoredItem> items = new List<StoredItem>();
+
+	//TODO: make this a hashset, wtf. why is it a list lol. oh right the stored items. huhh
 	
 	protected override void LoadFromProperties() {
 		items = GetList<StoredItem>("items");

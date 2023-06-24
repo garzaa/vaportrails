@@ -19,6 +19,7 @@ public class AIPlayer : MonoBehaviour {
 	float lastGhostInputTime = 0;
 	GameSnapshotSaver snapshotSaver = new GameSnapshotSaver();
 	bool humanBeforeGhost = false;
+	public bool logInputData = false;
 	
 	float startTime;
 	int lastFrame;
@@ -85,6 +86,10 @@ public class AIPlayer : MonoBehaviour {
 	}
 
 	void SetInput(FrameInput input) {
+		if (input.actionIDAxes == null) {
+			// then there's no input for this frame, just stay still
+			return;
+		}
 		foreach (KeyValuePair<int, int> IDAxis in input.actionIDAxes) {
 			comControl.SetActionAxis(IDAxis.Key, IDAxis.Value);
 		}
@@ -121,10 +126,10 @@ public class AIPlayer : MonoBehaviour {
 		int gameHash = snapshotSaver.GetGameStateHash();
 		FrameInput ghostInput;
 		if (ghost.ContainsKey(gameHash)) {
-			Debug.Log("input found");
+			if (logInputData) Debug.Log("input found");
 			ghostInput = ChooseWeightedInput(ghost[gameHash]);
 		} else {
-			Debug.Log("No game hash, picking a random input");
+			if (logInputData) Debug.Log("No game hash, picking a random input");
 			ghostInput = ChooseWeightedInput(Utils.RandomDictValue(ghost));
 		}
 		SetNormalizedinput(ghostInput);
@@ -132,7 +137,7 @@ public class AIPlayer : MonoBehaviour {
 	}
 
 	public FrameInput ChooseWeightedInput(List<WeightedFrameInput> inputs) {
-		float v = UnityEngine.Random.value;
+		float v = UnityEngine.Random.value; 
 		foreach (WeightedFrameInput weightedInput in inputs) {
 			v -= weightedInput.normalizedWeight;
 			if (v < 0) {

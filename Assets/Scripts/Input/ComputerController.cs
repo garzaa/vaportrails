@@ -53,11 +53,19 @@ public class ComputerController {
 	}
 
 	public bool GetButtonDown(int actionID) {
-		return bDowns.ContainsKey(actionID);
+		bool b = bDowns.ContainsKey(actionID);
+		if (b) {
+			bDowns.Remove(actionID);
+		}
+		return b;
 	}
 
 	public bool GetButtonUp(int actionID) {
-		return bUps.ContainsKey(actionID);
+		bool b = bUps.ContainsKey(actionID);
+		if (b) {
+			bUps.Remove(actionID);
+		}
+		return b;
 	}
 
 	public float GetAxis(int actionID) {
