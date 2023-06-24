@@ -12,6 +12,7 @@ public abstract class Layers {
 	public const string Player = "Player";
 	public const string Projectiles = "Projectiles";
 	public const string FootfallZones = "FootfallZones";
+	public const string CameraCollision = "CameraCollision";
 
 	public const int DefaultMask = 1;
 	public const int TransparentFXMask = 1 << 1;
@@ -25,6 +26,7 @@ public abstract class Layers {
 	public const int PlayerMask = 1 << 9;
 	public const int ProjectilesMask = 1 << 10;
 	public const int FootfallZonesMask = 1 << 11;
+	public const int CameraCollisionMask = 1 << 12;
 
 	public const int DefaultNumber = 0;
 	public const int TransparentFXNumber = 1;
@@ -38,4 +40,5 @@ public abstract class Layers {
 	public const int PlayerNumber = 9;
 	public const int ProjectilesNumber = 10;
 	public const int FootfallZonesNumber = 11;
+	public const int CameraCollisionNumber = 12;
 }
