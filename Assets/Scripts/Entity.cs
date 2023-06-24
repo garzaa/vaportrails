@@ -64,7 +64,7 @@ public class Entity : MonoBehaviour, IHitListener {
 	float fallStart = 0;
 	float ySpeedLastFrame = 0;
 
-	Coroutine safetySaver;
+	SafeGroundSaver groundSaver;
 	
 	protected const float groundFlopStunTime = 6f/12f;
 	static readonly Vector2 footFallZoneCast = new Vector2(0.25f, 0.5f);
@@ -99,6 +99,11 @@ public class Entity : MonoBehaviour, IHitListener {
 			launchTumble.rps = -1.5f;
 			launchTumble.enabled = false;
 		}
+		groundSaver = new SafeGroundSaver(this);
+	}
+
+	protected virtual void Start() {
+		StartCoroutine(SaveLastSafePosition());
 	}
 
     public void DoHitstop(float duration, Vector2 exitVelocity, bool priority=false, bool selfFlinch = false) {
@@ -193,7 +198,6 @@ public class Entity : MonoBehaviour, IHitListener {
 				// transition to air hurt isn't happening here...why
 				rb2d.velocity = Vector2.zero;
 				CancelInvoke(nameof(ReturnToSafety));
-				if (safetySaver != null) StopCoroutine(safetySaver);
 				Invoke(nameof(ReturnToSafety), hitbox.data.hitstop);
 			} else {
 				// heavier people get knocked back less
@@ -348,11 +352,6 @@ public class Entity : MonoBehaviour, IHitListener {
 			launchRotation.enabled = stunned && !groundData.grounded;
 		}
 
-		if (groundData.hitGround) {
-			if (safetySaver != null) StopCoroutine(safetySaver);
-			safetySaver = StartCoroutine(SaveLastSafePosition());
-		}
-
 		if (ySpeedLastFrame>=0 && rb2d.velocity.y<0) {
 			fallStart = transform.position.y;
 		} 
@@ -462,33 +461,17 @@ public class Entity : MonoBehaviour, IHitListener {
 		impulse.x *= Forward();
 		rb2d.AddForce(impulse.Rotate(groundData.normalRotation), ForceMode2D.Impulse);
 	}
-	
+
 	IEnumerator SaveLastSafePosition() {
-		GameObject currentGround = groundData.groundObject;
-		if (currentGround?.GetComponent<UnsafeGround>()) {
-			yield break;
+		for (;;) {
+			groundSaver.SaveIfPossible();
+			yield return new WaitForSeconds(0.2f);
 		}
-
-		Vector3 savedPos = transform.position;
-		Vector3 groundPos = currentGround.transform.position;
-
-		// if the player's about to slide off and hit envirodamage
-		// wait for that to fire and cancel this coroutine
-		yield return new WaitForSeconds(1f);
-
-		if (!groundData.grounded || groundData.onLedge || wallData.touchingWall || stunned || groundData.normalRotation!=0) {
-			yield break;
-		}
-
-		// get offset, in case it's moving
-		Vector3 currentOffset = savedPos - groundPos;
-		lastSafeObject = currentGround;
-		lastSafeOffset = currentOffset;
 	}
 
 	void ReturnToSafety() {
 		Vector3 lastPos = transform.position;
-		transform.position = lastSafeObject.transform.position + lastSafeOffset;
+		transform.position = groundSaver.data.lastSafeObject.transform.position + groundSaver.data.lastSafeOffset;
 		// flip so they're looking at the last position
 		if (Forward() * (lastPos.x - transform.position.x) < 0) {
 			_Flip();
