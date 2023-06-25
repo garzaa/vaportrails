@@ -66,7 +66,12 @@ public class DialogueUI : MonoBehaviour {
 	void ShowLine(DialogueLine line) {
 		bool hasVoice = line.character?.voice;
 		if (!hasVoice) {
-			dialogueRenderSound.PlayFrom(this.gameObject);
+			if (line.character?.lineStartSound) {
+				line.character.lineStartSound.PlayFrom(this.gameObject);
+			}
+			else {
+				dialogueRenderSound.PlayFrom(this.gameObject);
+			}
 			slowRenderer.Render(line.text);
 		} else {
 			audioSource.clip = line.character.voice;
