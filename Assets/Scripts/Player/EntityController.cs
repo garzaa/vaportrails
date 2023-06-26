@@ -219,6 +219,15 @@ public class EntityController : Entity {
 	}
 
 	void ApplyMovement() {
+		if (inCutscene) {
+			if (Mathf.Abs(rb2d.velocity.x) > 0.05f) {
+				SlowOnFriction();
+			} else {
+				rb2d.velocity = new Vector2(0, rb2d.velocity.y);
+			}
+			return;
+		}
+
 		speeding = Mathf.Abs(rb2d.velocity.x) > movement.runSpeed;
 
 		void SlowOnFriction() {
