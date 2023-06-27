@@ -70,7 +70,7 @@ public class Entity : MonoBehaviour, IHitListener {
 	static readonly Vector2 footFallZoneCast = new Vector2(0.25f, 0.5f);
 
 	public bool inCutscene => cutsceneSources.Count > 0;
-	protected HashSet<MonoBehaviour> cutsceneSources = new HashSet<MonoBehaviour>();
+	protected HashSet<GameObject> cutsceneSources = new HashSet<GameObject>();
 
 	protected virtual void Awake() {
 		animator = GetComponent<Animator>();
@@ -488,13 +488,23 @@ public class Entity : MonoBehaviour, IHitListener {
 		Destroy(this.gameObject);
 	}
 
-	public void EnterCutscene(MonoBehaviour source) {
+	public void EnterCutscene(GameObject source) {
 		GetComponent<ValCombatController>()?.DisableAttackStance();
 		rb2d.velocity = Vector2.zero;
 		EnterCutsceneNoHalt(source);
 	}
 
-	public void EnterCutsceneNoHalt(MonoBehaviour source) {
+	public void EnterCutsceneNoHalt(GameObject source) {
 		cutsceneSources.Add(source);
+	}
+
+	public void ExitCutscene(GameObject source) {
+		// space to continue counts as a jump input this frame
+		StartCoroutine(ExitCutsceneNextFrame(source));
+	}
+
+	IEnumerator ExitCutsceneNextFrame(GameObject source) {
+		yield return new WaitForEndOfFrame();
+		cutsceneSources.Remove(source);
 	}
 }

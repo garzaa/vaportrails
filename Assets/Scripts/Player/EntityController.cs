@@ -191,8 +191,9 @@ public class EntityController : Entity {
 	}
 
 	void WallKick() {
-		// hack for not giving a wallkick ability yet
-		if (!input.isHuman) return;
+		if (!HasAbility(Ability.Wallkick)) {
+			return;
+		}
 		if (stunned || frozeInputs) return;
 		if (wallData.collider.friction < 0.2) return;
 		if (WasSpeeding() && rb2d.velocity.y > 0.1) {
@@ -753,16 +754,6 @@ public class EntityController : Entity {
 			shader.FlashCyan();
 		}
 		canDash = true;
-	}
-
-	public void ExitCutscene(MonoBehaviour source) {
-		// space to continue counts as a jump input this frame
-		StartCoroutine(ExitCutsceneNextFrame(source));
-	}
-
-	IEnumerator ExitCutsceneNextFrame(MonoBehaviour source) {
-		yield return new WaitForEndOfFrame();
-		cutsceneSources.Remove(source);
 	}
 
 	public void AddAbility(Ability a) {

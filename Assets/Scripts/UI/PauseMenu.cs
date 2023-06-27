@@ -34,7 +34,7 @@ public class PauseMenu : MonoBehaviour {
 
 	void Open() {
 		pauseUI.SetActive(true);
-		player.EnterCutsceneNoHalt(this);
+		player.EnterCutsceneNoHalt(this.gameObject);
 		Time.timeScale = 0f;
 	}
 
@@ -45,7 +45,7 @@ public class PauseMenu : MonoBehaviour {
 	IEnumerator _Close() {
 		yield return new WaitForEndOfFrame();
 		pauseUI.SetActive(false);
-		player.ExitCutscene(this);
+		player.ExitCutscene(this.gameObject);
 		EventSystem.current.SetSelectedGameObject(null);
 		Time.timeScale = 1f;
 	}

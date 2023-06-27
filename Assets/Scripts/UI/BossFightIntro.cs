@@ -49,7 +49,7 @@ public class BossFightIntro : MonoBehaviour {
 		ready = false;
 		playerInput = PlayerInput.GetPlayerOneInput();
 		player = playerInput.GetComponent<EntityController>();
-		player.EnterCutscene(this);
+		player.EnterCutscene(this.gameObject);
 	}
 
 	// called from animation
@@ -64,7 +64,7 @@ public class BossFightIntro : MonoBehaviour {
 	public void FinishExitAnimation() {
 		running = false;
 		ready = false;
-		player.ExitCutscene(this);
+		player.ExitCutscene(this.gameObject);
 		OnContinue.Invoke();
 	}
 }

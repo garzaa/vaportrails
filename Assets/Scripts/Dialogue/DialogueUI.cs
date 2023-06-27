@@ -108,7 +108,7 @@ public class DialogueUI : MonoBehaviour {
 	public void Open(GameObject caller) {
 		// TODO: this doesn't work if something else is already open, figure out how to actually queue them
 		foreach (EntityController entity in GameObject.FindObjectsOfType<EntityController>()) {
-			entity.EnterCutscene(this);
+			entity.EnterCutscene(this.gameObject);
 		}
 		open = true;
 		animator.SetBool("Shown", true);
@@ -121,7 +121,7 @@ public class DialogueUI : MonoBehaviour {
 	public void Close() {
 		open = false;
 		foreach (EntityController entity in GameObject.FindObjectsOfType<EntityController>()) {
-			entity.ExitCutscene(this);
+			entity.ExitCutscene(this.gameObject);
 		}
 		animator.SetBool("Shown", false);
 		dialogueRenderSound.PlayFrom(this.gameObject);
