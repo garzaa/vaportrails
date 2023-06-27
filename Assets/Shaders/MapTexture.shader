@@ -103,6 +103,8 @@ Shader "Sprites/MapTexture"
 			}
 		}
 
+		c.a = 1;
+
 		c.rgb *= c.a;
 
 		return c;
