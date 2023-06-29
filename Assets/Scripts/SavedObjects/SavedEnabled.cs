@@ -2,6 +2,10 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
+
+// TODO: save this as a hashset of enabled objects in the scene
+// just, if this item's name is in the scene enabled hashset, then its children are enabled
+// otherwise no
 public class SavedEnabled : SavedObject {
 	bool childrenActive = true;
 

@@ -417,7 +417,7 @@ public class EntityController : Entity {
 		canShortHop = true;
 		JumpDust();
 		rb2d.velocity = new Vector2(rb2d.velocity.x, Mathf.Max(rb2d.velocity.y, 0) + movement.jumpSpeed);
-		if (IsSpeeding() && groundData.normalRotation != 0) {
+		if (IsSpeeding() && groundData.normalRotation != 0 && input.isHuman) {
 			HighJumpDust();
 		}
 		SetJustJumped();
@@ -440,7 +440,8 @@ public class EntityController : Entity {
 			// but always push player away from the wall
 			if (wallData.direction * inputX > 0) {
 				rb2d.velocity = new Vector2((-wallData.direction * movement.runSpeed), Mathf.Max(v, rb2d.velocity.y));
-				animator.SetTrigger("Backflip");
+				// animator.SetTrigger("Backflip");
+				animator.SetTrigger("WallJump");
 				airControlMod = 0.2f;
 			} else {
 				rb2d.velocity = new Vector2((-wallData.direction * movement.runSpeed)+1.5f, Mathf.Max(v, rb2d.velocity.y));

@@ -17,7 +17,7 @@ public abstract class SavedObject : MonoBehaviour {
 
 	Save save;
 
-	void Start() {
+	void OnEnable() {
 		Load();
 		Initialize();
 		if (hasSavedData) LoadFromProperties();
@@ -32,14 +32,14 @@ public abstract class SavedObject : MonoBehaviour {
 		SaveToProperties(ref properties);
 		foreach (String s in properties.Keys.ToArray()) {
 			if (properties[s] is Vector3) {
-				SanitizeVector3(s, properties);
+				SanitizeVector3(s);
 			}
 		}
 	}
 
 	// putting a vanilla vec3 in a dict will result in a circular ref error
 	// w.r.t. normalization
-	void SanitizeVector3(string s, Dictionary<string, object> properties) {
+	void SanitizeVector3(string s) {
 		Vector3 v = (Vector3) properties[s];
 		properties[s+"X"] = v.x;
 		properties[s+"Y"] = v.y;
@@ -52,9 +52,10 @@ public abstract class SavedObject : MonoBehaviour {
 		if (hasSavedData) LoadFromProperties();
 	}
 
-	protected abstract void SaveToProperties(ref Dictionary<string, object> properties);
+	// this happens first, to hook up inter-object references
 	protected virtual void Initialize() {}
 	protected abstract void LoadFromProperties();
+	protected abstract void SaveToProperties(ref Dictionary<string, object> properties);
 
 	public string GetObjectPath() {
 		if (useGlobalNamespace) return $"global/{name}/{GetType().Name}";
@@ -88,6 +89,15 @@ public abstract class SavedObject : MonoBehaviour {
 			return (List<T>) v;
 		} catch (InvalidCastException) {
 			return (v as JArray).ToObject<List<T>>();
+		}
+	}
+
+	protected HashSet<T> GetHashSet<T>(string key) {
+		var v = properties[key];
+		try {
+			return (HashSet<T>) v;
+		} catch (InvalidCastException) {
+			return (v as JArray).ToObject<HashSet<T>>();
 		}
 	}
 
