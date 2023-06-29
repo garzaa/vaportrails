@@ -36,31 +36,21 @@ public class MapFog : MonoBehaviour {
     }
 
     void LoadIfPossible() {
-        // if fog on disk, overwrite what's currently in memory
         if (File.Exists(SavedImageName())) {
-            using (FileStream fileStream = File.Open(SavedImageName(), FileMode.Open)) {
-                BinaryFormatter bf = new BinaryFormatter();
-                bool result = fog.LoadImage((byte[]) bf.Deserialize(fileStream));
-                if (!result) {
-                    Debug.LogWarning("failed to load mapfog at "+SavedImageName());
-                }
-            }
+           fog.LoadImage((byte[]) File.ReadAllBytes(SavedImageName()));
         }
     }
 
     public void Save() {
         // save a.png of [area name] map fog.png to the save directory
-        using (FileStream fileStream = File.Create(SavedImageName())) {
-            byte[] imageBytes = fog.EncodeToPNG();
-            BinaryFormatter bf = new BinaryFormatter();
-            bf.Serialize(fileStream, imageBytes);
-        }
+        byte[] imageBytes = fog.EncodeToPNG();
+        File.WriteAllBytes(SavedImageName(), imageBytes);
     }
 
     string SavedImageName() {
         return Path.Combine(
             saveManager.GetSaveFolderPath(),
-            SceneManager.GetActiveScene().name+" MapFog.png"
+            SceneManager.GetActiveScene().name+" Map Fog.png"
         );
     }
 
