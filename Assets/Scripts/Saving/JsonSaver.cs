@@ -42,7 +42,7 @@ public class JsonSaver {
         return Path.Combine(GetFolderPath(slot), slot+extension);
     }
 
-    string GetFolderPath(int slot) {
+    public string GetFolderPath(int slot) {
         return Path.Combine(Application.persistentDataPath, folder, slot.ToString());
     }
 

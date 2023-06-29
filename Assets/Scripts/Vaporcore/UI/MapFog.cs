@@ -4,6 +4,8 @@ using System;
 using System.Text;
 using System.Collections;
 using UnityEngine.SceneManagement;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 
 public class MapFog : MonoBehaviour {
     #pragma warning disable 0649
@@ -15,6 +17,7 @@ public class MapFog : MonoBehaviour {
     float updateInterval = 0.2f;
 
 	Color transparent;
+    SaveManager saveManager;
 
     void ResetMap() {
         Color32[] colors = new Color32[fog.width*fog.height];
@@ -26,30 +29,45 @@ public class MapFog : MonoBehaviour {
     }
 
     void Start() {
+        saveManager = GameObject.FindObjectOfType<SaveManager>();
 		transparent = new Color32(0, 0, 0, 0);
 		ResetMap();
-       	StartCoroutine(UpdateMap()); 
+       	StartCoroutine(MapUpdateRoutine()); 
     }
 
-    string EncodeMap() {
-        Color32[] pixels = fog.GetPixels32();
-        StringBuilder alphas = new StringBuilder(new string('0', pixels.Length));
-        for (int i=0; i<pixels.Length; i++) {
-            alphas[i] = (pixels[i].a > 0 ? '1' : '0');
+    void LoadIfPossible() {
+        // if fog on disk, overwrite what's currently in memory
+        if (File.Exists(SavedImageName())) {
+            using (FileStream fileStream = File.Open(SavedImageName(), FileMode.Open)) {
+                BinaryFormatter bf = new BinaryFormatter();
+                bool result = fog.LoadImage((byte[]) bf.Deserialize(fileStream));
+                if (!result) {
+                    Debug.LogWarning("failed to load mapfog at "+SavedImageName());
+                }
+            }
         }
-        return alphas.ToString();
     }
 
-    void DecodeAndUpdateMap(string map) {
-        Color32[] colors = new Color32[map.Length];
-        for (int i=0; i<map.Length; i++) {
-            colors[i] = new Color(0, 0, 0, (int) char.GetNumericValue(map[i]));
+    public void Save() {
+        // save a.png of [area name] map fog.png to the save directory
+        using (FileStream fileStream = File.Create(SavedImageName())) {
+            byte[] imageBytes = fog.EncodeToPNG();
+            BinaryFormatter bf = new BinaryFormatter();
+            bf.Serialize(fileStream, imageBytes);
         }
-        fog.SetPixels32(colors);
-        fog.Apply();
     }
 
-    IEnumerator UpdateMap() {
+    string SavedImageName() {
+        return Path.Combine(
+            saveManager.GetSaveFolderPath(),
+            SceneManager.GetActiveScene().name+" MapFog.png"
+        );
+    }
+
+    IEnumerator MapUpdateRoutine() {
+        // load map from disk if possible
+        LoadIfPossible();
+
 		// wait for any transition stuff to move the player when the level starts
         // and then the camera
 		yield return new WaitForSeconds(0.5f);

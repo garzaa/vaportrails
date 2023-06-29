@@ -32,6 +32,7 @@ public class SaveManager : MonoBehaviour {
 		foreach (SavedObject o in GameObject.FindObjectsOfType<SavedObject>()) {
 			o.BeforeSave();
 		}
+		FindObjectOfType<MapFog>()?.Save();
 		save.version = Application.version;
 		jsonSaver.SaveFile(save, slot);
 	}
@@ -50,4 +51,8 @@ public class SaveManager : MonoBehaviour {
 		}
 		transitionManager.LoadLastSavedScene();
 	}
+
+	public string GetSaveFolderPath() {
+        return jsonSaver.GetFolderPath(slot);
+    }
 }
