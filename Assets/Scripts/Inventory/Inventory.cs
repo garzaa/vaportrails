@@ -3,13 +3,20 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class Inventory : SavedObject {
-	[SerializeField]
-	List<StoredItem> items = new List<StoredItem>();
+	Dictionary<string, int> items = new Dictionary<string, int>();
 
-	//TODO: make this a hashset, wtf. why is it a list lol. oh right the stored items. huhh
-	
+	bool onPlayer = false;
+	ItemChangeListener[] itemChangeListeners;
+
+	Dictionary<string, Item> itemCache = new Dictionary<string, Item>();
+
+	protected override void Initialize() {
+		onPlayer = GetComponentInParent<PlayerInput>()?.isHuman ?? false;
+		itemChangeListeners = FindObjectsOfType<ItemChangeListener>(includeInactive: true);
+	}
+
 	protected override void LoadFromProperties() {
-		items = GetList<StoredItem>("items");
+		items = Get<Dictionary<string, int>>("items");
 	}
 
 	protected override void SaveToProperties(ref Dictionary<string, object> properties) {
@@ -17,47 +24,60 @@ public class Inventory : SavedObject {
 	}
 
 	public bool Has(Item item) {
-		foreach (StoredItem i in items) {
-			if (i.name == item.name) {
-				return true;
-			}
-		}
-
-		return false;
+		return items.ContainsKey(item.name);
 	}
 
-	public bool Has(StoredItem item) {
-		foreach (StoredItem i in items) {
-			if (i.name == item.name && i.count >= item.count) {
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	public StoredItem GetItem(string itemName) {
-        foreach (StoredItem i in items) {
-            if (i.name.Equals(itemName)) {
-                return i;
-            }
-        }
-        return null;
-    }
-
-	public void AddItem(StoredItem item) {
-		if (Has(item)) {
-			foreach (StoredItem i in items) {
-				if (i.name == item.name) {
-					i.count += item.count;
-				}
-			}
-		} else {
-			items.Add(item);
-		}
+	public bool Has(Item item, int count) {
+		return items.ContainsKey(item.name) && items[item.name] >= count;
 	}
 
 	public void AddItem(Item item) {
-		AddItem(new StoredItem(item.name, 1));
+		AddItem(item, 1);
+	}
+
+	public void AddItem(Item item, int count) {
+		if (Has(item)) {
+			items[item.name] += count;
+		} else {
+			items[item.name] = count;
+		}
+		if (onPlayer) {
+			for (int i=0; i<itemChangeListeners.Length; i++) {
+				itemChangeListeners[i].OnItemAdd();
+			}
+		}
+	}
+
+	public void RemoveItem(Item item) {
+		RemoveItem(item, 1);
+	}
+
+	public void RemoveItem(Item item, int count) {
+		if (Has(item)) {
+			items[item.name] -= count;
+			if (items[item.name] <= 0) {
+				items.Remove(item.name);
+			}
+		}
+
+		if (onPlayer) {
+			for (int i=0; i<itemChangeListeners.Length; i++) {
+				itemChangeListeners[i].OnItemAdd();
+			}
+		}
+	}
+
+	public List<Item> GetItems() {
+		List<Item> x = new List<Item>();
+		foreach (string itemName in items.Keys) {
+			if (itemCache.ContainsKey(itemName)) {
+				x.Add(itemCache[itemName]);
+			} else {
+				Item i = Resources.Load("Runtime/Items/"+itemName) as Item;
+				itemCache[itemName] = i;
+				x.Add(i);
+			}
+		}
+		return x;
 	}
 }

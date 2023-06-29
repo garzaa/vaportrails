@@ -5,7 +5,6 @@ using System.Collections.Generic;
 [CreateAssetMenu(menuName="Data/Item")]
 public class Item : ScriptableObject {
 	public Sprite icon;
-	public Sprite detail;
 	public int cost = 0;
 
 	[TextArea]
