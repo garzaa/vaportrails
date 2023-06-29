@@ -68,18 +68,18 @@ public class MapFog : MonoBehaviour {
 			pos += new Vector2(fog.width/2, fog.height/2);
 
 			/*
-			reveal in a 3-block cross like this
-			 #
-			###
-             #
+			reveal in a 4-block cross like this
+			 ##
+			####
+             ##
 			*/
 
-			int startX = Mathf.RoundToInt(pos.x) - 1;
-			int startY = Mathf.RoundToInt(pos.y) - 1;
+			int startX = Mathf.FloorToInt(pos.x) - 1;
+			int startY = Mathf.FloorToInt(pos.y) - 1;
 
-			for (int x = startX; x <= startX+2; x++) {
-				for (int y = startY; y <= startY+2; y++) {
-					if ((x-startX % 2 == 0) && (y-startY % 2) == 0) {
+			for (int x = startX; x <= startX+3; x++) {
+				for (int y = startY; y <= startY+3; y++) {
+					if ((x-startX % 3 == 0) && (y-startY % 3) == 0) {
 						continue;
 					}
 					fog.SetPixel(x, y, transparent);
