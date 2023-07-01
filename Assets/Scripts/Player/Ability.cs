@@ -7,5 +7,4 @@ public enum Ability {
 	FlipKick = 5,
 	Heal = 6,
 	Wallkick = 7,
-	Divekick = 8,
 }

@@ -10,6 +10,7 @@ public class AttackGraphTraverser {
 		public CombatController combatController;
 		public PlayerInput input;
 		public AttackGraphTraverser traverser;
+		public Inventory inventory;
 
 		public float currentFrame = 0;
 		public float clipTime = 0;
@@ -67,6 +68,7 @@ public class AttackGraphTraverser {
 		context.buffer = parent.GetComponent<AttackBuffer>();
 		context.combatController = parent;
 		context.input = parent.GetComponent<PlayerInput>();
+		context.inventory = parent.GetComponentInChildren<Inventory>();
 		context.traverser = this;
 		groundData = parent.GetComponent<GroundCheck>().groundData;
 	}

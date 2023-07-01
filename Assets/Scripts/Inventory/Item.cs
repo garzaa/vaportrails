@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Text;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -7,17 +8,32 @@ public class Item : ScriptableObject {
 	public Sprite icon;
 	public int cost = 0;
 
-	[TextArea]
-	public string description;
+	[TextArea, SerializeField]
+	string description;
 
-	public GameObject itemInfo;
+	public GameObject infoObject;
 
-	public void OnPickup(GameObject player, bool quiet) {
-		if (itemInfo) {
-			foreach (IPickup p in itemInfo.GetComponents<IPickup>()) {
-				p.OnPickup(player, quiet);
+	public void OnPickup(Inventory inventory, bool quiet) {
+		if (infoObject) {
+			foreach (ItemBehaviour i in infoObject.GetComponents<ItemBehaviour>()) {
+				i.OnPickup(this, inventory, quiet);
 			}
 		}
 	}
 	
+	public string GetDescription() {
+		if (!infoObject) {
+			return description;
+		} else {
+			StringBuilder sb = new StringBuilder();
+			sb.Append(description);
+			foreach (ItemBehaviour b in infoObject.GetComponents<ItemBehaviour>()) {
+				if (!string.IsNullOrEmpty(b.GetDescription())) {
+					sb.Append("\n");
+					sb.Append(b.GetDescription());
+				}
+			}
+			return sb.ToString();
+		}
+	}
 }

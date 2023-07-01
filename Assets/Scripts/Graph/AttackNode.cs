@@ -81,8 +81,8 @@ public class AttackNode : CombatNode {
                     } else if (anyDirectionNode == null) {
                         anyDirectionNode = next;
                     }
+                    break;
                 }
-                break;
             }
         }
 

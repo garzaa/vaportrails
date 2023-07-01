@@ -29,7 +29,9 @@ public class FloatingItem : SavedEnabled, IPlayerEnterListener {
 	public void OnPlayerEnter(Collider2D player) {
 		// spawn the effect, play sound
 		pickupSound.PlayFrom(gameObject);
-		Instantiate(pickupEffect, transform.position, Quaternion.identity);
+		if (pickupEffect) {
+			Instantiate(pickupEffect, transform.position, Quaternion.identity);
+		}
 
 		// persistent-disable the child item with the hitbox
 		Disable();

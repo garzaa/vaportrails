@@ -10,6 +10,7 @@ public class CancelableSpecialAttackNode : AirAttackNode {
         base.NodeUpdate(context);
 		if (
 			GetNode(nameof(instantCancel)).IsConnected
+			&& CanMoveNode(nameof(instantCancel), context)
 			&& context.buffer.Ready()
 			&& AttackBuffer.Match(context.buffer.Peek(), instantCancel)
 		) {

@@ -327,7 +327,7 @@ public class EntityController : Entity {
 		if (rb2d.velocity.y<0 && (groundData.distance)<collider2d.bounds.extents.y && groundData.platforms.Count > 0) {
 			// then snap to its top
 			float diff = collider2d.bounds.extents.y - groundData.distance;
-			rb2d.MovePosition(rb2d.position + ((diff+0.1f) * Vector2.up));
+			rb2d.MovePosition(rb2d.position + ((diff+0.1f) * Vector2.up) + (Vector2.right*rb2d.velocity.x*Time.fixedDeltaTime));
 			// cancel downward velocity
 			rb2d.velocity = new Vector2(
 				rb2d.velocity.x,
@@ -759,6 +759,10 @@ public class EntityController : Entity {
 
 	public void AddAbility(Ability a) {
 		abilities.Add(a);
+	}
+
+	public void RemoveAbility(Ability a) {
+		abilities.Remove(a);
 	}
 
 	public bool HasAbility(Ability a) {

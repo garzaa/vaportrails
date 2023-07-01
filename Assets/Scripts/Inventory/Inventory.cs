@@ -36,6 +36,8 @@ public class Inventory : SavedObject {
 	}
 
 	public void AddItem(Item item, int count) {
+		item.OnPickup(this, false);
+
 		if (Has(item)) {
 			items[item.name] += count;
 		} else {
@@ -65,6 +67,11 @@ public class Inventory : SavedObject {
 				itemChangeListeners[i].OnItemAdd();
 			}
 		}
+	}
+
+	public int GetCount(Item item) {
+		if (!items.ContainsKey(item.name)) return 0;
+		else return items[item.name];
 	}
 
 	public List<Item> GetItems() {
