@@ -18,11 +18,9 @@ public class StandaloneInventoryUI : MonoBehaviour {
 	void Update() {
 		if (Input.GetKeyDown(KeyCode.Tab)) {
 			if (ui.activeSelf) {
-				Debug.Log("player exiting ctuscene from tyhis");
 				ui.SetActive(false);
 				player.ExitCutscene(this.gameObject);
 			} else if (!player.inCutscene) {
-				Debug.Log("player enterunt ctuscene from tyhis");
 				ui.SetActive(true);
 				inventoryUI.Populate();
 				player.EnterCutscene(this.gameObject);

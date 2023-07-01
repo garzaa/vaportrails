@@ -300,7 +300,7 @@ public class Entity : MonoBehaviour, IHitListener {
 		rb2d.velocity = Vector2.zero;
 		CancelInvoke(nameof(ExecuteTech));
 		Invoke(nameof(ExecuteTech), groundFlopStunTime);
-		animator.Play("GroundFlop", 0);
+		if (allowTech) animator.Play("GroundFlop", 0);
 		inGroundFlop = true;
 		this.WaitAndExecute(() => inGroundFlop = false, groundFlopStunTime);
 	}

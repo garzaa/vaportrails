@@ -20,7 +20,6 @@ public class InventoryUI : MonoBehaviour {
 		player = PlayerInput.GetPlayerOneInput().GetComponent<Entity>();
 		ui = transform.GetChild(0).gameObject;
 		selfItemPane = GetComponent<ItemPane>();
-		Debug.Log("inventory ui started");
 	}
 
 	public void Populate() {
@@ -36,14 +35,26 @@ public class InventoryUI : MonoBehaviour {
 		}
 
 		foreach (Item item in inventory.GetItems()) {
-			ItemPane pane = Instantiate(itemPaneTemplate, paneContainer.transform);
-			pane.transform.SetAsLastSibling();
-			pane.SetItem(item);
-			ButtonExtras b = pane.GetComponent<ButtonExtras>();
-			b.onHover.AddListener(() => ReactToItemClick(pane));
+			if (item.stackable) {
+				AddPane(item);
+			} else {
+				for (int i=0; i<inventory.GetCount(item); i++) {
+					AddPane(item);
+				}
+			}
 		}
 
+		SetGridNavigation(paneContainer.GetComponentsInChildren<Button>(), 5);
+
 		SelectFirstChild();
+	}
+
+	void AddPane(Item item) {
+		ItemPane pane = Instantiate(itemPaneTemplate, paneContainer.transform);
+		pane.transform.SetAsLastSibling();
+		pane.SetItem(item);
+		ButtonExtras b = pane.GetComponent<ButtonExtras>();
+		b.onHover.AddListener(() => ReactToItemClick(pane));
 	}
 
 	void SelectFirstChild() {
@@ -52,7 +63,7 @@ public class InventoryUI : MonoBehaviour {
 		Button b = paneContainer.transform.GetChild(0).GetComponent<Button>();
 		b.Select();
 		b.OnSelect(null);
-
+		
 		scrollRect.content.localPosition = Vector2.zero;
 	}
 
@@ -60,7 +71,16 @@ public class InventoryUI : MonoBehaviour {
 		selfItemPane.SetItem(itemPane.GetItem());
 	}
 
-	public void LinkLeftRight(Button left, Button right) {
-		
+	void SetGridNavigation(Selectable[] buttons, int cols) {
+		// navigation should wrap around between rows in left-right
+		for (int i=0; i<buttons.Length; i++) {
+			Navigation n = new Navigation();
+			n.mode = Navigation.Mode.Explicit;
+			if (i > cols) n.selectOnUp = buttons[i-cols];
+			if (i > 0) n.selectOnLeft = buttons[i-1];
+			if (i < buttons.Length-1) n.selectOnRight = buttons[i+1];
+			if (i < buttons.Length - cols) n.selectOnDown = buttons[i+cols];
+			buttons[i].navigation = n;
+		}
 	}
 }

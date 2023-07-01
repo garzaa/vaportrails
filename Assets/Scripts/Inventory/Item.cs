@@ -7,6 +7,7 @@ using System.Collections.Generic;
 public class Item : ScriptableObject {
 	public Sprite icon;
 	public int cost = 0;
+	public bool stackable = true;
 
 	[TextArea, SerializeField]
 	string description;
