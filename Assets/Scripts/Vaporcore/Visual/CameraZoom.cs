@@ -37,7 +37,7 @@ public class CameraZoom : MonoBehaviour {
 	}
 
 	IEnumerator UnZoom(float duration) {
-		yield return new WaitForSecondsRealtime(duration);
+		yield return new WaitForSeconds(duration);
 		ResetZoom();
 	}
 }

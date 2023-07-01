@@ -28,7 +28,7 @@ public class FloatingItem : SavedEnabled, IPlayerEnterListener {
 
 	public void OnPlayerEnter(Collider2D player) {
 		// spawn the effect, play sound
-		pickupSound.PlayFrom(gameObject);
+		pickupSound?.PlayFrom(gameObject);
 		if (pickupEffect) {
 			Instantiate(pickupEffect, transform.position, Quaternion.identity);
 		}

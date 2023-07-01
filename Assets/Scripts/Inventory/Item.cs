@@ -29,7 +29,7 @@ public class Item : ScriptableObject {
 			sb.Append(description);
 			foreach (ItemBehaviour b in infoObject.GetComponents<ItemBehaviour>()) {
 				if (!string.IsNullOrEmpty(b.GetDescription())) {
-					sb.Append("\n");
+					sb.Append("\n\n");
 					sb.Append(b.GetDescription());
 				}
 			}
