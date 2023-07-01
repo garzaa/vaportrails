@@ -26,11 +26,11 @@ public class ButtonExtras : MonoBehaviour,
 	}
 
 	public void OnPointerDown(PointerEventData d) {
-		clickSound.PlayFrom(transform.root.gameObject);
+		clickSound?.PlayFrom(transform.root.gameObject);
 	}
 
 
 	public void OnSubmit(BaseEventData d) {
-		clickSound.PlayFrom(transform.root.gameObject);
+		clickSound?.PlayFrom(transform.root.gameObject);
 	}
 }
