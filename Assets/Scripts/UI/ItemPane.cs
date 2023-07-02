@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using System.Text;
+using UnityEngine.Events;
 
 public class ItemPane : MonoBehaviour {
 	public List<Text> itemName;
@@ -11,6 +12,8 @@ public class ItemPane : MonoBehaviour {
 	public Text itemCount;
 	
 	Item item = null;
+
+	public UnityEvent OnSet;
 
 	public void SetItem(Item i) {
 		SetItem(i, 1);
@@ -24,6 +27,8 @@ public class ItemPane : MonoBehaviour {
 		if (itemDescription) itemDescription.text = i.GetDescription();
 		if (itemImage) itemImage.sprite = i.icon;
 		if (itemCount) itemCount.text = count != 1 ? count.ToString() : "";
+
+		OnSet.Invoke();
 	}
 
 	public Item GetItem() {
