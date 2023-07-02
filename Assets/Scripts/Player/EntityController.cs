@@ -654,8 +654,7 @@ public class EntityController : Entity {
 		float speed = movement.runSpeed+movement.dashSpeed;
 		speed = Mathf.Max(Mathf.Abs(rb2d.velocity.x)+movement.dashSpeed, speed);
 
-		Vector2 v = new Vector2(speed * Mathf.Sign(input.HorizontalInput()), 0);
-		v.Rotate(groundData.normalRotation);
+		Vector2 v = new Vector2(speed * Mathf.Sign(input.HorizontalInput()), 0).Rotate(groundData.normalRotation);
 		if (!groundData.grounded) v.y = Mathf.Max(rb2d.velocity.y, 0);
 
 		rb2d.velocity = v;
