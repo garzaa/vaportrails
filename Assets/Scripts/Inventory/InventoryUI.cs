@@ -14,12 +14,14 @@ public class InventoryUI : MonoBehaviour {
 
 	public GameObject paneContainer;
 	public ScrollRect scrollRect;
+	ScrollViewUtils scrollViewUtils;
 	ItemPane selfItemPane;
 
 	void Start() {
 		player = PlayerInput.GetPlayerOneInput().GetComponent<Entity>();
 		ui = transform.GetChild(0).gameObject;
 		selfItemPane = GetComponent<ItemPane>();
+		scrollViewUtils = scrollRect.GetComponent<ScrollViewUtils>();
 	}
 
 	public void Populate() {
@@ -54,7 +56,9 @@ public class InventoryUI : MonoBehaviour {
 		pane.transform.SetAsLastSibling();
 		pane.SetItem(item);
 		ButtonExtras b = pane.GetComponent<ButtonExtras>();
-		b.onHover.AddListener(() => ReactToItemClick(pane));
+		b.onSelect.AddListener(() => ReactToItemClick(pane));
+		// TODO: only do this if the actual mouse isn't over it lol
+		b.onSelect.AddListener(() => scrollViewUtils.ScrollToChild(pane.GetComponent<RectTransform>()));
 	}
 
 	void SelectFirstChild() {
@@ -63,7 +67,7 @@ public class InventoryUI : MonoBehaviour {
 		Button b = paneContainer.transform.GetChild(0).GetComponent<Button>();
 		b.Select();
 		b.OnSelect(null);
-		
+
 		scrollRect.content.localPosition = Vector2.zero;
 	}
 

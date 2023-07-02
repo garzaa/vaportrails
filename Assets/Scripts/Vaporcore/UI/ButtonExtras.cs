@@ -13,22 +13,24 @@ public class ButtonExtras : MonoBehaviour,
 	public AudioResource hoverSound;
 	public AudioResource clickSound;
 
-	public UnityEvent onHover;
+	public UnityEvent onSelect;
+	public bool includeHover = true;
 
 	public void OnPointerEnter(PointerEventData d) {
+		if (!includeHover) return;
+
 		hoverSound?.PlayFrom(transform.root.gameObject);
-		onHover.Invoke();
+		onSelect.Invoke();
 	}
 
 	public void OnSelect(BaseEventData e) {
 		hoverSound?.PlayFrom(transform.root.gameObject);
-		onHover.Invoke();
+		onSelect.Invoke();
 	}
 
 	public void OnPointerDown(PointerEventData d) {
 		clickSound?.PlayFrom(transform.root.gameObject);
 	}
-
 
 	public void OnSubmit(BaseEventData d) {
 		clickSound?.PlayFrom(transform.root.gameObject);
