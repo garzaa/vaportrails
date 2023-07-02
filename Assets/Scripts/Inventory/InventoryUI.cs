@@ -38,10 +38,10 @@ public class InventoryUI : MonoBehaviour {
 
 		foreach (Item item in inventory.GetItems()) {
 			if (item.stackable) {
-				AddPane(item);
+				AddPane(item, inventory.GetCount(item));
 			} else {
 				for (int i=0; i<inventory.GetCount(item); i++) {
-					AddPane(item);
+					AddPane(item, 1);
 				}
 			}
 		}
@@ -51,13 +51,12 @@ public class InventoryUI : MonoBehaviour {
 		SelectFirstChild();
 	}
 
-	void AddPane(Item item) {
+	void AddPane(Item item, int count) {
 		ItemPane pane = Instantiate(itemPaneTemplate, paneContainer.transform);
 		pane.transform.SetAsLastSibling();
-		pane.SetItem(item);
+		pane.SetItem(item, count);
 		ButtonExtras b = pane.GetComponent<ButtonExtras>();
 		b.onSelect.AddListener(() => ReactToItemClick(pane));
-		// TODO: only do this if the actual mouse isn't over it lol
 		b.onSelect.AddListener(() => scrollViewUtils.ScrollToChild(pane.GetComponent<RectTransform>()));
 	}
 

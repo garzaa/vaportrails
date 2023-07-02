@@ -26,6 +26,8 @@ public class ScrollViewUtils : MonoBehaviour {
 	}
 
 	void Update() {
+		// TODO: if mouse wheel input, cancel scroll
+
 		if (scrolling) {
 			if (!target) {
 				scrolling = false;
