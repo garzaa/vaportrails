@@ -26,7 +26,10 @@ public class ScrollViewUtils : MonoBehaviour {
 	}
 
 	void Update() {
-		// TODO: if mouse wheel input, cancel scroll
+		if (Input.mouseScrollDelta.sqrMagnitude != 0 || Input.GetMouseButton(0)) {
+			scrolling = false;
+			return;
+		}
 
 		if (scrolling) {
 			if (!target) {
