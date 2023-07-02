@@ -250,7 +250,7 @@ public class EntityController : Entity {
             // on a ground hit, rotate the velocity to the slope normal
             // since it wasn't being rotated the previous step
             rb2d.velocity = rb2d.velocity.Rotate(groundData.normalRotation);
-		} else if ((groundData.grounded) && (angleStepDiff != 0) && (Time.unscaledTime - jumpTime > 0.5f)) {
+		} else if ((groundData.grounded) && (angleStepDiff != 0) && (Time.unscaledTime - jumpTime > 0.2f)) {
 			// if they're moving onto flat ground from a downwards slope, let physics take care of it
 			// otherwise they might get popped into the air
 			// but if they're NOT moving onto flat ground from a downwards slope, follow the hill corner
@@ -406,6 +406,7 @@ public class EntityController : Entity {
 
 	void GroundJump() {
 		bufferedJump = false;
+		jumpTime = Time.time;
 		jumpNoise.PlayFrom(this.gameObject);
 		if (!wallData.touchingWall) {
 			if ((movingForwards && inputBackwards) || (movingBackwards && !inputForwards)) {
