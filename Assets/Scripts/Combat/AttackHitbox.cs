@@ -103,11 +103,14 @@ public class AttackHitbox : MonoBehaviour {
 		if (data.hitSound && hurtbox.hitSoundOverride == null) data.hitSound.PlayFrom(gameObject);
 		if (data.hitmarker) {
 			if (spawnHitmarkerAtCenter) Instantiate(data.hitmarker, transform.position, Quaternion.identity);
-			else Instantiate(
-				data.hitmarker,
-				currentActiveCollider.ClosestPoint(other.transform.position+(Vector3)other.GetComponent<Collider2D>().offset),
-				Quaternion.identity
-			);
+			else {
+				GameObject g = Instantiate(
+					data.hitmarker,
+					currentActiveCollider.ClosestPoint(other.transform.position+(Vector3)other.GetComponent<Collider2D>().offset),
+					Quaternion.identity
+				);
+				g.SetActive(true);
+			}
 		}
 
 		foreach (IAttackLandListener attackLandListener in attackLandListeners) {
