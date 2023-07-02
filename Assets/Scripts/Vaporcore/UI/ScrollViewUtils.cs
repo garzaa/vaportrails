@@ -34,7 +34,7 @@ public class ScrollViewUtils : MonoBehaviour {
 
 			scrollView.content.localPosition = Vector2.Lerp(scrollView.content.localPosition, targetPos, lerpRate);
 
-			if (Mathf.Abs(targetPos.y - scrollView.content.localPosition.y) < 0.1f) {
+			if (Mathf.Abs(targetPos.y - scrollView.content.localPosition.y) < 1f) {
 				scrollView.content.localPosition = targetPos;
 				scrolling = false;
 			}
