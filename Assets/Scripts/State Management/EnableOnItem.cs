@@ -22,6 +22,11 @@ public class EnableOnItem : ItemChangeListener {
 	}
 
 	public void CheckEnabled() {
+		// this can be called from the inventory as it loads, so call it here
+		if (!inventory) {
+			inventory = PlayerInput.GetPlayerOneInput().GetComponentInChildren<Inventory>();
+		}
+
 		if (disableOnItem) {
 			gameObject.SetActive(!inventory.Has(item));
 		} else {
