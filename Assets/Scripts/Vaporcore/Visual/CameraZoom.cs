@@ -12,6 +12,8 @@ public class CameraZoom : MonoBehaviour {
 
 	Coroutine zoomRoutine;
 
+	public int zoomLevel { get; private set; }
+
 	void Start() {
 		pixelCamera = GetComponent<PixelPerfectCamera>();
 		x = pixelCamera.refResolutionX;
@@ -19,12 +21,14 @@ public class CameraZoom : MonoBehaviour {
 	}
 
 	public void Zoom(int level) {
+		zoomLevel = level;
 		pixelCamera.refResolutionX = x / level;
 		pixelCamera.refResolutionY = y / level;
 		speedLines.SetActive(true);
 	}
 
 	public void ResetZoom() {
+		zoomLevel = 1;
 		speedLines.SetActive(false);
 		pixelCamera.refResolutionX = x;
 		pixelCamera.refResolutionY = y;
