@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
@@ -48,6 +49,12 @@ public class TransitionManager : SavedObject {
 			}
 		} else if (transition.position) {
 			PlayerInput.GetPlayerOneInput().gameObject.transform.position = transition.position.vec2;
+		} else if (transition.beacon) {
+			// find the thing that references the beacon, then move the player to whatever it is
+			BeaconWrapper beaconWrapper = FindObjectsOfType<BeaconWrapper>().Where(
+				x => x.GetBeacon == transition.beacon
+			).First();
+			PlayerInput.GetPlayerOneInput().gameObject.transform.position = beaconWrapper.transform.position;
 		}
 		
 		transition.Clear();
@@ -71,7 +78,14 @@ public class TransitionManager : SavedObject {
 		SceneManager.LoadScene(subwayTransition.scene);
 	}
 
-	public void BeaconTransition() {}
+	public void BeaconTransition(Beacon beacon) {
+		string pathToLoad = beacon.leftScene.ScenePath;
+		if (SceneManager.GetActiveScene().path == beacon.leftScene.ScenePath) {
+			pathToLoad = beacon.rightScene.ScenePath;
+		}
+		transition.beacon = beacon;
+		SceneTransition(pathToLoad);
+	}
 
 	public void PositionTransition() {}
 

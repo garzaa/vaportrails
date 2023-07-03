@@ -4,14 +4,16 @@ using UnityEngine;
 public class Transition : ScriptableObject {
     public SubwayTransition subway;
     public PlayerPositionTransition position;
+    public Beacon beacon;
 
     public void Clear() {
         subway = null;
         position = null;
+        beacon = null;
     }
 
     public bool IsEmpty() {
-        return !(subway || position);
+        return !(subway || position || beacon);
     }
 
     public class NullableTransitionValue {

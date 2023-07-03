@@ -109,7 +109,6 @@ public class AttackHitbox : MonoBehaviour {
 					currentActiveCollider.ClosestPoint(other.transform.position+(Vector3)other.GetComponent<Collider2D>().offset),
 					Quaternion.identity
 				);
-				g.SetActive(true);
 			}
 		}
 
