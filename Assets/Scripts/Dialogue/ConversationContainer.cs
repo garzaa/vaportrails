@@ -17,7 +17,7 @@ public class ConversationContainer : SavedObject {
 		_unread = true;
 	}
 
-	protected override void LoadFromProperties() {
+	protected override void LoadFromProperties(bool startingUp) {
 		_unread = Get<bool>("unread");
 		currentConversation = Get<int>("currentConversation");
 	}

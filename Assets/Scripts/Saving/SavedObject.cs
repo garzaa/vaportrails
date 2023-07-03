@@ -20,7 +20,7 @@ public abstract class SavedObject : MonoBehaviour {
 	void OnEnable() {
 		Load();
 		Initialize();
-		if (hasSavedData) LoadFromProperties();
+		if (hasSavedData) LoadFromProperties(true);
 	}
 
 	void Load() {
@@ -28,7 +28,7 @@ public abstract class SavedObject : MonoBehaviour {
 		properties = save.LoadAtPath(GetObjectPath());
 	}
 
-	public void BeforeSave() {
+	public void SyncToRuntime() {
 		SaveToProperties(ref properties);
 		foreach (String s in properties.Keys.ToArray()) {
 			if (properties[s] is Vector3) {
@@ -49,15 +49,15 @@ public abstract class SavedObject : MonoBehaviour {
 
 	public void AfterDiskLoad() {
 		Load();
-		if (hasSavedData) LoadFromProperties();
+		if (hasSavedData) LoadFromProperties(false);
 	}
 
 	// this happens first, to hook up inter-object references
 	protected virtual void Initialize() {}
-	protected abstract void LoadFromProperties();
+	protected abstract void LoadFromProperties(bool startingUp);
 	protected abstract void SaveToProperties(ref Dictionary<string, object> properties);
 
-	public string GetObjectPath() {
+	public virtual string GetObjectPath() {
 		if (useGlobalNamespace) return $"global/{name}/{GetType().Name}";
 		return $"{SceneManager.GetActiveScene().name}/{gameObject.GetHierarchicalName()}/{GetType().Name}";
 	}

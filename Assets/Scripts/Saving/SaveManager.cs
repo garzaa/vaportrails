@@ -30,7 +30,7 @@ public class SaveManager : MonoBehaviour {
 
 	public void Save() {
 		foreach (SavedObject o in GameObject.FindObjectsOfType<SavedObject>()) {
-			o.BeforeSave();
+			o.SyncToRuntime();
 		}
 		FindObjectOfType<MapFog>()?.Save();
 		save.version = Application.version;

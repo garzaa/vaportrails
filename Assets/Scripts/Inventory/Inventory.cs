@@ -15,8 +15,9 @@ public class Inventory : SavedObject {
 		itemChangeListeners = FindObjectsOfType<ItemChangeListener>(includeInactive: true);
 	}
 
-	protected override void LoadFromProperties() {
+	protected override void LoadFromProperties(bool startingUp) {
 		items = Get<Dictionary<string, int>>("items");
+		CheckItemChangeListeners();
 	}
 
 	protected override void SaveToProperties(ref Dictionary<string, object> properties) {
@@ -32,17 +33,35 @@ public class Inventory : SavedObject {
 	}
 
 	public void AddItem(Item item) {
-		AddItem(item, 1);
+		AddItem(item, 1, false);
 	}
 
-	public void AddItem(Item item, int count) {
-		item.OnPickup(this, false);
+	public void AddItem(Item item, int count, bool quiet) {
+		item.OnPickup(this, quiet);
 
 		if (Has(item)) {
 			items[item.name] += count;
 		} else {
 			items[item.name] = count;
 		}
+		CheckItemChangeListeners();
+	}
+
+	public void AddItemsQuietly(List<Item> l) {
+		// batch calls since this happens on scene load
+		foreach (Item item in l) {
+			item.OnPickup(this, true);
+
+			if (Has(item)) {
+				items[item.name] += 1;
+			} else {
+				items[item.name] = 1;
+			}
+		}
+		CheckItemChangeListeners();
+	}
+
+	void CheckItemChangeListeners() {
 		if (onPlayer) {
 			for (int i=0; i<itemChangeListeners.Length; i++) {
 				itemChangeListeners[i].OnItemAdd();

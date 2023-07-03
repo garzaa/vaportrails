@@ -13,12 +13,12 @@ public class PlayerProperties : SavedObject {
 		hp = GetComponent<HP>();
 	}
 
-	protected override void LoadFromProperties() {
+	protected override void LoadFromProperties(bool startingUp) {
 		hp.SetCurrent(Get<int>("currentHP"));
 		hp.SetMax(Get<int>("maxHP"));
 		combatController.currentEP.Set(Get<int>("currentEP"));
 		combatController.maxEP.Set(Get<int>("maxEP"));
-		transform.position = Get<Vector3>("pos");
+		if (!startingUp) transform.position = Get<Vector3>("pos");
 		bool right = Get<bool>("facingRight");
 		if ((right && !player.facingRight) || (!right && player.facingRight)) {
 			player._Flip();

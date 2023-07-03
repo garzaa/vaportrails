@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class SceneLoadTrigger : PlayerTriggeredObject {
-	public Beacon beacon;
+	public BeaconWrapper beacon;
 
-	public void OnPlayerEnter(GameObject player) {
-		FindObjectOfType<TransitionManager>().BeaconTransition(beacon);
+	protected override void OnPlayerEnter(Collider2D player) {
+		FindObjectOfType<TransitionManager>().BeaconTransition(beacon.GetBeacon);
 	}
 }

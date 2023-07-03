@@ -8,7 +8,7 @@ public class EnableOnItem : ItemChangeListener {
 
 	Inventory inventory;
 
-	void Start() {
+	void Awake() {
 		inventory = PlayerInput.GetPlayerOneInput().GetComponentInChildren<Inventory>();
 		CheckEnabled();
 	}

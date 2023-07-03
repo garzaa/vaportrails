@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class GameFlags : SavedObject {
 	HashSet<string> flags = new HashSet<string>();
 
-	protected override void LoadFromProperties() {
+	protected override void LoadFromProperties(bool startingUp) {
 		flags = GetHashSet<string>(nameof(flags));
 	}
 

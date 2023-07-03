@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class SavedEnabled : SavedObject {
 	bool childrenActive = true;
 
-	protected override void LoadFromProperties() {
+	protected override void LoadFromProperties(bool startingUp) {
 		SetEnabled(Get<bool>("enabled"));
 	}
 

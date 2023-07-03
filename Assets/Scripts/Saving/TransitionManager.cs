@@ -16,7 +16,7 @@ public class TransitionManager : SavedObject {
 	float elapsedTime;
 	float transitionEndTime;
 
-	protected override void LoadFromProperties() {}
+	protected override void LoadFromProperties(bool startingUp) {}
 
 	public void LoadLastSavedScene() {
 		SceneManager.LoadScene(Get<string>("scene"));
@@ -54,11 +54,19 @@ public class TransitionManager : SavedObject {
 			BeaconWrapper beaconWrapper = FindObjectsOfType<BeaconWrapper>().Where(
 				x => x.GetBeacon == transition.beacon
 			).First();
-			PlayerInput.GetPlayerOneInput().gameObject.transform.position = beaconWrapper.transform.position;
+			Entity player = PlayerInput.GetPlayerOneInput().GetComponent<Entity>();
+			player.gameObject.transform.position = beaconWrapper.transform.position;
+			StartCoroutine(FlipPlayer(player, beaconWrapper));
 		}
 		
 		transition.Clear();
 		StartCoroutine(DisableHardLock());
+	}
+
+	IEnumerator FlipPlayer(Entity player, BeaconWrapper beaconWrapper) {
+		yield return new WaitForEndOfFrame();
+		if (!player.facingRight && beaconWrapper.faceRight) player.Flip();
+		else if (player.facingRight && !beaconWrapper.faceRight) player.Flip();
 	}
 
 	IEnumerator DisableHardLock() {
@@ -94,6 +102,9 @@ public class TransitionManager : SavedObject {
 	}
 
 	public void StraightLoad(string scenePath) {
+		foreach (SavedObject o in GameObject.FindObjectsOfType<SavedObject>()) {
+			o.SyncToRuntime();
+		}
 		SceneManager.LoadScene(scenePath);
 	}
 
@@ -102,6 +113,10 @@ public class TransitionManager : SavedObject {
 	}
 
 	IEnumerator LoadAsync(string sceneName) {
+		foreach (SavedObject o in GameObject.FindObjectsOfType<SavedObject>()) {
+			o.SyncToRuntime();
+		}
+
 		PlayerInput.GetPlayerOneInput().GetComponent<EntityController>().EnterCutscene(this.gameObject);
 		FadeAudio(0);
 		FadeToBlack();
