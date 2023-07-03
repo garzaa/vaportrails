@@ -18,7 +18,7 @@ public class SpriteSmoother : MonoBehaviour {
 		// if (!SaveManager.save.options.upsample) {
 		// 	return;
 		// }
-		foreach (SpriteRenderer s in GetComponentsInChildren<SpriteRenderer>()) {
+		foreach (SpriteRenderer s in GetComponentsInChildren<SpriteRenderer>(includeInactive: true)) {
 			if (s.GetComponent<NoSmoothSprite>()) {
 				continue;
 			}

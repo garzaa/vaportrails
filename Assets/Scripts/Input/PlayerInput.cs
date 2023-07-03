@@ -8,6 +8,8 @@ public class PlayerInput : MonoBehaviour {
 
     Controller lastActiveController;
 
+    static PlayerInput cachedPlayer = null;
+
     [SerializeField] bool humanControl = false;
     public bool isHuman => humanControl;
 
@@ -33,10 +35,12 @@ public class PlayerInput : MonoBehaviour {
     }
 
     public void EnableHumanControl() {
+        cachedPlayer = null;
         humanControl = true;
     }
 
     public void DisableHumanControl() {
+        cachedPlayer = null;
         humanControl = false;
     }
 
@@ -136,6 +140,8 @@ public class PlayerInput : MonoBehaviour {
     }
 
     public static PlayerInput GetPlayerOneInput() {
+        if (cachedPlayer) return cachedPlayer;
+
 		return GameObject.FindObjectsOfType<PlayerInput>()
 			.Where(x => x.humanControl)
 			.First();

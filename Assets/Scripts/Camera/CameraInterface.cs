@@ -42,6 +42,12 @@ public class CameraInterface : MonoBehaviour {
 	}
 
 	public void SetMainTarget(GameObject target) {
+		if (target == null) {
+			mainCam.Follow = null;
+			mainCam.LookAt = null;
+			return;
+		}
+
 		mainCam.Follow = target.transform;
 		mainCam.LookAt = target.transform;
 	}
@@ -56,5 +62,9 @@ public class CameraInterface : MonoBehaviour {
 
 	public void RemoveFramingTarget(GameObject g) {
 		targetGroupFollow.RemoveMember(g.transform);
+	}
+
+	public void StopFollowingPlayer() {
+		SetMainTarget(null);
 	}
 }

@@ -164,6 +164,7 @@ Shader "Custom2D/SpeedLines"
 
 				finalColor = lerpResult2;
 
+
 				return finalColor;
 			} 
 			ENDCG 

@@ -102,6 +102,7 @@ public class TransitionManager : SavedObject {
 	}
 
 	IEnumerator LoadAsync(string sceneName) {
+		PlayerInput.GetPlayerOneInput().GetComponent<EntityController>().EnterCutscene(this.gameObject);
 		FadeAudio(0);
 		FadeToBlack();
 		yield return new WaitForSeconds(FADE_TIME);
