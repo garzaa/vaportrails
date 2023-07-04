@@ -73,7 +73,7 @@ public class GroundCheck : MonoBehaviour {
 
         groundData.platforms = TouchingPlatforms();
 
-        groundData.grounded = grounded;
+        groundData.grounded = grounded && (Time.time-groundData.jumpTime > 0.2f);
         groundData.onLedge = onLedge;
 
         currentNormal = GetGroundNormal();
@@ -223,4 +223,5 @@ public class GroundData {
     public List<RaycastHit2D> platforms;
     public Collider2D groundCollider;
     public float distance = 99;
+    public float jumpTime = -10;
 }

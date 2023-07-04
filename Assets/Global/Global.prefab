@@ -6249,6 +6249,7 @@ MonoBehaviour:
       m_Calls: []
   useParentTargetingPosition: 0
   invisibleToTargeters: 0
+  hitmarkerOverride: {fileID: 0}
 --- !u!61 &7770972732387252667
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -6262,7 +6263,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.018491268, y: 0}
+  m_Offset: {x: -0.07288273, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -6273,7 +6274,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.30554676, y: 1}
+  m_Size: {x: 0.8004036, y: 1}
   m_EdgeRadius: 0
 --- !u!1 &7770972732394926540
 GameObject:
@@ -8548,7 +8549,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7770972733150071080}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 960, y: 540, z: -10}
+  m_LocalPosition: {x: -0.06381741, y: -0.45937416, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -9237,6 +9238,7 @@ MonoBehaviour:
     groundObject: {fileID: 0}
     groundCollider: {fileID: 0}
     distance: 99
+    jumpTime: -10
   onLedgeStep:
     m_PersistentCalls:
       m_Calls: []
@@ -11022,7 +11024,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7770972734024709620}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 960, y: 540, z: -10}
+  m_LocalPosition: {x: -0.06381741, y: -0.45937416, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -11802,7 +11804,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8228098152842003877}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.274, y: -0.467, z: 0}
+  m_LocalPosition: {x: -0.226, y: -0.395, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -11841,21 +11843,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 7770972733226922344}
-        m_TargetAssemblyTypeName: EntityController, Assembly-CSharp
-        m_MethodName: RefreshAirMovement
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 7770972733226922344}
-        m_TargetAssemblyTypeName: EntityController, Assembly-CSharp
-        m_MethodName: SetJustJumped
+      - m_Target: {fileID: 7770972733226922337}
+        m_TargetAssemblyTypeName: ValCombatController, Assembly-CSharp
+        m_MethodName: OnDivekickLand
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -11878,9 +11868,9 @@ CircleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.079515085, y: 0.053405643}
   serializedVersion: 2
-  m_Radius: 0.23258477
+  m_Radius: 0.43196583
 --- !u!1 &8534121147635444386
 GameObject:
   m_ObjectHideFlags: 0
@@ -12243,7 +12233,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9133618981818065003}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 960, y: 540, z: 0}
+  m_LocalPosition: {x: -0.06381741, y: -0.45937416, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -12315,7 +12305,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1674674098262563639, guid: 5de3b9c7461ca32498b7596a76ddfe22, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.49998528
+      value: -0.49998194
       objectReference: {fileID: 0}
     - target: {fileID: 1674674098262563639, guid: 5de3b9c7461ca32498b7596a76ddfe22, type: 3}
       propertyPath: m_LocalRotation.x

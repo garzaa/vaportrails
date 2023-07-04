@@ -27,7 +27,7 @@ public class PlayerSnapshotInfo : MonoBehaviour, IHitListener, IAttackLandListen
 		this.WaitAndExecute(() => hitThisFrame = false, 1f/12f);
 	}
 
-	public void OnAttackLand(AttackData data, Hurtbox hurtbox) {
+	public void OnAttackLand(AttackHitbox attack, Hurtbox hurtbox) {
 		attackLanded = true;
 		this.WaitAndExecute(() => attackLanded = false, 8f/12f);
 	}

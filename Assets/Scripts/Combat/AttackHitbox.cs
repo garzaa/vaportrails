@@ -101,11 +101,13 @@ public class AttackHitbox : MonoBehaviour {
 		}
 
 		if (data.hitSound && hurtbox.hitSoundOverride == null) data.hitSound.PlayFrom(gameObject);
-		if (data.hitmarker) {
-			if (spawnHitmarkerAtCenter) Instantiate(data.hitmarker, transform.position, Quaternion.identity);
+		if (data.hitmarker || hurtbox.hitmarkerOverride) {
+			GameObject hitmarkerTemplate = data.hitmarker != null ? data.hitmarker : hurtbox.hitmarkerOverride;
+
+			if (spawnHitmarkerAtCenter) Instantiate(hitmarkerTemplate, transform.position, Quaternion.identity);
 			else {
 				GameObject g = Instantiate(
-					data.hitmarker,
+					hitmarkerTemplate,
 					currentActiveCollider.ClosestPoint(other.transform.position+(Vector3)other.GetComponent<Collider2D>().offset),
 					Quaternion.identity
 				);
@@ -113,7 +115,7 @@ public class AttackHitbox : MonoBehaviour {
 		}
 
 		foreach (IAttackLandListener attackLandListener in attackLandListeners) {
-			attackLandListener.OnAttackLand(data, hurtbox);
+			attackLandListener.OnAttackLand(this, hurtbox);
 		}
 		OnAttackLand.Invoke();
 		hurtbox.OnHitConfirm(this);

@@ -8,6 +8,7 @@ public class Hurtbox : MonoBehaviour {
 	public UnityEvent hitEvent;
 	public bool useParentTargetingPosition;
 	public bool invisibleToTargeters = false;
+	public GameObject hitmarkerOverride;
 	IHitListener[] hitListeners;
 
 	void Start() {
@@ -44,5 +45,9 @@ public class Hurtbox : MonoBehaviour {
 	public GameObject GetTargetPosition() {
 		if (useParentTargetingPosition) return gameObject;
 		else return transform.parent.gameObject;
+	}
+
+	public virtual Vector2? KnockbackOverride(AttackHitbox attack) {
+		return null;
 	}
 }

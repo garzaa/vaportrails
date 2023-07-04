@@ -55,6 +55,11 @@ public class PlayerInput : MonoBehaviour {
         else return comControl.GetAxis(axisId);
     }
 
+    public float GetAxisRaw(int axisId) {
+        if (humanControl) return player.GetAxisRaw(axisId);
+        else return comControl.GetAxis(axisId);
+    }
+
     public bool ButtonDown(int b) {
         if (humanControl) return player.GetButtonDown(b);
         else return comControl.GetButtonDown(b);
@@ -115,6 +120,13 @@ public class PlayerInput : MonoBehaviour {
         return new Vector2(
             GetAxis(Buttons.H_AXIS),
             GetAxis(Buttons.V_AXIS)
+        );
+    }
+
+    public Vector2 LeftStickRaw() {
+        return new Vector2(
+            GetAxisRaw(Buttons.H_AXIS),
+            GetAxisRaw(Buttons.V_AXIS)
         );
     }
 

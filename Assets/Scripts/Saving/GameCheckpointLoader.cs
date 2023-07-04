@@ -13,8 +13,6 @@ public class GameCheckpointLoader : SavedObject {
 
 	void Start() {
 		if (!loadedBefore) {
-			Debug.Log("adding items from game checkpoint" + checkpoint);
-
 			// then add everything
 			Inventory inventory = PlayerInput.GetPlayerOneInput().GetComponentInChildren<Inventory>();
 			inventory.AddItemsQuietly(checkpoint.GetItems());

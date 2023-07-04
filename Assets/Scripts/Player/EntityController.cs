@@ -147,7 +147,7 @@ public class EntityController : Entity {
 		}
 
 		// stop at the end of ledges (but allow edge canceling)
-		if (groundData.ledgeStep && !speeding && !input.HasHorizontalInput()) {
+		if (groundData.ledgeStep && !speeding && !(inputForwards)) {
 			rb2d.velocity = new Vector2(0, rb2d.velocity.y);
 		}
 
@@ -488,6 +488,7 @@ public class EntityController : Entity {
 
 	IEnumerator KeepJumpSpeedRoutine() {
 		keepJumpSpeed = true;
+		groundData.jumpTime = Time.time;
 		// v = v0 + at
 		float timeToZero = -rb2d.velocity.y/Physics2D.gravity.y;
 		yield return new WaitForSeconds(timeToZero);
@@ -500,6 +501,7 @@ public class EntityController : Entity {
 			StopCoroutine(keepJumpSpeedRoutine);
 		}
 		keepJumpSpeed = true;
+		groundData.jumpTime = Time.time;
 		keepJumpSpeedRoutine = StartCoroutine(KeepJumpSpeedRoutine());
 	}
 

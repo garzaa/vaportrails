@@ -1,3 +1,3 @@
 public interface IAttackLandListener {
-	void OnAttackLand(AttackData attack, Hurtbox hurtbox);
+	void OnAttackLand(AttackHitbox hitbox, Hurtbox hurtbox);
 }

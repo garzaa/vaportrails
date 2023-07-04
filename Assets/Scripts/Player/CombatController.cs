@@ -42,19 +42,25 @@ public class CombatController : MonoBehaviour, IAttackLandListener, IHitListener
 		graphTraverser = new AttackGraphTraverser(this);
 	}
 
-	public void OnAttackLand(AttackData attack, Hurtbox hurtbox) {
+	public void OnAttackLand(AttackHitbox attack, Hurtbox hurtbox) {
 		player.DisableShortHop();
-		if (attack.hasSelfKnockback) {
-			Vector2 v = attack.selfKnockback;
+		if (attack.data.hasSelfKnockback) {
+			Vector2 v = attack.data.selfKnockback;
 			if (v.x == 0) {
 				v.x = rb2d.velocity.x;
 			} else {
 				v.x *= player.Forward();
 			}
+
+			Vector2? kbOverride = hurtbox.KnockbackOverride(attack);
+			if (kbOverride.HasValue) {
+				v = kbOverride.Value;
+			}
+
 			rb2d.velocity = v;
 		}
-		player.DoHitstop(attack.hitstop, rb2d.velocity);
-		graphTraverser.OnAttackLand(attack, hurtbox);
+		player.DoHitstop(attack.data.hitstop, rb2d.velocity);
+		graphTraverser.OnAttackLand(attack.data, hurtbox);
 	}
 
 	protected virtual void Update() {

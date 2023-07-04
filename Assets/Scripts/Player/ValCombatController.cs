@@ -282,4 +282,12 @@ public class ValCombatController : CombatController, IHitListener {
 		base.OnCombatNodeEnter(combatNode);
 	}
 
+	public void OnDivekickLand() {
+		player.RefreshAirMovement();
+		player.SetJustJumped();
+		animator.SetBool("DivekickRecoil", true);
+
+		this.WaitAndExecute(() => animator.SetBool("DivekickRecoil", false), 0.3f);
+	}
+
 }
