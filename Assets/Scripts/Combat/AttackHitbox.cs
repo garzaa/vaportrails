@@ -102,7 +102,7 @@ public class AttackHitbox : MonoBehaviour {
 
 		if (data.hitSound && hurtbox.hitSoundOverride == null) data.hitSound.PlayFrom(gameObject);
 		if (data.hitmarker || hurtbox.hitmarkerOverride) {
-			GameObject hitmarkerTemplate = data.hitmarker != null ? data.hitmarker : hurtbox.hitmarkerOverride;
+			GameObject hitmarkerTemplate = hurtbox.hitmarkerOverride == null ? data.hitmarker : hurtbox.hitmarkerOverride;
 
 			if (spawnHitmarkerAtCenter) Instantiate(hitmarkerTemplate, transform.position, Quaternion.identity);
 			else {
