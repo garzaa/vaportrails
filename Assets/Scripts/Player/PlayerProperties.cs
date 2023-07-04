@@ -23,6 +23,8 @@ public class PlayerProperties : SavedObject {
 		if ((right && !player.facingRight) || (!right && player.facingRight)) {
 			player._Flip();
 		}
+
+		player.LoadAbilities(GetList<Ability>("abilities"));
 	}
 
 	protected override void SaveToProperties(ref Dictionary<string, object> properties) {
@@ -32,5 +34,6 @@ public class PlayerProperties : SavedObject {
 		properties["maxEP"] = combatController.maxEP.Get();
 		properties["pos"] = transform.position;
 		properties["facingRight"] = player.facingRight;
+		properties["abilities"] = player.GetAbilities();
 	}
 }

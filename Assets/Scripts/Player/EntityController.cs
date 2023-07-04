@@ -768,4 +768,13 @@ public class EntityController : Entity {
 	public bool HasAbility(Ability a) {
 		return abilities.Contains(a);
 	}
+
+	public void LoadAbilities(List<Ability> a) {
+		this.abilities.Clear();
+		this.abilities.AddRange(a);
+	}
+
+	public List<Ability> GetAbilities() {
+		return this.abilities;
+	}
 }

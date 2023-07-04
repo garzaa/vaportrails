@@ -102,9 +102,7 @@ public class TransitionManager : SavedObject {
 	}
 
 	public void StraightLoad(string scenePath) {
-		foreach (SavedObject o in GameObject.FindObjectsOfType<SavedObject>()) {
-			o.SyncToRuntime();
-		}
+		SyncObjectsToRuntime();
 		SceneManager.LoadScene(scenePath);
 	}
 
@@ -113,10 +111,7 @@ public class TransitionManager : SavedObject {
 	}
 
 	IEnumerator LoadAsync(string sceneName) {
-		foreach (SavedObject o in GameObject.FindObjectsOfType<SavedObject>()) {
-			o.SyncToRuntime();
-		}
-
+		SyncObjectsToRuntime();
 		PlayerInput.GetPlayerOneInput().GetComponent<EntityController>().EnterCutscene(this.gameObject);
 		FadeAudio(0);
 		FadeToBlack();
@@ -140,5 +135,12 @@ public class TransitionManager : SavedObject {
 		originalVolume = AudioListener.volume;
 		elapsedTime = 0;
 		transitionEndTime = Time.time + FADE_TIME;
+	}
+
+	void SyncObjectsToRuntime() {
+		foreach (SavedObject o in GameObject.FindObjectsOfType<SavedObject>()) {
+			o.SyncToRuntime();
+		}
+		FindObjectOfType<MapFog>()?.Save();
 	}
 }
