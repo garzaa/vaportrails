@@ -261,13 +261,13 @@ public class EntityController : Entity {
 
         if (inputX!=0) {
 			if (!speeding || (movingForwards && inputBackwards) || (movingBackwards && inputForwards)) {
-				if (groundData.grounded) {
+				if (groundData.grounded && Vector2.Angle(Vector2.up, groundData.normal) < 45f) {
 					// if ground is a platform that's been destroyed/disabled
 					float f = groundData.groundCollider != null ? groundData.groundCollider.friction : movement.airFriction;
 					Vector2 v = Vector2.right * rb2d.mass * movement.gndAcceleration * inputX * f*f;
 					v = v.Rotate(groundData.normalRotation); 
 					rb2d.AddForce(v);
-				} else {	
+				} else if (!groundData.grounded) {	
 					float attackMod = inAttack ? 0.5f : 1f;
 					rb2d.AddForce(Vector2.right * rb2d.mass * movement.airAcceleration * inputX * airControlMod * attackMod);
 				}
@@ -417,8 +417,9 @@ public class EntityController : Entity {
 		}
 		canShortHop = true;
 		JumpDust();
+		bool wasMovingUp = rb2d.velocity.y > 0;
 		rb2d.velocity = new Vector2(rb2d.velocity.x, Mathf.Max(rb2d.velocity.y, 0) + movement.jumpSpeed);
-		if (IsSpeeding() && groundData.normalRotation != 0 && input.isHuman) {
+		if (IsSpeeding() && groundData.normalRotation != 0 && input.isHuman && wasMovingUp) {
 			HighJumpDust();
 		}
 		SetJustJumped();
