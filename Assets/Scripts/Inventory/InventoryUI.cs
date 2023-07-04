@@ -79,7 +79,7 @@ public class InventoryUI : MonoBehaviour {
 		for (int i=0; i<buttons.Length; i++) {
 			Navigation n = new Navigation();
 			n.mode = Navigation.Mode.Explicit;
-			if (i > cols) n.selectOnUp = buttons[i-cols];
+			if (i > cols-1) n.selectOnUp = buttons[i-cols];
 			if (i > 0) n.selectOnLeft = buttons[i-1];
 			if (i < buttons.Length-1) n.selectOnRight = buttons[i+1];
 			if (i < buttons.Length - cols) n.selectOnDown = buttons[i+cols];

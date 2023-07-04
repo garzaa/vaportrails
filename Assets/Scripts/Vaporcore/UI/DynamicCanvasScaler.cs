@@ -13,7 +13,11 @@ public class DynamicCanvasScaler : MonoBehaviour {
 
     void Start() {
         targetCanvas = GetComponent<Canvas>();
-		minScreenHeight = FindObjectOfType<PixelPerfectCamera>().refResolutionY * FindObjectOfType<CameraZoom>().zoomLevel;
+		minScreenHeight = FindObjectOfType<PixelPerfectCamera>().refResolutionY;
+    }
+
+    public void ForceUpdate() {
+        Start();
     }
 
     void LateUpdate() {

@@ -15,6 +15,7 @@ public class AbilityUnlockUI : MonoBehaviour {
 		itemPane = GetComponent<ItemPane>();
 		input = PlayerInput.GetPlayerOneInput();
 		canvas.gameObject.SetActive(false);
+		canvas.GetComponent<DynamicCanvasScaler>().ForceUpdate();
 	}
 
 	void Update() {
