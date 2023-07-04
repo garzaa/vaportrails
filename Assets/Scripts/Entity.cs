@@ -489,6 +489,7 @@ public class Entity : MonoBehaviour, IHitListener {
 	}
 
 	public void EnterCutscene(GameObject source) {
+		if (!gameObject.activeSelf) return;
 		GetComponent<ValCombatController>()?.DisableAttackStance();
 		rb2d.velocity = Vector2.zero;
 		EnterCutsceneNoHalt(source);
