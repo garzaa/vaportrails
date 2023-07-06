@@ -4,10 +4,16 @@ using System.Collections.Generic;
 
 public class BounceBlockHurtbox : Hurtbox {
 	public float height;
-	public AttackData attackFilter;
+	public AttackData[] attackFilter;
+
+	HashSet<AttackData> filter;
+
+	void Awake() {
+		filter = new HashSet<AttackData>(attackFilter);
+	}
 
 	public override Vector2? KnockbackOverride(AttackHitbox attack) {
-		if (attack.data != attackFilter) {
+		if (!filter.Contains(attack.data)) {
 			return base.KnockbackOverride(attack);
 		}
 

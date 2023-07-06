@@ -73,7 +73,7 @@ public class GroundCheck : MonoBehaviour {
 
         groundData.platforms = TouchingPlatforms();
 
-        groundData.grounded = grounded && (Time.time-groundData.jumpTime > 0.2f);
+        groundData.grounded = grounded;// && (Time.time-groundData.jumpTime > 0.2f);
         groundData.onLedge = onLedge;
 
         currentNormal = GetGroundNormal();

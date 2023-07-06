@@ -155,6 +155,8 @@ Shader "Custom2D/MaskDistortion"
 
 				color.rgb *= color.a;
 
+				color.a *= i.color.a;
+
 				return color;
 			}
 		ENDCG

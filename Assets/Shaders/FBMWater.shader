@@ -5,7 +5,8 @@ Shader "Custom2D/FBMWater"
         [PerRendererData] _MainTex ("Sprite Texture", 2D) = "white" {}
         [PerRendererData] _Color ("Tint", Color) = (1,1,1,1)
         [MaterialToggle] PixelSnap ("Pixel snap", Float) = 0
-        [PerRendererData] _FlashColor ("Flash Color", Color) = (1,1,1,0)
+        [PerRendererData] ParallaxUVOffset ("ParallaxUVOffset", Vector) = (0, 0, 0, 0)
+        _FlashColor ("Flash Color", Color) = (1,1,1,0)
 
         [Header(FBM)]
         _MaskColor ("Mask Color", Color) = (0, 0, 0, 1)
@@ -116,7 +117,9 @@ Shader "Custom2D/FBMWater"
             fixed4 col3;
             fixed4 col4;
 
-            float2 SineDisplace (float2 uv)
+            float4 ParallaxUVOffset;
+
+            float2 SineDisplace (float2 uv, float2 worldPos)
             {
                 float2 final = uv;
 
@@ -124,10 +127,10 @@ Shader "Custom2D/FBMWater"
                 final.x = (uv.x + (_Time.w * _XSpeed));
 
                 // x waves
-                final.y += (_XAmp * sin((uv.x/_XWidth) + (_Time * _XWaveSpeed)));
+                final.y += (_XAmp * sin((worldPos.x/_XWidth) + (_Time * _XWaveSpeed)));
 
                 // y waves
-                final.x += (_YAmp * sin((uv.y/_YWidth) + (_Time * _YWaveSpeed)));
+                final.x += (_YAmp * sin((worldPos.y/_YWidth) + (_Time * _YWaveSpeed)));
                 return final;
             }
 
@@ -162,10 +165,10 @@ Shader "Custom2D/FBMWater"
             {
                 float2 uv = IN.texcoord;
 
-                fixed4 color = tex2D(_MainTex, SineDisplace(uv));
+                fixed4 color = tex2D(_MainTex, SineDisplace(uv, IN.worldPos.xy - ParallaxUVOffset.xy));
 
                 if (compareColor(color, _MaskColor, 0.1)) {
-                  fixed2 worldPos = IN.worldPos.xy;
+                  fixed2 worldPos = IN.worldPos.xy - ParallaxUVOffset.xy;
 				  worldPos.y += _Time.w * _YSpeed;
                   ColorResult r = fbmChain(worldPos * 0.5);
                   float4 fbmColor = lerp(

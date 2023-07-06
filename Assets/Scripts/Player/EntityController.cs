@@ -250,7 +250,7 @@ public class EntityController : Entity {
             // on a ground hit, rotate the velocity to the slope normal
             // since it wasn't being rotated the previous step
             rb2d.velocity = rb2d.velocity.Rotate(groundData.normalRotation);
-		} else if ((groundData.grounded) && (angleStepDiff != 0) && (Time.unscaledTime - jumpTime > 0.2f)) {
+		} else if ((groundData.grounded) && (angleStepDiff != 0) && (Time.unscaledTime - jumpTime > 0.5f)) {
 			// if they're moving onto flat ground from a downwards slope, let physics take care of it
 			// otherwise they might get popped into the air
 			// but if they're NOT moving onto flat ground from a downwards slope, follow the hill corner
@@ -261,7 +261,8 @@ public class EntityController : Entity {
 
         if (inputX!=0) {
 			if (!speeding || (movingForwards && inputBackwards) || (movingBackwards && inputForwards)) {
-				if (groundData.grounded && Vector2.Angle(Vector2.up, groundData.normal) < 45f) {
+				// if (groundData.grounded && Vector2.Angle(Vector2.up, groundData.normal) < 45f && (Time.unscaledTime - jumpTime > 0.5f)) {
+				if (groundData.grounded) {
 					// if ground is a platform that's been destroyed/disabled
 					float f = groundData.groundCollider != null ? groundData.groundCollider.friction : movement.airFriction;
 					Vector2 v = Vector2.right * rb2d.mass * movement.gndAcceleration * inputX * f*f;
@@ -463,7 +464,6 @@ public class EntityController : Entity {
 	}
 
 	void AirJump() {
-		Debug.Log("air jump");
 		if (groundData.distance<0.4f && !groundData.grounded) {
 			// if player is falling and about to hit ground, don't buffer an airjump
 			GroundJump();
