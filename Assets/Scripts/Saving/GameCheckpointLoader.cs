@@ -18,9 +18,7 @@ public class GameCheckpointLoader : SavedObject {
 			inventory.AddItemsQuietly(checkpoint.GetItems());
 
 			GameFlags f = FindObjectOfType<GameFlags>();
-			foreach (GameFlag flag in checkpoint.GetGameFlags()) {
-				f.Add(flag);
-			}
+			f.Add(checkpoint.GetGameFlags());
 
 			loadedBefore = true;
 		}

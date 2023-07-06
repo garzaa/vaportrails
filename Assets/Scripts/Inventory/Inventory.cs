@@ -83,7 +83,7 @@ public class Inventory : SavedObject {
 
 		if (onPlayer) {
 			for (int i=0; i<itemChangeListeners.Length; i++) {
-				itemChangeListeners[i].OnItemAdd();
+				itemChangeListeners[i].OnItemRemove();
 			}
 		}
 	}

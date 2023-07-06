@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class EnableOnGameFlag : MonoBehaviour {
+public class EnableOnGameFlag : GameFlagChangeListener{
 	public GameFlag flag;
 	public bool disableOnFlag = false;
 
@@ -13,7 +13,7 @@ public class EnableOnGameFlag : MonoBehaviour {
 		CheckEnabled();
 	}
 
-	public void CheckEnabled() {
+	public override void CheckEnabled() {
 		if (disableOnFlag) {
 			gameObject.SetActive(!flags.Has(flag));
 		} else {

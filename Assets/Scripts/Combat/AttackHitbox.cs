@@ -25,7 +25,7 @@ public class AttackHitbox : MonoBehaviour {
 	public UnityEvent OnAttackLand;
 
 	virtual protected void Start() {
-		gameObject.layer = LayerMask.NameToLayer(Layers.Hitboxes);
+		if (!(this is EnvironmentHitbox)) gameObject.layer = LayerMask.NameToLayer(Layers.Hitboxes);
 		attackLandListeners = GetComponentsInParent<IAttackLandListener>();
 		colliders = GetComponents<Collider2D>();
 		cameraZoom = GameObject.FindObjectOfType<CameraZoom>();

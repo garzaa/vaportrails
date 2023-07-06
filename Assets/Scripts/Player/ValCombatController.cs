@@ -287,7 +287,7 @@ public class ValCombatController : CombatController, IHitListener {
 		player.SetJustJumped();
 		animator.SetBool("DivekickRecoil", true);
 
-		this.WaitAndExecute(() => animator.SetBool("DivekickRecoil", false), 0.3f);
+		this.WaitAndExecute(() => animator.SetBool("DivekickRecoil", false), 0.2f);
 	}
 
 }

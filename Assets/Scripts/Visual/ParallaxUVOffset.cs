@@ -6,7 +6,7 @@ using System.Collections.Generic;
 public class ParallaxUVOffset : MonoBehaviour {
 
 	Renderer r;
-	MaterialPropertyBlock block;
+	MaterialPropertyBlock block = null;
 
 	void Start() {
 		r = GetComponent<Renderer>();
@@ -15,7 +15,7 @@ public class ParallaxUVOffset : MonoBehaviour {
 	}
 
 	void Update() {
-		block.SetVector("ParallaxUVOffset", transform.position);
+		if (block != null) block.SetVector("ParallaxUVOffset", transform.position);
 		r.SetPropertyBlock(block);
 	}
 }

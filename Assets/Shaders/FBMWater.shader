@@ -182,6 +182,8 @@ Shader "Custom2D/FBMWater"
                 color.rgb = lerp(color.rgb,_FlashColor.rgb,_FlashColor.a);
                 color.rgb *= color.a;
 
+                color.a *= IN.color.a;
+
                 return color;
             }
         ENDCG
