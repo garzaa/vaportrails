@@ -13,6 +13,7 @@ Shader "Custom2D/MovingClouds"
 		_TextureMoveSpeed ("Texture Change Speed", Vector) = (1, 1, 0, 0)
 		_AlphaAdd("Add Alpha", Range(0.0, 1.0)) = 0.0
 		_AlphaCutoff("Alpha Cutoff", Range(0.0, 1.0)) = 0.0
+		[Toggle(USE_WORLD_SPACE)] WorldSpace ("Use World Space", Float) = 0
 	}
 
 	SubShader
