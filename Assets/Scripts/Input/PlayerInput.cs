@@ -15,12 +15,17 @@ public class PlayerInput : MonoBehaviour {
 
     public ComputerController comControl { get; private set; }
 
+    public static bool usingKeyboard = false;
+
 	void Awake() {
         player = ReInput.players.GetPlayer(0);
         comControl = new ComputerController();
     }
 
     void Start() {
+        if (humanControl) {
+            player.AddInputEventDelegate(SetKeyboardMouseControl, UpdateLoopType.Update);
+        }
         player.AddInputEventDelegate(ShowHideMouse, UpdateLoopType.Update);
         player.controllers.hasKeyboard = true;
         player.controllers.AddController(ControllerType.Joystick, 0, true);
@@ -48,6 +53,10 @@ public class PlayerInput : MonoBehaviour {
         if (!humanControl) return;
         lastActiveController = player.controllers.GetLastActiveController();
         Cursor.visible = (lastActiveController?.type == Rewired.ControllerType.Mouse);
+    }
+
+    void SetKeyboardMouseControl(InputActionEventData actionData) {
+        usingKeyboard = lastActiveController?.type != Rewired.ControllerType.Joystick;
     }
 
     public float GetAxis(int axisId) {

@@ -23,4 +23,8 @@ public class DelayedEvent : MonoBehaviour {
 		public float delay;
 		public UnityEvent callback;
 	}	
+
+	public void Cancel() {
+		StopAllCoroutines();
+	}
 }

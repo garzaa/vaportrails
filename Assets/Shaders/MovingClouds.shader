@@ -13,7 +13,6 @@ Shader "Custom2D/MovingClouds"
 		_TextureMoveSpeed ("Texture Change Speed", Vector) = (1, 1, 0, 0)
 		_AlphaAdd("Add Alpha", Range(0.0, 1.0)) = 0.0
 		_AlphaCutoff("Alpha Cutoff", Range(0.0, 1.0)) = 0.0
-		[Toggle(USE_WORLD_SPACE)] WorldSpace ("Use World Space", Float) = 0
 	}
 
 	SubShader
@@ -93,10 +92,12 @@ Shader "Custom2D/MovingClouds"
 
 				c = tex2D(_ColorRamp, fixed2(c.r, yPos));
 				
-				c.a = saturate(c.a + _AlphaAdd);
+				fixed alphaA = tex2D(_AlphaMask, uv).a;
+				c.a = saturate(c.a + _AlphaAdd) * alphaA;
+
 
 				// now sample the alpha mask, clip if it's 0
-				clip(tex2D(_AlphaMask, uv).a - 0.1);
+				clip(alphaA - 0.1);
 
 				if (_AlphaCutoff > 0) {
 					if (c.a <= _AlphaCutoff) {
