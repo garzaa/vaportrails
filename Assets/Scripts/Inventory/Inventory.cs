@@ -39,7 +39,7 @@ public class Inventory : SavedObject {
 	public void AddItem(Item item, int count, bool quiet) {
 		item.OnPickup(this, quiet);
 
-		if (Has(item)) {
+		if (Has(item) && item.stackable) {
 			items[item.name] += count;
 		} else {
 			items[item.name] = count;
