@@ -7,16 +7,18 @@ public class StandaloneInventoryUI : MonoBehaviour {
 	Entity player;
 	GameObject ui;
 	InventoryUI inventoryUI;
+	PlayerInput input;
 
 	void Start() {
 		player = PlayerInput.GetPlayerOneInput().GetComponent<Entity>();
+		input = PlayerInput.GetPlayerOneInput();
 		ui = transform.GetChild(0).gameObject;
 		ui.SetActive(false);
 		inventoryUI = GetComponent<InventoryUI>();
 	}
 
 	void Update() {
-		if (Input.GetKeyDown(KeyCode.Tab)) {
+		if (input.ButtonDown(RewiredConsts.Action.Inventory)) {
 			if (ui.activeSelf) {
 				ui.SetActive(false);
 				player.ExitCutscene(this.gameObject);

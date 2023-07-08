@@ -69,7 +69,6 @@ public class HydratedGlyph : MonoBehaviour {
 				layoutGroup.padding.left = padding;
 				layoutGroup.padding.right = padding;
 			}
-			Canvas.ForceUpdateCanvases();
 		} else {
 			if (textCanvas) textCanvas.SetActive(false);
 			image.enabled = true;
@@ -77,5 +76,6 @@ public class HydratedGlyph : MonoBehaviour {
 			if (s == null) return;
 			GetComponent<Image>().sprite = s;
 		}
+		Canvas.ForceUpdateCanvases();
 	}
 }
