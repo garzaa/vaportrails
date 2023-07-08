@@ -79,7 +79,6 @@ public class InputRecorder : MonoBehaviour {
 			seenActions.Add(e.actionId);
 			Debug.Log("saved new action: "+e.actionName);
 		}
-		// don't save it if it's UI...HOW
 		if (ReInput.mapping.GetAction(e.actionId).type.Equals(InputActionType.Axis)) {
 			actionIDAxes[e.actionId] = (int) Mathf.Sign(e.GetAxis());
 		} else {

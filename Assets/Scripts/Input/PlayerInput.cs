@@ -20,15 +20,20 @@ public class PlayerInput : MonoBehaviour {
 	void Awake() {
         player = ReInput.players.GetPlayer(0);
         comControl = new ComputerController();
+        player.controllers.hasKeyboard = true;
+        player.controllers.AddController(ControllerType.Joystick, 0, true);
     }
 
     void Start() {
-        if (humanControl) {
-            player.AddInputEventDelegate(SetKeyboardMouseControl, UpdateLoopType.Update);
-        }
+        player.AddInputEventDelegate(SetKeyboardMouseControl, UpdateLoopType.Update);
         player.AddInputEventDelegate(ShowHideMouse, UpdateLoopType.Update);
-        player.controllers.hasKeyboard = true;
-        player.controllers.AddController(ControllerType.Joystick, 0, true);
+    }
+
+    public string GetControllerGUID() {
+        if (player.controllers.joystickCount > 0) {
+            return player.controllers.Joysticks[0].hardwareTypeGuid.ToString();
+        }
+        return "Keyboard";
     }
 
     void LateUpdate() {
@@ -56,6 +61,7 @@ public class PlayerInput : MonoBehaviour {
     }
 
     void SetKeyboardMouseControl(InputActionEventData actionData) {
+        if (!humanControl) return;
         usingKeyboard = lastActiveController?.type != Rewired.ControllerType.Joystick;
     }
 
@@ -161,7 +167,7 @@ public class PlayerInput : MonoBehaviour {
     }
 
     public static PlayerInput GetPlayerOneInput() {
-        if (cachedPlayer) return cachedPlayer;
+        if (cachedPlayer != null) return cachedPlayer;
 
 		return GameObject.FindObjectsOfType<PlayerInput>(includeInactive: true)
 			.Where(x => x.humanControl)
