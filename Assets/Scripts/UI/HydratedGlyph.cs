@@ -12,14 +12,14 @@ public class HydratedGlyph : MonoBehaviour {
 	Image image = null;
 
 	public List<Sprite> spritesToIgnore;
-	static HashSet<Sprite> ignoreSprites = null;
+	HashSet<Sprite> ignoreSprites = null;
 
 	void Initialize() {
 		image = GetComponent<Image>();
 		originalSprite = image.sprite;
 		if (!mappings) mappings = GameObject.FindObjectOfType<ButtonGlyphMappings>();
-		if (ignoreSprites == null) ignoreSprites = new HashSet<Sprite>(spritesToIgnore);
-		if (!spritesToIgnore.Contains(originalSprite)) {
+		ignoreSprites = new HashSet<Sprite>(spritesToIgnore);
+		if (!ignoreSprites.Contains(originalSprite)) {
 			image.enabled = false;
 		}
 
@@ -37,7 +37,7 @@ public class HydratedGlyph : MonoBehaviour {
 	public void CheckGlyph() {
 		if (image == null) Initialize();
 
-		if (spritesToIgnore.Contains(originalSprite)) return;
+		if (ignoreSprites.Contains(originalSprite)) return;
 
 		if (PlayerInput.usingKeyboard) {
 			string keyName = mappings.GetKeyName(originalSprite);
