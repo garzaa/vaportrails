@@ -93,8 +93,8 @@ public class ButtonGlyphMappings : MonoBehaviour {
 		return cg.GetSprite(target.element.id, target.axisRange);
 	}
 
-	public Sprite GetKeySprite(Sprite actionSprite) {
-		// if GetKeyName in keyspritemap, return that sprite
+	public Sprite GetKeySprite(string keyName) {
+		if (keyNameMap.ContainsKey(keyName)) return keyNameMap[keyName];
 		return null;
 	}
 
@@ -109,7 +109,6 @@ public class ButtonGlyphMappings : MonoBehaviour {
 
 		if (aem == null) return null;
 
-		Debug.Log(aem.elementIdentifierId + "/"+aem.elementIdentifierName);
 		return aem.elementIdentifierName;
 	}
 }

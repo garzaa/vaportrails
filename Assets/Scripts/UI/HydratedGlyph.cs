@@ -24,9 +24,8 @@ public class HydratedGlyph : MonoBehaviour {
 
 	public void CheckGlyph() {
 		if (PlayerInput.usingKeyboard) {
-			string keyName = "";
-			Sprite spriteOverride = mappings.GetKeySprite(originalSprite);
-			if (spriteOverride == null) keyName = mappings.GetKeyName(originalSprite);
+			string keyName = mappings.GetKeyName(originalSprite);
+			Sprite spriteOverride = mappings.GetKeySprite(keyName);
 			if (textCanvas == null) {
 				textCanvas = Instantiate(Resources.Load<GameObject>("Runtime/GlyphTextCanvas"), this.transform);
 			}
@@ -43,6 +42,7 @@ public class HydratedGlyph : MonoBehaviour {
 			if (spriteOverride != null) {
 				keyNameText.gameObject.SetActive(false);
 				spriteOverrideImage.gameObject.SetActive(true);
+				spriteOverrideImage.sprite = spriteOverride;
 				spriteOverrideImage.SetNativeSize();
 				layoutGroup.padding.left = 0;
 				layoutGroup.padding.right = 0;
