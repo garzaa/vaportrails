@@ -9,20 +9,36 @@ public class HydratedGlyph : MonoBehaviour {
 	const int padding = 10;
 
 	static ButtonGlyphMappings mappings;
-	Image image;
+	Image image = null;
 
-	void Awake() {
+	public List<Sprite> spritesToIgnore;
+	static HashSet<Sprite> ignoreSprites = null;
+
+	void Initialize() {
 		image = GetComponent<Image>();
 		originalSprite = image.sprite;
 		if (!mappings) mappings = GameObject.FindObjectOfType<ButtonGlyphMappings>();
-		image.enabled = false;
+		if (ignoreSprites == null) ignoreSprites = new HashSet<Sprite>(spritesToIgnore);
+		if (!spritesToIgnore.Contains(originalSprite)) {
+			image.enabled = false;
+		}
+
+		FindObjectOfType<ButtonGlyphMappings>()?.Register(this);
 	}
 
 	void Start() {
 		CheckGlyph();
 	}
 
+	void OnDestroy() {
+		FindObjectOfType<ButtonGlyphMappings>()?.Deregister(this);
+	}
+
 	public void CheckGlyph() {
+		if (image == null) Initialize();
+
+		if (spritesToIgnore.Contains(originalSprite)) return;
+
 		if (PlayerInput.usingKeyboard) {
 			string keyName = mappings.GetKeyName(originalSprite);
 			Sprite spriteOverride = mappings.GetKeySprite(keyName);

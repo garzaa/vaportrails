@@ -29,17 +29,15 @@ public class ButtonGlyphMappings : MonoBehaviour {
 	public List<KeySpriteMapping> keySpriteMappings;
 
 	Dictionary<string, ControllerGlyphs> glyphDict;
-	List<HydratedGlyph> hydratedGlyphs;
+	HashSet<HydratedGlyph> hydratedGlyphs = new HashSet<HydratedGlyph>();
 	Dictionary<Sprite, int> actionMap;
 	Dictionary<string, Sprite> keyNameMap;
 
 	bool keyboardLastFrame = false;
-	string guidLastFrame = "";
 
 	List<ControllerTemplateElementTarget> _templateElementTargets = new List<ControllerTemplateElementTarget>();
 
 	void Awake() {
-		hydratedGlyphs = new List<HydratedGlyph>(FindObjectsOfType<HydratedGlyph>(includeInactive: true));
 		glyphDict = new Dictionary<string, ControllerGlyphs>();
 		foreach (NameControllerGlyphMapping mapping in glyphMappings) {
 			foreach (string guid in mapping.GUIDs) {
@@ -67,6 +65,14 @@ public class ButtonGlyphMappings : MonoBehaviour {
 			}
 		}
 		keyboardLastFrame = PlayerInput.usingKeyboard;
+	}
+
+	public void Register(HydratedGlyph g) {
+		hydratedGlyphs.Add(g);
+	}
+
+	public void Deregister(HydratedGlyph g) {
+		hydratedGlyphs.Remove(g);
 	}
 
 	public Sprite GetGlyph(Sprite actionSprite) {

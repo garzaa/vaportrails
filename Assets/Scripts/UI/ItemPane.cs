@@ -49,7 +49,7 @@ public class ItemPane : MonoBehaviour {
 						GameObject g = Instantiate(inputTemplate, inputContainer.transform);
 						g.transform.SetAsLastSibling();
 						// it starts with the empty sprite
-						if (inputSprite != null) g.GetComponent<Image>().sprite = inputSprite;
+						g.GetComponent<Image>().sprite = inputSprite;
 					}
 				}
 			}
