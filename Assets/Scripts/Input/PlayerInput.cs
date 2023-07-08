@@ -29,13 +29,6 @@ public class PlayerInput : MonoBehaviour {
         player.AddInputEventDelegate(ShowHideMouse, UpdateLoopType.Update);
     }
 
-    public string GetControllerGUID() {
-        if (player.controllers.joystickCount > 0) {
-            return player.controllers.Joysticks[0].hardwareTypeGuid.ToString();
-        }
-        return "Keyboard";
-    }
-
     void LateUpdate() {
         comControl.LateUpdate();
     }

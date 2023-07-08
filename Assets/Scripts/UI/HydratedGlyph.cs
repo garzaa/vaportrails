@@ -5,40 +5,61 @@ using System.Collections.Generic;
 
 public class HydratedGlyph : MonoBehaviour {
 	Sprite originalSprite;
-	bool onCanvas;
 	GameObject textCanvas;
+	const int padding = 10;
 
 	static ButtonGlyphMappings mappings;
-
+	Image image;
 
 	void Awake() {
-		onCanvas = GetComponent<RectTransform>() != null;
-		if (onCanvas) {
-			originalSprite = GetComponent<Image>().sprite;
-		} else {
-			originalSprite = GetComponent<SpriteRenderer>().sprite;
-		}
+		image = GetComponent<Image>();
+		originalSprite = image.sprite;
 		if (!mappings) mappings = GameObject.FindObjectOfType<ButtonGlyphMappings>();
+		image.enabled = false;
 	}
 
 	void Start() {
-		// get a reference to the glyph canvas prefab here? nahh
 		CheckGlyph();
 	}
 
 	public void CheckGlyph() {
-		if (PlayerInput.usingKeyboard && false) {
-			string keyName = mappings.GetKey(originalSprite);
-			if (textCanvas == null) textCanvas = Instantiate(Resources.Load<GameObject>("Runtime/GlyphTextCanvas"));
-			// then instantiate (if necessary) the canvas and do the WORK
-			// then set the canvas to the text string key
+		if (PlayerInput.usingKeyboard) {
+			string keyName = "";
+			Sprite spriteOverride = mappings.GetKeySprite(originalSprite);
+			if (spriteOverride == null) keyName = mappings.GetKeyName(originalSprite);
+			if (textCanvas == null) {
+				textCanvas = Instantiate(Resources.Load<GameObject>("Runtime/GlyphTextCanvas"), this.transform);
+			}
+			textCanvas.GetComponent<RectTransform>().position = GetComponent<RectTransform>().position;
+			textCanvas.gameObject.SetActive(true);
+			image.enabled = false;
+
+			Text keyNameText = textCanvas.GetComponentInChildren<Text>(includeInactive: true);
+			// the first one will be the override 
+			Image spriteOverrideImage = textCanvas.GetComponentsInChildren<Image>(includeInactive: true)[1];
+			HorizontalLayoutGroup layoutGroup = textCanvas.GetComponent<HorizontalLayoutGroup>();
+
+			// if there's an override sprite, use that instead (needs unpadded layout)
+			if (spriteOverride != null) {
+				keyNameText.gameObject.SetActive(false);
+				spriteOverrideImage.gameObject.SetActive(true);
+				spriteOverrideImage.SetNativeSize();
+				layoutGroup.padding.left = 0;
+				layoutGroup.padding.right = 0;
+			} else {
+				keyNameText.gameObject.SetActive(true);
+				keyNameText.text = keyName;
+				spriteOverrideImage.gameObject.SetActive(false);
+				layoutGroup.padding.left = padding;
+				layoutGroup.padding.right = padding;
+			}
+			Canvas.ForceUpdateCanvases();
 		} else {
 			if (textCanvas) textCanvas.SetActive(false);
+			image.enabled = true;
 			Sprite s = mappings.GetGlyph(originalSprite);
 			if (s == null) return;
-			Debug.Log(this.name + " got glyph!!");
-			if (onCanvas) GetComponent<Image>().sprite = s;
-			else GetComponent<SpriteRenderer>().sprite = s;
+			GetComponent<Image>().sprite = s;
 		}
 	}
 }
