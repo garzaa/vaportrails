@@ -30,10 +30,10 @@ public class Interactor : MonoBehaviour {
 	}
 
 	void Update() {
-		trigger.enabled = !entity.frozeInputs;
+		trigger.enabled = !entity.frozeInputs || (entity.frozeInputs && entity.inAttack);
 
 		if (
-			!entity.frozeInputs
+			(!entity.frozeInputs || (entity.frozeInputs && entity.inAttack))
 			&& player.GetButtonDown(RewiredConsts.Action.Interact)
 		) {
 			// deal with them leaving the collider on this frame as a result of interaction

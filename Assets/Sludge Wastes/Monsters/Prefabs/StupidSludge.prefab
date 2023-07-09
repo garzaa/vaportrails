@@ -51,6 +51,7 @@ MonoBehaviour:
       m_Calls: []
   useParentTargetingPosition: 0
   invisibleToTargeters: 1
+  hitmarkerOverride: {fileID: 0}
 --- !u!58 &2876688110008029359
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -263,6 +264,7 @@ MonoBehaviour:
     groundObject: {fileID: 0}
     groundCollider: {fileID: 0}
     distance: 99
+    jumpTime: -10
   onLedgeStep:
     m_PersistentCalls:
       m_Calls: []
@@ -340,7 +342,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   logInputData: 0
-  reactionTime: 1
+  reactionTime: 2.5
 --- !u!114 &2876688110343906918
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -354,12 +356,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   current:
-    value: 8
+    value: 7
     OnChange:
       m_PersistentCalls:
         m_Calls: []
   max:
-    value: 8
+    value: 7
     OnChange:
       m_PersistentCalls:
         m_Calls: []
