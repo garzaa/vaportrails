@@ -157,7 +157,7 @@ public class GroundCheck : MonoBehaviour {
         RaycastHit2D downHit = Physics2D.Raycast(
             start,
             Vector2.down,
-            col.bounds.extents.y + groundCastLength,
+            col.bounds.extents.y + groundCastLength + 0.5f,
             defaultLayerMask
         );
 

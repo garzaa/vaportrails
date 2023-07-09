@@ -251,10 +251,17 @@ public class EntityController : Entity {
             // since it wasn't being rotated the previous step
             rb2d.velocity = rb2d.velocity.Rotate(groundData.normalRotation);
 		} else if ((groundData.grounded) && (angleStepDiff != 0) && (Time.unscaledTime - jumpTime > 0.5f)) {
-			// if they're moving onto flat ground from a downwards slope, let physics take care of it
-			// otherwise they might get popped into the air
-			// but if they're NOT moving onto flat ground from a downwards slope, follow the hill corner
-			if (!(groundData.normalRotation == 0 && rb2d.velocity.y <= 0.1)) {
+			// if moving over a convex corner of ground, then adjust velocity accordingly
+			// if moving through a concave corner, physics will handle it since friction and bounce are both 0
+			// counterclockwise is positive for angles!
+			float vx = rb2d.velocity.x;
+			bool fromUphillToFlat = (groundData.normalRotation == 0) && (
+				(vx > 0 && angleStepDiff < 0) || (vx < 0 && angleStepDiff > 0)
+			);
+			bool fromFlatToDownhill = ((vx > 0 && groundData.normalRotation < 0) || (vx < 0 && groundData.normalRotation > 0)) && (
+				(vx > 0 && angleStepDiff < 0) || (vx < 0 && angleStepDiff > 0)
+			);
+			if (fromUphillToFlat || fromFlatToDownhill) {
 				rb2d.velocity = rb2d.velocity.Rotate(angleStepDiff);
 			}
 		}
