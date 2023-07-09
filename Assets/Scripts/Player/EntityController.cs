@@ -750,7 +750,7 @@ public class EntityController : Entity {
 	public void EndDashCooldown() {
 		if (canDash) return;
 		// don't flash cyan if it's an enemy not being controlled
-		if (input.isHuman && (groundData.grounded || wallData.touchingWall)) {
+		if (input.isHuman && (groundData.grounded || wallData.touchingWall || (currentAirDashes>0))) {
 			shader.FlashCyan();
 		}
 		canDash = true;
