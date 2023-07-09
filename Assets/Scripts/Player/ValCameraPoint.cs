@@ -11,12 +11,14 @@ public class ValCameraPoint : MonoBehaviour {
 	float cameraRange = 2f;
 	float cameraSmoothTime = 0.5f;
 	PlayerInput input;
+	Entity player;
 
 	Vector2 targetPos;
 
 	void Start() {
 		groundData = GetComponentInParent<GroundCheck>().groundData;
 		input = GetComponentInParent<PlayerInput>();
+		player = input.GetComponent<Entity>();
 	}
 
 	// void Update() {
@@ -32,6 +34,9 @@ public class ValCameraPoint : MonoBehaviour {
 	void Update() {
 		targetPos.x = input.GetAxis(RewiredConsts.Action.CameraHorizontal) * transform.lossyScale.x;
 		targetPos.y = input.GetAxis(RewiredConsts.Action.CameraVertical);
+
+		if (player.inCutscene) targetPos = Vector2.zero;
+
 		targetPos *= cameraRange;
 		transform.localPosition = Vector2.SmoothDamp(
 			transform.localPosition,
