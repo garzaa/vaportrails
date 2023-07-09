@@ -9,7 +9,7 @@ public abstract class Interactable : MonoBehaviour {
 	GameObject prompt;
 	AudioResource hoverSound;
 
-	void Start() {
+	protected virtual void Start() {
 		prompt = Instantiate(Resources.Load<GameObject>("Runtime/PromptBase"));
 		prompt.transform.parent = this.transform;
 		if (optionalPromptPoint != null) {
