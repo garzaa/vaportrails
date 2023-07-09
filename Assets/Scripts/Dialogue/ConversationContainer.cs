@@ -9,29 +9,20 @@ public class ConversationContainer : SavedObject {
 
 	int currentConversation = 0;
 
-	bool _unread;
-
-	public bool unread => _unread || currentConversation<conversations.Count-1;
-
-	override protected void Initialize() {
-		_unread = true;
-	}
+	public bool unread => (currentConversation < conversations.Count);
 
 	protected override void LoadFromProperties(bool startingUp) {
-		_unread = Get<bool>("unread");
 		currentConversation = Get<int>("currentConversation");
 	}
 
 	public List<DialogueLine> GetNextConversation() {
-		_unread = false;
-		if (currentConversation == conversations.Count-1) {
-			return conversations[currentConversation].lines;
+		if (currentConversation >= conversations.Count) {
+			return conversations[conversations.Count-1].lines;
 		}
 		return conversations[currentConversation++].lines;
 	}
 
 	protected override void SaveToProperties(ref Dictionary<string, object> properties) {
-		properties["unread"] = unread;
 		properties["currentConversation"] = currentConversation;
 	}
 
