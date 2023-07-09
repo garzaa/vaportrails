@@ -30,6 +30,7 @@ public class GroundCheck : MonoBehaviour {
     // avoid physics jank
     const float minHitInterval = 0.3f;
     float lastHitTime = -1000f;
+    float lengthMultiplier = 1f;
 
     const float groundCastLength = 0.5f;
     const float maxClimbAngle = 45;
@@ -172,7 +173,8 @@ public class GroundCheck : MonoBehaviour {
 
     RaycastHit2D DefaultLinecast(Vector2 origin) {
         Vector2 start = origin + Vector2.up * 0.05f;
-        Vector2 end = origin + (-currentNormal * 0.25f);
+        lengthMultiplier = (rb2d.velocity.y < 0) ? 0.25f : 1f;
+        Vector2 end = origin + (-currentNormal * 0.25f * lengthMultiplier);
 
         Debug.DrawLine(start, end, Color.red);
         return Physics2D.Linecast(

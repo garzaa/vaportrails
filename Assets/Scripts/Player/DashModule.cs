@@ -8,6 +8,7 @@ public class DashModule : MonoBehaviour {
 
 	EntityController entity;
 	PlayerInput input;
+	Rewired.Player rewiredPlayer;
 	GroundData groundData;
 
 	public bool canDash { get; private set; }
@@ -18,6 +19,7 @@ public class DashModule : MonoBehaviour {
 		input = GetComponent<PlayerInput>();
 		groundData = GetComponent<GroundCheck>().groundData;
 		EnableDash();
+		rewiredPlayer = Rewired.ReInput.players.GetPlayer(0);
 	}
 
 	void Update() {

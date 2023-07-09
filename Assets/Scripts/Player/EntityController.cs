@@ -81,6 +81,9 @@ public class EntityController : Entity {
 	public float angleStepDiff => groundData.normalRotation - angleLastStep;
 	float jumpTime = -10;
 
+	Rewired.Player rewiredPlayer;
+	CameraShake cameraShake;
+
 	override protected void Awake() {
 		base.Awake();
 		input = GetComponent<PlayerInput>();
@@ -95,6 +98,8 @@ public class EntityController : Entity {
 		RefreshAirMovement();
 		canDash = true;
 		if (!facingRight && faceRightOnStart) _Flip();
+		rewiredPlayer = Rewired.ReInput.players.GetPlayer(0);
+		cameraShake = GameObject.FindObjectOfType<CameraShake>();
 	}
 
 	override protected void Update() {
@@ -661,6 +666,7 @@ public class EntityController : Entity {
 		canDash = false;
 		dashing = true;
 		fMod = 0;
+		if (input.isHuman) cameraShake.Shake(Vector2.right * Forward() * 0.05f);
 
 		// dash at the max direction indicated by the stick, additive even if backwards
 		float speed = movement.runSpeed+movement.dashSpeed;
@@ -675,6 +681,34 @@ public class EntityController : Entity {
 		UpdateLastVelocity();
 
 		this.WaitAndExecute(EndDashCooldown, movement.dashCooldown);
+	}
+
+	protected override void OnEffectGroundHit(float fallDistance) {
+		// vibrate a bit on both motors
+		if (fallDistance > 7f) {
+			cameraShake.Shake(Vector2.up * 0.5f);
+			if (!PlayerInput.usingKeyboard) {
+				rewiredPlayer.SetVibration(0, 1f, 0.5f);
+				rewiredPlayer.SetVibration(1, 1f, 0.5f);
+			}
+		}
+		else if (fallDistance > 2f) {
+			if (!PlayerInput.usingKeyboard) {
+				rewiredPlayer.SetVibration(0, 0.5f, 0.2f);
+				rewiredPlayer.SetVibration(1, 0.5f, 0.2f);
+			}
+		}
+	}
+
+	public override void OnHit(AttackHitbox hitbox) {
+		base.OnHit(hitbox);
+		if (hitbox is EnvironmentHitbox) {
+			cameraShake.Shake(Vector2.up * 0.5f);
+			if (!PlayerInput.usingKeyboard) {
+				rewiredPlayer.SetVibration(0, 1f, 0.5f);
+				rewiredPlayer.SetVibration(1, 1f, 0.5f);
+			}
+		}
 	}
 
 	public void StopDashAnimation() {

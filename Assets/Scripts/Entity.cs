@@ -190,12 +190,11 @@ public class Entity : MonoBehaviour, IHitListener {
 	}
 
 
-	public void OnHit(AttackHitbox hitbox) {
+	public virtual void OnHit(AttackHitbox hitbox) {
 		if (staggerable) {
 			Vector2 v = GetKnockback(hitbox);
 			// if it's envirodamage, return to safety
 			if (hitbox is EnvironmentHitbox && returnToSafety) {
-				// transition to air hurt isn't happening here...why
 				rb2d.velocity = Vector2.zero;
 				CancelInvoke(nameof(ReturnToSafety));
 				Invoke(nameof(ReturnToSafety), hitbox.data.hitstop);
@@ -324,6 +323,8 @@ public class Entity : MonoBehaviour, IHitListener {
 		animator.SetBool("Tumbling", true);
 	}
 
+	protected virtual void OnEffectGroundHit(float fallDistance) {}
+
 	protected virtual void Update() {
 		UpdateFootfallSound();
 		if (groundData.hitGround && canGroundHitEffect && fallStart-transform.position.y > 4f/64f) {
@@ -336,6 +337,7 @@ public class Entity : MonoBehaviour, IHitListener {
 			if (fallStart - transform.position.y > 7) {
 				GameObject.FindObjectOfType<CameraShake>().XSmallShake();
 			}
+			OnEffectGroundHit(fallStart - transform.position.y);
 		}
 		if (wallData.hitWall) {
 			landNoise?.PlayFrom(this.gameObject);
