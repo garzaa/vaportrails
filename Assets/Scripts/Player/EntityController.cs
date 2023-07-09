@@ -53,6 +53,7 @@ public class EntityController : Entity {
 
 	bool stickDownLastFrame;
 	bool keepJumpSpeed;
+	public bool justJumped => keepJumpSpeed;
 	Coroutine keepJumpSpeedRoutine;
 
 	public bool inAttack => currentAttack != null;
@@ -287,7 +288,11 @@ public class EntityController : Entity {
                 } else {
                     rb2d.velocity = new Vector2(0, rb2d.velocity.y);
                 }
-            }
+            } else {
+				if (Mathf.Abs(rb2d.velocity.x) < 1f) {
+					rb2d.velocity = new Vector2(0, rb2d.velocity.y);
+				}
+			}
         }
 
         if (speeding) {

@@ -85,7 +85,7 @@ public class AIPlayer : MonoBehaviour {
 		}
 	}
 
-	void SetInput(FrameInput input) {
+	void SetInput(FrameInput input, bool onlyAxes = false) {
 		if (input.actionIDAxes == null) {
 			// then there's no input for this frame, just stay still
 			return;
@@ -93,15 +93,17 @@ public class AIPlayer : MonoBehaviour {
 		foreach (KeyValuePair<int, int> IDAxis in input.actionIDAxes) {
 			comControl.SetActionAxis(IDAxis.Key, IDAxis.Value);
 		}
-		foreach (int actionID in input.actionIDs) {
-			comControl.SetActionButton(actionID);
+		if (!onlyAxes) {
+			foreach (int actionID in input.actionIDs) {
+				comControl.SetActionButton(actionID);
 
-			// if attack, attack towards player
-			if (PlayerInput.IsAttack(actionID)) {
-				comControl.SetActionAxis(
-					RewiredConsts.Action.Horizontal,
-					Mathf.Sign(opponent.transform.position.x - transform.position.x)
-				);
+				// if attack, attack towards player
+				if (PlayerInput.IsAttack(actionID)) {
+					comControl.SetActionAxis(
+						RewiredConsts.Action.Horizontal,
+						Mathf.Sign(opponent.transform.position.x - transform.position.x)
+					);
+				}
 			}
 		}
 	}
@@ -117,7 +119,9 @@ public class AIPlayer : MonoBehaviour {
 	void PlayGhost() {
 		if (Time.time - reactionTime < lastGhostInputTime) {
 			comControl.Zero();
-			SetInput(lastGhostInput);
+			// if this isn't set, there will be a button down event every frame
+			// until the next reaction time poll
+			SetInput(lastGhostInput, onlyAxes: true);
 			return;
 		}
 

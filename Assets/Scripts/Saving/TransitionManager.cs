@@ -70,7 +70,7 @@ public class TransitionManager : SavedObject {
 	}
 
 	IEnumerator DisableHardLock() {
-		yield return new WaitForEndOfFrame();
+		yield return new WaitForSeconds(0.5f);
 		hardLockCamera.SetActive(false);
 	}
 

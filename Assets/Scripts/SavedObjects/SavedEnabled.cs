@@ -31,4 +31,8 @@ public class SavedEnabled : SavedObject {
 		if (enabled) Enable();
 		else Disable();
 	}
+
+	public bool IsEnabled() {
+		return childrenActive;
+	}
 }

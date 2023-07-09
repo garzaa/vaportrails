@@ -326,7 +326,7 @@ public class Entity : MonoBehaviour, IHitListener {
 
 	protected virtual void Update() {
 		UpdateFootfallSound();
-		if (groundData.hitGround && canGroundHitEffect && fallStart-transform.position.y > 0.25f) {
+		if (groundData.hitGround && canGroundHitEffect && fallStart-transform.position.y > 4f/64f) {
 			if (!stunned && defaultFootfall) {
 				FootfallSound();
 			}
