@@ -10,6 +10,7 @@ public class HydratedGlyph : MonoBehaviour {
 
 	static ButtonGlyphMappings mappings;
 	Image image = null;
+	Image borderImage = null;
 
 	public List<Sprite> spritesToIgnore;
 	HashSet<Sprite> ignoreSprites = null;
@@ -39,43 +40,46 @@ public class HydratedGlyph : MonoBehaviour {
 
 		if (ignoreSprites.Contains(originalSprite)) return;
 
-		if (PlayerInput.usingKeyboard) {
-			string keyName = mappings.GetKeyName(originalSprite);
-			Sprite spriteOverride = mappings.GetKeySprite(keyName);
-			if (textCanvas == null) {
-				textCanvas = Instantiate(Resources.Load<GameObject>("Runtime/GlyphTextCanvas"), this.transform);
-			}
+		if (textCanvas == null) {
+			textCanvas = Instantiate(Resources.Load<GameObject>("Runtime/GlyphTextCanvas"), this.transform);
 			textCanvas.GetComponent<RectTransform>().position = GetComponent<RectTransform>().position;
 			textCanvas.gameObject.SetActive(true);
-			image.enabled = false;
-
-			Text keyNameText = textCanvas.GetComponentInChildren<Text>(includeInactive: true);
-			// the first one will be the override 
-			Image spriteOverrideImage = textCanvas.GetComponentsInChildren<Image>(includeInactive: true)[1];
-			HorizontalLayoutGroup layoutGroup = textCanvas.GetComponent<HorizontalLayoutGroup>();
-
-			// if there's an override sprite, use that instead (needs unpadded layout)
-			if (spriteOverride != null) {
-				keyNameText.gameObject.SetActive(false);
-				spriteOverrideImage.gameObject.SetActive(true);
-				spriteOverrideImage.sprite = spriteOverride;
-				spriteOverrideImage.SetNativeSize();
-				layoutGroup.padding.left = 0;
-				layoutGroup.padding.right = 0;
-			} else {
-				keyNameText.gameObject.SetActive(true);
-				keyNameText.text = keyName;
-				spriteOverrideImage.gameObject.SetActive(false);
-				layoutGroup.padding.left = padding;
-				layoutGroup.padding.right = padding;
-			}
-		} else {
-			if (textCanvas) textCanvas.SetActive(false);
-			image.enabled = true;
-			Sprite s = mappings.GetGlyph(originalSprite);
-			if (s == null) return;
-			GetComponent<Image>().sprite = s;
+			borderImage = textCanvas.GetComponent<Image>();
 		}
+		image.enabled = false;
+		Sprite spriteOverride = null;
+		string keyName = "";
+
+		Text keyNameText = textCanvas.GetComponentInChildren<Text>(includeInactive: true);
+		// the first one will be the override 
+		Image spriteOverrideImage = textCanvas.GetComponentsInChildren<Image>(includeInactive: true)[1];
+		HorizontalLayoutGroup layoutGroup = textCanvas.GetComponent<HorizontalLayoutGroup>();
+
+		if (PlayerInput.usingKeyboard) {
+			keyName = mappings.GetKeyName(originalSprite);
+			spriteOverride = mappings.GetKeySprite(keyName);
+		} else {
+			spriteOverride = mappings.GetGlyph(originalSprite);
+		}
+
+		// if there's an override sprite, use that instead (needs unpadded layout)
+		if (spriteOverride != null) {
+			borderImage.enabled = false;
+			keyNameText.gameObject.SetActive(false);
+			spriteOverrideImage.gameObject.SetActive(true);
+			spriteOverrideImage.sprite = spriteOverride;
+			spriteOverrideImage.SetNativeSize();
+			layoutGroup.padding.left = 0;
+			layoutGroup.padding.right = 0;
+		} else {
+			borderImage.enabled = true;
+			keyNameText.gameObject.SetActive(true);
+			keyNameText.text = keyName;
+			spriteOverrideImage.gameObject.SetActive(false);
+			layoutGroup.padding.left = padding;
+			layoutGroup.padding.right = padding;
+		}
+
 		Canvas.ForceUpdateCanvases();
 	}
 }
