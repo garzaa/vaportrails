@@ -15,7 +15,7 @@ public class PlayerInput : MonoBehaviour {
 
     public ComputerController comControl { get; private set; }
 
-    public static bool usingKeyboard = false;
+    public static bool usingKeyboard = true;
 
 	void Awake() {
         player = ReInput.players.GetPlayer(0);

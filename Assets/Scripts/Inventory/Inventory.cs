@@ -39,8 +39,8 @@ public class Inventory : SavedObject {
 	public void AddItem(Item item, int count, bool quiet) {
 		item.OnPickup(this, quiet);
 
-		if (Has(item) && item.stackable) {
-			items[item.name] += count;
+		if (Has(item)) {
+			if (item.stackable) items[item.name] += count;
 		} else {
 			items[item.name] = count;
 		}
@@ -53,7 +53,7 @@ public class Inventory : SavedObject {
 			item.OnPickup(this, true);
 
 			if (Has(item)) {
-				items[item.name] += 1;
+				if (item.stackable) items[item.name] += 1;
 			} else {
 				items[item.name] = 1;
 			}

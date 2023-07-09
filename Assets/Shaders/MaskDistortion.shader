@@ -153,9 +153,9 @@ Shader "Custom2D/MaskDistortion"
 
 				fixed4 color = lerp(c, grabPixel, lerpAmt);
 
+				color.a *= i.color.a;
 				color.rgb *= color.a;
 
-				color.a *= i.color.a;
 
 				return color;
 			}
