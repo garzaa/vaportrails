@@ -100,6 +100,8 @@ Shader "Custom2D/WorldSpaceTextureLine"
 				// if alpharamp.a * color.a < cutoff, clip
 				clip((a * color.a) - _AlphaCutoff);
 
+				color.a *= a;
+
 				return color;
 			}
 

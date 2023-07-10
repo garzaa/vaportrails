@@ -14,6 +14,9 @@ public class PlayerProperties : SavedObject {
 	}
 
 	protected override void LoadFromProperties(bool startingUp) {
+		// THIS IS ALWAYS FROM "STARTING UP" NO DUH
+		// JUST CHECK IF TRANSITION IS EMPTY OR SOMETHING
+		// OR IF LOADED SCENE MATCHES THE SAVE'S LAST SAVED SCENE
 		hp.SetCurrent(Get<int>("currentHP"));
 		hp.SetMax(Get<int>("maxHP"));
 		combatController.currentEP.Set(Get<int>("currentEP"));
