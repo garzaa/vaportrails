@@ -354,7 +354,7 @@ public class Entity : MonoBehaviour, IHitListener {
 			launchRotation.enabled = stunned && !groundData.grounded;
 		}
 
-		if (ySpeedLastFrame>=0 && rb2d.velocity.y<0) {
+		if ((ySpeedLastFrame>=0 && rb2d.velocity.y<0) || wallData.leftWall) {
 			fallStart = transform.position.y;
 		} 
 		ySpeedLastFrame = rb2d.velocity.y;

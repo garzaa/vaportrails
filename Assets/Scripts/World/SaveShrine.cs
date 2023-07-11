@@ -10,16 +10,17 @@ public class SaveShrine : SavedObject, IPlayerEnterListener {
 	
 	public GameObject hackInteractable;
 
+	Transform playerHead;
+	Entity player;
+
 	protected override void Initialize() {
 		animator = GetComponent<Animator>();
-		ConstraintSource s = headTracker.GetComponent<ParentConstraint>().GetSource(0);
-		s.sourceTransform = PlayerInput.GetPlayerOneInput().transform.Find("PlayerRig/Hips/Chest/Head");
-		headTracker.GetComponent<ParentConstraint>().SetSource(0, s);
-		headTracker.GetComponent<ScaleConstraint>().SetSource(0, s);
+		player = PlayerInput.GetPlayerOneInput().GetComponent<Entity>();
+		playerHead = player.transform.Find("PlayerRig/Hips/Chest/Head");
 		headTracker.SetActive(false);
 	}
 
-	protected override void LoadFromProperties(bool startingUp) {
+	protected override void LoadFromProperties() {
 		unlocked = Get<bool>(nameof(unlocked));
 		animator.SetBool("Unlocked", unlocked);
 		if (unlocked) {
@@ -35,12 +36,18 @@ public class SaveShrine : SavedObject, IPlayerEnterListener {
 		if (!unlocked) {
 			unlocked = true;
 			animator.SetTrigger("Unlock");
+			player.FlipTo(this.gameObject);
+			player.EnterCutscene(this.gameObject);
+			
 		}
 		hackInteractable.SetActive(false);
 	}
 
 	public void OnPlayerEnter(Collider2D player) {
 		if (unlocked) {
+			headTracker.transform.parent = playerHead;
+			headTracker.transform.localPosition = Vector3.zero; 
+			headTracker.transform.localScale = Vector3.one;
 			headTracker.SetActive(true);
 			FindObjectOfType<SaveManager>().Save();
 			animator.SetTrigger("PlaySaveEffect");
@@ -49,10 +56,12 @@ public class SaveShrine : SavedObject, IPlayerEnterListener {
 
 	public void OnPlayerExit() {
 		headTracker.gameObject.SetActive(false);
+		headTracker.transform.parent = this.transform;
 	}
 
 	public void FinishHackAnimation() {
 		OnPlayerEnter(null);
+		player.ExitCutscene(this.gameObject);
 	}
 
 	public void SetPlayerKneeling() {

@@ -20,7 +20,7 @@ public abstract class SavedObject : MonoBehaviour {
 	void OnEnable() {
 		Load();
 		Initialize();
-		if (hasSavedData) LoadFromProperties(true);
+		if (hasSavedData) LoadFromProperties();
 	}
 
 	void Load() {
@@ -49,12 +49,12 @@ public abstract class SavedObject : MonoBehaviour {
 
 	public void AfterDiskLoad() {
 		Load();
-		if (hasSavedData) LoadFromProperties(false);
+		if (hasSavedData) LoadFromProperties();
 	}
 
 	// this happens first, to hook up inter-object references
 	protected virtual void Initialize() {}
-	protected abstract void LoadFromProperties(bool startingUp);
+	protected abstract void LoadFromProperties();
 	protected abstract void SaveToProperties(ref Dictionary<string, object> properties);
 
 	public virtual string GetObjectPath() {

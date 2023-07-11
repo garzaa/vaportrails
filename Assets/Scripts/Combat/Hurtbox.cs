@@ -17,17 +17,21 @@ public class Hurtbox : MonoBehaviour {
 	}
 
 	public bool VulnerableTo(AttackHitbox attack) {
-		foreach (IHitListener h in hitListeners) {
-			if (!h.CanBeHit(attack)) {
-				return false;
+		if (hitListeners != null) {
+			foreach (IHitListener h in hitListeners) {
+				if (!h.CanBeHit(attack)) {
+					return false;
+				}
 			}
 		}
 		return true;
 	}
 
 	public void HitProbe(AttackHitbox attack) {
-		foreach (IHitListener hitListener in hitListeners) {
-			hitListener.OnHitCheck(attack);
+		if (hitListeners != null) {
+			foreach (IHitListener hitListener in hitListeners) {
+				hitListener.OnHit(attack);
+			}
 		}
 	}
 
@@ -37,8 +41,10 @@ public class Hurtbox : MonoBehaviour {
 		}
 		hitEvent.Invoke();
 		
-		foreach (IHitListener hitListener in hitListeners) {
-			hitListener.OnHit(attack);
+		if (hitListeners != null) {
+			foreach (IHitListener hitListener in hitListeners) {
+				hitListener.OnHit(attack);
+			}
 		}
 	}
 

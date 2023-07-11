@@ -256,7 +256,12 @@ public class EntityController : Entity {
             // on a ground hit, rotate the velocity to the slope normal
             // since it wasn't being rotated the previous step
             rb2d.velocity = rb2d.velocity.Rotate(groundData.normalRotation);
-		} else if ((groundData.grounded) && (angleStepDiff != 0) && (Time.unscaledTime - jumpTime > 0.5f)) {
+		} else if (
+			(groundData.grounded)
+			&& (angleStepDiff != 0)
+			&& (Time.unscaledTime - jumpTime > 0.5f)
+			&& ((Mathf.Abs(groundData.normalRotation) < 46f) || Mathf.Abs(groundData.normalRotation) > 90+46)
+		) {
 			// if moving over a convex corner of ground, then adjust velocity accordingly
 			// if moving through a concave corner, physics will handle it since friction and bounce are both 0
 			// counterclockwise is positive for angles!

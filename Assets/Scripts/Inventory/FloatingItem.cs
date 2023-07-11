@@ -17,8 +17,8 @@ public class FloatingItem : SavedEnabled, IPlayerEnterListener {
 		}
 	}
 
-	protected override void LoadFromProperties(bool startingUp) {
-		base.LoadFromProperties(startingUp);
+	protected override void LoadFromProperties() {
+		base.LoadFromProperties();
 		if (!Get<bool>("enabled")) {
 			if (takenSprite) {
 				spriteRenderer.enabled = true;

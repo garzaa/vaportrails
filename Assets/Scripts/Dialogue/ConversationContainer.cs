@@ -11,7 +11,7 @@ public class ConversationContainer : SavedObject {
 
 	public bool unread => (currentConversation < conversations.Count);
 
-	protected override void LoadFromProperties(bool startingUp) {
+	protected override void LoadFromProperties() {
 		currentConversation = Get<int>("currentConversation");
 	}
 

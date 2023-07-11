@@ -15,7 +15,7 @@ public class Inventory : SavedObject {
 		itemChangeListeners = FindObjectsOfType<ItemChangeListener>(includeInactive: true);
 	}
 
-	protected override void LoadFromProperties(bool startingUp) {
+	protected override void LoadFromProperties() {
 		items = Get<Dictionary<string, int>>("items");
 		CheckItemChangeListeners();
 	}

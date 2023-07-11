@@ -1,10 +1,14 @@
 using UnityEngine;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 [CreateAssetMenu(fileName = "Transition", menuName = "Data/Runtime/Transition")]
 public class Transition : ScriptableObject {
-    public SubwayTransition subway;
-    public PlayerPositionTransition position;
-    public Beacon beacon;
+    public SubwayTransition subway = null;
+    public PlayerPositionTransition position = null;
+    public Beacon beacon = null;
 
     public void Clear() {
         subway = null;
@@ -14,6 +18,16 @@ public class Transition : ScriptableObject {
 
     public bool IsEmpty() {
         return !(subway || position || beacon);
+    }
+
+    #if UNITY_EDITOR
+    void OnEnable() {
+        EditorApplication.playModeStateChanged += OnPlayModeChanged;
+    }
+    #endif
+
+    void OnPlayModeChanged(PlayModeStateChange change) {
+        if (!EditorApplication.isPlaying) Clear();
     }
 
     public class NullableTransitionValue {

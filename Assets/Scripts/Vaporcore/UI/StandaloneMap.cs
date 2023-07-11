@@ -7,6 +7,8 @@ public class StandaloneMap : MonoBehaviour {
 	GameObject mapUI;
 	PlayerInput input;
 
+	public bool open => mapUI.activeSelf;
+
 	void Start() {
 		player = PlayerInput.GetPlayerOneInput().GetComponent<Entity>();
 		mapUI = transform.GetChild(0).gameObject;

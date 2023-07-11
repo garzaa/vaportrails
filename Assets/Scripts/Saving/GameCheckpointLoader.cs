@@ -7,7 +7,7 @@ public class GameCheckpointLoader : SavedObject {
 	bool loadedBefore = false;
 	public GameCheckpoint checkpoint;
 
-	protected override void LoadFromProperties(bool startingUp) {
+	protected override void LoadFromProperties() {
 		loadedBefore = Get<bool>(nameof(loadedBefore));
 	}
 

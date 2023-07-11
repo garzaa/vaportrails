@@ -13,15 +13,18 @@ public class PlayerProperties : SavedObject {
 		hp = GetComponent<HP>();
 	}
 
-	protected override void LoadFromProperties(bool startingUp) {
-		// THIS IS ALWAYS FROM "STARTING UP" NO DUH
-		// JUST CHECK IF TRANSITION IS EMPTY OR SOMETHING
-		// OR IF LOADED SCENE MATCHES THE SAVE'S LAST SAVED SCENE
+	protected override void LoadFromProperties() {
+		// if transition is empty, then it's a from-disk load
+		// as opposed to a transition load
+		bool transitionEmpty = FindObjectOfType<TransitionManager>().transition.IsEmpty();
+
 		hp.SetCurrent(Get<int>("currentHP"));
 		hp.SetMax(Get<int>("maxHP"));
 		combatController.currentEP.Set(Get<int>("currentEP"));
 		combatController.maxEP.Set(Get<int>("maxEP"));
-		if (!startingUp) transform.position = Get<Vector3>("pos");
+		if (transitionEmpty) {
+			transform.position = Get<Vector3>("pos");
+		}
 		bool right = Get<bool>("facingRight");
 		if ((right && !player.facingRight) || (!right && player.facingRight)) {
 			player._Flip();

@@ -16,9 +16,10 @@ public class TransitionManager : SavedObject {
 	float elapsedTime;
 	float transitionEndTime;
 
-	protected override void LoadFromProperties(bool startingUp) {}
+	protected override void LoadFromProperties() {}
 
 	public void LoadLastSavedScene() {
+		transition.Clear();
 		SceneManager.LoadScene(Get<string>("scene"));
 	}
 
@@ -59,7 +60,6 @@ public class TransitionManager : SavedObject {
 			StartCoroutine(FlipPlayer(player, beaconWrapper));
 		}
 		
-		transition.Clear();
 		StartCoroutine(DisableHardLock());
 	}
 
@@ -82,26 +82,30 @@ public class TransitionManager : SavedObject {
 	}
 
 	public void SubwayTransition(Transition.SubwayTransition subwayTransition) {
+		transition.Clear();
 		transition.subway = subwayTransition;
 		SceneManager.LoadScene(subwayTransition.scene);
 	}
 
 	public void BeaconTransition(Beacon beacon) {
+		transition.Clear();
 		string pathToLoad = beacon.leftScene.ScenePath;
 		if (SceneManager.GetActiveScene().path == beacon.leftScene.ScenePath) {
 			pathToLoad = beacon.rightScene.ScenePath;
 		}
 		transition.beacon = beacon;
-		SceneTransition(pathToLoad);
+		StartCoroutine(LoadAsync(pathToLoad));
 	}
 
 	public void PositionTransition() {}
 
 	public void SceneTransition(string scenePath) {
+		transition.Clear();
 		StartCoroutine(LoadAsync(scenePath));
 	}
 
 	public void StraightLoad(string scenePath) {
+		transition.Clear();
 		SyncObjectsToRuntime();
 		SceneManager.LoadScene(scenePath);
 	}

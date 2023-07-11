@@ -15,27 +15,22 @@ public class ValCameraPoint : MonoBehaviour {
 
 	Vector2 targetPos;
 
+	StandaloneMap quickMap;
+
 	void Start() {
 		groundData = GetComponentInParent<GroundCheck>().groundData;
 		input = GetComponentInParent<PlayerInput>();
 		player = input.GetComponent<Entity>();
+		quickMap = FindObjectOfType<StandaloneMap>();
 	}
-
-	// void Update() {
-	// 	float yPos = groundData.grounded ? groundOffset : 0;
-
-	// 	transform.localPosition = Vector3.MoveTowards(
-	// 		transform.localPosition,
-	// 		Vector3.up * yPos,
-	// 		1f * Time.deltaTime
-	// 	);
-	// }
 
 	void Update() {
 		targetPos.x = input.GetAxis(RewiredConsts.Action.CameraHorizontal) * transform.lossyScale.x;
 		targetPos.y = input.GetAxis(RewiredConsts.Action.CameraVertical);
 
-		if (player.inCutscene) targetPos = Vector2.zero;
+		if (player.inCutscene || (quickMap && quickMap.open)) {
+			targetPos = Vector2.zero;
+		}
 
 		targetPos *= cameraRange;
 		transform.localPosition = Vector2.SmoothDamp(

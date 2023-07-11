@@ -10,7 +10,7 @@ public class GameFlags : SavedObject {
 		changeListeners = FindObjectsOfType<GameFlagChangeListener>(includeInactive: true);
 	}
 
-	protected override void LoadFromProperties(bool startingUp) {
+	protected override void LoadFromProperties() {
 		flags = GetHashSet<string>(nameof(flags));
 	}
 
