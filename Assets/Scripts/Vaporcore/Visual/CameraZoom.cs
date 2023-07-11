@@ -12,12 +12,16 @@ public class CameraZoom : MonoBehaviour {
 
 	Coroutine zoomRoutine;
 
-	public int zoomLevel { get; private set; }
+	int zoomLevel = 1;
 
 	void Start() {
 		pixelCamera = GetComponent<PixelPerfectCamera>();
 		x = pixelCamera.refResolutionX;
 		y = pixelCamera.refResolutionY;
+	}
+
+	public int GetZoomLevel() {
+		return zoomLevel;
 	}
 
 	public void Zoom(int level) {

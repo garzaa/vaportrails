@@ -21,7 +21,10 @@ public class HydratedGlyph : MonoBehaviour {
 		if (!mappings) mappings = GameObject.FindObjectOfType<ButtonGlyphMappings>();
 		ignoreSprites = new HashSet<Sprite>(spritesToIgnore);
 		if (!ignoreSprites.Contains(originalSprite)) {
-			image.enabled = false;
+			// set it to fully transparent, otherwise there will be layout issues
+			Color c = image.color;
+			c.a = 0;
+			image.color = c;
 		}
 
 		FindObjectOfType<ButtonGlyphMappings>()?.Register(this);
@@ -46,7 +49,6 @@ public class HydratedGlyph : MonoBehaviour {
 			textCanvas.gameObject.SetActive(true);
 			borderImage = textCanvas.GetComponent<Image>();
 		}
-		image.enabled = false;
 		Sprite spriteOverride = null;
 		string keyName = "";
 
@@ -79,7 +81,5 @@ public class HydratedGlyph : MonoBehaviour {
 			layoutGroup.padding.left = padding;
 			layoutGroup.padding.right = padding;
 		}
-
-		Canvas.ForceUpdateCanvases();
 	}
 }

@@ -22,7 +22,6 @@ public class ButtonGlyphMappings : MonoBehaviour {
 		public Sprite spriteOverride;
 	}
 
-
 	public List<NameControllerGlyphMapping> glyphMappings;
 	public ControllerGlyphs fallback;
 	public List<SpriteActionMapping> actionMappings;
@@ -56,7 +55,7 @@ public class ButtonGlyphMappings : MonoBehaviour {
 		}
 	}
 
-	void FixedUpdate() {
+	void Update() {
 		// put this in the physics loop because why not, it doesn't need to be instant
 		if (keyboardLastFrame ^ PlayerInput.usingKeyboard) {
 			// then call allll the little hydrated glyphs to update with this
