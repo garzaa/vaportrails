@@ -56,7 +56,6 @@ public class ButtonGlyphMappings : MonoBehaviour {
 	}
 
 	void Update() {
-		// put this in the physics loop because why not, it doesn't need to be instant
 		if (keyboardLastFrame ^ PlayerInput.usingKeyboard) {
 			// then call allll the little hydrated glyphs to update with this
 			foreach (HydratedGlyph g in hydratedGlyphs) {
