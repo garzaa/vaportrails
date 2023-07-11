@@ -38,12 +38,13 @@ public class JsonSaver {
     }
     
     string GetSavePath(int slot) {
-        Directory.CreateDirectory(GetFolderPath(slot));
         return Path.Combine(GetFolderPath(slot), slot+extension);
     }
 
     public string GetFolderPath(int slot) {
-        return Path.Combine(Application.persistentDataPath, folder, slot.ToString());
+        string folderPath = Path.Combine(Application.persistentDataPath, folder, slot.ToString());
+        Directory.CreateDirectory(folderPath);
+        return folderPath;
     }
 
     public bool CompatibleVersions(int saveSlot) {

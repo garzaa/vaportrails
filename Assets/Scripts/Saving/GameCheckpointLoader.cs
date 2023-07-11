@@ -1,9 +1,9 @@
+#if UNITY_EDITOR
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
 public class GameCheckpointLoader : SavedObject {
-#if UNITY_EDITOR
 	bool loadedBefore = false;
 	public GameCheckpoint checkpoint;
 
@@ -32,5 +32,5 @@ public class GameCheckpointLoader : SavedObject {
 	public override string GetObjectPath() {
 		return $"global/{name}/{GetType().Name}";
 	}
-#endif
 }
+#endif

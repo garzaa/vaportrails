@@ -20,15 +20,15 @@ public class Transition : ScriptableObject {
         return !(subway || position || beacon);
     }
 
-    #if UNITY_EDITOR
+#if UNITY_EDITOR
     void OnEnable() {
         EditorApplication.playModeStateChanged += OnPlayModeChanged;
     }
-    #endif
 
     void OnPlayModeChanged(PlayModeStateChange change) {
         if (!EditorApplication.isPlaying) Clear();
     }
+#endif
 
     public class NullableTransitionValue {
         public static implicit operator bool(NullableTransitionValue instance) {
