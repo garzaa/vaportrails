@@ -279,7 +279,7 @@ public class EntityController : Entity {
 
         if (inputX!=0) {
 			if (!speeding || (movingForwards && inputBackwards) || (movingBackwards && inputForwards)) {
-				if (groundData.grounded && Vector2.Angle(Vector2.up, groundData.normal) < 45f && (Time.unscaledTime - jumpTime > 0.5f)) {
+				if (groundData.grounded && Vector2.Angle(Vector2.up, groundData.normal) < 46f && (Time.unscaledTime - jumpTime > 0.5f)) {
 					// if ground is a platform that's been destroyed/disabled
 					float f = groundData.groundCollider != null ? groundData.groundCollider.friction : movement.airFriction;
 					Vector2 v = Vector2.right * rb2d.mass * movement.gndAcceleration * inputX * f*f;

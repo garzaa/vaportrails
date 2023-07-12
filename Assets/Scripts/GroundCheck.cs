@@ -51,6 +51,11 @@ public class GroundCheck : MonoBehaviour {
         leftGrounded = leftHit.collider != null;
         rightGrounded = rightHit.collider != null;
 
+        currentNormal = GetGroundNormal();
+        groundData.normal = currentNormal;
+        groundData.normalRotation = Vector2.SignedAngle(Vector2.up, currentNormal);
+        groundData.distance = GetGroundDistance();
+
         grounded = detecting && (leftGrounded || rightGrounded);
         onLedge = leftGrounded ^ leftGrounded;
 
@@ -76,11 +81,6 @@ public class GroundCheck : MonoBehaviour {
 
         groundData.grounded = grounded;// && (Time.time-groundData.jumpTime > 0.2f);
         groundData.onLedge = onLedge;
-
-        currentNormal = GetGroundNormal();
-        groundData.normal = currentNormal;
-        groundData.normalRotation = Vector2.SignedAngle(Vector2.up, currentNormal);
-        groundData.distance = GetGroundDistance();
 
         if (groundCollider != null) {
             groundData.groundObject = groundCollider.gameObject;
