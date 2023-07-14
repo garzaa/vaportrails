@@ -81,7 +81,7 @@ public class CombatController : MonoBehaviour, IAttackLandListener, IHitListener
 		if (buffer.Ready()) {
 			if (groundData.grounded && !player.justJumped) {
 				EnterAttackGraph(groundAttackGraph);
-			} else if (!groundData.grounded && !wallData.touchingWall) {
+			} else if (!groundData.grounded) {
 				EnterAttackGraph(airAttackGraph);
 			}
 		}
