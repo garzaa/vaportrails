@@ -610,7 +610,7 @@ public class EntityController : Entity {
 		Invoke(nameof(UnfreezeInputs), groundFlopStunTime);
 	}
 
-	void UpdateAnimator() {
+	protected virtual void UpdateAnimator() {
         animator.SetBool("Grounded", groundData.grounded);
         animator.SetFloat("YSpeed", rb2d.velocity.y);
         animator.SetFloat("XSpeedMagnitude", Mathf.Abs(rb2d.velocity.x));
@@ -633,10 +633,6 @@ public class EntityController : Entity {
 		if (groundData.hitGround) {
 			StartCoroutine(UpdateToonMotion());
 			landingRecovery = -1;
-			// TODO: move this to ValController or something
-			// also only make it happen if fall distance is more than 0.2 because subway
-			// oh and platform bumps now, this is real
-			HairForwards();
 		}
 
 		landingRecovery = Mathf.MoveTowards(landingRecovery, 0, 4f * Time.deltaTime);
@@ -776,14 +772,6 @@ public class EntityController : Entity {
 	public void RefreshAirMovement() {
 		currentAirDashes = movement.maxAirDashes;
 		currentAirJumps = movement.maxAirJumps;
-	}
-
-	public void HairBackwards() {
-		animator.SetTrigger("HairBackwards");
-	}
-
-	public void HairForwards() {
-		animator.SetTrigger("HairForwards");
 	}
 
 	public void FreezeInputs() {

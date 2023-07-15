@@ -12,7 +12,7 @@ public class MapCameraControls : MonoBehaviour {
 
 	void Start() {
 		input = PlayerInput.GetPlayerOneInput();
-		cameraBounds = GameObject.Find("MapCameraBounds").GetComponent<PolygonCollider2D>();
+		cameraBounds = GameObject.Find("MapCameraBounds")?.GetComponent<PolygonCollider2D>();
 		z = cameraContainer.transform.position.z;
 	}
 
@@ -21,7 +21,7 @@ public class MapCameraControls : MonoBehaviour {
 		nav.y = input.GetAxis(RewiredConsts.Action.CameraVertical);
 		cameraContainer.transform.localPosition += nav * moveSpeed * Time.deltaTime;
 
-		cameraContainer.transform.position = cameraBounds.ClosestPoint(cameraContainer.transform.position);
+		if (cameraBounds != null) cameraContainer.transform.position = cameraBounds.ClosestPoint(cameraContainer.transform.position);
 		nav = cameraContainer.transform.position;
 		nav.z = z;
 		cameraContainer.transform.position = nav;
