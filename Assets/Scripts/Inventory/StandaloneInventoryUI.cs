@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class StandaloneInventoryUI : MonoBehaviour {
-	// press I to toggle inventoiry (or tab?)
 	Entity player;
 	GameObject ui;
 	InventoryUI inventoryUI;

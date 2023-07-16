@@ -3226,6 +3226,37 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Welcome to castlevania BOY
+--- !u!1 &3467300375491732824
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6364613505364866974}
+  m_Layer: 0
+  m_Name: PlayerMenuUI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6364613505364866974
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3467300375491732824}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7770972733255749213}
+  m_RootOrder: 16
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3629472485652127672
 GameObject:
   m_ObjectHideFlags: 0
@@ -9676,7 +9707,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7770972733150071080}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 23.237617, y: 11.457983, z: -10}
+  m_LocalPosition: {x: -11.734569, y: 3.1473005, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -10210,7 +10241,7 @@ MonoBehaviour:
   deathEffect: {fileID: 0}
   jumpNoise: {fileID: 11400000, guid: 8b27eba3fe91c8d4c9b28c89a0309a77, type: 2}
   faceRightOnStart: 1
-  abilities: 00000000010000000000000002000000030000000400000005000000060000000700000008000000
+  abilities: 
   movement: {fileID: 11400000, guid: f35f2ea0509505d40970214e05097932, type: 2}
   _frozeInputs: 0
   currentAttack: {fileID: 0}
@@ -10470,6 +10501,7 @@ GameObject:
   - component: {fileID: 7770972733255749287}
   - component: {fileID: 7260193622648253555}
   - component: {fileID: 1661242702755608981}
+  - component: {fileID: 34602693522011755}
   m_Layer: 0
   m_Name: Global
   m_TagString: Untagged
@@ -10505,6 +10537,7 @@ Transform:
   - {fileID: 7661804417968522777}
   - {fileID: 8958390881909020257}
   - {fileID: 1871409945329343414}
+  - {fileID: 6364613505364866974}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -10609,6 +10642,18 @@ MonoBehaviour:
   m_deselectIfBackgroundClicked: 1
   m_deselectBeforeSelecting: 1
   m_ForceModuleActive: 0
+--- !u!114 &34602693522011755
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7770972733255749212}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3b9269f580168744ab022c7c81cd1ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7770972733256971160
 GameObject:
   m_ObjectHideFlags: 0
@@ -12156,7 +12201,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7770972734024709620}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 23.237617, y: 11.457983, z: -10}
+  m_LocalPosition: {x: -11.734569, y: 3.1473005, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -13435,7 +13480,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9133618981818065003}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 23.237617, y: 11.457983, z: 0}
+  m_LocalPosition: {x: -11.734569, y: 3.1473005, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -13507,7 +13552,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1674674098262563639, guid: 5de3b9c7461ca32498b7596a76ddfe22, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.49998194
+      value: -0.49999386
       objectReference: {fileID: 0}
     - target: {fileID: 1674674098262563639, guid: 5de3b9c7461ca32498b7596a76ddfe22, type: 3}
       propertyPath: m_LocalRotation.x

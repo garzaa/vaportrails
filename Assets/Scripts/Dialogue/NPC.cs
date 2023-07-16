@@ -24,7 +24,7 @@ public class NPC : Interactable {
 	public override void OnInteract(EntityController player) {
 		// player should enter cutscene
 		dialogueUI.AddLines(GetLastConversations().GetNextConversation());
-		dialogueUI.Open(this.gameObject);
+		dialogueUI.OpenFrom(this.gameObject);
 	}
 
 	ConversationContainer GetLastConversations() {

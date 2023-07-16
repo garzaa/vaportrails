@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public class ValController : EntityController {
 	protected override void UpdateAnimator() {
+		base.UpdateAnimator();
 		if (groundData.hitGround) {
 			HairForwards();
 

@@ -105,8 +105,11 @@ public class DialogueUI : MonoBehaviour {
 		else line.callback.Invoke();
 	}
 
-	public void Open(GameObject caller) {
-		// TODO: this doesn't work if something else is already open, figure out how to actually queue them
+	public void OpenFrom(GameObject caller) {
+		CutsceneQueue.Add(() => this.Open(caller));
+	}
+ 
+	void Open(GameObject caller) {
 		foreach (EntityController entity in GameObject.FindObjectsOfType<EntityController>()) {
 			entity.EnterCutscene(this.gameObject);
 		}
@@ -126,5 +129,6 @@ public class DialogueUI : MonoBehaviour {
 		animator.SetBool("Shown", false);
 		dialogueRenderSound.PlayFrom(this.gameObject);
 		cameraInterface.RemoveFramingTarget(dialogueSource);
+		CutsceneQueue.OnCutsceneFinish();
 	}
 }

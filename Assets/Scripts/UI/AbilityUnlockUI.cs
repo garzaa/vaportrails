@@ -22,14 +22,19 @@ public class AbilityUnlockUI : MonoBehaviour {
 		if (canContinue && input.GenericContinueInput()) {
 			Time.timeScale = 1f;
 			canvas.gameObject.SetActive(false);
-		input.GetComponent<Entity>().ExitCutscene(gameObject);
+			input.GetComponent<Entity>().ExitCutscene(gameObject);
 			input.GetComponent<Animator>().SetTrigger("ResetToIdle");
 			FindObjectOfType<CameraZoom>().ResetZoom();
 			canContinue = false;
+			CutsceneQueue.OnCutsceneFinish();
 		}
 	}
 
 	public void Show(Item item) {
+		CutsceneQueue.Add(() => this.ShowUI(item));
+	}
+
+	public void ShowUI(Item item) {
 		StartCoroutine(AllowContinue(item));
 	}
 

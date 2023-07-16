@@ -29,6 +29,7 @@ public class GameCheckpointLoader : SavedObject {
 	}
 
 	// don't want to always set this crap in the editor
+	// so set global namespace to true
 	public override string GetObjectPath() {
 		return $"global/{name}/{GetType().Name}";
 	}

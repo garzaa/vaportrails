@@ -27,10 +27,15 @@ public class AttackUnlockUI : MonoBehaviour {
 			canvas.gameObject.SetActive(false);
 			input.GetComponent<Entity>().ExitCutscene(gameObject);
 			canContinue = false;
+			CutsceneQueue.OnCutsceneFinish();
 		}
 	}
 
 	public void Show(Item item) {
+		CutsceneQueue.Add(() => this.ShowUI(item));
+	}
+
+	public void ShowUI(Item item) {
 		StartCoroutine(AllowContinue(item));
 	}
 
