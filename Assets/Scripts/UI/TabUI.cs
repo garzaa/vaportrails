@@ -62,6 +62,7 @@ public class TabUI : MonoBehaviour {
 	}
 
 	void AddTabName(string tabName, int n) {
+		Debug.Log("adding tab "+tabName);
 		GameObject g = Instantiate(tabNameTemplate, tabNameContainer.transform);
 		g.GetComponentInChildren<Text>().text = tabName;
 		g.GetComponentInChildren<Button>().onClick.AddListener(() => ShowTab(n));
@@ -69,6 +70,7 @@ public class TabUI : MonoBehaviour {
 
 	void ClearTabNames() {
 		foreach (Transform t in tabNameContainer.transform) {
+			Debug.Log("removeing tab "+t.gameObject.name);
 			t.transform.SetParent(null, worldPositionStays: false);
 			Destroy(t.gameObject);
 		}

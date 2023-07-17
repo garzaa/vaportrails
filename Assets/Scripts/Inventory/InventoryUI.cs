@@ -67,7 +67,6 @@ public class InventoryUI : MonoBehaviour {
 		if (paneContainer.transform.childCount == 0) return;
 
 		Button b = paneContainer.transform.GetChild(0).GetComponent<Button>();
-		Debug.Log(this.name);
 		b.Select();
 		b.OnSelect(null);
 
@@ -75,7 +74,6 @@ public class InventoryUI : MonoBehaviour {
 	}
 
 	public void ReactToItemClick(ItemPane itemPane) {
-		Debug.Log(itemPane.name);
 		selfItemPane.SetItem(itemPane.GetItem());
 	}
 
