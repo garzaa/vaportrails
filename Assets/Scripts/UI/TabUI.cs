@@ -2,8 +2,9 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using System.Linq;
 
-public class TabUI : MonoBehaviour {
+public class TabUI : SavedObject {
 	List<GameObject> screens = null;
 	int currentTab = 0;
 	PlayerInput input;
@@ -15,18 +16,15 @@ public class TabUI : MonoBehaviour {
 	public AudioResource navSound;
 	public bool smallTab = false;
 
-// TODO: make it persist the same tab between scenes
-// saved object? 
-	void Start() {
-		ClearTabNames();
+	protected override void LoadFromProperties() {
+		currentTab = Get<int>(nameof(currentTab));
+	}
 
-		screens = new List<GameObject>();
-		foreach (Transform child in screenContainer.transform) {
-			Debug.Log("Adding screen " + child.name);
-			screens.Add(child.gameObject);
-		}
-		input = PlayerInput.GetPlayerOneInput();
-		
+	protected override void SaveToProperties(ref Dictionary<string, object> properties) {
+		properties[nameof(currentTab)] = currentTab;
+	}
+
+	void Awake() {
 		if (smallTab) {
 			tabLeft = RewiredConsts.Action.SmallTabLeft;
 			tabRight = RewiredConsts.Action.SmallTabRight;
@@ -34,7 +32,16 @@ public class TabUI : MonoBehaviour {
 			tabLeft = RewiredConsts.Action.TabLeft;
 			tabRight = RewiredConsts.Action.TabRight;
 		}
+		input = PlayerInput.GetPlayerOneInput();
+	}
 
+	void OnEnable() {
+		ClearTabNames();
+
+		screens = new List<GameObject>();
+		foreach (Transform child in screenContainer.transform) {
+			screens.Add(child.gameObject);
+		}
 		for (int i=0; i<screens.Count; i++) {
 			AddTabName(screens[i].name, i);
 		}
@@ -43,8 +50,6 @@ public class TabUI : MonoBehaviour {
 	}
 
 	void Update() {
-		if (!input) Start();
-
 		if (input.ButtonDown(tabLeft)) {
 			navSound.PlayFrom(gameObject);
 			ShowTab(currentTab-1);
@@ -64,6 +69,12 @@ public class TabUI : MonoBehaviour {
 			if (i != currentTab) screens[i].SetActive(false);
 			else screens[i].SetActive(true);
 		}
+
+		// this way if the first child item (e.g. item pane) is selected, it won't defocus the button
+		for (int i=0; i<tabNameContainer.transform.childCount; i++) {
+			Animator a = tabNameContainer.transform.GetChild(i).GetComponent<Animator>();
+			a.SetBool("SelectedInNav", i == currentTab);
+		}
 	}
 
 	void AddTabName(string tabName, int n) {
@@ -74,8 +85,8 @@ public class TabUI : MonoBehaviour {
 	}
 
 	void ClearTabNames() {
-		foreach (Transform t in tabNameContainer.transform) {
-			Debug.Log("removeing tab "+t.gameObject.name);
+		// don't alter the list while you iterate
+		foreach (Transform t in tabNameContainer.transform.Cast<Transform>().ToArray()) {
 			t.transform.SetParent(null, worldPositionStays: false);
 			Destroy(t.gameObject);
 		}
