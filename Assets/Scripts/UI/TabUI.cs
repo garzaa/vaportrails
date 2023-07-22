@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using System.Linq;
 
 public class TabUI : SavedObject {
-	List<GameObject> screens = null;
+	public List<GameObject> screens = null;
 	int currentTab = 0;
 	PlayerInput input;
 	int tabLeft, tabRight;
@@ -40,6 +40,7 @@ public class TabUI : SavedObject {
 
 		screens = new List<GameObject>();
 		foreach (Transform child in screenContainer.transform) {
+			Debug.Log("adding screen "+child.gameObject.name);
 			screens.Add(child.gameObject);
 		}
 		for (int i=0; i<screens.Count; i++) {
@@ -60,8 +61,10 @@ public class TabUI : SavedObject {
 	}
 
 	void ShowTab(int n) {
+		print("got n as " +n);
 		if (n < 0) currentTab = screens.Count-1;
 		else if (n >= screens.Count) currentTab = 0;
+		else currentTab = n;
 
 		Debug.Log("showing tab "+currentTab);
 
@@ -74,6 +77,7 @@ public class TabUI : SavedObject {
 		for (int i=0; i<tabNameContainer.transform.childCount; i++) {
 			Animator a = tabNameContainer.transform.GetChild(i).GetComponent<Animator>();
 			a.SetBool("SelectedInNav", i == currentTab);
+			if (i != currentTab) a.SetTrigger("Normal");
 		}
 	}
 
@@ -87,6 +91,7 @@ public class TabUI : SavedObject {
 	void ClearTabNames() {
 		// don't alter the list while you iterate
 		foreach (Transform t in tabNameContainer.transform.Cast<Transform>().ToArray()) {
+			Debug.Log("destrying tab "+t.GetComponentInChildren<Text>().text);
 			t.transform.SetParent(null, worldPositionStays: false);
 			Destroy(t.gameObject);
 		}

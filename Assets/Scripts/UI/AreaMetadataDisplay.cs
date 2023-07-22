@@ -8,7 +8,7 @@ public class AreaMetadataDisplay : MonoBehaviour {
 	public SlowRenderer slowRenderer;
 	AudioSource renderNoise;
 
-	public Text mapNameText;
+	public List<Text> mapNameText;
 
 	void Start() {
 		slowRenderer = GetComponentInChildren<SlowRenderer>();
@@ -16,7 +16,9 @@ public class AreaMetadataDisplay : MonoBehaviour {
 		renderNoise.enabled = false;
 		slowRenderer.GetComponent<Text>().text = "";
 		StartCoroutine(SlowRender());
-		mapNameText.text = SceneManager.GetActiveScene().name;
+		foreach (Text t in mapNameText) {
+			t.text = SceneManager.GetActiveScene().name;
+		}
 	}
 
 	IEnumerator SlowRender() {
