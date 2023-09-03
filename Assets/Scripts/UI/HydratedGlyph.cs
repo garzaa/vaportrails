@@ -18,7 +18,7 @@ public class HydratedGlyph : MonoBehaviour {
 	void Initialize() {
 		image = GetComponent<Image>();
 		originalSprite = image.sprite;
-		if (!mappings) mappings = GameObject.FindObjectOfType<ButtonGlyphMappings>();
+		if (!mappings) mappings = FindObjectOfType<ButtonGlyphMappings>();
 		ignoreSprites = new HashSet<Sprite>(spritesToIgnore);
 		if (!ignoreSprites.Contains(originalSprite)) {
 			// set it to fully transparent, otherwise there will be layout issues

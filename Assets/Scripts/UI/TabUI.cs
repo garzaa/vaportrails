@@ -40,7 +40,6 @@ public class TabUI : SavedObject {
 
 		screens = new List<GameObject>();
 		foreach (Transform child in screenContainer.transform) {
-			Debug.Log("adding screen "+child.gameObject.name);
 			screens.Add(child.gameObject);
 		}
 		for (int i=0; i<screens.Count; i++) {
@@ -61,12 +60,10 @@ public class TabUI : SavedObject {
 	}
 
 	void ShowTab(int n) {
-		print("got n as " +n);
 		if (n < 0) currentTab = screens.Count-1;
 		else if (n >= screens.Count) currentTab = 0;
 		else currentTab = n;
 
-		Debug.Log("showing tab "+currentTab);
 
 		for (int i=0; i<screens.Count; i++) {
 			if (i != currentTab) screens[i].SetActive(false);
@@ -82,7 +79,6 @@ public class TabUI : SavedObject {
 	}
 
 	void AddTabName(string tabName, int n) {
-		Debug.Log("adding tab "+tabName);
 		GameObject g = Instantiate(tabNameTemplate, tabNameContainer.transform);
 		g.GetComponentInChildren<Text>().text = tabName;
 		g.GetComponentInChildren<Button>().onClick.AddListener(() => ShowTab(n));
@@ -91,7 +87,6 @@ public class TabUI : SavedObject {
 	void ClearTabNames() {
 		// don't alter the list while you iterate
 		foreach (Transform t in tabNameContainer.transform.Cast<Transform>().ToArray()) {
-			Debug.Log("destrying tab "+t.GetComponentInChildren<Text>().text);
 			t.transform.SetParent(null, worldPositionStays: false);
 			Destroy(t.gameObject);
 		}

@@ -162,7 +162,7 @@ public class PlayerInput : MonoBehaviour {
     public static PlayerInput GetPlayerOneInput() {
         if (cachedPlayer != null) return cachedPlayer;
 
-		return GameObject.FindObjectsOfType<PlayerInput>(includeInactive: true)
+		return FindObjectsOfType<PlayerInput>(includeInactive: true)
 			.Where(x => x.humanControl)
 			.First();
 	}

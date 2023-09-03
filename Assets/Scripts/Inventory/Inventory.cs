@@ -64,7 +64,6 @@ public class Inventory : SavedObject {
 	void CheckItemChangeListeners() {
 		if (onPlayer) {
 			for (int i=0; i<itemChangeListeners.Length; i++) {
-				Debug.Log("checking item change on "+itemChangeListeners[i].name);
 				itemChangeListeners[i].OnItemAdd();
 			}
 		}
