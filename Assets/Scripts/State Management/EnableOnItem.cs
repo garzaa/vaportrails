@@ -5,7 +5,6 @@ using System.Collections.Generic;
 public class EnableOnItem : ItemChangeListener {
 	public Item item;
 	public bool disableOnItem;
-	public bool log;
 
 	Inventory inventory;
 
@@ -27,8 +26,6 @@ public class EnableOnItem : ItemChangeListener {
 		if (!inventory) {
 			inventory = PlayerInput.GetPlayerOneInput().GetComponentInChildren<Inventory>();
 		}
-
-		if (log) Debug.Log("inventory has "+item+": "+inventory.Has(item));
 
 		if (disableOnItem) {
 			gameObject.SetActive(!inventory.Has(item));

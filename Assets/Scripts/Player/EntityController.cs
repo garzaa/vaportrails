@@ -815,4 +815,8 @@ public class EntityController : Entity {
 	public List<Ability> GetAbilities() {
 		return this.abilities;
 	}
+
+	[ContextMenu("Add Animator Parameters")]
+    public void AddAnimatorParams() {
+    }
 }
