@@ -41,8 +41,13 @@ public class Terminal : MonoBehaviour, IPointerDownHandler {
         t = this;
         ClearConsole();
         terminalContainer.SetActive(false);
-        inputRecorder = GameObject.FindObjectOfType<InputRecorder>();
-        ghostRecorder = GameObject.FindObjectOfType<GhostRecorder>();
+        inputRecorder = FindObjectOfType<InputRecorder>();
+        ghostRecorder = FindObjectOfType<GhostRecorder>();
+        StartCoroutine(RunCommand());
+    }
+
+    IEnumerator RunCommand() {
+        yield return new WaitForEndOfFrame();
         foreach (String command in executeOnStart.Split("\n")) {
             ParseCommand(command.Trim());
         }

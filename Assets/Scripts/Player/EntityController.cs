@@ -553,6 +553,7 @@ public class EntityController : Entity {
 
 	public virtual void OnTech() {
 		if (!allowTech) return;
+		if (!groundData.grounded && !wallData.touchingWall) return;
 		CancelStun();
 		animator.SetBool("Tumbling", false);
 		if (wallData.touchingWall) {
@@ -815,8 +816,4 @@ public class EntityController : Entity {
 	public List<Ability> GetAbilities() {
 		return this.abilities;
 	}
-
-	[ContextMenu("Add Animator Parameters")]
-    public void AddAnimatorParams() {
-    }
 }

@@ -72,6 +72,8 @@ public class Entity : MonoBehaviour, IHitListener {
 	public bool inCutscene => cutsceneSources.Count > 0;
 	protected HashSet<GameObject> cutsceneSources = new HashSet<GameObject>();
 
+	public bool overrideFootfall = false;
+
 	protected virtual void Awake() {
 		animator = GetComponent<Animator>();
 		if (suppressAnimatorWarnings) animator.logWarnings = false;
@@ -399,6 +401,9 @@ public class Entity : MonoBehaviour, IHitListener {
 		if (!groundData.grounded) {
 			return;
 		}
+		if (overrideFootfall) {
+			currentFootfall = defaultFootfall;
+		}
 		Collider2D zone = Physics2D.OverlapBox(transform.position, footFallZoneCast, 0, Layers.FootfallZonesMask);
 		if (zone != null) {
 			currentFootfall = zone.GetComponent<FootfallZone>().footfallSound;
@@ -419,7 +424,7 @@ public class Entity : MonoBehaviour, IHitListener {
     }
 
 	public void FootfallSound() {
-		currentFootfall.PlayFrom(this.gameObject);
+		(overrideFootfall ? defaultFootfall : currentFootfall).PlayFrom(gameObject);
 	}
 
 	public void DisableFlip() {
