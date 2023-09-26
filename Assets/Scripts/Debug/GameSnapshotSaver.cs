@@ -74,7 +74,7 @@ public class GameSnapshotSaver {
 
 		if (playerInfo.controller && playerInfo.controller.HasAirJumps()) i |= 1 << 14;
 
-		if (playerInfo.controller && playerInfo.controller.canDash) i |= 1 << 15;
+		if (playerInfo.controller && playerInfo.controller.CanDash) i |= 1 << 15;
 
 		if (playerInfo.wallCheck.touchingWall) i |= 1 << 16;
 

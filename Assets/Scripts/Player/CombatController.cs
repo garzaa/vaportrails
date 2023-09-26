@@ -74,7 +74,7 @@ public class CombatController : MonoBehaviour, IAttackLandListener, IHitListener
 	}
 
 	public virtual void CheckAttackInputs() {
-		if (player.frozeInputs || graphTraverser.InGraph() || (!player.movement.canDashCancel && player.dashing)) {
+		if (player.frozeInputs || graphTraverser.InGraph() || (!player.movement.canDashCancel && player.Dashing)) {
 			return;
 		}
 

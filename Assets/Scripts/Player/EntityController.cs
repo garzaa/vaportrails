@@ -7,7 +7,7 @@ public class EntityController : Entity {
 	
 	#pragma warning disable 0649
 	[SerializeField] AudioResource jumpNoise;
-	[SerializeField] bool faceRightOnStart;
+	[SerializeField] readonly bool faceRightOnStart;
 	#pragma warning restore 0649
 
 	public List<Ability> abilities = new List<Ability>();
@@ -35,8 +35,8 @@ public class EntityController : Entity {
 	protected bool movingBackwards;
 	protected bool movingForwards;
 	// dash stuff is provided but it's up to the subcontroller to implement it
-	public bool dashing { get; protected set; }
-	public bool canDash { get; protected set; }
+	public bool Dashing { get; protected set; }
+	public bool CanDash { get; protected set; }
 	protected int currentAirJumps;
 	protected int currentAirDashes;
 
@@ -96,7 +96,7 @@ public class EntityController : Entity {
 		GetComponentInChildren<ToonMotion>()?.ignoreGameobjects.Add(speedDust.transform.parent.gameObject);
 		// p = mv
 		RefreshAirMovement();
-		canDash = true;
+		CanDash = true;
 		if (!facingRight && faceRightOnStart) _Flip();
 		rewiredPlayer = Rewired.ReInput.players.GetPlayer(0);
 		cameraShake = GameObject.FindObjectOfType<CameraShake>();
@@ -141,7 +141,7 @@ public class EntityController : Entity {
                 this.WaitAndExecute(() => justWalkedOffCliff = false, bufferDuration);
             }
         } else if (groundData.hitGround) {
-			if (currentAirDashes == 0 && canDash && movement.maxAirDashes > 0) {
+			if (currentAirDashes == 0 && CanDash && movement.maxAirDashes > 0) {
 				shader.FlashCyan();
 			}
 			RefreshAirMovement();
@@ -179,7 +179,7 @@ public class EntityController : Entity {
 	override protected void OnWallHit() {
 		WallKick();
 		// if hitting the wall from a burnt-out airdash state
-		if (currentAirDashes == 0 && canDash && movement.maxAirDashes > 0) {
+		if (currentAirDashes == 0 && CanDash && movement.maxAirDashes > 0) {
 			shader.FlashCyan();
 		}
 		fMod = 1;
@@ -245,7 +245,7 @@ public class EntityController : Entity {
             rb2d.velocity = rb2d.velocity.Rotate(groundData.normalRotation);
         }
 
-		if (dashing) {
+		if (Dashing) {
 			float magnitude = Mathf.Max(Mathf.Abs(rb2d.velocity.x), movement.dashSpeed);
 			float y = groundData.grounded ? rb2d.velocity.y : Mathf.Max(rb2d.velocity.y, 0);
 			rb2d.velocity = new Vector2(magnitude * Mathf.Sign(rb2d.velocity.x), y);
@@ -553,7 +553,6 @@ public class EntityController : Entity {
 
 	public virtual void OnTech() {
 		if (!allowTech) return;
-		if (!groundData.grounded && !wallData.touchingWall) return;
 		CancelStun();
 		animator.SetBool("Tumbling", false);
 		if (wallData.touchingWall) {
@@ -565,7 +564,8 @@ public class EntityController : Entity {
 				Quaternion.identity,
 				null
 			);
-		} else {
+			shader.FlashCyan();
+		} else if (groundData.grounded) {
 			rb2d.velocity = new Vector2(
 				input.HasHorizontalInput() ? movement.runSpeed * Mathf.Sign(input.HorizontalInput()) : 0,
 				0
@@ -576,6 +576,7 @@ public class EntityController : Entity {
 				Quaternion.identity,
 				null
 			);
+			shader.FlashCyan();
 		}
 		CancelInvoke(nameof(UnfreezeInputs));
 		UnfreezeInputs();
@@ -585,7 +586,6 @@ public class EntityController : Entity {
 		} else {
 			animator.Play("Idle", 0);
 		}
-		shader.FlashCyan();
 		canTech = false;
 		CancelInvoke(nameof(EndTechWindow));
 		GetComponent<CombatController>()?.OnTech();
@@ -651,7 +651,7 @@ public class EntityController : Entity {
 	}
 
 	void CheckFlip() {
-		if ((inputBackwards && !movingBackwards) || !groundData.grounded || dashing || frozeInputs) return;
+		if ((inputBackwards && !movingBackwards) || !groundData.grounded || Dashing || frozeInputs) return;
 
         if (facingRight && inputX<0) {
             Flip();
@@ -665,8 +665,8 @@ public class EntityController : Entity {
 
 		dashSound.PlayFrom(gameObject);
 		animator.SetTrigger(inputBackwards ? "BackDash" : "Dash");
-		canDash = false;
-		dashing = true;
+		CanDash = false;
+		Dashing = true;
 		fMod = 0;
 		if (input.isHuman) cameraShake.Shake(Vector2.right * Forward() * 0.05f);
 
@@ -715,7 +715,7 @@ public class EntityController : Entity {
 
 	public void StopDashAnimation() {
 		fMod = 0;
-		dashing = false;
+		Dashing = false;
 	}
 
 	void DropThroughPlatforms(List<RaycastHit2D>platforms) {
@@ -728,7 +728,7 @@ public class EntityController : Entity {
 	}
 
 	public virtual void OnAttackGraphEnter() {
-		if (dashing) StopDashAnimation();
+		if (Dashing) StopDashAnimation();
 	}
 
 	public void OnAttackGraphExit() {
@@ -788,12 +788,12 @@ public class EntityController : Entity {
 	}
 
 	public void EndDashCooldown() {
-		if (canDash) return;
+		if (CanDash) return;
 		// don't flash cyan if it's an enemy not being controlled
 		if (input.isHuman && (groundData.grounded || wallData.touchingWall || (currentAirDashes>0))) {
 			shader.FlashCyan();
 		}
-		canDash = true;
+		CanDash = true;
 	}
 
 	public void AddAbility(Ability a) {

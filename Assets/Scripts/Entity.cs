@@ -205,11 +205,7 @@ public class Entity : MonoBehaviour, IHitListener {
 				rb2d.velocity = v * (1f/rb2d.mass);
 				// flip to attack
 				float attackX = hitbox.transform.position.x;
-				if (facingRight && attackX<transform.position.x) {
-					Flip();
-				} else if (!facingRight && attackX>transform.position.x) {
-					Flip();
-				}
+				FlipTo(hitbox.gameObject);
 			}
 
 			if (hitbox.data.stunLength > 0) {

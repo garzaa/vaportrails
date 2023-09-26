@@ -514,10 +514,10 @@ GameObject:
   - component: {fileID: 241001570}
   - component: {fileID: 241001569}
   - component: {fileID: 241001568}
-  - component: {fileID: 241001567}
   - component: {fileID: 241001566}
   - component: {fileID: 241001565}
   - component: {fileID: 241001574}
+  - component: {fileID: 241001575}
   m_Layer: 7
   m_Name: GeoSludge
   m_TagString: Untagged
@@ -545,9 +545,8 @@ MonoBehaviour:
   allowTech: 1
   returnToSafety: 0
   deathEffect: {fileID: 1907591042830104894, guid: 118ebf591e957054b9932b07c8d7dbce, type: 3}
-  overrideFootfall: 0
+  overrideFootfall: 1
   jumpNoise: {fileID: 11400000, guid: 9aeb0783db72e1542b946631d7abe013, type: 2}
-  faceRightOnStart: 0
   abilities: 
   movement: {fileID: 11400000, guid: e2ef2836d80a070429428f5a2b6ed787, type: 2}
   _frozeInputs: 0
@@ -582,27 +581,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &241001567
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 241001564}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1df22f271fbf1e42a54f6233edee16b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  defaultFootfall: {fileID: 11400000, guid: 9dbbb54f522193f4895767cc90c5cb9d, type: 2}
-  landNoise: {fileID: 11400000, guid: 9aeb0783db72e1542b946631d7abe013, type: 2}
-  suppressAnimatorWarnings: 0
-  staggerable: 1
-  takesEnvironmentDamage: 1
-  allowTech: 1
-  returnToSafety: 1
-  deathEffect: {fileID: 1907591042830104894, guid: 118ebf591e957054b9932b07c8d7dbce, type: 3}
-  overrideFootfall: 1
 --- !u!114 &241001568
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -728,6 +706,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   humanControl: 0
+--- !u!114 &241001575
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 241001564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2a21329861b0494fba44600508a2595, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  current:
+    value: 0
+    OnChange:
+      m_PersistentCalls:
+        m_Calls: []
+  max:
+    value: 12
+    OnChange:
+      m_PersistentCalls:
+        m_Calls: []
+  OnZero:
+    m_PersistentCalls:
+      m_Calls: []
+  renderHealthbar: 1
+  verticalOffset: 0.8
 --- !u!1 &269484554
 GameObject:
   m_ObjectHideFlags: 0
@@ -3818,7 +3823,6 @@ MonoBehaviour:
   deathEffect: {fileID: 0}
   overrideFootfall: 0
   jumpNoise: {fileID: 11400000, guid: 8b27eba3fe91c8d4c9b28c89a0309a77, type: 2}
-  faceRightOnStart: 1
   abilities: 
   movement: {fileID: 11400000, guid: f35f2ea0509505d40970214e05097932, type: 2}
   _frozeInputs: 0
@@ -3857,7 +3861,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 866234367}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.5441203, y: 3.1947916, z: 0}
+  m_LocalPosition: {x: 4.6037626, y: 3.1860902, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4437,7 +4441,7 @@ MonoBehaviour:
   includedGhostfiles:
   - {fileID: 11400000, guid: b6116ab69f6b0a14a95dffa7830081fe, type: 2}
   - {fileID: 11400000, guid: ce2c14bfac2bd9940b258ccb4913e251, type: 2}
-  executeOnStart: pilot GeoSludge
+  executeOnStart: 
 --- !u!114 &948576556
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6853,7 +6857,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1581631385}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -14.450001, y: 7.81, z: 0}
+  m_LocalPosition: {x: -14.45, y: 7.81, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -14679,6 +14683,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1655840004}
+  - component: {fileID: 1655840005}
   m_Layer: 7
   m_Name: RigContainer
   m_TagString: Untagged
@@ -14704,6 +14709,20 @@ Transform:
   m_Father: {fileID: 241001573}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1655840005
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1655840003}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65e79736917e318419d1cfb1c53f96d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rb2d: {fileID: 241001566}
+  offset: -90
 --- !u!1 &1661848458
 GameObject:
   m_ObjectHideFlags: 0
@@ -17594,11 +17613,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4160817345173324201, guid: df318d9009829a34781aaa920593e61d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 22.720604
+      value: 23.0188
       objectReference: {fileID: 0}
     - target: {fileID: 4160817345173324201, guid: df318d9009829a34781aaa920593e61d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 15.973958
+      value: 15.930449
       objectReference: {fileID: 0}
     - target: {fileID: 4164111644338651459, guid: df318d9009829a34781aaa920593e61d, type: 3}
       propertyPath: m_AnchorMax.y
@@ -18186,11 +18205,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7770972733150071081, guid: df318d9009829a34781aaa920593e61d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 22.720604
+      value: 23.0188
       objectReference: {fileID: 0}
     - target: {fileID: 7770972733150071081, guid: df318d9009829a34781aaa920593e61d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 15.973958
+      value: 15.930449
       objectReference: {fileID: 0}
     - target: {fileID: 7770972733150071081, guid: df318d9009829a34781aaa920593e61d, type: 3}
       propertyPath: m_LocalPosition.z
@@ -18706,11 +18725,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7770972734024709621, guid: df318d9009829a34781aaa920593e61d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 22.720604
+      value: 23.0188
       objectReference: {fileID: 0}
     - target: {fileID: 7770972734024709621, guid: df318d9009829a34781aaa920593e61d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 15.973958
+      value: 15.930449
       objectReference: {fileID: 0}
     - target: {fileID: 7770972734033973496, guid: df318d9009829a34781aaa920593e61d, type: 3}
       propertyPath: m_SizeDelta.y
