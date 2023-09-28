@@ -3,6 +3,7 @@ using XNode;
 using System.Collections.Generic;
      
 abstract public class CombatNode : Node {
+    [Tooltip("If provided, uses the animation clip name to find an animation state name")]
     public AnimationClip animationClip;
 
     virtual public void OnNodeEnter(AttackGraphTraverser.Context context) {}

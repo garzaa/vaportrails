@@ -4,7 +4,7 @@ using Sirenix.OdinInspector;
 
 [CreateAssetMenu(menuName = "Data/AttackData")]
 public class AttackData : ScriptableObject {
-	[SerializeField] int damage;
+	[SerializeField] readonly int damage;
 
 	public bool autolink = false;
 	[HideIf(nameof(autolink))]

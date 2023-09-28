@@ -6,7 +6,7 @@ using XNode;
 [NodeWidth(270)]
 public class AttackNode : CombatNode {
 	public AttackData attackData;
-    [SerializeField] bool fromBackwardsInput;
+    [SerializeField] readonly bool fromBackwardsInput;
 
     [Input(backingValue=ShowBackingValue.Never)] 
     public AttackLink input;
@@ -30,6 +30,7 @@ public class AttackNode : CombatNode {
     }
 
     override public string GetAnimationStateName() {
+        if (animationClip) return animationClip.name;
         if (attackData) return attackData.name;
         return "";
     }

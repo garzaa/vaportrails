@@ -39,6 +39,8 @@ public class CombatController : MonoBehaviour, IAttackLandListener, IHitListener
 		buffer = GetComponent<AttackBuffer>();
 		shader = GetComponent<EntityShader>();
 		
+		if (hitbox == null) hitbox = GetComponentInChildren<AttackHitbox>(); 
+		
 		graphTraverser = new AttackGraphTraverser(this);
 	}
 
