@@ -1,5 +1,64 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-7027726971115480463
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93af5be29414da440814eeb14596c6e5, type: 3}
+  m_Name: Attack
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -104, y: -200}
+  ports:
+    keys:
+    - input
+    - links
+    - onHit
+    values:
+    - _fieldName: input
+      _node: {fileID: -7027726971115480463}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: links 0
+        node: {fileID: -4695968206199544643}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: links
+      _node: {fileID: -7027726971115480463}
+      _typeQualifiedName: AttackLink[], Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: onHit
+      _node: {fileID: -7027726971115480463}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+  animationClip: {fileID: 7400000, guid: e9bfebcb4ab427444a3336d10adafd68, type: 2}
+  attackData: {fileID: 11400000, guid: 2a9e38719255db04d8d16f45752cd5e8, type: 2}
+  input:
+    type: 0
+    direction: 0
+  links: []
+  onHit:
+    type: 0
+    direction: 0
 --- !u!114 &-4695968206199544643
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21,6 +80,8 @@ MonoBehaviour:
     - links
     - onHit
     - links 0
+    - links 1
+    - links 2
     values:
     - _fieldName: speedLinks
       _node: {fileID: -4695968206199544643}
@@ -64,7 +125,31 @@ MonoBehaviour:
         PublicKeyToken=null
       connections:
       - fieldName: input
+        node: {fileID: -7027726971115480463}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 1
+    - _fieldName: links 1
+      _node: {fileID: -4695968206199544643}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: input
         node: {fileID: -267313580461642960}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 1
+    - _fieldName: links 2
+      _node: {fileID: -4695968206199544643}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: input
+        node: {fileID: 1026604415092292593}
         reroutePoints: []
       _direction: 1
       _connectionType: 1
@@ -72,12 +157,15 @@ MonoBehaviour:
       _dynamic: 1
   animationClip: {fileID: 0}
   attackData: {fileID: 0}
-  fromBackwardsInput: 0
   input:
     type: 0
     direction: 0
   links:
   - type: 1
+    direction: 2
+  - type: 1
+    direction: 0
+  - type: 2
     direction: 0
   onHit:
     type: 0
@@ -96,7 +184,7 @@ MonoBehaviour:
   m_Name: Attack
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -104, y: -72}
+  position: {x: -120, y: 24}
   ports:
     keys:
     - input
@@ -108,7 +196,7 @@ MonoBehaviour:
       _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
       connections:
-      - fieldName: links 0
+      - fieldName: links 1
         node: {fileID: -4695968206199544643}
         reroutePoints: []
       _direction: 0
@@ -135,7 +223,6 @@ MonoBehaviour:
       _dynamic: 0
   animationClip: {fileID: 7400000, guid: 4ac7377ac9fd2444990ec3bf81742802, type: 2}
   attackData: {fileID: 11400000, guid: e884dd445b3a36b4db6b50125c3089d2, type: 2}
-  fromBackwardsInput: 0
   input:
     type: 0
     direction: 0
@@ -158,4 +245,65 @@ MonoBehaviour:
   nodes:
   - {fileID: -4695968206199544643}
   - {fileID: -267313580461642960}
+  - {fileID: -7027726971115480463}
+  - {fileID: 1026604415092292593}
   stateMachineName: GroundAttacks
+--- !u!114 &1026604415092292593
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93af5be29414da440814eeb14596c6e5, type: 3}
+  m_Name: Attack
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -88, y: 248}
+  ports:
+    keys:
+    - input
+    - links
+    - onHit
+    values:
+    - _fieldName: input
+      _node: {fileID: 1026604415092292593}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: links 2
+        node: {fileID: -4695968206199544643}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: links
+      _node: {fileID: 1026604415092292593}
+      _typeQualifiedName: AttackLink[], Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: onHit
+      _node: {fileID: 1026604415092292593}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+  animationClip: {fileID: 7400000, guid: 751367a6cb5dba54ea5b4aefbb5abb53, type: 2}
+  attackData: {fileID: 11400000, guid: 84eca5f35e54b464aa609ca09fe14825, type: 2}
+  input:
+    type: 0
+    direction: 0
+  links: []
+  onHit:
+    type: 0
+    direction: 0
