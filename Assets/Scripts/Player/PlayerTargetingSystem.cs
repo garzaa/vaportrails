@@ -74,13 +74,17 @@ public class PlayerTargetingSystem : MonoBehaviour {
 		if (targetsInRange.Count == 0) return null;
 
 		// GC
-		targetsInRange.Remove(null);
 		foreach (GameObject g in targetsInRange) {
 			float distance = (g.transform.position - this.transform.position).sqrMagnitude;
-			if (distance < maxDistance) {
+			if ((distance < maxDistance) && CanSee(g)) {
 				nearest = g;
 				maxDistance = distance;
 			}
+		}
+
+		if (nearest == null) {
+			targetsInRange.Remove(nearest);
+			return null;
 		}
 
 		Hurtbox hurtbox = nearest.GetComponent<Hurtbox>();

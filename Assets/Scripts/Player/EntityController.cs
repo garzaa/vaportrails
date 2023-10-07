@@ -7,7 +7,7 @@ public class EntityController : Entity {
 	
 	#pragma warning disable 0649
 	[SerializeField] AudioResource jumpNoise;
-	[SerializeField] readonly bool faceRightOnStart;
+	[SerializeField] bool faceRightOnStart;
 	#pragma warning restore 0649
 
 	public List<Ability> abilities = new List<Ability>();

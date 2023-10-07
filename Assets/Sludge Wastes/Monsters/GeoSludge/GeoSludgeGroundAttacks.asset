@@ -59,6 +59,68 @@ MonoBehaviour:
   onHit:
     type: 0
     direction: 0
+--- !u!114 &-5172380572621698529
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93af5be29414da440814eeb14596c6e5, type: 3}
+  m_Name: Attack
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -88, y: 456}
+  ports:
+    keys:
+    - input
+    - links
+    - onHit
+    values:
+    - _fieldName: input
+      _node: {fileID: -5172380572621698529}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: links 1
+        node: {fileID: -4695968206199544643}
+        reroutePoints: []
+      - fieldName: output
+        node: {fileID: 4503745857786013922}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: links
+      _node: {fileID: -5172380572621698529}
+      _typeQualifiedName: AttackLink[], Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: onHit
+      _node: {fileID: -5172380572621698529}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+  animationClip: {fileID: 7400000, guid: 88247d78b7ea3c945857e709371ac142, type: 2}
+  attackData: {fileID: 11400000, guid: 33324aed10090e34f909afd6c8aec9e2, type: 2}
+  input:
+    type: 0
+    direction: 0
+  links: []
+  onHit:
+    type: 0
+    direction: 0
 --- !u!114 &-4695968206199544643
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -82,6 +144,7 @@ MonoBehaviour:
     - links 0
     - links 1
     - links 2
+    - links 3
     values:
     - _fieldName: speedLinks
       _node: {fileID: -4695968206199544643}
@@ -137,13 +200,25 @@ MonoBehaviour:
         PublicKeyToken=null
       connections:
       - fieldName: input
-        node: {fileID: -267313580461642960}
+        node: {fileID: -5172380572621698529}
         reroutePoints: []
       _direction: 1
       _connectionType: 1
       _typeConstraint: 0
       _dynamic: 1
     - _fieldName: links 2
+      _node: {fileID: -4695968206199544643}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: input
+        node: {fileID: -267313580461642960}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 1
+    - _fieldName: links 3
       _node: {fileID: -4695968206199544643}
       _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
@@ -163,6 +238,8 @@ MonoBehaviour:
   links:
   - type: 1
     direction: 2
+  - type: 1
+    direction: -2
   - type: 1
     direction: 0
   - type: 2
@@ -196,7 +273,7 @@ MonoBehaviour:
       _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
       connections:
-      - fieldName: links 1
+      - fieldName: links 2
         node: {fileID: -4695968206199544643}
         reroutePoints: []
       _direction: 0
@@ -247,6 +324,8 @@ MonoBehaviour:
   - {fileID: -267313580461642960}
   - {fileID: -7027726971115480463}
   - {fileID: 1026604415092292593}
+  - {fileID: -5172380572621698529}
+  - {fileID: 4503745857786013922}
   stateMachineName: GroundAttacks
 --- !u!114 &1026604415092292593
 MonoBehaviour:
@@ -273,7 +352,7 @@ MonoBehaviour:
       _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
       connections:
-      - fieldName: links 2
+      - fieldName: links 3
         node: {fileID: -4695968206199544643}
         reroutePoints: []
       _direction: 0
@@ -305,5 +384,53 @@ MonoBehaviour:
     direction: 0
   links: []
   onHit:
+    type: 0
+    direction: 0
+--- !u!114 &4503745857786013922
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72ba6689dbedd524088c10fb550d2e19, type: 3}
+  m_Name: GroundPoundLanding
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -376, y: 536}
+  ports:
+    keys:
+    - input
+    - output
+    values:
+    - _fieldName: input
+      _node: {fileID: 4503745857786013922}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: output
+      _node: {fileID: 4503745857786013922}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: input
+        node: {fileID: -5172380572621698529}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+  animationClip: {fileID: 0}
+  normalizedOffset: 0.3
+  input:
+    type: 0
+    direction: 0
+  output:
     type: 0
     direction: 0

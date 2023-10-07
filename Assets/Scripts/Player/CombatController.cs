@@ -42,6 +42,9 @@ public class CombatController : MonoBehaviour, IAttackLandListener, IHitListener
 		if (hitbox == null) hitbox = GetComponentInChildren<AttackHitbox>(); 
 		
 		graphTraverser = new AttackGraphTraverser(this);
+		if (airAttackGraph && airAttackGraph.name.Equals("GroundAttacks")) {
+			Debug.LogWarning("may need to rename air attack graph name on "+ name);
+		}
 	}
 
 	public void OnAttackLand(AttackHitbox attack, Hurtbox hurtbox) {
