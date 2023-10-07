@@ -333,7 +333,7 @@ public class Entity : MonoBehaviour, IHitListener {
 			canGroundHitEffect = false;
 			this.WaitAndExecute(() => canGroundHitEffect=true, 0.1f);
 			if (fallStart - transform.position.y > 7) {
-				GameObject.FindObjectOfType<CameraShake>().XSmallShake();
+				FindObjectOfType<CameraShake>().XSmallShake();
 			}
 			OnEffectGroundHit(fallStart - transform.position.y);
 		}

@@ -83,6 +83,7 @@ public class EntityController : Entity {
 
 	Rewired.Player rewiredPlayer;
 	CameraShake cameraShake;
+	readonly GenerousJump generousJump = new GenerousJump(); 
 
 	override protected void Awake() {
 		base.Awake();
@@ -119,6 +120,7 @@ public class EntityController : Entity {
 	void FixedUpdate() {
 		ApplyMovement();
 		UpdateLastVelocity();
+		if (groundData.grounded) generousJump.StoreVelocity(rb2d);
 		angleLastStep = groundData.normalRotation;
 	}
 
@@ -257,7 +259,7 @@ public class EntityController : Entity {
             // since it wasn't being rotated the previous step
             rb2d.velocity = rb2d.velocity.Rotate(groundData.normalRotation);
 		} else if (
-			(groundData.grounded)
+			(groundData.grounded && !justJumped)
 			&& (angleStepDiff != 0)
 			&& (Time.unscaledTime - jumpTime > 0.5f)
 			&& ((Mathf.Abs(groundData.normalRotation) < 46f) || Mathf.Abs(groundData.normalRotation) > 90+46)
@@ -440,7 +442,7 @@ public class EntityController : Entity {
 		canShortHop = true;
 		JumpDust();
 		bool wasMovingUp = rb2d.velocity.y > 0;
-		rb2d.velocity = new Vector2(rb2d.velocity.x, Mathf.Max(rb2d.velocity.y, 0) + movement.jumpSpeed);
+		rb2d.velocity = new Vector2(rb2d.velocity.x, Mathf.Max(generousJump.GetHighestVY(rb2d), 0) + movement.jumpSpeed);
 		if (IsSpeeding() && groundData.normalRotation != 0 && input.isHuman && wasMovingUp) {
 			HighJumpDust();
 		}
@@ -705,7 +707,7 @@ public class EntityController : Entity {
 	public override void OnHit(AttackHitbox hitbox) {
 		base.OnHit(hitbox);
 		if (hitbox is EnvironmentHitbox) {
-			cameraShake.Shake(Vector2.up * 0.5f);
+			if (input.isHuman) cameraShake.Shake(Vector2.up * 0.5f);
 			if (!PlayerInput.usingKeyboard) {
 				rewiredPlayer.SetVibration(0, 1f, 0.5f);
 				rewiredPlayer.SetVibration(1, 1f, 0.5f);
