@@ -66,6 +66,8 @@ public class ValCombatController : CombatController, IHitListener {
 		if (combatLayerWeight == 0) {
 			animator.SetLayerWeight(1, Mathf.MoveTowards(animator.GetLayerWeight(1), combatLayerWeight, 4*Time.deltaTime));
 		}
+
+		targetingSystem.gameObject.SetActive(player.HasAbility(Ability.Projectile));
 	}
 
 	void CheckHealInput() {
