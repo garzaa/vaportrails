@@ -21,7 +21,7 @@ public class ValCameraPoint : MonoBehaviour {
 		groundData = GetComponentInParent<GroundCheck>().groundData;
 		input = GetComponentInParent<PlayerInput>();
 		player = input.GetComponent<Entity>();
-		quickMap = FindObjectOfType<StandaloneMap>();
+		quickMap = FindObjectOfType<StandaloneMap>(includeInactive: true);
 	}
 
 	void Update() {

@@ -7,4 +7,8 @@ public class GameFlag : ScriptableObject {
 	[TextArea]
 	[SerializeField]
 	string editorDescription;
+
+	public void Get() {
+		FindObjectOfType<GameFlags>().Add(this);
+	}
 }

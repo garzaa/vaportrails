@@ -31,6 +31,6 @@ public class NPC : Interactable {
 		ConversationContainer[] conversationContainers = GetComponentsInChildren<ConversationContainer>();
 		// if conversations are stateful, get the last one
 		// this will default to the default conversation since it also looks at self
-		return conversationContainers[conversationContainers.Length-1];
+		return conversationContainers[^1];
 	}
 }
