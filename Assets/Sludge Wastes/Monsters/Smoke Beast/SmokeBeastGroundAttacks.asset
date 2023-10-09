@@ -1,0 +1,234 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-5155476352537184200
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 857576a5973890648b72462ffb277af2, type: 3}
+  m_Name: Initial Branch
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 213.2308, y: 138.95096}
+  ports:
+    keys:
+    - speedLinks
+    - input
+    - links
+    - onHit
+    - links 0
+    - links 1
+    values:
+    - _fieldName: speedLinks
+      _node: {fileID: -5155476352537184200}
+      _typeQualifiedName: AttackLink[], Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: input
+      _node: {fileID: -5155476352537184200}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: links
+      _node: {fileID: -5155476352537184200}
+      _typeQualifiedName: AttackLink[], Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: onHit
+      _node: {fileID: -5155476352537184200}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: links 0
+      _node: {fileID: -5155476352537184200}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: input
+        node: {fileID: 7558282189570092831}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 1
+    - _fieldName: links 1
+      _node: {fileID: -5155476352537184200}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: input
+        node: {fileID: 1162388817482488047}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 1
+  animationClip: {fileID: 0}
+  attackData: {fileID: 0}
+  input:
+    type: 0
+    direction: 0
+  links:
+  - type: 1
+    direction: 0
+  - type: 2
+    direction: 0
+  onHit:
+    type: 0
+    direction: 0
+  speedLinks: []
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f044873766f9a5949b6da8c123ba59fa, type: 3}
+  m_Name: SmokeBeastGroundAttacks
+  m_EditorClassIdentifier: 
+  nodes:
+  - {fileID: -5155476352537184200}
+  - {fileID: 7558282189570092831}
+  - {fileID: 1162388817482488047}
+  stateMachineName: GroundAttacks
+--- !u!114 &1162388817482488047
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93af5be29414da440814eeb14596c6e5, type: 3}
+  m_Name: Attack
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 536, y: 248}
+  ports:
+    keys:
+    - input
+    - links
+    - onHit
+    values:
+    - _fieldName: input
+      _node: {fileID: 1162388817482488047}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: links 1
+        node: {fileID: -5155476352537184200}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: links
+      _node: {fileID: 1162388817482488047}
+      _typeQualifiedName: AttackLink[], Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: onHit
+      _node: {fileID: 1162388817482488047}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+  animationClip: {fileID: 7400000, guid: 4bfdc17db8aa35c4b9b9b1e81e50631e, type: 2}
+  attackData: {fileID: 11400000, guid: c66d25bc8f686264ebccf8ee1c6d34fa, type: 2}
+  input:
+    type: 0
+    direction: 0
+  links: []
+  onHit:
+    type: 0
+    direction: 0
+--- !u!114 &7558282189570092831
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93af5be29414da440814eeb14596c6e5, type: 3}
+  m_Name: Attack
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 552, y: 40}
+  ports:
+    keys:
+    - input
+    - links
+    - onHit
+    values:
+    - _fieldName: input
+      _node: {fileID: 7558282189570092831}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: links 0
+        node: {fileID: -5155476352537184200}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: links
+      _node: {fileID: 7558282189570092831}
+      _typeQualifiedName: AttackLink[], Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: onHit
+      _node: {fileID: 7558282189570092831}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+  animationClip: {fileID: 7400000, guid: 082367aea090e19448bbd789bd5506d8, type: 2}
+  attackData: {fileID: 11400000, guid: ad145198c28641745a784e587e324db8, type: 2}
+  input:
+    type: 0
+    direction: 0
+  links: []
+  onHit:
+    type: 0
+    direction: 0

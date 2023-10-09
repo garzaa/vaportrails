@@ -16,7 +16,7 @@ public class Hurtbox : MonoBehaviour {
 		hitListeners = GetComponentsInParent<IHitListener>();
 	}
 
-	public bool VulnerableTo(AttackHitbox attack) {
+	public virtual bool VulnerableTo(AttackHitbox attack) {
 		if (hitListeners != null) {
 			foreach (IHitListener h in hitListeners) {
 				if (!h.CanBeHit(attack)) {

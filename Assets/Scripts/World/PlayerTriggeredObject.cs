@@ -11,7 +11,7 @@ public class PlayerTriggeredObject : MonoBehaviour {
 	}
 
 	bool IsPlayer(Collider2D other) {
-		return other.CompareTag(Tags.Player) && other.GetComponent<EntityController>() != null;
+		return other.CompareTag(Tags.Player) && other.GetComponent<PlayerInput>() && other.GetComponent<PlayerInput>().isHuman;
 	}
 
 	void OnTriggerEnter2D(Collider2D other) {

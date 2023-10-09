@@ -24,9 +24,11 @@ public class AttackHitbox : MonoBehaviour {
 
 	public UnityEvent OnAttackLand;
 
+	public bool flipHitmarkerToDirection;
+
 	virtual protected void Start() {
 		// it can be water. whatever
-		if (!(this is EnvironmentHitbox)) gameObject.layer = LayerMask.NameToLayer(Layers.Hitboxes);
+		if (this is not EnvironmentHitbox) gameObject.layer = LayerMask.NameToLayer(Layers.Hitboxes);
 		attackLandListeners = GetComponentsInParent<IAttackLandListener>();
 		colliders = GetComponents<Collider2D>();
 		cameraZoom = GameObject.FindObjectOfType<CameraZoom>();
@@ -112,6 +114,11 @@ public class AttackHitbox : MonoBehaviour {
 					currentActiveCollider.ClosestPoint(other.transform.position+(Vector3)other.GetComponent<Collider2D>().offset),
 					Quaternion.identity
 				);
+				if (flipHitmarkerToDirection) {
+					Vector3 v = g.transform.localScale;
+					v.x = transform.position.x < other.transform.position.x ? 1 : -1;
+					g.transform.localScale = v;
+				}
 			}
 		}
 

@@ -3,6 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.Events;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
+[RequireComponent(typeof(PlayerInput))]
 public class EntityController : Entity {
 	
 	#pragma warning disable 0649
@@ -128,7 +133,7 @@ public class EntityController : Entity {
 		inputX = input.HorizontalInput();
 		inputBackwards = input.HasHorizontalInput() && input.HorizontalInput()*Forward() < 0;
 		inputForwards = input.HasHorizontalInput() && !inputBackwards;
-		movingBackwards = Mathf.Abs(rb2d.velocity.x) > 0.01 && rb2d.velocity.x * -transform.localScale.x < 0;
+		movingBackwards = Mathf.Abs(rb2d.velocity.x) > 0.01 && rb2d.velocity.x * Forward() < 0;
 		movingForwards = input.HasHorizontalInput() && ((facingRight && rb2d.velocity.x > 0) || (!facingRight && rb2d.velocity.x < 0));
 		airControlMod = Mathf.MoveTowards(airControlMod, 1, 0.5f * Time.deltaTime);
 
@@ -259,8 +264,9 @@ public class EntityController : Entity {
             // since it wasn't being rotated the previous step
             rb2d.velocity = rb2d.velocity.Rotate(groundData.normalRotation);
 		} else if (
-			(groundData.grounded && !justJumped)
+			groundData.grounded && !justJumped
 			&& (angleStepDiff != 0)
+			&& (Mathf.Abs(angleStepDiff) < 225) // don't follow corners that are TOO pointy
 			&& (Time.unscaledTime - jumpTime > 0.5f)
 			&& ((Mathf.Abs(groundData.normalRotation) < 46f) || Mathf.Abs(groundData.normalRotation) > 90+46)
 		) {
@@ -628,7 +634,7 @@ public class EntityController : Entity {
 			animator.SetFloat("XInputMagnitude", 0);
 			animator.SetFloat("RelativeXInput", 0);
         } else {
-			animator.SetFloat("RelativeXInput", input.HorizontalInput() * -transform.localScale.x);
+			animator.SetFloat("RelativeXInput", input.HorizontalInput() * Forward());
 			animator.SetBool("MovingForward", movingForwards);
 			animator.SetFloat("XInputMagnitude", Mathf.Abs(input.HorizontalInput()));
 		}
@@ -818,4 +824,20 @@ public class EntityController : Entity {
 	public List<Ability> GetAbilities() {
 		return this.abilities;
 	}
+
+#if UNITY_EDITOR
+	[ContextMenu("Add Basic Animator Params")]
+	public void AddBasicAnimatorParams() {
+		RuntimeAnimatorController c = GetComponent<Animator>().runtimeAnimatorController;
+		var controller = AssetDatabase.LoadAssetAtPath<UnityEditor.Animations.AnimatorController>(UnityEditor.AssetDatabase.GetAssetPath(c));
+		controller.AddParameter("Grounded", AnimatorControllerParameterType.Bool);
+		controller.AddParameter("Tumbling", AnimatorControllerParameterType.Bool);
+		controller.AddParameter("XSpeedMagnitude", AnimatorControllerParameterType.Float);
+		controller.AddParameter("LandingRecovery", AnimatorControllerParameterType.Float);
+		controller.AddParameter("OnHit", AnimatorControllerParameterType.Trigger);
+		controller.AddParameter("Jump", AnimatorControllerParameterType.Trigger);
+		controller.AddParameter("Actionable", AnimatorControllerParameterType.Bool);
+		controller.AddParameter("XInputMagnitude", AnimatorControllerParameterType.Float);
+	}
+#endif
 }

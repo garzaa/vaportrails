@@ -73,6 +73,7 @@ public class Entity : MonoBehaviour, IHitListener {
 	protected HashSet<GameObject> cutsceneSources = new HashSet<GameObject>();
 
 	public bool overrideFootfall = false;
+	public bool rigFacingRight = false;
 
 	protected virtual void Awake() {
 		animator = GetComponent<Animator>();
@@ -102,6 +103,7 @@ public class Entity : MonoBehaviour, IHitListener {
 			launchTumble.enabled = false;
 		}
 		groundSaver = new SafeGroundSaver(this);
+		if (rigFacingRight) facingRight = true;
 	}
 
 	protected virtual void Start() {

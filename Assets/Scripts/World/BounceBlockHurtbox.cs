@@ -12,6 +12,11 @@ public class BounceBlockHurtbox : Hurtbox {
 		filter = new HashSet<AttackData>(attackFilter);
 	}
 
+	public override bool VulnerableTo(AttackHitbox attack) {
+		if (attack is EnvironmentHitbox) return false;
+		return true;
+	}
+
 	public override Vector2? KnockbackOverride(AttackHitbox attack) {
 		if (!filter.Contains(attack.data)) {
 			return base.KnockbackOverride(attack);
