@@ -70,8 +70,8 @@ public class EntityController : Entity {
 	GameObject fastfallSpark;
 	ParticleSystem speedDust;
 
-	const float techWindow = 0.3f;
-	const float techLockoutLength = 0.6f;
+	const float techWindow = 0.5f;
+	const float techLockoutLength = 0.2f;
 	bool canTech = false;
 	bool techLockout = false;
 	GameObject techEffect;
@@ -537,7 +537,7 @@ public class EntityController : Entity {
 	}
 
 	void UpdateTechInputs() {
-		if (input.ButtonDown(Buttons.SPECIAL) || input.ButtonDown(Buttons.PARRY)) {
+		if (input.TechInput()) {
 			if (!techLockout && !canTech && stunned) {
 				canTech = true;
 				CancelInvoke(nameof(EndTechWindow));
@@ -833,10 +833,12 @@ public class EntityController : Entity {
 		controller.AddParameter("Grounded", AnimatorControllerParameterType.Bool);
 		controller.AddParameter("Tumbling", AnimatorControllerParameterType.Bool);
 		controller.AddParameter("XSpeedMagnitude", AnimatorControllerParameterType.Float);
+		controller.AddParameter("YSpeed", AnimatorControllerParameterType.Float);
 		controller.AddParameter("LandingRecovery", AnimatorControllerParameterType.Float);
 		controller.AddParameter("OnHit", AnimatorControllerParameterType.Trigger);
 		controller.AddParameter("Jump", AnimatorControllerParameterType.Trigger);
 		controller.AddParameter("Actionable", AnimatorControllerParameterType.Bool);
+		controller.AddParameter("LandingLag", AnimatorControllerParameterType.Bool);
 		controller.AddParameter("XInputMagnitude", AnimatorControllerParameterType.Float);
 	}
 #endif

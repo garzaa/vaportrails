@@ -175,7 +175,7 @@ public class Entity : MonoBehaviour, IHitListener {
 		);
 		GameObject d = Instantiate(footfallDust, pos, Quaternion.identity, null);
 		// keep track of facing left/right
-		d.transform.localScale = transform.localScale;
+		d.transform.localScale = ForwardVector();
 	}
 
 	public void SetInvincible(bool b) {
@@ -488,7 +488,7 @@ public class Entity : MonoBehaviour, IHitListener {
 		if (deathEffect) {
 			Instantiate(deathEffect, transform.position, Quaternion.identity);
 			deathEffect.transform.parent = null;
-			deathEffect.transform.localScale = transform.localScale;
+			deathEffect.transform.localScale = ForwardVector();
 		}
 		Destroy(this.gameObject);
 	}

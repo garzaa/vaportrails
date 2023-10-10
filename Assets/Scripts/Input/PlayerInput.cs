@@ -115,6 +115,13 @@ public class PlayerInput : MonoBehaviour {
         );
     }
 
+    public bool TechInput() {
+        return (
+            ButtonDown(RewiredConsts.Action.Dash)
+            || ButtonDown(RewiredConsts.Action.Parry)
+        );
+    }
+
     public bool GenericEscapeInput() {
         return (
             ButtonDown(Buttons.SPECIAL)
