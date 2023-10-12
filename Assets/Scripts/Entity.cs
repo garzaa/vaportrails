@@ -458,6 +458,13 @@ public class Entity : MonoBehaviour, IHitListener {
         ).Rotate(groundData.normalRotation);
 	}
 
+	public Vector2 BackwardVector() {
+		return new Vector2(
+			-Forward(),
+			1
+		).Rotate(groundData.normalRotation);
+	}
+
 	public int Forward() {
 		return facingRight ? 1 : -1;
 	}

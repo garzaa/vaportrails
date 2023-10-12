@@ -832,6 +832,7 @@ public class EntityController : Entity {
 		var controller = AssetDatabase.LoadAssetAtPath<UnityEditor.Animations.AnimatorController>(UnityEditor.AssetDatabase.GetAssetPath(c));
 		controller.AddParameter("Grounded", AnimatorControllerParameterType.Bool);
 		controller.AddParameter("Tumbling", AnimatorControllerParameterType.Bool);
+		controller.AddParameter("Stunned", AnimatorControllerParameterType.Bool);
 		controller.AddParameter("XSpeedMagnitude", AnimatorControllerParameterType.Float);
 		controller.AddParameter("YSpeed", AnimatorControllerParameterType.Float);
 		controller.AddParameter("LandingRecovery", AnimatorControllerParameterType.Float);
