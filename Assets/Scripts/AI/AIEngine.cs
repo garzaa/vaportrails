@@ -39,7 +39,7 @@ public abstract class AIEngine : MonoBehaviour, IHitListener, IAttackLandListene
 	}
 
 	public void Halt() {
-
+		StopRoutine();
 	}
 
 	void StartRoutine(AIRoutine routine) {
@@ -64,6 +64,7 @@ public abstract class AIEngine : MonoBehaviour, IHitListener, IAttackLandListene
 		}
 		if (currentRoutine == null) {
 			// then pick a random one, from neutral for now
+			// TODO: pick advantage and disadvantage
 			StartRoutine(PickRoutine(State.NEUTRAL));
 		}
 	}

@@ -554,6 +554,10 @@ public class EntityController : Entity {
 		} else if (techLockout) {
 			TechLockout.Invoke();
 		} else if (!canTech) {
+			if (input.isHuman && !PlayerInput.usingKeyboard) {
+				rewiredPlayer.SetVibration(0, 1f, 0.5f);
+				rewiredPlayer.SetVibration(1, 1f, 0.5f);
+			}
 			TechMiss.Invoke();
 		}
 		base.StunImpact(hitGround);
