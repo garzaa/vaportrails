@@ -24,7 +24,6 @@ public class AIRoutine {
 	}
 
 	public void Start() {
-		Debug.Log("has controller: "+controller);
 		startedTime = Time.time;
 		if (routineStart != null) routineStart();
 	}

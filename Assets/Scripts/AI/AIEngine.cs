@@ -1,8 +1,6 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 public abstract class AIEngine : MonoBehaviour, IHitListener, IAttackLandListener {
 	public enum State {
@@ -32,7 +30,6 @@ public abstract class AIEngine : MonoBehaviour, IHitListener, IAttackLandListene
 		controller = GetComponent<PlayerInput>().comControl;
 
 		InitializeEngine();
-		Debug.Log(JsonConvert.SerializeObject(decisions, Formatting.Indented));
 	}
 
 	protected abstract void InitializeEngine();
@@ -67,7 +64,6 @@ public abstract class AIEngine : MonoBehaviour, IHitListener, IAttackLandListene
 		}
 		if (currentRoutine == null) {
 			// then pick a random one, from neutral for now
-			Debug.Log("startring a random routine");
 			StartRoutine(PickRoutine(State.NEUTRAL));
 		}
 	}
