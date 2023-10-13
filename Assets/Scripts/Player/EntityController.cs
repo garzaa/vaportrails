@@ -809,7 +809,6 @@ public class EntityController : Entity {
 	}
 
 	public void AddAbility(Ability a) {
-		Debug.Log("adding ability "+a);
 		abilities.Add(a);
 	}
 

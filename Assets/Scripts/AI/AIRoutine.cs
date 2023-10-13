@@ -130,4 +130,11 @@ public class AIRoutine {
 		};
 		return this;
 	}
+
+	public AIRoutine AimDown() {
+		routineUpdate += () => {
+			controller.SetActionAxis(RewiredConsts.Action.Vertical, -1);
+		};
+		return this;
+	}
 }
