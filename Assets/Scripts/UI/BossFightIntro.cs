@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.Events;
+using System.Linq;
 
 public class BossFightIntro : MonoBehaviour {
 	Animator animator;
@@ -23,6 +24,7 @@ public class BossFightIntro : MonoBehaviour {
 
 	public bool ready = false;
 	public bool running = false;
+	List<EntityController> players;
 	
 	void Start() {
 		animator = GetComponent<Animator>();
@@ -49,7 +51,11 @@ public class BossFightIntro : MonoBehaviour {
 		ready = false;
 		playerInput = PlayerInput.GetPlayerOneInput();
 		player = playerInput.GetComponent<EntityController>();
-		player.EnterCutscene(this.gameObject);
+		players = FindObjectsOfType<EntityController>().ToList<EntityController>();
+		foreach (EntityController p in players) {
+			p.EnterCutscene(gameObject);
+		}
+
 	}
 
 	// called from animation
@@ -64,7 +70,9 @@ public class BossFightIntro : MonoBehaviour {
 	public void FinishExitAnimation() {
 		running = false;
 		ready = false;
-		player.ExitCutscene(this.gameObject);
+		foreach (EntityController p in players) {
+			p.ExitCutscene(gameObject);
+		}
 		OnContinue.Invoke();
 	}
 }
