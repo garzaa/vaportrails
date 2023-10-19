@@ -125,7 +125,7 @@ public class EntityController : Entity {
 	void FixedUpdate() {
 		ApplyMovement();
 		UpdateLastVelocity();
-		if (groundData.grounded) generousJump.StoreVelocity(rb2d);
+		if (groundData.grounded && !justJumped) generousJump.StoreVelocity(rb2d);
 		angleLastStep = groundData.normalRotation;
 	}
 
@@ -547,7 +547,7 @@ public class EntityController : Entity {
 	}
 
 	protected override void StunImpact(bool hitGround) {
-		if (!techLockout && canTech) {
+		if (!techLockout && (canTech || (!input.isHuman && Random.value < movement.techChance))) {
 			TechSuccess.Invoke();
 			OnTech();
 			return;

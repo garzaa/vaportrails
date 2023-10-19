@@ -38,7 +38,10 @@ public class PlayerProperties : SavedObject {
 		properties["maxHP"] = hp.GetMax();
 		properties["currentEP"] = combatController.currentEP.Get();
 		properties["maxEP"] = combatController.maxEP.Get();
-		properties["pos"] = transform.position;
+		// reload the player on the ground next time
+		Vector3 pos = transform.position;
+		pos.y -= GetComponent<GroundCheck>().groundData.distance;
+		properties["pos"] = pos;
 		properties["facingRight"] = player.facingRight;
 		properties["abilities"] = player.GetAbilities();
 	}

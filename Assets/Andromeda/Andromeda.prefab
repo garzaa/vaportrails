@@ -21732,6 +21732,7 @@ MonoBehaviour:
     groundObject: {fileID: 0}
     groundCollider: {fileID: 0}
     distance: 99
+    jumpTime: -10
   onLedgeStep:
     m_PersistentCalls:
       m_Calls: []
@@ -21768,6 +21769,9 @@ MonoBehaviour:
   allowTech: 1
   returnToSafety: 1
   deathEffect: {fileID: 0}
+  destroyOnDeath: 0
+  overrideFootfall: 0
+  rigFacingRight: 0
   jumpNoise: {fileID: 11400000, guid: 8b27eba3fe91c8d4c9b28c89a0309a77, type: 2}
   faceRightOnStart: 0
   abilities: 0000000002000000
@@ -21899,6 +21903,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b36ab4f884c7e243850793f060d8e1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  logInputData: 0
   reactionTime: 0.25
 --- !u!114 &8009526084400392854
 MonoBehaviour:
@@ -22295,6 +22300,7 @@ MonoBehaviour:
       m_Calls: []
   useParentTargetingPosition: 0
   invisibleToTargeters: 0
+  hitmarkerOverride: {fileID: 0}
 --- !u!1 &8009526084485995336
 GameObject:
   m_ObjectHideFlags: 0
@@ -24716,6 +24722,7 @@ MonoBehaviour:
   OnAttackLand:
     m_PersistentCalls:
       m_Calls: []
+  flipHitmarkerToDirection: 0
 --- !u!58 &8009526085803483706
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -24812,6 +24819,7 @@ MonoBehaviour:
   OnAttackLand:
     m_PersistentCalls:
       m_Calls: []
+  flipHitmarkerToDirection: 0
 --- !u!58 &8009526085843035252
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -25361,6 +25369,7 @@ MonoBehaviour:
   OnAttackLand:
     m_PersistentCalls:
       m_Calls: []
+  flipHitmarkerToDirection: 0
 --- !u!61 &8009526086086766574
 BoxCollider2D:
   m_ObjectHideFlags: 0

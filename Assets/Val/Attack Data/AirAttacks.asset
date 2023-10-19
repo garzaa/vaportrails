@@ -1,5 +1,72 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8024898740592614018
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0a2267afd067b34ab54a38ec55df1b0, type: 3}
+  m_Name: Energy Gate
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -56, y: 600}
+  ports:
+    keys:
+    - input
+    - onPass
+    - onFail
+    values:
+    - _fieldName: input
+      _node: {fileID: -8024898740592614018}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: speedLinks 1
+        node: {fileID: 6211059138720334733}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: onPass
+      _node: {fileID: -8024898740592614018}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: input
+        node: {fileID: 7016034450050395571}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: onFail
+      _node: {fileID: -8024898740592614018}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: input
+        node: {fileID: -6885289937481435947}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+  animationClip: {fileID: 0}
+  energyCost: 4
+  input:
+    type: 0
+    direction: 0
+  onPass:
+    type: 0
+    direction: 0
+  onFail:
+    type: 0
+    direction: 0
 --- !u!114 &-7943525400074050575
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -62,7 +129,6 @@ MonoBehaviour:
       _dynamic: 0
   animationClip: {fileID: 0}
   attackData: {fileID: 11400000, guid: ce6b058a455850249aa4b9b4283c49ff, type: 2}
-  fromBackwardsInput: 0
   input:
     type: 0
     direction: 0
@@ -195,7 +261,6 @@ MonoBehaviour:
       _dynamic: 0
   animationClip: {fileID: 0}
   attackData: {fileID: 11400000, guid: b90721df4cedf394e86ed6785c4e40b4, type: 2}
-  fromBackwardsInput: 0
   input:
     type: 0
     direction: 0
@@ -247,6 +312,9 @@ MonoBehaviour:
       - fieldName: links 3
         node: {fileID: 6211059138720334733}
         reroutePoints: []
+      - fieldName: onFail
+        node: {fileID: -8024898740592614018}
+        reroutePoints: []
       _direction: 0
       _connectionType: 0
       _typeConstraint: 0
@@ -271,7 +339,6 @@ MonoBehaviour:
       _dynamic: 0
   animationClip: {fileID: 0}
   attackData: {fileID: 11400000, guid: 445425ef28ae5534db1503286d02b1fe, type: 2}
-  fromBackwardsInput: 1
   input:
     type: 0
     direction: 0
@@ -383,7 +450,6 @@ MonoBehaviour:
       _dynamic: 0
   animationClip: {fileID: 0}
   attackData: {fileID: 11400000, guid: c9a2235804ccb0f4c8e62942f60bcebd, type: 2}
-  fromBackwardsInput: 0
   input:
     type: 0
     direction: 0
@@ -537,7 +603,6 @@ MonoBehaviour:
       _dynamic: 0
   animationClip: {fileID: 0}
   attackData: {fileID: 11400000, guid: 946bbb747f219bd499b9b3e9911cc32c, type: 2}
-  fromBackwardsInput: 0
   input:
     type: 0
     direction: 0
@@ -581,6 +646,7 @@ MonoBehaviour:
   - {fileID: -584801055051049929}
   - {fileID: -7631538950523990584}
   - {fileID: 5153203883618988253}
+  - {fileID: -8024898740592614018}
   stateMachineName: AirAttacks
 --- !u!114 &1175483536977120707
 MonoBehaviour:
@@ -644,7 +710,6 @@ MonoBehaviour:
       _dynamic: 0
   animationClip: {fileID: 0}
   attackData: {fileID: 11400000, guid: 383e2334ca153f84cb77a6566b84f1ad, type: 2}
-  fromBackwardsInput: 0
   input:
     type: 0
     direction: 0
@@ -864,7 +929,7 @@ MonoBehaviour:
         PublicKeyToken=null
       connections:
       - fieldName: input
-        node: {fileID: 7016034450050395571}
+        node: {fileID: -8024898740592614018}
         reroutePoints: []
       _direction: 1
       _connectionType: 1
@@ -872,7 +937,6 @@ MonoBehaviour:
       _dynamic: 1
   animationClip: {fileID: 0}
   attackData: {fileID: 0}
-  fromBackwardsInput: 0
   input:
     type: 0
     direction: 0
@@ -910,7 +974,7 @@ MonoBehaviour:
   m_Name: Speed Aerial Back Kick
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -56, y: 552}
+  position: {x: 568, y: 488}
   ports:
     keys:
     - onLand
@@ -932,8 +996,8 @@ MonoBehaviour:
       _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
       connections:
-      - fieldName: speedLinks 1
-        node: {fileID: 6211059138720334733}
+      - fieldName: onPass
+        node: {fileID: -8024898740592614018}
         reroutePoints: []
       _direction: 0
       _connectionType: 0
@@ -959,7 +1023,6 @@ MonoBehaviour:
       _dynamic: 0
   animationClip: {fileID: 0}
   attackData: {fileID: 11400000, guid: 94543dcb4aef15c4b90f24173cd1edc4, type: 2}
-  fromBackwardsInput: 1
   input:
     type: 0
     direction: 0
@@ -1041,7 +1104,6 @@ MonoBehaviour:
       _dynamic: 0
   animationClip: {fileID: 0}
   attackData: {fileID: 11400000, guid: 1820d23bc65b1234997f9c5e6c46c1c1, type: 2}
-  fromBackwardsInput: 0
   input:
     type: 0
     direction: 0

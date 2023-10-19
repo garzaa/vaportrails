@@ -15,6 +15,8 @@ public abstract class AIEngine : MonoBehaviour, IHitListener, IAttackLandListene
 	Queue<AIRoutine> routines = new();
 	ComputerController controller;
 
+	bool playing = false;
+
 	void Start() {
 		PlayerInput p = PlayerInput.GetPlayerOneInput();
 		if (!p.GetComponent<PlayerSnapshotInfo>()) {
@@ -35,10 +37,12 @@ public abstract class AIEngine : MonoBehaviour, IHitListener, IAttackLandListene
 	protected abstract void InitializeEngine();
 
 	public void Play() {
+		playing = true;
 		StartRoutine(decisions[State.NEUTRAL][0]);
 	}
 
 	public void Halt() {
+		playing = false;
 		StopRoutine();
 	}
 
@@ -54,6 +58,7 @@ public abstract class AIEngine : MonoBehaviour, IHitListener, IAttackLandListene
 	}
 
 	void Update() {
+		if (!playing) return;
 		currentRoutine?.Update();
 		if (currentRoutine?.IsDone() ?? false) {
 			StopRoutine();

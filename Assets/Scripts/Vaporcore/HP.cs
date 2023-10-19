@@ -61,7 +61,7 @@ public class HP : MonoBehaviour, IHitListener {
 	}
 
 	public void FullHeal() {
-		current.Set(max.Get());
+		SetCurrent(GetMax());
 	}
 
 	public int GetCurrent() {

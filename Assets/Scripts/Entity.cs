@@ -43,6 +43,7 @@ public class Entity : MonoBehaviour, IHitListener {
 	[SerializeField] protected bool allowTech = true;
 	[SerializeField] bool returnToSafety = true;
 	public GameObject deathEffect;
+	public bool destroyOnDeath = true;
 	bool invincible = false;
 	bool inGroundFlop = false;
 	
@@ -492,12 +493,14 @@ public class Entity : MonoBehaviour, IHitListener {
 	}
 
 	public void Die() {
+		InterruptHitstop();
+		rb2d.velocity = Vector2.zero;
 		if (deathEffect) {
 			Instantiate(deathEffect, transform.position, Quaternion.identity);
 			deathEffect.transform.parent = null;
 			deathEffect.transform.localScale = ForwardVector();
 		}
-		Destroy(this.gameObject);
+		if (destroyOnDeath) Destroy(gameObject);
 	}
 
 	public void EnterCutscene(GameObject source) {

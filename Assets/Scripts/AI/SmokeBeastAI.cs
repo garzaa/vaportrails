@@ -26,7 +26,6 @@ public class SmokeBeastAI : AIEngine {
 		Add(State.NEUTRAL, JumpAtPlayer().Then().Punch().FinishOnGrounded().Then().AimDown().Punch());
 		Add(State.NEUTRAL, JumpAtPlayer().Then().Punch());
 		Add(State.NEUTRAL, JumpAtPlayer().Then().Kick());
-		Add(State.NEUTRAL, JumpAtPlayer().Then().Kick());
 		Add(State.NEUTRAL, new AIRoutine().MoveToPlayerX().FinishOnXDistance(3).Then().AimDown().Punch());
 		Add(State.NEUTRAL, new AIRoutine().MoveToPlayerX().FinishOnXDistance(3).Then().AimDown().Punch());
 	}

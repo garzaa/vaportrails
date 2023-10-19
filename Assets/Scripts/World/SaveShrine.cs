@@ -50,6 +50,7 @@ public class SaveShrine : SavedObject, IPlayerEnterListener {
 			headTracker.transform.localScale = Vector3.one;
 			headTracker.SetActive(true);
 			FindObjectOfType<SaveManager>().Save();
+			player.GetComponent<HP>().FullHeal();
 			animator.SetTrigger("PlaySaveEffect");
 		}
 	}
@@ -60,7 +61,7 @@ public class SaveShrine : SavedObject, IPlayerEnterListener {
 	}
 
 	public void FinishHackAnimation() {
-		OnPlayerEnter(null);
+		OnPlayerEnter(PlayerInput.GetPlayerOneInput().GetComponent<Collider2D>());
 		player.ExitCutscene(this.gameObject);
 	}
 

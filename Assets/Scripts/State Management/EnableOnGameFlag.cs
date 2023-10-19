@@ -9,11 +9,11 @@ public class EnableOnGameFlag : GameFlagChangeListener{
 	GameFlags flags;
 
 	void Start() {
-		flags = FindObjectOfType<GameFlags>();
 		CheckEnabled();
 	}
 
 	public override void CheckEnabled() {
+		if (flags == null) flags = FindObjectOfType<GameFlags>();
 		if (disableOnFlag) {
 			gameObject.SetActive(!flags.Has(flag));
 		} else {

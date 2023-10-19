@@ -186,7 +186,7 @@ public class GroundCheck : MonoBehaviour {
 
     float GetGroundDistance() {
         // this has to start from the forward edge of the collider
-        Vector2 start = transform.position;// new Vector2(col.bounds.max.x*transform.lossyScale.x, col.bounds.min.y);
+        Vector2 start = transform.position;
         // then move it forward
         start += Vector2.right * transform.lossyScale.x * col.bounds.extents.x;
         RaycastHit2D hit = Physics2D.Raycast(
