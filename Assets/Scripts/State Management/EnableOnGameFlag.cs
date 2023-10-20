@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class EnableOnGameFlag : GameFlagChangeListener{
+public class EnableOnGameFlag : GameFlagChangeListener {
 	public GameFlag flag;
 	public bool disableOnFlag = false;
 

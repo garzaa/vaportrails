@@ -12,6 +12,8 @@ public class GameCheckpointLoader : SavedObject {
 	}
 
 	void Start() {
+		// don't do this in the build
+		if (!Application.isEditor) return;
 		if (!loadedBefore) {
 			// then add everything
 			Inventory inventory = PlayerInput.GetPlayerOneInput().GetComponentInChildren<Inventory>();
