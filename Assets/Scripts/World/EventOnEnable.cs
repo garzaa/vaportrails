@@ -7,6 +7,11 @@ public class EventOnEnable : MonoBehaviour {
 	public UnityEvent enableEvent;
 
 	void OnEnable() {
+		StartCoroutine(_Execute());
+	}
+
+	IEnumerator _Execute() {
+		yield return new WaitForEndOfFrame();
 		enableEvent.Invoke();
 	}
 }

@@ -176,7 +176,9 @@ public class Entity : MonoBehaviour, IHitListener {
 		);
 		GameObject d = Instantiate(footfallDust, pos, Quaternion.identity, null);
 		// keep track of facing left/right
-		d.transform.localScale = ForwardVector();
+		Vector3 v = ForwardVector();
+		v.x *= -1;
+		d.transform.localScale = v;
 	}
 
 	public void SetInvincible(bool b) {
