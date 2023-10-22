@@ -26,4 +26,8 @@ public class Save {
 		}
 		return current[key] as Dictionary<string, object>;
 	}
+
+	public void Wipe() {
+		objects.Clear();
+	}
 }

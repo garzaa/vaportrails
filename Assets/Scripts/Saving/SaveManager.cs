@@ -55,4 +55,8 @@ public class SaveManager : MonoBehaviour {
 	public string GetSaveFolderPath() {
         return jsonSaver.GetFolderPath(slot);
     }
+
+	public void WipeSave() {
+		save.Wipe();
+	}
 }

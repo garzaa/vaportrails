@@ -365,6 +365,7 @@ MonoBehaviour:
   OnAttackLand:
     m_PersistentCalls:
       m_Calls: []
+  flipHitmarkerToDirection: 0
 --- !u!4 &46994637
 Transform:
   m_ObjectHideFlags: 0
@@ -1564,6 +1565,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  flipHitmarkerToDirection: 0
   energyCost: 0
 --- !u!58 &480700946
 CircleCollider2D:
@@ -1680,6 +1682,7 @@ MonoBehaviour:
   OnAttackLand:
     m_PersistentCalls:
       m_Calls: []
+  flipHitmarkerToDirection: 0
 --- !u!61 &509830073
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2568,6 +2571,7 @@ MonoBehaviour:
   OnAttackLand:
     m_PersistentCalls:
       m_Calls: []
+  flipHitmarkerToDirection: 0
 --- !u!61 &641419694
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3155,6 +3159,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  flipHitmarkerToDirection: 0
 --- !u!70 &781064212
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -8691,7 +8696,9 @@ MonoBehaviour:
   allowTech: 1
   returnToSafety: 1
   deathEffect: {fileID: 0}
+  destroyOnDeath: 1
   overrideFootfall: 0
+  rigFacingRight: 0
   jumpNoise: {fileID: 11400000, guid: 8b27eba3fe91c8d4c9b28c89a0309a77, type: 2}
   faceRightOnStart: 0
   abilities: 
@@ -8727,6 +8734,7 @@ GameObject:
   - component: {fileID: 861798094}
   - component: {fileID: 861798105}
   - component: {fileID: 861798104}
+  - component: {fileID: 861798106}
   m_Layer: 7
   m_Name: Smoke Beast
   m_TagString: Untagged
@@ -8833,7 +8841,9 @@ MonoBehaviour:
   allowTech: 1
   returnToSafety: 1
   deathEffect: {fileID: 1907591042830104894, guid: 118ebf591e957054b9932b07c8d7dbce, type: 3}
+  destroyOnDeath: 1
   overrideFootfall: 0
+  rigFacingRight: 0
   jumpNoise: {fileID: 11400000, guid: 9aeb0783db72e1542b946631d7abe013, type: 2}
   faceRightOnStart: 1
   abilities: 
@@ -9037,6 +9047,19 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &861798106
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 861798093}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfa0ef29398eee446b376b0d19c2ad64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  humanControl: 0
 --- !u!1 &866234367
 GameObject:
   m_ObjectHideFlags: 0
@@ -9062,7 +9085,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 866234367}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.2701845, y: 3.0942955, z: 0}
+  m_LocalPosition: {x: 334.45444, y: 139.14941, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -9173,7 +9196,9 @@ MonoBehaviour:
   allowTech: 1
   returnToSafety: 1
   deathEffect: {fileID: 0}
+  destroyOnDeath: 1
   overrideFootfall: 0
+  rigFacingRight: 0
 --- !u!114 &890445362
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10127,6 +10152,7 @@ MonoBehaviour:
   OnAttackLand:
     m_PersistentCalls:
       m_Calls: []
+  flipHitmarkerToDirection: 0
   energyCost: 4
 --- !u!58 &1061189567
 CircleCollider2D:
@@ -10197,6 +10223,7 @@ MonoBehaviour:
   OnAttackLand:
     m_PersistentCalls:
       m_Calls: []
+  flipHitmarkerToDirection: 0
   energyCost: 4
 --- !u!58 &1063978432
 CircleCollider2D:
@@ -10515,7 +10542,9 @@ MonoBehaviour:
   allowTech: 1
   returnToSafety: 1
   deathEffect: {fileID: 0}
+  destroyOnDeath: 1
   overrideFootfall: 0
+  rigFacingRight: 0
 --- !u!114 &1160723085
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12138,7 +12167,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1581631385}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -14.450001, y: 7.8100004, z: 0}
+  m_LocalPosition: {x: -14.450001, y: 7.8099995, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -20172,6 +20201,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  flipHitmarkerToDirection: 0
 --- !u!70 &1684777178
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -20649,6 +20679,7 @@ MonoBehaviour:
   OnAttackLand:
     m_PersistentCalls:
       m_Calls: []
+  flipHitmarkerToDirection: 0
   energyCost: 0
 --- !u!58 &1907256279
 CircleCollider2D:
@@ -21987,6 +22018,7 @@ MonoBehaviour:
   OnAttackLand:
     m_PersistentCalls:
       m_Calls: []
+  flipHitmarkerToDirection: 0
   energyCost: 1
 --- !u!58 &2072466126
 CircleCollider2D:
@@ -22043,6 +22075,7 @@ MonoBehaviour:
   OnAttackLand:
     m_PersistentCalls:
       m_Calls: []
+  flipHitmarkerToDirection: 0
 --- !u!61 &2074521303
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -22167,6 +22200,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   useGlobalNamespace: 0
   checkpoint: {fileID: 11400000, guid: 7631a9aecc677b2438847d4404958fbb, type: 2}
+  loadInBuild: 1
 --- !u!4 &2080285375
 Transform:
   m_ObjectHideFlags: 0
@@ -22236,6 +22270,7 @@ MonoBehaviour:
   OnAttackLand:
     m_PersistentCalls:
       m_Calls: []
+  flipHitmarkerToDirection: 0
 --- !u!61 &2081913832
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -23294,11 +23329,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4160817345173324201, guid: df318d9009829a34781aaa920593e61d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 21.350922
+      value: 1672.2723
       objectReference: {fileID: 0}
     - target: {fileID: 4160817345173324201, guid: df318d9009829a34781aaa920593e61d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 15.4714775
+      value: 695.74695
       objectReference: {fileID: 0}
     - target: {fileID: 4164111644338651459, guid: df318d9009829a34781aaa920593e61d, type: 3}
       propertyPath: m_AnchorMax.y
@@ -23890,11 +23925,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7770972733150071081, guid: df318d9009829a34781aaa920593e61d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 21.350922
+      value: 1672.2723
       objectReference: {fileID: 0}
     - target: {fileID: 7770972733150071081, guid: df318d9009829a34781aaa920593e61d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 15.4714775
+      value: 695.74695
       objectReference: {fileID: 0}
     - target: {fileID: 7770972733150071081, guid: df318d9009829a34781aaa920593e61d, type: 3}
       propertyPath: m_LocalPosition.z
@@ -24410,11 +24445,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7770972734024709621, guid: df318d9009829a34781aaa920593e61d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 21.350922
+      value: 1672.2723
       objectReference: {fileID: 0}
     - target: {fileID: 7770972734024709621, guid: df318d9009829a34781aaa920593e61d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 15.4714775
+      value: 695.74695
       objectReference: {fileID: 0}
     - target: {fileID: 7770972734033973496, guid: df318d9009829a34781aaa920593e61d, type: 3}
       propertyPath: m_SizeDelta.y

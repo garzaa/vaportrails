@@ -6,14 +6,15 @@ using System.Collections.Generic;
 public class GameCheckpointLoader : SavedObject {
 	bool loadedBefore = false;
 	public GameCheckpoint checkpoint;
+	public bool loadInBuild = false;
 
 	protected override void LoadFromProperties() {
 		loadedBefore = Get<bool>(nameof(loadedBefore));
 	}
 
 	void Start() {
-		// don't do this in the build
-		if (!Application.isEditor) return;
+		// for things like going to the training gym
+		if (!loadInBuild && !Application.isEditor) return;
 		if (!loadedBefore) {
 			// then add everything
 			Inventory inventory = PlayerInput.GetPlayerOneInput().GetComponentInChildren<Inventory>();

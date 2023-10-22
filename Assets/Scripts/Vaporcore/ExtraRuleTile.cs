@@ -19,7 +19,7 @@ public class ExtraRuleTile : RuleTile {
 			ExtraRuleTile otherTile = other as ExtraRuleTile;
 			bool canTile = otherTile == this;
 			foreach (TileBase canTileWith in tileWith) {
-				canTile |= (other == canTileWith);
+				canTile |= other == canTileWith;
 			}
 
 			switch (neighbor) {
