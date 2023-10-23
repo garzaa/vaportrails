@@ -10,6 +10,10 @@ public class ValController : EntityController {
 		if (groundData.hitGround) {
 			HairForwards();
 		}
+		if (Input.GetKeyDown(KeyCode.T)) {
+			animator.Play("ValPickupAbility");
+			this.WaitAndExecute(() => animator.SetTrigger("ReturnToIdle"), 3f);
+		}
 	}
 
 	public void HairBackwards() {
@@ -23,5 +27,10 @@ public class ValController : EntityController {
 	public void FlourishItem(Sprite item) {
 		heldItem.sprite = item;
 		animator.Play("ValFlourishItem");
+	}
+	
+	public void HandItem(Sprite item) {
+		heldItem.sprite = item;
+		animator.Play("ValHandItem");
 	}
 }
