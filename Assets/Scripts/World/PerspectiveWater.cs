@@ -12,6 +12,7 @@ public class PerspectiveWater : MonoBehaviour {
 
 	// this should be on a front layer
 	public GameObject frustumIntersection;
+	float distance;
 
 	Camera cam;
 
@@ -23,7 +24,7 @@ public class PerspectiveWater : MonoBehaviour {
 
 	void Update() {
 		// stretch the sprite to the bottom 
-		float distance = frustumIntersection.transform.position.y - transform.position.y;
+		distance = frustumIntersection.transform.position.y - transform.position.y;
 		scale = waterSprite.transform.localScale;
 		scale.y = distance;
 

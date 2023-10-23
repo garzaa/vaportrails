@@ -10,6 +10,7 @@ public class ToonMotion : MonoBehaviour  {
     float lastUpdateTime = 0f;
     bool forceUpdateThisFrame = false;
     List<Snapshot> snapshots = new List<Snapshot>();
+    int i=0;
 
     void Start() {
         CreateTargetList(this.transform);
@@ -31,14 +32,14 @@ public class ToonMotion : MonoBehaviour  {
 
     void LateUpdate() {
         if (forceUpdateThisFrame || Time.unscaledTime - lastUpdateTime > 1f/this.fps) {
-            foreach (Snapshot s in snapshots) {
-                s.UpdateSelf();
+            for (i=0; i<snapshots.Count; i++) {
+                snapshots[i].UpdateSelf();
             }
             this.lastUpdateTime = Time.unscaledTime;
             forceUpdateThisFrame = false;
         } else {
-            foreach (Snapshot snapshot in snapshots) {
-                snapshot.Maintain();
+            for (i=0; i<snapshots.Count; i++) {
+                snapshots[i].Maintain();
             }
         }
     }

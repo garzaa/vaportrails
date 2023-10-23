@@ -20,9 +20,8 @@ public class SmoothSpriteChild : MonoBehaviour {
 		// so for performance reasons just check every frame, and optimize the check if needed
 		if (spriteRenderer.sprite.name != spriteLastFrame) {
 			spriteRenderer.sprite = spriteSmoother.GetUpscaledSprite(spriteRenderer.sprite, this);
+			spriteLastFrame = spriteRenderer.sprite.name;
 		}
-
-		spriteLastFrame = spriteRenderer.sprite.name;
 	}
 
 	public void ForceUpscaledSprite() {

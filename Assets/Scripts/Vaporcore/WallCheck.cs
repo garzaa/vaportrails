@@ -23,6 +23,9 @@ public class WallCheck : MonoBehaviour {
 	const float angleTolerance = 5f;
 
 	bool touchingwallThisFrame = false;
+	
+	Vector2 startPoint, actualSize, topStart, bottomStart;
+	RaycastHit2D topHit, midHit, bottomHit;
 
 	void Start() {		
 		targetCollider = GetComponent<Collider2D>();
@@ -41,29 +44,29 @@ public class WallCheck : MonoBehaviour {
 	void Update() {
 		RefreshWallData(wallData);
 
-		Vector2 startPoint = (Vector2) targetCollider.transform.position + targetCollider.offset;
-		Vector2 actualSize = new Vector2(targetCollider.bounds.size.x, targetCollider.bounds.size.y-(2*groundGap));
+		startPoint = (Vector2) targetCollider.transform.position + targetCollider.offset;
+		actualSize = new Vector2(targetCollider.bounds.size.x, targetCollider.bounds.size.y-(2*groundGap));
 
 		float distance = targetCollider.bounds.size.x/2f + extendDistance;
 		touchingwallThisFrame = false;
 
-		Vector2 topStart = startPoint+(Vector2.up*actualSize.y*0.5f);
-		Vector2 bottomStart = startPoint+(Vector2.down*actualSize.y*0.5f);
+		topStart = startPoint+(Vector2.up*actualSize.y*0.5f);
+		bottomStart = startPoint+(Vector2.down*actualSize.y*0.5f);
 
 		//cast left
-		RaycastHit2D topHit = Physics2D.Raycast(
+		topHit = Physics2D.Raycast(
 			origin: topStart,
 			direction: Vector2.left,
 			distance: distance,
 			layerMask: layerMask
 		);
-		RaycastHit2D midHit = Physics2D.Raycast(
+		midHit = Physics2D.Raycast(
 			origin: startPoint,
 			direction: Vector2.left,
 			distance: distance,
 			layerMask: layerMask
 		);
-		RaycastHit2D bottomHit = Physics2D.Raycast(
+		bottomHit = Physics2D.Raycast(
 			origin: bottomStart,
 			direction: Vector2.left,
 			distance: distance,

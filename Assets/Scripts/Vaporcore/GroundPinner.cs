@@ -10,9 +10,10 @@ public class GroundPinner : MonoBehaviour {
 	public float maxDistance = 10;
 	public bool disableIfMiss = true;
 	public bool rotateToSurface = false;
+	RaycastHit2D hit;
 
 	void Update() {
-		RaycastHit2D hit = Physics2D.Raycast(
+		hit = Physics2D.Raycast(
 			transform.position, 
 			(direction * transform.lossyScale).normalized.Rotate(this.transform.eulerAngles.z), 		
 			maxDistance,

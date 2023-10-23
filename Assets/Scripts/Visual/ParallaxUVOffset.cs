@@ -15,7 +15,7 @@ public class ParallaxUVOffset : MonoBehaviour {
 	}
 
 	void Update() {
-		if (block != null) block.SetVector("ParallaxUVOffset", transform.position);
+		block?.SetVector("ParallaxUVOffset", transform.position);
 		r.SetPropertyBlock(block);
 	}
 }

@@ -36,7 +36,7 @@ public class AttackBuffer : MonoBehaviour {
                 inputManager.HasHorizontalInput() ? (int) Mathf.Sign(ls.x * player.Forward()) : 0,
                 (int) (Mathf.Approximately(ls.y, 0) ? 0 : ClampZero(ls.y))
             );
-            attackDirection = attackDirection * new Vector2Int(1, 2);
+            attackDirection *= new Vector2Int(1, 2);
 			BufferedAttack attack = new BufferedAttack(attackType, attackDirection);
 			AddBufferedAttack(attack);
             // if it enters a graph without a buffered attack (i.e. it's read first)

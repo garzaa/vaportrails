@@ -25,6 +25,7 @@ public class AttackHitbox : MonoBehaviour {
 	public UnityEvent OnAttackLand;
 
 	public bool flipHitmarkerToDirection;
+	int i;
 
 	virtual protected void Start() {
 		// it can be water. whatever
@@ -36,8 +37,8 @@ public class AttackHitbox : MonoBehaviour {
 
 	void Update() {
 		bool hitboxOut = false;
-		foreach (Collider2D collider in colliders) {
-			if (collider.enabled) {
+		for (i=0; i<colliders.Length; i++) {
+			if (colliders[i].enabled) {
 				hitboxOut = true;
 				break;
 			}

@@ -23,7 +23,7 @@ public class DialogueUI : MonoBehaviour {
 	GameObject dialogueSource;
 	CameraInterface cameraInterface;
 
-	UnityEvent queuedEvent;
+	UnityEvent dialogueLineEndEvent;
 
 	AudioSource audioSource;
 
@@ -54,13 +54,17 @@ public class DialogueUI : MonoBehaviour {
 	}
 
 	void NextLineOrClose() {
-		queuedEvent?.Invoke();
-		queuedEvent = null;
+		dialogueLineEndEvent?.Invoke();
+		dialogueLineEndEvent = null;
 		if (currentLines.Count > 0) {
 			ShowLine(currentLines.Dequeue());
 		} else {
 			Close();
 		}
+	}
+
+	void ShowFirstLine(bool wasOpen) {
+		if(!wasOpen) ShowLine(currentLines.Dequeue());
 	}
 
 	void ShowLine(DialogueLine line) {
@@ -88,6 +92,7 @@ public class DialogueUI : MonoBehaviour {
 		if (!string.IsNullOrEmpty(line.speakerName) || line.character) {
 			// if speaker name is set, it takes priority - hack for Val to voice the other characters until they get their own voices
 			// in the ending cutscene
+			// TODO: take this out eventually
 			if (line.character && string.IsNullOrEmpty(line.speakerName)) {
 				speakerName.text = line.character.name;
 			} else {
@@ -101,7 +106,7 @@ public class DialogueUI : MonoBehaviour {
 			speakerNameContainer.SetActive(false);
 			speechBubbleTail.SetActive(false);
 		}
-		if (line.eventOnLineEnd) queuedEvent = line.callback;
+		if (line.eventOnLineEnd) dialogueLineEndEvent = line.callback;
 		else line.callback.Invoke();
 	}
 
@@ -113,9 +118,12 @@ public class DialogueUI : MonoBehaviour {
 		foreach (EntityController entity in GameObject.FindObjectsOfType<EntityController>()) {
 			entity.EnterCutscene(this.gameObject);
 		}
+
+		bool wasOpen = open;
+
 		open = true;
 		animator.SetBool("Shown", true);
-		NextLineOrClose();
+		ShowFirstLine(wasOpen);
 		if (dialogueSource) cameraInterface.RemoveFramingTarget(dialogueSource);
 		dialogueSource = caller;
 		cameraInterface.AddFramingTarget(caller);

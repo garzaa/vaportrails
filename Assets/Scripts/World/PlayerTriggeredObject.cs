@@ -8,7 +8,10 @@ public class PlayerTriggeredObject : MonoBehaviour {
 	
 	void Start() {
 		listeners = new List<IPlayerEnterListener>(GetComponentsInParent<IPlayerEnterListener>());
+		Initialize();
 	}
+
+	protected virtual void Initialize() {}
 
 	bool IsPlayer(Collider2D other) {
 		return other.CompareTag(Tags.Player) && other.GetComponent<PlayerInput>() && other.GetComponent<PlayerInput>().isHuman;

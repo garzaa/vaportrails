@@ -25,7 +25,7 @@ public class ComputerController {
 	}
 
 	void IncrementAndPrune(Dictionary<int, bool> buttonEvents) {
-		foreach (int id in buttonEvents.Keys.ToList()) {
+		foreach (int id in buttonEvents.Keys.ToArray()) {
 			if (buttonEvents[id]) buttonEvents.Remove(id);
 			else buttonEvents[id] = true;
 		}
