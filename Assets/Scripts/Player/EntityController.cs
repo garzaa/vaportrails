@@ -169,6 +169,7 @@ public class EntityController : Entity {
 			&& !groundData.grounded
 			&& !inAttack
 			&& !(stunned || animator.GetBool("Tumbling")) 
+			&& animator.GetBool("WallSlideInterrupt")
 		) {
 			FlipToWall();
 		}

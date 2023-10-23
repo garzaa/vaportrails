@@ -11,6 +11,9 @@ namespace UnityEngine.Tilemaps {
         [SerializeField]
         public GameObject spawnedObject;
 
+        [SerializeField]
+        public bool disableCollider = false;
+
 		[SerializeField]
 		new public Sprite sprite;
 
@@ -20,6 +23,7 @@ namespace UnityEngine.Tilemaps {
 			tileData.sprite = sprite;
 			tileData.transform = transform;
             tileData.flags = TileFlags.None;
+            if (disableCollider) tileData.colliderType = ColliderType.None;
 		}
 
         public override bool StartUp(Vector3Int position, ITilemap tilemap, GameObject instantiatedGameObject) {
@@ -36,12 +40,14 @@ namespace UnityEngine.Tilemaps {
     public class GameObjectTileEditor : Editor {
         private SerializedProperty spawnedObject;
 		private SerializedProperty sprite;
+        private SerializedProperty disableCollider;
 
         private GameObjectTile tile { get { return (target as GameObjectTile); } }
 
         public void OnEnable() {
             spawnedObject = serializedObject.FindProperty("spawnedObject");
 			sprite = serializedObject.FindProperty("sprite");
+			disableCollider = serializedObject.FindProperty("disableCollider");
         }
 
         public override void OnInspectorGUI() {
@@ -51,6 +57,7 @@ namespace UnityEngine.Tilemaps {
 
 			EditorGUILayout.PropertyField(sprite);
             EditorGUILayout.PropertyField(spawnedObject);
+            EditorGUILayout.PropertyField(disableCollider);
 
             if (EditorGUI.EndChangeCheck())
             {
