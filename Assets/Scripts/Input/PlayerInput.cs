@@ -12,6 +12,7 @@ public class PlayerInput : MonoBehaviour {
 
     [SerializeField] bool humanControl = false;
     public bool isHuman => humanControl;
+    public bool alwaysShowMouse = false;
 
     public ComputerController comControl { get; private set; }
 
@@ -48,6 +49,10 @@ public class PlayerInput : MonoBehaviour {
     }
 
     void ShowHideMouse(InputActionEventData actionData) {
+        if (alwaysShowMouse) {
+            Cursor.visible = true;
+            return;
+        }
         if (!humanControl) return;
         lastActiveController = player.controllers.GetLastActiveController();
         Cursor.visible = (lastActiveController?.type == Rewired.ControllerType.Mouse);

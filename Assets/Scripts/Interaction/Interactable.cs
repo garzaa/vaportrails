@@ -42,4 +42,12 @@ public abstract class Interactable : MonoBehaviour {
 		if (optionalPromptPoint) return optionalPromptPoint;
 		return gameObject;
 	}
+
+	protected void HidePrompt() {
+		prompt.GetComponent<SpriteRenderer>().enabled = false;
+	}
+
+	protected void ShowPrompt() {
+		prompt.GetComponent<SpriteRenderer>().enabled = true;
+	}
 }

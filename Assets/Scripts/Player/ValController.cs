@@ -12,11 +12,18 @@ public class ValController : EntityController {
 		}
 		if (Input.GetKeyDown(KeyCode.T)) {
 			animator.Play("ValPickupAbility");
-			this.WaitAndExecute(() => animator.SetTrigger("ReturnToIdle"), 3f);
+			this.WaitAndExecute(() => animator.SetTrigger("ResetToIdle"), 3f);
 		}
 	}
 
-	public void HairBackwards() {
+    protected override void OnEffectGroundHit(float fallDistance) {
+        base.OnEffectGroundHit(fallDistance);
+		if (fallDistance > 7f) {
+			animator.Play("ValHardLanding");
+		}
+    }
+
+    public void HairBackwards() {
 		animator.SetTrigger("HairBackwards");
 	}
 

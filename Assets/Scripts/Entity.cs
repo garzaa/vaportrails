@@ -108,6 +108,7 @@ public class Entity : MonoBehaviour, IHitListener {
 	}
 
 	protected virtual void Start() {
+		fallStart = transform.position.y;
 		StartCoroutine(SaveLastSafePosition());
 	}
 
@@ -478,6 +479,8 @@ public class Entity : MonoBehaviour, IHitListener {
 	}
 
 	IEnumerator SaveLastSafePosition() {
+		// space these out so there aren't lag spikes if there are a lot of entities
+		yield return new WaitForSecondsRealtime(UnityEngine.Random.value);
 		for (;;) {
 			groundSaver.SaveIfPossible();
 			yield return new WaitForSeconds(0.2f);
