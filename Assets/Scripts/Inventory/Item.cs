@@ -3,7 +3,10 @@ using System.Text;
 using System.Collections;
 using System.Collections.Generic;
 
-[CreateAssetMenu(menuName="Data/Item")]
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 public class Item : ScriptableObject {
 	public Sprite icon;
 	public int cost = 0;
@@ -37,4 +40,14 @@ public class Item : ScriptableObject {
 			return sb.ToString();
 		}
 	}
+
+#if UNITY_EDITOR
+	[MenuItem("GameObject/Vapor Trails/Create Item")]
+	public static void CreateAchievement() {
+		Item i = CreateInstance<Item>();
+		AssetDatabase.CreateAsset(i, "Assets/Resources/Runtime/Achievements/NewItem.asset");
+		EditorUtility.FocusProjectWindow();
+		Selection.activeObject = i;
+	}
+#endif
 }

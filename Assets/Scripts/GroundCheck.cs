@@ -97,7 +97,7 @@ public class GroundCheck : MonoBehaviour {
         nonPlatforms.Clear();
 
         for (int i=0; i<platforms.Count; i++) {
-            if (!platforms[i].collider.CompareTag(Tags.Platform)) {
+            if (!platforms[i].collider.GetComponent<PlatformEffector2D>()) {
                 nonPlatforms.Add(platforms[i]);
             }
         }

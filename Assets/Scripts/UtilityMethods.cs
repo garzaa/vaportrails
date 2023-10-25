@@ -1,8 +1,13 @@
- using UnityEngine;
- using UnityEngine.UI;
- using System.Collections.Generic;
- using UnityEngine.SceneManagement;
- using System.Collections;
+using UnityEngine;
+using UnityEngine.UI;
+using System.Collections.Generic;
+using UnityEngine.SceneManagement;
+using System.Collections;
+using System.Linq;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
  static class UtilityMethods {
     public static Vector3 Round(this Vector3 vector3, int decimalPlaces = 2) {
@@ -106,5 +111,15 @@
     public static Vector2 Rotate(this Vector2 v, float degrees) {
         return Quaternion.Euler(0, 0, degrees) * v;
 	}
+
+    public static void ClearUIList(Transform t) {
+        foreach (Transform oldItem in t.Cast<Transform>().ToArray()) {
+			// Destroy is called after the Update loop, which screws up the first child selection logic
+            // so we do this so it's not shown
+			GameObject.Destroy(oldItem.gameObject);
+			// keep the engine from reeing at you
+			oldItem.SetParent(null, worldPositionStays: false);
+		}
+    }
 
  }

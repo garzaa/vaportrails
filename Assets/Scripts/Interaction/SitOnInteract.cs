@@ -13,6 +13,9 @@ public class SitOnInteract : Interactable {
 		RIGHT
 	}
 
+	// TODO: add a special looking cushion or something so people know it's a sittable area
+	// also TODO: add an event for sit start and sit end
+
 	public SitType sitType;
 	public Direction direction;
 
@@ -31,6 +34,9 @@ public class SitOnInteract : Interactable {
 		player.EnterCutscene(this.gameObject);
 		sitTime = Time.time;
 		playerSitting = true;
+		Vector2 v = player.GetComponent<Rigidbody2D>().position;
+		v.x = this.transform.position.x;
+		player.GetComponent<Rigidbody2D>().MovePosition(v);
 	}
 
 	void Update() {

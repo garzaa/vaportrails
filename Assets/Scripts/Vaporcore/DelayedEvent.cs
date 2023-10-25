@@ -18,6 +18,10 @@ public class DelayedEvent : MonoBehaviour {
 		callback.Invoke();
 	}
 
+	public void Abort() {
+		StopAllCoroutines();
+	}
+
 	[System.Serializable]
 	public class TimedEvent {
 		public float delay;

@@ -7,6 +7,7 @@ using System.Linq;
 using System;
 
 public abstract class SavedObject : MonoBehaviour {
+	// TODO: a different version of SavedObject that persists between saves? across saves/loads?
 
 	[Tooltip("Use state shared between scenes for objects with this hierarchichal name.")]
 	public bool useGlobalNamespace;

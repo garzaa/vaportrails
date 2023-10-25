@@ -41,6 +41,7 @@ public class PlayerProperties : SavedObject {
 		// reload the player on the ground next time
 		Vector3 pos = transform.position;
 		pos.y -= GetComponent<GroundCheck>().groundData.distance;
+		pos.y += 2f/64f;
 		properties["pos"] = pos;
 		properties["facingRight"] = player.facingRight;
 		properties["abilities"] = player.GetAbilities();

@@ -208,3 +208,18 @@ MonoBehaviour:
   takenSprite: {fileID: 21300000, guid: 1123949355354d8448bf37a0cc9747bc, type: 3}
   pickupSound: {fileID: 11400000, guid: dd90cfa8bac789949a06512e265446d6, type: 2}
   pickupEffect: {fileID: 3033380012302794253, guid: 9ccd3f8ce6c79164d92cad64a81bc9fd, type: 3}
+  OnPickup:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 11400000, guid: 54a5d8edb9b6da74cbfb079fb9235be2, type: 2}
+        m_TargetAssemblyTypeName: Achievement, Assembly-CSharp
+        m_MethodName: Get
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2

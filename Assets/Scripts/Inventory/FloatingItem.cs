@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Events;
 
 public class FloatingItem : SavedEnabled, IPlayerEnterListener {
 	public Item item;
@@ -8,6 +9,8 @@ public class FloatingItem : SavedEnabled, IPlayerEnterListener {
 	public AudioResource pickupSound;
 	public GameObject pickupEffect;
 	SpriteRenderer spriteRenderer;
+
+	public UnityEvent OnPickup;
 
 	void Awake() {
 		if (takenSprite) {
@@ -43,6 +46,8 @@ public class FloatingItem : SavedEnabled, IPlayerEnterListener {
 
 		// add to inventory
 		player.GetComponentInChildren<Inventory>().AddItem(item);
+
+		OnPickup.Invoke();
 	}
 
 }
