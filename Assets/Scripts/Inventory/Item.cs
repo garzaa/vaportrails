@@ -45,7 +45,7 @@ public class Item : ScriptableObject {
 	[MenuItem("GameObject/Vapor Trails/Create Item")]
 	public static void CreateAchievement() {
 		Item i = CreateInstance<Item>();
-		AssetDatabase.CreateAsset(i, "Assets/Resources/Runtime/Achievements/NewItem.asset");
+		AssetDatabase.CreateAsset(i, "Assets/Resources/Runtime/Items/NewItem.asset");
 		EditorUtility.FocusProjectWindow();
 		Selection.activeObject = i;
 	}

@@ -733,7 +733,6 @@ public class EntityController : Entity {
 
 	void DropThroughPlatforms(List<RaycastHit2D>platforms) {
 		foreach (RaycastHit2D hit in platforms) {
-			Debug.Log("dropping through "+hit.collider.name);
 			EdgeCollider2D platform = hit.collider.GetComponent<EdgeCollider2D>();
 			if (platform == null) continue;
 			platform.enabled = false;

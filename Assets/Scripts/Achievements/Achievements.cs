@@ -31,6 +31,10 @@ public class Achievements : SavedObject {
 	public Sprite unlockedFrame;
 	public Sprite rareFrame;
 
+	public Animator animator;
+	public Text unlockTitle;
+	public Image unlockIcon;
+
     protected override void LoadFromProperties() {
         achievements = GetHashSet<string>(nameof(achievements));
     }
@@ -44,18 +48,20 @@ public class Achievements : SavedObject {
 	}
 
 	bool Has(Achievement a) {
-		return achievements.Contains(a.name);
+		return achievements.Contains(a.GetName());
 	}
 
 	public void Get(Achievement a) {
 		if (!Has(a)) {
-			achievements.Add(a.name);
+			achievements.Add(a.GetName());
 			NotifyUnlock(a);
 		}
 	}
 
 	public void NotifyUnlock(Achievement a) {
-		
+		unlockTitle.text = a.GetName();
+		unlockIcon.sprite = a.Icon;
+		animator.SetTrigger("Unlock");
 	}
 
 	public void ListAchievements() {
@@ -72,7 +78,7 @@ public class Achievements : SavedObject {
 		GameObject g = Instantiate(achievementPrefab, lockedContainer);
 		Text[] textObjects = g.GetComponentsInChildren<Text>();
 		Image[] images = g.GetComponentsInChildren<Image>();
-		textObjects[0].text = a.name;
+		textObjects[0].text = a.GetName();
 		textObjects[1].text = a.Description;
 		images[2].sprite = a.Icon;
 		if (Has(a)) {
