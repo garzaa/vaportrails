@@ -45,7 +45,7 @@ public class TabUI : SavedObject {
 		for (int i=0; i<screens.Count; i++) {
 			AddTabName(screens[i].name, i);
 		}
-		ShowTab(0);
+		ShowTab(currentTab);
 		Canvas.ForceUpdateCanvases();
 	}
 
@@ -59,7 +59,7 @@ public class TabUI : SavedObject {
 		}
 	}
 
-	void ShowTab(int n) {
+	public void ShowTab(int n) {
 		if (n < 0) currentTab = screens.Count-1;
 		else if (n >= screens.Count) currentTab = 0;
 		else currentTab = n;

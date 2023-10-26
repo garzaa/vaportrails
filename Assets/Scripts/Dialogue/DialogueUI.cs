@@ -139,4 +139,10 @@ public class DialogueUI : MonoBehaviour {
 		cameraInterface.RemoveFramingTarget(dialogueSource);
 		CutsceneQueue.OnCutsceneFinish();
 	}
+
+	public void AddLines(ConversationContainer container) {
+		foreach (DialogueLine line in container.GetNextConversation()) {
+			currentLines.Enqueue(line);
+		}
+	}
 }

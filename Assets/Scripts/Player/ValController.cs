@@ -40,4 +40,15 @@ public class ValController : EntityController {
 		heldItem.sprite = item;
 		animator.Play("ValHandItem");
 	}
+
+    public override void OnHit(AttackHitbox hitbox) {
+        base.OnHit(hitbox);
+		if (GetComponent<HP>().current.Get() <= 0) {
+			CancelInvoke();
+			EndHitstop();
+			Die();
+			animator.Play("ValDie");
+			FindObjectOfType<PlayerDeath>().Run(hitbox);
+		}
+    }
 }

@@ -119,7 +119,7 @@ public class TransitionManager : SavedObject {
 		PlayerInput.GetPlayerOneInput().GetComponent<EntityController>().EnterCutscene(this.gameObject);
 		FadeAudio(0);
 		FadeToBlack();
-		yield return new WaitForSeconds(FADE_TIME);
+		yield return new WaitForSecondsRealtime(FADE_TIME);
 
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
 		asyncLoad.allowSceneActivation = false;
@@ -142,7 +142,7 @@ public class TransitionManager : SavedObject {
 	}
 
 	void SyncObjectsToRuntime() {
-		foreach (SavedObject o in GameObject.FindObjectsOfType<SavedObject>()) {
+		foreach (SavedObject o in GameObject.FindObjectsOfType<SavedObject>(includeInactive: true)) {
 			o.SyncToRuntime();
 		}
 		FindObjectOfType<MapFog>()?.Save();

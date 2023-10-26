@@ -40,8 +40,9 @@ public class PlayerProperties : SavedObject {
 		properties["maxEP"] = combatController.maxEP.Get();
 		// reload the player on the ground next time
 		Vector3 pos = transform.position;
+		float neutralDistance = GetComponent<CapsuleCollider2D>().bounds.extents.y;
 		pos.y -= GetComponent<GroundCheck>().groundData.distance;
-		pos.y += 2f/64f;
+		pos.y += neutralDistance;
 		properties["pos"] = pos;
 		properties["facingRight"] = player.facingRight;
 		properties["abilities"] = player.GetAbilities();

@@ -32,6 +32,7 @@ public class SlowRenderer : MonoBehaviour {
 	}
 
 	public void Render(string t) {
+		if (target == null) target = GetComponent<Text>();
 		Render(t, null);
 	}
 

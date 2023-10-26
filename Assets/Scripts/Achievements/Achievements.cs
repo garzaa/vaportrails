@@ -35,19 +35,26 @@ public class Achievements : SavedObject {
 	public Text unlockTitle;
 	public Image unlockIcon;
 
+	public Text unlockedText;
+	int unlockedCount;
+	int totalCount;
+
     protected override void LoadFromProperties() {
         achievements = GetHashSet<string>(nameof(achievements));
+    }
+
+    protected override void PostEnable() {
+        ListAchievements();
     }
 
     protected override void SaveToProperties(ref Dictionary<string, object> properties) {
         properties[nameof(achievements)] = achievements;
     }
 
-	void OnEnable() {
-		ListAchievements();
-	}
-
 	bool Has(Achievement a) {
+		if (loadedAchievements == null) {
+			this.OnEnable();
+		}
 		return achievements.Contains(a.GetName());
 	}
 
@@ -67,11 +74,15 @@ public class Achievements : SavedObject {
 	public void ListAchievements() {
 		UtilityMethods.ClearUIList(lockedContainer);
 		UtilityMethods.ClearUIList(unlockedContainer);
+		unlockedCount = 0;
+		totalCount = 0;
 
 		loadedAchievements ??= Resources.LoadAll<Achievement>("Runtime/Achievements");
 		foreach (Achievement a in loadedAchievements) {
 			AddUIPrefab(a);
 		}
+
+		unlockedText.text = $"Unlocked: {unlockedCount}/{totalCount}";
 	}
 
 	void AddUIPrefab(Achievement a) {
@@ -81,7 +92,9 @@ public class Achievements : SavedObject {
 		textObjects[0].text = a.GetName();
 		textObjects[1].text = a.Description;
 		images[2].sprite = a.Icon;
+		totalCount++;
 		if (Has(a)) {
+			unlockedCount++;
 			g.transform.SetParent(unlockedContainer, worldPositionStays: false);
 			textObjects[0].color = new Color32(199, 207, 221, 255);
 			if (a.Rare) {

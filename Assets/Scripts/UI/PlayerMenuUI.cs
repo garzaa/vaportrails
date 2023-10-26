@@ -22,10 +22,15 @@ public class PlayerMenuUI : MonoBehaviour {
 				ui.SetActive(false);
 				player.ExitCutscene(this.gameObject);
 			} else if (!player.inCutscene) {
-				ui.SetActive(true);
-				inventoryUI.Populate();
-				player.EnterCutscene(this.gameObject);
+				Open();
 			}
 		}
+	}
+
+	public void Open() {
+		if (player.inCutscene) return;
+		ui.SetActive(true);
+		inventoryUI.Populate();
+		player.EnterCutscene(this.gameObject);
 	}
 }

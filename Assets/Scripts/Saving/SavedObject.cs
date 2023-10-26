@@ -7,7 +7,7 @@ using System.Linq;
 using System;
 
 public abstract class SavedObject : MonoBehaviour {
-	// TODO: a different version of SavedObject that persists between saves? across saves/loads?
+	public bool useEternalSave = false;
 
 	[Tooltip("Use state shared between scenes for objects with this hierarchichal name.")]
 	public bool useGlobalNamespace;
@@ -18,14 +18,22 @@ public abstract class SavedObject : MonoBehaviour {
 
 	Save save;
 
-	void OnEnable() {
+	protected void OnEnable() {
 		Load();
 		Initialize();
 		if (hasSavedData) LoadFromProperties();
+		PostEnable();
+	}
+
+	void OnDisable() {
+		if (useEternalSave) {
+			// because it will be reloaded when re-enabled
+			SyncToRuntime();
+		}
 	}
 
 	void Load() {
-		save = GameObject.FindObjectOfType<SaveManager>().save;
+		save = FindObjectOfType<SaveManager>().GetSaveFor(this);
 		properties = save.LoadAtPath(GetObjectPath());
 	}
 
@@ -55,6 +63,7 @@ public abstract class SavedObject : MonoBehaviour {
 
 	// this happens first, to hook up inter-object references
 	protected virtual void Initialize() {}
+	protected virtual void PostEnable() {}
 	protected abstract void LoadFromProperties();
 	protected abstract void SaveToProperties(ref Dictionary<string, object> properties);
 

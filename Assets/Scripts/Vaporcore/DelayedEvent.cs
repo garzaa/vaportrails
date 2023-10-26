@@ -5,6 +5,7 @@ using UnityEngine.Events;
 
 public class DelayedEvent : MonoBehaviour {
 
+	public bool realTime = false;
 	public TimedEvent[] events;
 
 	public void Raise() {
@@ -14,7 +15,11 @@ public class DelayedEvent : MonoBehaviour {
 	}
 
 	IEnumerator DelayAndFire(float delay, UnityEvent callback) {
-		yield return new WaitForSeconds(delay);
+		if (realTime) {
+			yield return new WaitForSecondsRealtime(delay);
+		} else {
+			yield return new WaitForSeconds(delay);
+		}
 		callback.Invoke();
 	}
 

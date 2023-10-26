@@ -11,13 +11,13 @@ public class SmokeBeastAI : AIEngine {
 		);
 		Add(State.NEUTRAL, new AIRoutine()
 			.MoveToPlayerX()
-			.FinishOnXDistance(5f)
+			.FinishOnXDistance(7f)
 			.Then().Punch()
 		);
 
 		Add(State.NEUTRAL, new AIRoutine()
 			.MoveToPlayerX()
-			.FinishOnXDistance(5f)
+			.FinishOnXDistance(7f)
 			.Then()
 			.AimDown()
 			.Punch()

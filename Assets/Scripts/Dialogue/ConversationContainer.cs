@@ -26,6 +26,10 @@ public class ConversationContainer : SavedObject {
 		properties["currentConversation"] = currentConversation;
 	}
 
+	public void QueueSelf() {
+		FindObjectOfType<DialogueUI>().AddLines(this.GetNextConversation());
+	}
+
 	[System.Serializable]
 	public class Conversation {
 		public List<DialogueLine> lines;
