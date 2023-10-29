@@ -11,6 +11,7 @@ public class PauseMenu : MonoBehaviour {
 	GameObject pauseUI;
 
 	public SceneReference mainMenuScene;
+	bool blockEscape;
 
 	void Awake() {
 		input = PlayerInput.GetPlayerOneInput();
@@ -23,7 +24,7 @@ public class PauseMenu : MonoBehaviour {
 		// player is null if player's deactivated in a cutscene
 		// cutscene == no pausing
 		if (!player) return;
-		if (input.ButtonDown(Buttons.PAUSE)) {
+		if (input.ButtonDown(Buttons.PAUSE) && !blockEscape) {
 			if (!pauseUI.activeSelf && !player.inCutscene) {
 				Open();
 			} else if (pauseUI.activeSelf) {
@@ -51,11 +52,20 @@ public class PauseMenu : MonoBehaviour {
 	}
 
 	public void Quit() {
+		FindObjectOfType<SaveManager>().WriteEternalSave();
 		Application.Quit();
 	}
 
 	public void MainMenu() {
 		Close();
 		GameObject.FindObjectOfType<TransitionManager>().SceneTransition(mainMenuScene.ScenePath);
+	}
+
+	public void SettingsMenu() {
+		blockEscape = true;
+	}
+
+	public void OnSettingsMenuClose() {
+		blockEscape = false;
 	}
 }

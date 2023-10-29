@@ -43,18 +43,11 @@ public class Achievements : SavedObject {
         achievements = GetHashSet<string>(nameof(achievements));
     }
 
-    protected override void PostEnable() {
-        ListAchievements();
-    }
-
     protected override void SaveToProperties(ref Dictionary<string, object> properties) {
         properties[nameof(achievements)] = achievements;
     }
 
 	bool Has(Achievement a) {
-		if (loadedAchievements == null) {
-			this.OnEnable();
-		}
 		return achievements.Contains(a.GetName());
 	}
 
@@ -72,6 +65,7 @@ public class Achievements : SavedObject {
 	}
 
 	public void ListAchievements() {
+		Debug.Log("refreshing achievement list");
 		UtilityMethods.ClearUIList(lockedContainer);
 		UtilityMethods.ClearUIList(unlockedContainer);
 		unlockedCount = 0;

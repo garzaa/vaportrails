@@ -27,6 +27,7 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
+  animationClip: {fileID: 0}
   stateName: PlayerHeal
   actionableAt: 0.9
   input:
@@ -82,6 +83,7 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
+  animationClip: {fileID: 0}
   attackData: {fileID: 11400000, guid: 274f5d06035ff2d4db7480dcec103d3a, type: 2}
   input:
     type: 0
@@ -143,6 +145,7 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
+  animationClip: {fileID: 0}
   attackData: {fileID: 11400000, guid: f0c9d2455ac34294792c024c449cec42, type: 2}
   input:
     type: 0
@@ -204,6 +207,7 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
+  animationClip: {fileID: 0}
   attackData: {fileID: 11400000, guid: 150e64d633340a84cb649897f2b57811, type: 2}
   input:
     type: 0
@@ -265,6 +269,7 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
+  animationClip: {fileID: 0}
   attackData: {fileID: 11400000, guid: e3aa699e28ce6bf4cbe470fc1bfb9a20, type: 2}
   input:
     type: 0
@@ -286,7 +291,7 @@ MonoBehaviour:
   m_Name: Stomp
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 136, y: 232}
+  position: {x: 440, y: 280}
   ports:
     keys:
     - links
@@ -329,13 +334,14 @@ MonoBehaviour:
       _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
       connections:
-      - fieldName: links 1
-        node: {fileID: 7367564331834169068}
+      - fieldName: output
+        node: {fileID: -2298318310648658084}
         reroutePoints: []
       _direction: 0
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
+  animationClip: {fileID: 0}
   attackData: {fileID: 11400000, guid: f0a0ee045a180cb40964d49b3dbef142, type: 2}
   input:
     type: 0
@@ -409,6 +415,7 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
+  animationClip: {fileID: 0}
   attackData: {fileID: 11400000, guid: f9d0a995cc0ef204b81d00e741d479c5, type: 2}
   input:
     type: 0
@@ -417,6 +424,73 @@ MonoBehaviour:
   - type: 1
     direction: 0
   onHit:
+    type: 0
+    direction: 0
+--- !u!114 &-2298318310648658084
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21e33128785eb7645bb6a741df838108, type: 3}
+  m_Name: Item Gate
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 184, y: 296}
+  ports:
+    keys:
+    - input
+    - output
+    - outputIfNoItem
+    values:
+    - _fieldName: input
+      _node: {fileID: -2298318310648658084}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: links 1
+        node: {fileID: 7367564331834169068}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: output
+      _node: {fileID: -2298318310648658084}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: input
+        node: {fileID: -4714013082723229361}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: outputIfNoItem
+      _node: {fileID: -2298318310648658084}
+      _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: input
+        node: {fileID: 3697867700367071595}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  animationClip: {fileID: 0}
+  item: {fileID: 11400000, guid: 983c639ab1043084e8682ad40d465145, type: 2}
+  input:
+    type: 0
+    direction: 0
+  output:
+    type: 0
+    direction: 0
+  outputIfNoItem:
     type: 0
     direction: 0
 --- !u!114 &-2182646159027362593
@@ -479,6 +553,7 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
+  animationClip: {fileID: 0}
   attackData: {fileID: 11400000, guid: c3de1d21108df874182cc594a2388e10, type: 2}
   input:
     type: 0
@@ -529,6 +604,7 @@ MonoBehaviour:
       _connectionType: 1
       _typeConstraint: 0
       _dynamic: 0
+  animationClip: {fileID: 0}
   normalizedOffset: 0.125
   input:
     type: 0
@@ -571,6 +647,7 @@ MonoBehaviour:
   - {fileID: 391144820956782227}
   - {fileID: 6489941346990127484}
   - {fileID: 8369844048227420039}
+  - {fileID: -2298318310648658084}
   stateMachineName: GroundAttacks
 --- !u!114 &391144820956782227
 MonoBehaviour:
@@ -622,6 +699,7 @@ MonoBehaviour:
       _connectionType: 1
       _typeConstraint: 0
       _dynamic: 0
+  animationClip: {fileID: 0}
   attackData: {fileID: 11400000, guid: 260b382223c7e08419473a381c742626, type: 2}
   input:
     type: 0
@@ -683,6 +761,7 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
+  animationClip: {fileID: 0}
   attackData: {fileID: 11400000, guid: 6836478d6013d414a9c70780427b3354, type: 2}
   input:
     type: 0
@@ -704,7 +783,7 @@ MonoBehaviour:
   m_Name: Leg Sweep
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 424, y: 184}
+  position: {x: 744, y: 136}
   ports:
     keys:
     - links
@@ -738,6 +817,9 @@ MonoBehaviour:
       - fieldName: links 0
         node: {fileID: -4714013082723229361}
         reroutePoints: []
+      - fieldName: outputIfNoItem
+        node: {fileID: -2298318310648658084}
+        reroutePoints: []
       _direction: 0
       _connectionType: 0
       _typeConstraint: 0
@@ -754,6 +836,7 @@ MonoBehaviour:
       _connectionType: 1
       _typeConstraint: 0
       _dynamic: 1
+  animationClip: {fileID: 0}
   attackData: {fileID: 11400000, guid: e9450ae1c5b7e65488221e964e2596fb, type: 2}
   input:
     type: 0
@@ -827,6 +910,7 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
+  animationClip: {fileID: 0}
   attackData: {fileID: 11400000, guid: 246b3658401fbac4fb14ac5a6ae81bd0, type: 2}
   input:
     type: 0
@@ -893,6 +977,7 @@ MonoBehaviour:
       _connectionType: 1
       _typeConstraint: 0
       _dynamic: 0
+  animationClip: {fileID: 0}
   energyCost: 4
   input:
     type: 0
@@ -946,19 +1031,20 @@ MonoBehaviour:
       _typeQualifiedName: AttackLink, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
       connections:
-      - fieldName: links 3
-        node: {fileID: 7367564331834169068}
+      - fieldName: links 0
+        node: {fileID: 3697867700367071595}
         reroutePoints: []
       - fieldName: links 2
         node: {fileID: 7367564331834169068}
         reroutePoints: []
-      - fieldName: links 0
-        node: {fileID: 3697867700367071595}
+      - fieldName: links 3
+        node: {fileID: 7367564331834169068}
         reroutePoints: []
       _direction: 0
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
+  animationClip: {fileID: 0}
   attackData: {fileID: 11400000, guid: de37b9a5f8a030e46abb95d2063c259b, type: 2}
   input:
     type: 0
@@ -1017,6 +1103,7 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
+  animationClip: {fileID: 0}
   attackData: {fileID: 11400000, guid: f1bf5a448a9f9994983bb647f0befcb2, type: 2}
   input:
     type: 0
@@ -1088,6 +1175,7 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
+  animationClip: {fileID: 0}
   attackData: {fileID: 11400000, guid: b6390910b5a8ff84489bc31c90d6f8b9, type: 2}
   input:
     type: 0
@@ -1154,6 +1242,7 @@ MonoBehaviour:
       _connectionType: 1
       _typeConstraint: 0
       _dynamic: 0
+  animationClip: {fileID: 0}
   energyCost: 4
   input:
     type: 0
@@ -1191,6 +1280,7 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
+  animationClip: {fileID: 0}
   stateName: Ground Parry
   actionableAt: 0.99
   input:
@@ -1286,7 +1376,7 @@ MonoBehaviour:
         PublicKeyToken=null
       connections:
       - fieldName: input
-        node: {fileID: -4714013082723229361}
+        node: {fileID: -2298318310648658084}
         reroutePoints: []
       _direction: 1
       _connectionType: 1
@@ -1373,6 +1463,7 @@ MonoBehaviour:
       _connectionType: 1
       _typeConstraint: 0
       _dynamic: 1
+  animationClip: {fileID: 0}
   attackData: {fileID: 0}
   input:
     type: 0
@@ -1447,6 +1538,7 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
+  animationClip: {fileID: 0}
   attackData: {fileID: 11400000, guid: 19417705a56266d46806172f72754b7a, type: 2}
   input:
     type: 0
@@ -1508,6 +1600,7 @@ MonoBehaviour:
       _connectionType: 1
       _typeConstraint: 0
       _dynamic: 0
+  animationClip: {fileID: 0}
   attackData: {fileID: 11400000, guid: fd673b4b82d47a140a7043c9d9177516, type: 2}
   input:
     type: 0

@@ -7,12 +7,12 @@ public class SaveManager : MonoBehaviour {
 
 	// this one is persisted automatically and used by every save
 	// e.g. for things like achievements or other global settings
-	Save eternalSave = new Save();
+	Save eternalSave = new();
 	const int eternalNum = -1;
 
 	TransitionManager transitionManager;
 
-	JsonSaver jsonSaver = new JsonSaver();
+	readonly JsonSaver jsonSaver = new JsonSaver();
 	int slot = 1;
 
 	public Save save {
@@ -26,6 +26,7 @@ public class SaveManager : MonoBehaviour {
 		// load a slot zero save if it exists
 		if (jsonSaver.HasFile(eternalNum)) {
 			eternalSave = jsonSaver.LoadFile(eternalNum);
+			Debug.Log("loaded eternal save");
 		}
 	}
 
@@ -46,7 +47,7 @@ public class SaveManager : MonoBehaviour {
 	}
 
 	public void Save() {
-		foreach (SavedObject o in FindObjectsOfType<SavedObject>(includeInactive: true)) {
+		foreach (SavedObject o in FindObjectsOfType<SavedObject>(includeInactive: false)) {
 			o.SyncToRuntime();
 		}
 		FindObjectOfType<MapFog>()?.Save();
@@ -55,7 +56,7 @@ public class SaveManager : MonoBehaviour {
 	}
 
 	public void Load() {
-		SaveEternal();
+		WriteEternalSave();
 		StartCoroutine(FadeAndLoad());
 	}
 
@@ -63,7 +64,7 @@ public class SaveManager : MonoBehaviour {
 		transitionManager.FadeToBlack();
 		yield return new WaitForSeconds(0.5f);
 		saveContainer.SetSave(jsonSaver.LoadFile(slot));
-		foreach (SavedObject o in FindObjectsOfType<SavedObject>(includeInactive: true)) {
+		foreach (SavedObject o in FindObjectsOfType<SavedObject>(includeInactive: false)) {
 			// when loading something like playerposition, if it's enabled don't jerk camera around
 			o.AfterDiskLoad();
 		}
@@ -78,13 +79,8 @@ public class SaveManager : MonoBehaviour {
 		save.Wipe();
 	}
 
-	// called when application exits, scene transitions, etc
-	public void OnDestroy() {
-		SaveEternal();
-	}
-
-	void SaveEternal() {
-		foreach (SavedObject o in FindObjectsOfType<SavedObject>(includeInactive: true)) {
+	public void WriteEternalSave() {
+		foreach (SavedObject o in FindObjectsOfType<SavedObject>(includeInactive: false)) {
 			if (o.useEternalSave) o.SyncToRuntime();
 		}
 		eternalSave.version = Application.version;

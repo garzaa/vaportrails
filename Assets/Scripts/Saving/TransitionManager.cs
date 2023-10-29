@@ -16,6 +16,8 @@ public class TransitionManager : SavedObject {
 	float elapsedTime;
 	float transitionEndTime;
 
+	SaveManager saveManager;
+
 	protected override void LoadFromProperties() {}
 
 	public void LoadLastSavedScene() {
@@ -28,6 +30,7 @@ public class TransitionManager : SavedObject {
 	}
 
 	protected override void Initialize() {
+		saveManager = FindObjectOfType<SaveManager>();
 		hardLockCamera.SetActive(true);
 		AudioListener.volume = 0;
 		FadeAudio(1);
@@ -115,12 +118,12 @@ public class TransitionManager : SavedObject {
 	}
 
 	IEnumerator LoadAsync(string sceneName) {
-		SyncObjectsToRuntime();
 		PlayerInput.GetPlayerOneInput().GetComponent<EntityController>().EnterCutscene(this.gameObject);
 		FadeAudio(0);
 		FadeToBlack();
 		yield return new WaitForSecondsRealtime(FADE_TIME);
 
+		SyncObjectsToRuntime();
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
 		asyncLoad.allowSceneActivation = false;
 		
@@ -142,9 +145,11 @@ public class TransitionManager : SavedObject {
 	}
 
 	void SyncObjectsToRuntime() {
-		foreach (SavedObject o in GameObject.FindObjectsOfType<SavedObject>(includeInactive: true)) {
+		foreach (SavedObject o in FindObjectsOfType<SavedObject>(includeInactive: false)) {
 			o.SyncToRuntime();
 		}
+		saveManager.WriteEternalSave();
 		FindObjectOfType<MapFog>()?.Save();
+
 	}
 }

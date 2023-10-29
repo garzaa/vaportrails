@@ -12,24 +12,16 @@ public abstract class SavedObject : MonoBehaviour {
 	[Tooltip("Use state shared between scenes for objects with this hierarchichal name.")]
 	public bool useGlobalNamespace;
 
-	private Dictionary<string, object> properties = new Dictionary<string, object>();
+	private Dictionary<string, object> properties = new();
 
 	bool hasSavedData => properties.Count > 0;
 
 	Save save;
 
-	protected void OnEnable() {
+	void OnEnable() {
 		Load();
 		Initialize();
 		if (hasSavedData) LoadFromProperties();
-		PostEnable();
-	}
-
-	void OnDisable() {
-		if (useEternalSave) {
-			// because it will be reloaded when re-enabled
-			SyncToRuntime();
-		}
 	}
 
 	void Load() {
@@ -63,7 +55,6 @@ public abstract class SavedObject : MonoBehaviour {
 
 	// this happens first, to hook up inter-object references
 	protected virtual void Initialize() {}
-	protected virtual void PostEnable() {}
 	protected abstract void LoadFromProperties();
 	protected abstract void SaveToProperties(ref Dictionary<string, object> properties);
 

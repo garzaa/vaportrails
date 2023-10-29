@@ -6,7 +6,7 @@ using UnityEngine.Events;
 public class PlayerTriggeredObject : MonoBehaviour {
 	List<IPlayerEnterListener> listeners;
 	
-	void Start() {
+	protected virtual void Start() {
 		listeners = new List<IPlayerEnterListener>(GetComponentsInParent<IPlayerEnterListener>());
 		Initialize();
 	}
