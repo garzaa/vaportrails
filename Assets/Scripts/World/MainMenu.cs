@@ -3,10 +3,24 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class MainMenu : MonoBehaviour {
-	public SceneReference newGameScene;
+	public Beacon newGameBeacon;
+
+	public GameObject continueButton;
+	readonly JsonSaver jsonSaver = new();
+	SaveManager saveManager;
+
+	public void Start() {
+		continueButton.SetActive(jsonSaver.HasFile(1));
+		saveManager = FindObjectOfType<SaveManager>();
+	}
+
+	public void ContinueGame() {
+		saveManager.Load();
+	}
 	
 	public void NewGame() {
-		GameObject.FindObjectOfType<TransitionManager>().SceneTransition(newGameScene.ScenePath);
+		saveManager.WipeSave();
+		FindObjectOfType<TransitionManager>().BeaconTransition(newGameBeacon);
 	}
 
 	public void Quit() {
