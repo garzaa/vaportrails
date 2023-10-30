@@ -6,7 +6,7 @@ public class SmokeBeastAI : AIEngine {
 	override protected void InitializeEngine() {
 		Add(State.NEUTRAL, new AIRoutine()
 			.MoveToPlayerX()
-			.FinishOnXDistance(2f)
+			.FinishOnXDistance(5f)
 			.Then().Kick()
 		);
 		Add(State.NEUTRAL, new AIRoutine()
@@ -34,6 +34,7 @@ public class SmokeBeastAI : AIEngine {
 		return new AIRoutine()
 			.Jump()
 			.MoveToPlayerX()
+			.FinishAfterTime(2)
 			.FinishOnXDistance(3);
 	}
 }

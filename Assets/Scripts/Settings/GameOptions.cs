@@ -22,6 +22,7 @@ public class GameOptions : MonoBehaviour {
 		input = PlayerInput.GetPlayerOneInput();
 		Load();
 		Close();
+		Open();
 	}
 
 	public static void Load() {
@@ -44,7 +45,7 @@ public class GameOptions : MonoBehaviour {
 		}
 	}
 
-	void Close() {
+	public void Close() {
 		canvas.SetActive(false);
 		OnClose.Invoke();
 	}
