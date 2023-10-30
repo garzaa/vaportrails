@@ -8,12 +8,12 @@ public class FloatingItem : SavedEnabled, IPlayerEnterListener {
 	public Sprite takenSprite;
 	public AudioResource pickupSound;
 	public GameObject pickupEffect;
-	SpriteRenderer spriteRenderer;
+	SpriteRenderer spriteRenderer = null;
 
 	public UnityEvent OnPickup;
 
-	void Awake() {
-		if (takenSprite) {
+	protected override void Initialize() {
+		if (takenSprite && spriteRenderer == null) {
 			spriteRenderer = gameObject.AddComponent<SpriteRenderer>();
 			spriteRenderer.sprite = takenSprite;
 			spriteRenderer.enabled = false;

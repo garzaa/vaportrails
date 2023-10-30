@@ -13,6 +13,7 @@ public class GameOptions : MonoBehaviour {
 	public bool IsOpen => canvas.activeSelf;
 
 	public static bool shortHop { get; private set; }
+	public static bool secondWind { get; private set; }
 
 	public UnityEvent OnClose;
 
@@ -25,6 +26,7 @@ public class GameOptions : MonoBehaviour {
 
 	public static void Load() {
 		shortHop = LoadBool("Short Hop");
+		secondWind = LoadBool("Second Wind");
 	}
 
 	static bool LoadBool(string name) {

@@ -21,7 +21,7 @@ public class SaveManager : MonoBehaviour {
 		}
 	}
 
-	void Awake() {
+	void Start() {
 		transitionManager = GameObject.FindObjectOfType<TransitionManager>();
 		// load a slot zero save if it exists
 		if (jsonSaver.HasFile(eternalNum)) {

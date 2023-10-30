@@ -14,14 +14,14 @@ public abstract class SavedObject : MonoBehaviour {
 
 	private Dictionary<string, object> properties = new();
 
-	bool hasSavedData => properties.Count > 0;
+	bool HasSavedData => properties.Count > 0;
 
 	Save save;
 
 	public void StartUp() {
 		Load();
 		Initialize();
-		if (hasSavedData) LoadFromProperties();
+		if (HasSavedData) LoadFromProperties();
 	}
 
 	void Load() {
@@ -50,7 +50,7 @@ public abstract class SavedObject : MonoBehaviour {
 
 	public void AfterDiskLoad() {
 		Load();
-		if (hasSavedData) LoadFromProperties();
+		if (HasSavedData) LoadFromProperties();
 	}
 
 	// this happens first, to hook up inter-object references
