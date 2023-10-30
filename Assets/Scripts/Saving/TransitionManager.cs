@@ -82,6 +82,10 @@ public class TransitionManager : SavedObject {
 			elapsedTime += Time.deltaTime;
 			AudioListener.volume = Mathf.Lerp(originalVolume, targetVolume, elapsedTime/FADE_TIME);
 		}
+
+		if (Application.isEditor && Input.GetKeyDown(KeyCode.H)) {
+			hardLockCamera.SetActive(!hardLockCamera.activeSelf);
+		}
 	}
 
 	public void SubwayTransition(Transition.SubwayTransition subwayTransition) {

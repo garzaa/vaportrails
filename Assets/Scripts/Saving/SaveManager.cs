@@ -40,6 +40,7 @@ public class SaveManager : MonoBehaviour {
 		}
 	}
 
+#if UNITY_EDITOR
 	void Update() {
 		if (Input.GetKeyDown(KeyCode.LeftBracket)) {
 			Save();
@@ -47,6 +48,7 @@ public class SaveManager : MonoBehaviour {
 			Load();
 		}
 	}
+#endif
 
 	public void Save() {
 		foreach (SavedObject o in FindObjectsOfType<SavedObject>(includeInactive: false)) {
