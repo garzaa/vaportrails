@@ -35,6 +35,7 @@ public class SmokeBeastAI : AIEngine {
 			.Jump()
 			.MoveToPlayerX()
 			.FinishAfterTime(2)
+			.FinishOnGrounded()
 			.FinishOnXDistance(3);
 	}
 }

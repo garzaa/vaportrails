@@ -22,7 +22,6 @@ public class GameOptions : MonoBehaviour {
 		input = PlayerInput.GetPlayerOneInput();
 		Load();
 		Close();
-		Open();
 	}
 
 	public static void Load() {
