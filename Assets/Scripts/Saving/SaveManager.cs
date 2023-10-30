@@ -26,7 +26,9 @@ public class SaveManager : MonoBehaviour {
 		// load a slot zero save if it exists
 		if (jsonSaver.HasFile(eternalNum)) {
 			eternalSave = jsonSaver.LoadFile(eternalNum);
-			Debug.Log("loaded eternal save");
+		}
+		foreach (SavedObject o in FindObjectsOfType<SavedObject>(includeInactive: false)) {
+			o.StartUp();
 		}
 	}
 
@@ -50,6 +52,7 @@ public class SaveManager : MonoBehaviour {
 		foreach (SavedObject o in FindObjectsOfType<SavedObject>(includeInactive: false)) {
 			o.SyncToRuntime();
 		}
+		WriteEternalSave();
 		FindObjectOfType<MapFog>()?.Save();
 		save.version = Application.version;
 		jsonSaver.SaveFile(save, slot);

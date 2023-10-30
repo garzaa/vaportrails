@@ -65,7 +65,6 @@ public class Achievements : SavedObject {
 	}
 
 	public void ListAchievements() {
-		Debug.Log("refreshing achievement list");
 		UtilityMethods.ClearUIList(lockedContainer);
 		UtilityMethods.ClearUIList(unlockedContainer);
 		unlockedCount = 0;

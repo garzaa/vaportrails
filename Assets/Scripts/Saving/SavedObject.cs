@@ -18,7 +18,7 @@ public abstract class SavedObject : MonoBehaviour {
 
 	Save save;
 
-	void OnEnable() {
+	public void StartUp() {
 		Load();
 		Initialize();
 		if (hasSavedData) LoadFromProperties();
