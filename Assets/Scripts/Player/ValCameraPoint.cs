@@ -28,7 +28,7 @@ public class ValCameraPoint : MonoBehaviour {
 		targetPos.x = input.GetAxis(RewiredConsts.Action.CameraHorizontal) * transform.lossyScale.x;
 		targetPos.y = input.GetAxis(RewiredConsts.Action.CameraVertical);
 
-		if (player.inCutscene || ((quickMap?.gameObject.activeSelf ?? false) && quickMap.open)) {
+		if (player.inCutscene || ((quickMap?.gameObject.activeInHierarchy ?? false) && quickMap.open)) {
 			targetPos = Vector2.zero;
 		}
 
