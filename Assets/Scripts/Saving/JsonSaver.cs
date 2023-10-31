@@ -58,6 +58,6 @@ public class JsonSaver {
         string[] saveVersion = version.Split('.');
         string[] currentVersion = Application.version.Split('.');
 
-        return saveVersion[0].Equals(currentVersion[0]);
+        return saveVersion[0].Equals(currentVersion[0]) && saveVersion[1].Equals(currentVersion[1]);
     }
 }
