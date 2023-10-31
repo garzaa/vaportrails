@@ -91,7 +91,7 @@ public class TransitionManager : SavedObject {
 	public void SubwayTransition(Transition.SubwayTransition subwayTransition) {
 		transition.Clear();
 		transition.subway = subwayTransition;
-		SceneManager.LoadScene(subwayTransition.scene);
+		StartCoroutine(LoadAsync(subwayTransition.scene));
 	}
 
 	public void BeaconTransition(Beacon beacon) {
@@ -129,7 +129,7 @@ public class TransitionManager : SavedObject {
 
 		SyncObjectsToRuntime();
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
-		asyncLoad.allowSceneActivation = false;
+		asyncLoad.allowSceneActivation = false; 
 		
         // wait until the last operation fully loads to return anything
         while (!asyncLoad.isDone) {
@@ -149,11 +149,10 @@ public class TransitionManager : SavedObject {
 	}
 
 	void SyncObjectsToRuntime() {
-		foreach (SavedObject o in FindObjectsOfType<SavedObject>(includeInactive: false)) {
+		foreach (SavedObject o in FindObjectsOfType<SavedObject>(includeInactive: true)) {
 			o.SyncToRuntime();
 		}
 		saveManager.WriteEternalSave();
 		FindObjectOfType<MapFog>()?.Save();
-
 	}
 }

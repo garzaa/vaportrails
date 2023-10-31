@@ -58,14 +58,20 @@ public class PauseMenu : MonoBehaviour {
 
 	public void MainMenu() {
 		Close();
-		GameObject.FindObjectOfType<TransitionManager>().SceneTransition(mainMenuScene.ScenePath);
+		FindObjectOfType<TransitionManager>().SceneTransition(mainMenuScene.ScenePath);
 	}
 
-	public void SettingsMenu() {
+	public void BlockEscape() {
 		blockEscape = true;
 	}
 
-	public void OnSettingsMenuClose() {
+	public void AllowEscape() {
+		if (!gameObject.activeSelf) return;
+		StartCoroutine(AllowEscNextFrame());
+	}
+	
+	IEnumerator AllowEscNextFrame() {
+		yield return new WaitForEndOfFrame();
 		blockEscape = false;
 	}
 }

@@ -19,17 +19,17 @@ public class PlayerDeath : MonoBehaviour {
 		GetComponentInChildren<SpriteRenderer>(includeInactive: true).gameObject.SetActive(true);
 		Time.timeScale = 0;
 		playerAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
-		if (!GameOptions.secondWind) playerAnimator.Play("ValDie");
+		if (!GameOptions.SecondWind) playerAnimator.Play("ValDie");
 		string attackName = causeOfDeath.name;
 		if (causeOfDeath.data) attackName = causeOfDeath.data.name;
 		slowRenderer.Render(deathText.text + $"\nCause of death: {attackName.ToUpper()}");
-		if (GameOptions.secondWind) deathMessage.text = "NOT TODAY";
+		if (GameOptions.SecondWind) deathMessage.text = "NOT TODAY";
 		else deathMessage.text = "#NO_WAVE";
 	}
 
 	public void OnDeathAnimationFinish() {
 		Time.timeScale = 1;
-		if (GameOptions.secondWind) {
+		if (GameOptions.SecondWind) {
 			GetComponentInChildren<Canvas>(includeInactive: true).gameObject.SetActive(false);
 			GetComponentInChildren<SpriteRenderer>(includeInactive: true).gameObject.SetActive(false);
 			playerAnimator.updateMode = AnimatorUpdateMode.Normal;

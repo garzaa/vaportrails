@@ -355,7 +355,7 @@ public class EntityController : Entity {
 
 		// if falling down through a platform (ground distance above feet)
 		// that distance can vary due to physics and/or float precision
-		if (rb2d.velocity.y<0 && (groundData.distance)<collider2d.bounds.extents.y && groundData.platforms.Count > 0) {
+		if (rb2d.velocity.y<0 && groundData.distance<collider2d.bounds.extents.y && groundData.platforms.Count > 0 && input.isHuman) {
 			// then snap to its top
 			float diff = collider2d.bounds.extents.y - groundData.distance;
 			rb2d.MovePosition(rb2d.position + ((diff+0.1f) * Vector2.up) + (Vector2.right*rb2d.velocity.x*Time.fixedDeltaTime));
@@ -383,7 +383,7 @@ public class EntityController : Entity {
 			return;
 		}
 
-		if (input.ButtonUp(Buttons.JUMP) && rb2d.velocity.y > movement.shortHopCutoffVelocity && canShortHop && GameOptions.shortHop) {
+		if (input.ButtonUp(Buttons.JUMP) && rb2d.velocity.y > movement.shortHopCutoffVelocity && canShortHop && GameOptions.ShortHop) {
 			keepJumpSpeed = false;
 			rb2d.velocity = new Vector2(rb2d.velocity.x, movement.shortHopCutoffVelocity);
 		}

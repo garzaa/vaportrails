@@ -12,8 +12,9 @@ public class GameOptions : MonoBehaviour {
 	
 	public bool IsOpen => canvas.activeSelf;
 
-	public static bool shortHop { get; private set; }
-	public static bool secondWind { get; private set; }
+	public static bool ShortHop { get; private set; }
+	public static bool SecondWind { get; private set; }
+	public static float Lookahead { get; private set; }
 
 	public UnityEvent OnClose;
 
@@ -25,8 +26,9 @@ public class GameOptions : MonoBehaviour {
 	}
 
 	public static void Load() {
-		shortHop = LoadBool("Short Hop");
-		secondWind = LoadBool("Second Wind");
+		ShortHop = LoadBool("Short Hop");
+		SecondWind = LoadBool("Second Wind");
+		Lookahead = PlayerPrefs.GetFloat("Lookahead", 1);
 	}
 
 	static bool LoadBool(string name) {

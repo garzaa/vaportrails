@@ -47,12 +47,12 @@ public class Achievements : SavedObject {
         properties[nameof(achievements)] = achievements;
     }
 
-	bool Has(Achievement a) {
+	public bool Has(Achievement a) {
 		return achievements.Contains(a.GetName());
 	}
 
-	public void Get(Achievement a) {
-		if (!Has(a)) {
+public void Get(Achievement a) {
+	if (!Has(a)) {
 			achievements.Add(a.GetName());
 			NotifyUnlock(a);
 		}

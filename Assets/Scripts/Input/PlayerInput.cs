@@ -18,7 +18,10 @@ public class PlayerInput : MonoBehaviour {
 
     public static bool usingKeyboard = true;
 
-	void Awake() {
+    public bool started { get; private set; }
+
+	public void Awake() {
+        started = true;
         player = ReInput.players.GetPlayer(0);
         comControl = new ComputerController();
         player.controllers.hasKeyboard = true;
@@ -174,9 +177,17 @@ public class PlayerInput : MonoBehaviour {
     public static PlayerInput GetPlayerOneInput() {
         if (cachedPlayer != null) return cachedPlayer;
 
-		return FindObjectsOfType<PlayerInput>(includeInactive: true)
+		PlayerInput input = FindObjectsOfType<PlayerInput>(includeInactive: true)
 			.Where(x => x.humanControl)
 			.First();
+
+        if (!input.started) {
+            // it won't awake if it's been inactive the whole scene
+            // despite what most of the internet says
+            input.Awake();
+        }
+
+        return input;
 	}
 }
 

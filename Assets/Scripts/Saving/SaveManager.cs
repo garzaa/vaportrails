@@ -21,13 +21,13 @@ public class SaveManager : MonoBehaviour {
 		}
 	}
 
-	void Start() {
+	void Awake() {
 		transitionManager = GameObject.FindObjectOfType<TransitionManager>();
 		// load a slot zero save if it exists
 		if (jsonSaver.HasFile(eternalNum)) {
 			eternalSave = jsonSaver.LoadFile(eternalNum);
 		}
-		foreach (SavedObject o in FindObjectsOfType<SavedObject>(includeInactive: false)) {
+		foreach (SavedObject o in FindObjectsOfType<SavedObject>(includeInactive: true)) {
 			o.StartUp();
 		}
 	}
@@ -51,13 +51,14 @@ public class SaveManager : MonoBehaviour {
 #endif
 
 	public void Save() {
-		foreach (SavedObject o in FindObjectsOfType<SavedObject>(includeInactive: false)) {
+		foreach (SavedObject o in FindObjectsOfType<SavedObject>(includeInactive: true)) {
 			o.SyncToRuntime();
 		}
 		WriteEternalSave();
 		FindObjectOfType<MapFog>()?.Save();
 		save.version = Application.version;
 		jsonSaver.SaveFile(save, slot);
+		FindObjectOfType<TimeSinceSave>().OnSave();
 	}
 
 	public void Load() {
@@ -69,7 +70,7 @@ public class SaveManager : MonoBehaviour {
 		transitionManager.FadeToBlack();
 		yield return new WaitForSeconds(0.5f);
 		saveContainer.SetSave(jsonSaver.LoadFile(slot));
-		foreach (SavedObject o in FindObjectsOfType<SavedObject>(includeInactive: false)) {
+		foreach (SavedObject o in FindObjectsOfType<SavedObject>(includeInactive: true)) {
 			// when loading something like playerposition, if it's enabled don't jerk camera around
 			o.AfterDiskLoad();
 		}
@@ -85,7 +86,7 @@ public class SaveManager : MonoBehaviour {
 	}
 
 	public void WriteEternalSave() {
-		foreach (SavedObject o in FindObjectsOfType<SavedObject>(includeInactive: false)) {
+		foreach (SavedObject o in FindObjectsOfType<SavedObject>(includeInactive: true)) {
 			if (o.useEternalSave) o.SyncToRuntime();
 		}
 		eternalSave.version = Application.version;

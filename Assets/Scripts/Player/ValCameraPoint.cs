@@ -33,6 +33,7 @@ public class ValCameraPoint : MonoBehaviour {
 		}
 
 		targetPos *= cameraRange;
+		targetPos *= GameOptions.Lookahead;
 		transform.localPosition = Vector2.SmoothDamp(
 			transform.localPosition,
 			targetPos,

@@ -43,8 +43,8 @@ public class ValController : EntityController {
 
     public override void OnHit(AttackHitbox hitbox) {
         base.OnHit(hitbox);
-		if (GetComponent<HP>().current.Get() <= 0) {
-			if (GameOptions.secondWind) {
+		if (input.isHuman && GetComponent<HP>().current.Get() <= 0) {
+			if (GameOptions.SecondWind) {
 				FindObjectOfType<PlayerDeath>().Run(hitbox);
 				animator.Play("ValDie");
 				return;

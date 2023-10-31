@@ -520,6 +520,7 @@ public class Entity : MonoBehaviour, IHitListener {
 	}
 
 	public void ExitCutscene(GameObject source) {
+		if (!gameObject.activeInHierarchy) return;
 		// space to continue counts as a jump input this frame
 		StartCoroutine(ExitCutsceneNextFrame(source));
 	}
