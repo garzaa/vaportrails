@@ -92,4 +92,16 @@ public class SaveManager : MonoBehaviour {
 		eternalSave.version = Application.version;
 		jsonSaver.SaveFile(eternalSave, eternalNum);
 	}
+
+	public void OnApplicationQuit() {
+		WriteEternalSave();
+	}
+
+	public void TransitionPrep() {
+		foreach (SavedObject o in FindObjectsOfType<SavedObject>(includeInactive: true)) {
+			o.SyncToRuntime();
+		}
+		WriteEternalSave();
+		FindObjectOfType<MapFog>()?.Save();
+	}
 }

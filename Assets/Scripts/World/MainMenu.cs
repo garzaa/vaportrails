@@ -12,6 +12,8 @@ public class MainMenu : MonoBehaviour {
 	public void Start() {
 		continueButton.SetActive(jsonSaver.HasFile(1));
 		saveManager = FindObjectOfType<SaveManager>();
+		FindObjectOfType<SpeedrunTimer>().GetComponent<Timer>().Pause();
+		FindObjectOfType<SpeedrunTimer>().GetComponent<Timer>().ForceUpdate();
 	}
 
 	public void ContinueGame() {
@@ -20,6 +22,7 @@ public class MainMenu : MonoBehaviour {
 	
 	public void NewGame() {
 		saveManager.WipeSave();
+		FindObjectOfType<SpeedrunTimer>().OnNewGame();
 		FindObjectOfType<TransitionManager>().BeaconTransition(newGameBeacon);
 	}
 

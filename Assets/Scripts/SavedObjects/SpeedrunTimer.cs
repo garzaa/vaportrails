@@ -2,7 +2,8 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class TimeSinceSave : SavedObject {
+[RequireComponent(typeof(Timer))]
+public class SpeedrunTimer : SavedObject {
 	Timer timer;
 
 	protected override void Initialize() {
@@ -18,7 +19,12 @@ public class TimeSinceSave : SavedObject {
 		properties["time"] = timer.GetTime();
 	}
 
-	public void OnSave() {
+	public void OnTransitionStart() {
+		timer.Pause();
+	}
+
+	public void OnNewGame() {
+		timer.Pause();
 		timer.Restart();
 	}
 }

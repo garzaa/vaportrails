@@ -9,6 +9,8 @@ public class GameOptions : MonoBehaviour {
 	// but also wait for a generic escape input to close and go back to the pause menu
 	GameObject canvas;
 	PlayerInput input;
+
+	static GameObject timer;
 	
 	public bool IsOpen => canvas.activeSelf;
 
@@ -26,9 +28,13 @@ public class GameOptions : MonoBehaviour {
 	}
 
 	public static void Load() {
+		// get the canvas child of the timer so the time actually updates
+		if (timer == null) timer = FindObjectOfType<SpeedrunTimer>().transform.GetChild(0).gameObject;
 		ShortHop = LoadBool("Short Hop");
 		SecondWind = LoadBool("Second Wind");
-		Lookahead = PlayerPrefs.GetFloat("Lookahead", 1);
+		Lookahead = PlayerPrefs.GetInt("Lookahead", 5) / 5f;
+		Application.runInBackground = LoadBool("Run in Background");
+		timer.SetActive(LoadBool("Speedrun Timer"));
 	}
 
 	static bool LoadBool(string name) {

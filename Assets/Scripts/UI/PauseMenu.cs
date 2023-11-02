@@ -9,6 +9,7 @@ public class PauseMenu : MonoBehaviour {
 	EntityController player;
 
 	GameObject pauseUI;
+	public GameObject quitConfirm;
 
 	public SceneReference mainMenuScene;
 	bool blockEscape;
@@ -49,6 +50,15 @@ public class PauseMenu : MonoBehaviour {
 		player.ExitCutscene(this.gameObject);
 		EventSystem.current.SetSelectedGameObject(null);
 		Time.timeScale = 1f;
+		CancelQuit();
+	}
+
+	public void AskForQuitConfirm() {
+		quitConfirm.SetActive(true);
+	}
+
+	public void CancelQuit() {
+		quitConfirm.SetActive(false);
 	}
 
 	public void Quit() {

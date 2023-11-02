@@ -17,6 +17,7 @@ public class TransitionManager : SavedObject {
 	float transitionEndTime;
 
 	SaveManager saveManager;
+	SpeedrunTimer speedrunTimer;
 
 	protected override void LoadFromProperties() {}
 
@@ -31,6 +32,7 @@ public class TransitionManager : SavedObject {
 
 	protected override void Initialize() {
 		saveManager = FindObjectOfType<SaveManager>();
+		speedrunTimer = FindObjectOfType<SpeedrunTimer>();
 		hardLockCamera.SetActive(true);
 		AudioListener.volume = 0;
 		FadeAudio(1);
@@ -113,7 +115,7 @@ public class TransitionManager : SavedObject {
 
 	public void StraightLoad(string scenePath) {
 		transition.Clear();
-		SyncObjectsToRuntime();
+		saveManager.TransitionPrep();
 		SceneManager.LoadScene(scenePath);
 	}
 
@@ -123,11 +125,12 @@ public class TransitionManager : SavedObject {
 
 	IEnumerator LoadAsync(string sceneName) {
 		PlayerInput.GetPlayerOneInput().GetComponent<EntityController>().EnterCutscene(this.gameObject);
+		speedrunTimer.OnTransitionStart();
 		FadeAudio(0);
 		FadeToBlack();
 		yield return new WaitForSecondsRealtime(FADE_TIME);
 
-		SyncObjectsToRuntime();
+		saveManager.TransitionPrep();
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
 		asyncLoad.allowSceneActivation = false; 
 		
@@ -146,13 +149,5 @@ public class TransitionManager : SavedObject {
 		originalVolume = AudioListener.volume;
 		elapsedTime = 0;
 		transitionEndTime = Time.time + FADE_TIME;
-	}
-
-	void SyncObjectsToRuntime() {
-		foreach (SavedObject o in FindObjectsOfType<SavedObject>(includeInactive: true)) {
-			o.SyncToRuntime();
-		}
-		saveManager.WriteEternalSave();
-		FindObjectOfType<MapFog>()?.Save();
 	}
 }
