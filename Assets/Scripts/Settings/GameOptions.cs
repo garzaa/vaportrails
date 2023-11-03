@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class GameOptions : MonoBehaviour {
 	// player will already be in cutscene when it's opened
@@ -9,6 +10,7 @@ public class GameOptions : MonoBehaviour {
 	// but also wait for a generic escape input to close and go back to the pause menu
 	GameObject canvas;
 	PlayerInput input;
+	public Text savePathText;
 
 	static GameObject timer;
 	
@@ -25,6 +27,7 @@ public class GameOptions : MonoBehaviour {
 		input = PlayerInput.GetPlayerOneInput();
 		Load();
 		Close();
+		savePathText.text = "Need to mess with your saves? Find them here:\n"+Application.persistentDataPath;
 	}
 
 	public static void Load() {

@@ -18,16 +18,6 @@ public class GenerousJump {
 
 	public void StoreVelocity(Rigidbody2D rb2d) {
 		times.Add(new TimeV(rb2d.velocity.y));
-
-		// then prune the old ones
-		for (int i=0; i<times.Count; i++) {
-			if (Time.time - times[i].time > window) {
-				times.RemoveAt(i);
-				// removing at the index will bring the following elements down one
-				// so account for that by decrementing this
-				i--;
-			}
-		}
 	}
 
 	public float GetHighestVY(Rigidbody2D rb2d) {
@@ -38,5 +28,16 @@ public class GenerousJump {
 			}
 		}
 		return max;
+	}
+
+	public void Update() {
+		for (int i=0; i<times.Count; i++) {
+			if (Time.time - times[i].time > window) {
+				times.RemoveAt(i);
+				// removing at the index will bring the following elements down one
+				// so account for that by decrementing this
+				i--;
+			}
+		}
 	}
 }

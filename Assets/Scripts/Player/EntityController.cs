@@ -126,6 +126,7 @@ public class EntityController : Entity {
 		ApplyMovement();
 		UpdateLastVelocity();
 		if (groundData.grounded && !justJumped) generousJump.StoreVelocity(rb2d);
+		generousJump.Update();
 		angleLastStep = groundData.normalRotation;
 	}
 

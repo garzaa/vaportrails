@@ -38,11 +38,13 @@ public class PlayerProperties : SavedObject {
 		properties["maxHP"] = hp.GetMax();
 		properties["currentEP"] = combatController.currentEP.Get();
 		properties["maxEP"] = combatController.maxEP.Get();
-		// reload the player on the ground next time
+		// reload the player on the ground next time, if they're not already
 		Vector3 pos = transform.position;
-		float neutralDistance = GetComponent<CapsuleCollider2D>().bounds.extents.y;
-		pos.y -= GetComponent<GroundCheck>().groundData.distance;
-		pos.y += neutralDistance;
+		if (!player.GetComponent<GroundCheck>().groundData.grounded) {
+			float neutralDistance = GetComponent<CapsuleCollider2D>().bounds.extents.y;
+			pos.y -= GetComponent<GroundCheck>().groundData.distance;
+			pos.y += neutralDistance + 4f/64f;
+		}
 		properties["pos"] = pos;
 		properties["facingRight"] = player.facingRight;
 		properties["abilities"] = player.GetAbilities();

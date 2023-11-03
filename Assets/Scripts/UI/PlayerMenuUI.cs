@@ -25,6 +25,10 @@ public class PlayerMenuUI : MonoBehaviour {
 				Open();
 			}
 		}
+		else if (input.GenericEscapeInput() && ui.activeSelf) {
+			ui.SetActive(false);
+			player.ExitCutscene(this.gameObject);
+		}
 	}
 
 	public void Open() {
