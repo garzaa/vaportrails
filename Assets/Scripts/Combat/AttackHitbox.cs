@@ -16,9 +16,9 @@ public class AttackHitbox : MonoBehaviour {
 	public bool singleHitPerActive = true;
 	IAttackLandListener[] attackLandListeners;
 	Collider2D[] colliders;
-	HashSet<Hurtbox> hurtboxesHitThisActive = new HashSet<Hurtbox>();
+	readonly HashSet<Hurtbox> hurtboxesHitThisActive = new();
 	// for entities like Lady of the Lake who has multiple hurtboxes
-	HashSet<Entity> entitiesHitThisActive = new HashSet<Entity>();
+	readonly HashSet<Entity> entitiesHitThisActive = new();
 	CameraZoom cameraZoom;
 	bool hitboxOutLastFrame = false;
 
