@@ -3,6 +3,7 @@ Shader "Custom3D/NormalLookup" {
 	Properties {
 		_ColorMap ("Sprite Texture", 2D) = "white" {}
 		_NoiseStr ("Noise Strength", Float) = 0
+		_NoiseTex ("Sprite Texture", 2D) = "white" {}
 	}
 
     SubShader {
