@@ -856,7 +856,9 @@ MonoBehaviour:
   allowTech: 1
   returnToSafety: 0
   deathEffect: {fileID: 1907591042830104894, guid: 118ebf591e957054b9932b07c8d7dbce, type: 3}
+  destroyOnDeath: 1
   overrideFootfall: 1
+  rigFacingRight: 0
   jumpNoise: {fileID: 11400000, guid: 9aeb0783db72e1542b946631d7abe013, type: 2}
   faceRightOnStart: 0
   abilities: 
@@ -885,6 +887,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   humanControl: 0
+  alwaysShowMouse: 0
 --- !u!114 &1976812235741023290
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1325,9 +1328,9 @@ MonoBehaviour:
   OnExit:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1976812235741023233}
+      - m_Target: {fileID: 1976812235741023281}
         m_TargetAssemblyTypeName: AIPlayer, Assembly-CSharp
-        m_MethodName: 
+        m_MethodName: StopGhost
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1663,6 +1666,7 @@ MonoBehaviour:
   OnAttackLand:
     m_PersistentCalls:
       m_Calls: []
+  flipHitmarkerToDirection: 0
 --- !u!58 &1976812236723361772
 CircleCollider2D:
   m_ObjectHideFlags: 0

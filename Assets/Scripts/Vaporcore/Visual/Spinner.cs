@@ -8,6 +8,8 @@ public class Spinner : MonoBehaviour {
 
     float lastUpdate = 0f;
 
+    public int fps = 0;
+
     Animator animator;
 
     void Start() {
@@ -18,7 +20,8 @@ public class Spinner : MonoBehaviour {
         float t = unscaled ? Time.unscaledTime : Time.time;
 
         // animator speed added for entity hitstop
-        if (t > lastUpdate && !(animator!=null && animator.speed == 0)) {
+        bool fpsCheck = fps == 0 || (t > (lastUpdate + (1/((float)fps))));
+        if (t > lastUpdate && fpsCheck && !(animator!=null && animator.speed == 0)) {
             Vector3 r = transform.localRotation.eulerAngles;
             r.z = ((rps * t * 360)) % 360;
             transform.localRotation = Quaternion.Euler(r);

@@ -380,7 +380,7 @@ public class EntityController : Entity {
 		if (stunned) return;
 
 		// debounce jump inputs, but keep it buffered
-		if (Time.unscaledTime < jumpTime+0.2f) {
+		if (Time.unscaledTime < jumpTime+0.1f) {
 			return;
 		}
 
@@ -416,7 +416,7 @@ public class EntityController : Entity {
 			return;
 		}
 
-		if (input.ButtonDown(Buttons.JUMP) || (executeIfBuffered && bufferedJump)) {
+		if (input.ButtonDown(Buttons.JUMP) || (executeIfBuffered && bufferedJump && !frozeInputs)) {
             if ((groundData.grounded || justWalkedOffCliff) && !keepJumpSpeed) {
                 if (groundData.platforms.Count > 0 && Input.GetAxis("Vertical") < -0.8f) {
 					DropThroughPlatforms(groundData.platforms);
