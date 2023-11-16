@@ -16,6 +16,7 @@ function itchrelease() {
 set -x
 
 itchrelease
+zip
 
 # python busybox.py --build $BUILD_VERSION --release
 
