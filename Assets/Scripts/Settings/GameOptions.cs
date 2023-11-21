@@ -37,6 +37,7 @@ public class GameOptions : MonoBehaviour {
 		SecondWind = LoadBool("Second Wind");
 		Lookahead = PlayerPrefs.GetInt("Lookahead", 5) / 5f;
 		Application.runInBackground = LoadBool("Run in Background");
+		FindObjectOfType<FPSCounter>(includeInactive: true).gameObject.SetActive(LoadBool("FPSCounter"));
 		timer.SetActive(LoadBool("Speedrun Timer"));
 	}
 
