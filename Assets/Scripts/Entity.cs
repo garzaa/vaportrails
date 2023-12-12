@@ -76,6 +76,8 @@ public class Entity : MonoBehaviour, IHitListener {
 	public bool overrideFootfall = false;
 	public bool rigFacingRight = false;
 
+	public bool dieOnEnviroDamage = false;
+
 	protected virtual void Awake() {
 		animator = GetComponent<Animator>();
 		if (suppressAnimatorWarnings) animator.logWarnings = false;
@@ -199,6 +201,10 @@ public class Entity : MonoBehaviour, IHitListener {
 
 
 	public virtual void OnHit(AttackHitbox hitbox) {
+		if (hitbox is EnvironmentHitbox && dieOnEnviroDamage) {
+			Die();
+			return;
+		}
 		if (staggerable) {
 			Vector2 v = GetKnockback(hitbox);
 			// if it's envirodamage, return to safety

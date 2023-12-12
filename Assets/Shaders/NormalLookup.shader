@@ -4,6 +4,7 @@ Shader "Custom3D/NormalLookup" {
 		_ColorMap ("Sprite Texture", 2D) = "white" {}
 		_NoiseStr ("Noise Strength", Range(0.0, 1.0)) = 0
 		_NoiseTex ("Noise Texture", 2D) = "white" {}
+		_VertJitter ("Vertex Jitter", Range(0.0, 1)) = 0
 	}
 
     SubShader {
@@ -20,11 +21,18 @@ Shader "Custom3D/NormalLookup" {
 				half2 texcoord  : TEXCOORD1;
 			};
 
+			float _VertJitter;
+
+			float3 noise(float3 v) {
+				return frac(sin((v + float3(1, 2, 3)) * float3(69.129837, 240.34250987, 13.666)));
+			}
 
 			v2f vert (appdata_base v)
 			{
 				v2f o;
+				v.vertex.xyz += noise(mul(unity_ObjectToWorld, v.vertex).xyz) * _VertJitter * 0.001;
 				o.pos = UnityObjectToClipPos(v.vertex);
+				// use worldspace to avoid jitter when the camera moves
 				o.texcoord = v.texcoord;
 				o.normal = UnityObjectToWorldNormal(v.normal);
 				return o;
