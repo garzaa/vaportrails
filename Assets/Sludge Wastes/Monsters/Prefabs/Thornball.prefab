@@ -43,6 +43,7 @@ GameObject:
   - component: {fileID: 5686200148784395608}
   - component: {fileID: 5686200148784395614}
   - component: {fileID: 5686200148784395609}
+  - component: {fileID: 6188109760084534327}
   m_Layer: 0
   m_Name: Hitbox
   m_TagString: Untagged
@@ -59,7 +60,7 @@ Transform:
   m_GameObject: {fileID: 5686200148784395611}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.2, y: 0.2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5686200149456923876}
@@ -102,6 +103,47 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.3128839
+--- !u!60 &6188109760084534327
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5686200148784395611}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0.8935089, y: 0.44133377}
+      - {x: 1.2879105, y: 1.4570885}
+      - {x: 0.37338257, y: 0.98114777}
+      - {x: -0.08257294, y: 1.9648132}
+      - {x: -0.3397522, y: 0.90984344}
+      - {x: -1.460846, y: 1.3586884}
+      - {x: -0.95941925, y: 0.37618256}
+      - {x: -1.9945135, y: -0.06923315}
+      - {x: -0.92840576, y: -0.4470253}
+      - {x: -1.3508162, y: -1.4155272}
+      - {x: -0.3409195, y: -0.981308}
+      - {x: 0.07910311, y: -1.91769}
+      - {x: 0.40267944, y: -0.9262581}
+      - {x: 1.3207169, y: -1.2443542}
+      - {x: 0.90380096, y: -0.33784485}
+      - {x: 1.9553823, y: 0.061195314}
 --- !u!1 &5686200148943142743
 GameObject:
   m_ObjectHideFlags: 0
@@ -775,7 +817,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: -2
   m_Sprite: {fileID: 21300000, guid: 549a4fe96aef95b48b4d38387f6e13ee, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.41176474, g: 0.27450982, b: 0.6745098, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
