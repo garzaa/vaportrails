@@ -113,7 +113,7 @@ PolygonCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -840,6 +840,7 @@ GameObject:
   - component: {fileID: 5686200149456923878}
   - component: {fileID: 5686200149456923877}
   - component: {fileID: 5686200149456923882}
+  - component: {fileID: 5126388213211681828}
   m_Layer: 0
   m_Name: Thornball
   m_TagString: Untagged
@@ -962,6 +963,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65deb53d4460aaf43a9e5d1ca3282905, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &5126388213211681828
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5686200149456923873}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e327af7ea8b362c46b5872850f5ce82d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  template: {fileID: 5549221920177132900, guid: d825fee1db2149740915d843fa1d6fee, type: 3}
 --- !u!1 &5686200149555369719
 GameObject:
   m_ObjectHideFlags: 0
@@ -1338,6 +1352,21 @@ MonoBehaviour:
   OnExit:
     m_PersistentCalls:
       m_Calls: []
+  ObjectEnter:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5126388213211681828}
+        m_TargetAssemblyTypeName: PrefabSpawner, Assembly-CSharp
+        m_MethodName: SpawnAtTarget
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!58 &5686200149929353798
 CircleCollider2D:
   m_ObjectHideFlags: 0
