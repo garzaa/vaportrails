@@ -418,7 +418,7 @@ public class EntityController : Entity {
 
 		if (input.ButtonDown(Buttons.JUMP) || (executeIfBuffered && bufferedJump && !frozeInputs)) {
             if ((groundData.grounded || justWalkedOffCliff) && !keepJumpSpeed) {
-                if (groundData.platforms.Count > 0 && Input.GetAxis("Vertical") < -0.8f) {
+                if (groundData.platforms.Count > 0 && input.VerticalInput() < -0.8f) {
 					DropThroughPlatforms(groundData.platforms);
 					return;
 				}

@@ -61,7 +61,7 @@ public class TransitionManager : SavedObject {
 				x => x.GetBeacon == transition.beacon
 			).First();
 			Entity player = PlayerInput.GetPlayerOneInput().GetComponent<Entity>();
-			player.gameObject.transform.position = beaconWrapper.transform.position;
+			player.gameObject.transform.position = beaconWrapper.GetPosition();
 			StartCoroutine(FlipPlayer(player, beaconWrapper));
 		}
 		
