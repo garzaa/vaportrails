@@ -5,6 +5,7 @@ Shader "Custom3D/NormalLookup" {
 		_NoiseStr ("Noise Strength", Range(0.0, 1.0)) = 0
 		_NoiseTex ("Noise Texture", 2D) = "white" {}
 		_VertJitter ("Vertex Jitter", Range(0.0, 1)) = 0
+		_FlashColor ("Flash Color", Color) = (0, 0, 0, 0)
 	}
 
     SubShader {
@@ -42,6 +43,7 @@ Shader "Custom3D/NormalLookup" {
 			sampler2D _NoiseTex;
 			float4 _NoiseTex_ST;
 			float _NoiseStr;
+			half4 _FlashColor;
         
             fixed4 frag (v2f i) : SV_Target {
 				half4 color;
@@ -52,8 +54,8 @@ Shader "Custom3D/NormalLookup" {
 				// scale by noiseStr
 				noiseOffset *= _NoiseStr;
 				color = tex2D(_ColorMap, ((i.normal.xy + 1) / 2) + noiseOffset);
+				color = lerp(color, _FlashColor, _FlashColor.a);
 				return color;
-				return tex2D(_NoiseTex, i.texcoord.xy * _NoiseTex_ST * _NoiseStr);
             }
             ENDCG
         }
