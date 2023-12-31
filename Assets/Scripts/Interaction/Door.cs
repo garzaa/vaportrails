@@ -5,6 +5,7 @@ using System.Collections.Generic;
 [RequireComponent(typeof(BeaconWrapper))]
 public class Door : Interactable {
 	public Sprite icon;
+	public AudioResource doorSound;
 
 	protected override void Start() {
 		base.Start();
@@ -17,6 +18,7 @@ public class Door : Interactable {
 	}
 
 	public override void OnInteract(EntityController player) {
+		doorSound?.PlayFrom(gameObject);
 		FindObjectOfType<TransitionManager>().BeaconTransition(GetComponent<BeaconWrapper>().GetBeacon);
 	}
 }

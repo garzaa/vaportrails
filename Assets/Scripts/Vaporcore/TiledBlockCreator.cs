@@ -230,9 +230,10 @@ public class TiledBlockCreator : MonoBehaviour {
     }
 
     static Texture2D MakeDefaultTexture(int xSize, int ySize) {
-        Texture2D output = new Texture2D(xSize, ySize);
-        output.filterMode = FilterMode.Point;
-        return output;
+		Texture2D output = new(xSize, ySize) {
+			filterMode = FilterMode.Point
+		};
+		return output;
     }
 
     static void FillMiddle() {
