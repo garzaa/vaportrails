@@ -19,6 +19,6 @@ public class Door : Interactable {
 
 	public override void OnInteract(EntityController player) {
 		doorSound?.PlayFrom(gameObject);
-		FindObjectOfType<TransitionManager>().BeaconTransition(GetComponent<BeaconWrapper>().GetBeacon);
+		FindObjectOfType<TransitionManager>().DoorTransition(this);
 	}
 }

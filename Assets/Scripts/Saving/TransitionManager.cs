@@ -96,6 +96,11 @@ public class TransitionManager : SavedObject {
 		StartCoroutine(LoadAsync(subwayTransition.scene));
 	}
 
+	public void DoorTransition(Door door) {
+		PlayerInput.GetPlayerOneInput().transform.Find("PlayerRig").gameObject.SetActive(false);
+		BeaconTransition(door.GetComponent<BeaconWrapper>().GetBeacon);
+	}
+
 	public void BeaconTransition(Beacon beacon) {
 		transition.Clear();
 		string pathToLoad = beacon.leftScene.ScenePath;
