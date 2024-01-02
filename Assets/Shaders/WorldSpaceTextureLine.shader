@@ -82,11 +82,13 @@ Shader "Custom2D/WorldSpaceTextureLine"
 			sampler2D _AlphaRamp;
 			float _AlphaCutoff;
 
-			fixed4 SampleSpriteTexture (float2 uv)
+			fixed4 SampleSpriteTexture (float2 uv, float3 worldPos)
 			{
 				// sample the alpha ramp before fucking with the UVs
 				float a = tex2D(_AlphaRamp, uv).a;
 
+				// modify X based on the world space
+				// uv.x += length(worldPos)* _MainTex_ST.x;
 				float offset = sin(uv.x / _WaveParams.x + (_Time.x * _WaveParams.y)) * _WaveParams.z;
 				offset *= saturate(lerp(0, 1, uv.x / _WaveParams.w));
 
@@ -111,7 +113,7 @@ Shader "Custom2D/WorldSpaceTextureLine"
 				float2 uv = IN.texcoord;
 				uv.x *= _MainTex_ST.x;
 
-				fixed4 c = SampleSpriteTexture (uv) * IN.color;
+				fixed4 c = SampleSpriteTexture (uv, IN.worldPos) * IN.color;
 				c.rgb *= c.a;
 
 				return c;
