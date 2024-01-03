@@ -21,4 +21,8 @@ public class Door : Interactable {
 		doorSound?.PlayFrom(gameObject);
 		FindObjectOfType<TransitionManager>().DoorTransition(this);
 	}
+
+	public override bool ShouldFlip() {
+		return false;
+	}
 }

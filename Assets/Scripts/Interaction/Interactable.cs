@@ -43,6 +43,10 @@ public abstract class Interactable : MonoBehaviour {
 		return gameObject;
 	}
 
+	public virtual bool ShouldFlip() {
+		return true;
+	}
+
 	protected void HidePrompt() {
 		prompt.GetComponent<SpriteRenderer>().enabled = false;
 	}
