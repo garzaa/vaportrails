@@ -535,4 +535,8 @@ public class Entity : MonoBehaviour, IHitListener {
 		yield return new WaitForEndOfFrame();
 		cutsceneSources.Remove(source);
 	}
+
+	public void ForceSafetyRespawnPoint(GameObject o, Vector3 v) {
+		groundSaver.ForceRespawnPoint(o, v);
+	}
 }

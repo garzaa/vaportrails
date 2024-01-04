@@ -38,7 +38,7 @@ public class BezierLineRenderer : MonoBehaviour {
 		lineRenderer.SetPositions(pointList.ToArray());
 	}
 
-    private void OnDrawGizmos() {
+    private void OnDrawGizmosSelected() {
 		if (!(point1 && point2 && point3 && lineRenderer)) return;
         Gizmos.color = Color.green;
         Gizmos.DrawLine(point1.position, point2.position);

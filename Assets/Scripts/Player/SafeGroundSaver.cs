@@ -33,6 +33,11 @@ public class SafeGroundSaver {
 			data.lastSafeOffset = entity.transform.position - data.lastSafeObject.transform.position;
 		}
 	}
+
+	public void ForceRespawnPoint(GameObject o, Vector3 v) {
+		data.lastSafeObject = o;
+		data.lastSafeOffset = v;
+	}
 	
 	static bool CheckHit(Vector2 start) {
 		RaycastHit2D hit = DefaultLinecast(start);
