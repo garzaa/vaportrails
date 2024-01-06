@@ -7,6 +7,7 @@ using System.Linq;
 using System;
 
 public abstract class SavedObject : MonoBehaviour {
+	[Tooltip("Persist over ALL playthroughs and reloads (e.g. an achievement)")]
 	public bool useEternalSave = false;
 
 	[Tooltip("Use state shared between scenes for objects with this hierarchichal name.")]

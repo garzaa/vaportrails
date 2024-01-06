@@ -5,6 +5,7 @@ using System.Collections.Generic;
 [RequireComponent(typeof(BoxCollider2D))]
 public class CameraStopper : PlayerTriggeredObject {
 	CameraInterface cameraInterface;
+	public GameObject optionalTarget;
 
 	protected override void Start() {
 		base.Start();
@@ -12,7 +13,8 @@ public class CameraStopper : PlayerTriggeredObject {
 	}
 
 	override protected void OnPlayerEnter(Collider2D player) {
-		cameraInterface.StopFollowingPlayer();
+		if (optionalTarget) cameraInterface.SetMainTarget(optionalTarget);
+		else cameraInterface.StopFollowingPlayer();
 	}
 
 	override protected void OnPlayerExit(Collider2D player) {
