@@ -29,11 +29,13 @@ public class CameraInterface : MonoBehaviour {
 	}
 
 	public void LookAtPoint(Transform target) {
+		worldLookCam.gameObject.SetActive(true);
 		worldLookCam.m_Follow = target;
 		worldLookCam.m_Priority = 20;
 	}
 
 	public void StopLookingAtPoint(Transform target) {
+		worldLookCam.gameObject.SetActive(false);
 		if (worldLookCam.m_Follow != target) {
 			return;
 		}
