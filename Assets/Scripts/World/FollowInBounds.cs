@@ -13,10 +13,6 @@ public class FollowInBounds : MonoBehaviour {
 	}
 
 	void Update() {
-		if (col.bounds.Contains(player.transform.position)) {
-			target.transform.position = player.transform.position;
-		} else {
-			target.transform.position = col.bounds.ClosestPoint(player.transform.position);
-		}
+		target.transform.position = col.bounds.ClosestPoint(player.transform.position);
 	}
 }
