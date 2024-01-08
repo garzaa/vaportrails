@@ -28,8 +28,7 @@ Shader "Custom3D/NormalLookup" {
 				return frac(sin((v + float3(1, 2, 3)) * float3(69.129837, 240.34250987, 13.666)));
 			}
 
-			v2f vert (appdata_base v)
-			{
+			v2f vert (appdata_base v) {
 				v2f o;
 				v.vertex.xyz += noise(mul(unity_ObjectToWorld, v.vertex).xyz) * _VertJitter * 0.001;
 				o.pos = UnityObjectToClipPos(v.vertex);

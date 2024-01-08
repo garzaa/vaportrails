@@ -3,6 +3,7 @@ using UnityEngine.Events;
 using System.Collections;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
+using Unity.Mathematics;
 
 public class HP : MonoBehaviour, IHitListener {
 	public SubscriptableInt current;
@@ -13,6 +14,9 @@ public class HP : MonoBehaviour, IHitListener {
 	[ShowIf(nameof(renderHealthbar))]
 	public float verticalOffset = 0.8f;
 
+	public bool sendIntToAnimator = false;
+	Animator animator;
+
 	void Awake() {
 		if (renderHealthbar) {
 			// don't have it appear from player stats modification
@@ -21,6 +25,10 @@ public class HP : MonoBehaviour, IHitListener {
 
 		max.Initialize();
 		current.Initialize();
+	}
+
+	void Start() {
+		animator = GetComponent<Animator>();
 	}
 
 	IEnumerator AddHealthbar() {
@@ -39,7 +47,9 @@ public class HP : MonoBehaviour, IHitListener {
 	}
 
 	public void SetCurrent(int i) {
+		i = Mathf.Max(i, max.Get());
 		current.Set(i);
+		if (sendIntToAnimator) animator.SetInteger("HP", i);
 		CheckEvents();
 	}
 
