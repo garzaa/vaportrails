@@ -19,14 +19,15 @@ public class CameraShake : MonoBehaviour {
 	}
 
 	public void Shake(Vector2 force) {
+		if (GameOptions.ReduceCameraShake) return;
 		source.GenerateImpulse(force);
 	}
 
 	public void XSmallShake() {
-		source.GenerateImpulse(xsmall);
+		Shake(xsmall);
 	}
 
 	public void SmallShake() {
-		source.GenerateImpulse(small);
+		Shake(small);
 	}
 }

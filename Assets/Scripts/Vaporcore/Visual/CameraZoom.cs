@@ -25,6 +25,7 @@ public class CameraZoom : MonoBehaviour {
 	}
 
 	public void Zoom(int level) {
+		if (GameOptions.ReduceCameraShake) return;
 		zoomLevel = level;
 		pixelCamera.refResolutionX = x / level;
 		pixelCamera.refResolutionY = y / level;

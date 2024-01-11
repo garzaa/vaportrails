@@ -1,7 +1,8 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class SettingsSlider : MonoBehaviour {
+public class SettingsSlider : MonoBehaviour, ISelectHandler {
     public Text valueLabel;
     public int defaultValue = 5;
     public AudioResource changeSound;
@@ -33,5 +34,9 @@ public class SettingsSlider : MonoBehaviour {
         PlayerPrefs.SetInt(gameObject.name, (int) val);
         if (valueLabel) valueLabel.text = ((int) val).ToString();
         GameOptions.Load();
+    }
+
+    public void OnSelect(BaseEventData d) {
+        GetComponentInParent<ScrollViewUtils>().ScrollToChild(GetComponent<RectTransform>());
     }
 }

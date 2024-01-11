@@ -1,7 +1,8 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class SettingsToggle : MonoBehaviour {
+public class SettingsToggle : MonoBehaviour, ISelectHandler {
     public AudioResource changeSound;
     public bool defaultValue;
 
@@ -24,6 +25,10 @@ public class SettingsToggle : MonoBehaviour {
             changeSound?.PlayFrom(gameObject);
         }
 		GameOptions.Load();
+    }
+
+    public void OnSelect(BaseEventData d) {
+        GetComponentInParent<ScrollViewUtils>().ScrollToChild(GetComponent<RectTransform>());
     }
 }
 

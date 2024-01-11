@@ -19,6 +19,7 @@ public class GameOptions : MonoBehaviour {
 	public static bool ShortHop { get; private set; }
 	public static bool SecondWind { get; private set; }
 	public static float Lookahead { get; private set; }
+	public static bool ReduceCameraShake { get; private set; }
 
 	public UnityEvent OnClose;
 
@@ -36,6 +37,7 @@ public class GameOptions : MonoBehaviour {
 		ShortHop = LoadBool("Short Hop");
 		SecondWind = LoadBool("Second Wind");
 		Lookahead = PlayerPrefs.GetInt("Lookahead", 5) / 5f;
+		ReduceCameraShake = LoadBool("ReduceCameraShake");
 		Application.runInBackground = LoadBool("Run in Background");
 		FindObjectOfType<FPSCounter>(includeInactive: true).gameObject.SetActive(LoadBool("FPSCounter"));
 		timer.SetActive(LoadBool("Speedrun Timer"));
