@@ -63,7 +63,19 @@ public class EntityShader : MonoBehaviour {
 	}
 
 	public void FlinchOnce(Vector2 direction) {
-		Flinch(direction, 0.1f);
+		Flinch(direction, 0.1f); 
+	}
+
+	public void Hide() {
+		ExecuteChange(block => {
+			block.SetFloat("transparency", 1);
+		});
+	}
+
+	public void Show() {
+		ExecuteChange(block => {
+			block.SetFloat("transparency", 0);
+		});
 	}
 
 	IEnumerator StopFlinch(float duration) {

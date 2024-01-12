@@ -43,7 +43,6 @@ public class MapFog : MonoBehaviour {
 
     public void Save() {
         // save a.png of [area name] map fog.png to the save directory
-        // TODO: Create file if necessary
         byte[] imageBytes = fog.EncodeToPNG();
         File.WriteAllBytes(SavedImageName(), imageBytes);
     }

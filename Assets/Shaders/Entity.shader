@@ -10,6 +10,7 @@ Shader "Custom2D/Entity"
 		[PerRendererData] flinchWeight ("flinchWeight", Float) = 0
 		[PerRendererData] flinchDirection ("flinchDirection", Vector) = (0, 0, 0, 0)
 		[PerRendererData] whiteFlashWeight ("whiteFlashWeight", Float) = 0
+		[PerRendererData] transparency ("transparency", Float) = 0
 	}
 
 	SubShader
@@ -81,6 +82,7 @@ Shader "Custom2D/Entity"
 			float whiteFlashTime;
 			float cyanFlashTime;
 			float whiteFlashWeight;
+			float transparency;
 
 			fixed4 SampleSpriteTexture (float2 uv)
 			{
@@ -116,6 +118,7 @@ Shader "Custom2D/Entity"
 				c = CyanFlash(c);
 				c = ContinuousWhiteFlash(c);
 				c.rgb *= c.a;
+				c.a *= (1 - transparency);
 				return c;
 			}
 		ENDCG

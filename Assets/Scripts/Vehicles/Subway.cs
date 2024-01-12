@@ -23,7 +23,7 @@ public class Subway : MonoBehaviour {
 	public SubwayDirection arriveDirection;
 
 	public GameObject playerDummy;
-	GameObject player;
+	Entity player;
 
 	SubwayCar[] cars;
 	Animator animator;
@@ -39,14 +39,14 @@ public class Subway : MonoBehaviour {
 	void Awake() {
 		cars = GetComponentsInChildren<SubwayCar>();
 		animator = GetComponent<Animator>();
-		player = PlayerInput.GetPlayerOneInput().gameObject;
+		player = PlayerInput.GetPlayerOneInput().GetComponent<Entity>();
 		animator.SetFloat("LeaveDirection", (float) leaveDirection);
 		animator.SetFloat("ArriveDirection", (float) arriveDirection);
 		playerOne = PlayerInput.GetPlayerOneInput();
 		playerDummy.SetActive(false);
 
 		string[] splitPath = stopDestination.ScenePath.Split('/');
-		finalStopName = splitPath[splitPath.Length-1].Split('.')[0]; // .unity
+		finalStopName = splitPath[^1].Split('.')[0]; // .unity
 	}
 
 	void Start() {
@@ -128,13 +128,12 @@ public class Subway : MonoBehaviour {
 
 	void ArriveAtStation() {
 		if (holdingPlayer) {
-			Entity playerEntity = player.GetComponent<Entity>();
 			if (arriveDirection == SubwayDirection.RIGHT) {
 				playerDummy.transform.localScale = new Vector3(1, 1, 1);
-				if (playerEntity.facingRight) playerEntity.Flip();
+				if (player.facingRight) player.Flip();
 			} else {
 				playerDummy.transform.localScale = new Vector3(-1, 1, 1);
-				if (!playerEntity.facingRight) playerEntity.Flip();
+				if (!player.facingRight) player.Flip();
 			}
 		}
 		animator.SetTrigger("Arrive");
@@ -148,7 +147,8 @@ public class Subway : MonoBehaviour {
 		// move player to relative position
 		player.transform.position = transform.position + Vector3.right*subwayTransition.xOffset;
 		// hide the player
-		player.SetActive(false);
+		player.EnterCutscene(this.gameObject);
+		player.GetComponent<EntityShader>().Hide();
 
 		// move the player dummy to relative position
 		playerDummy.transform.localPosition = new Vector3(
@@ -172,10 +172,10 @@ public class Subway : MonoBehaviour {
 	}
 
 	// called from interaction
-	// TODO: if player boards from the air, they get ALL Messed up
 	public void BoardPlayer() {
 		// hide player
-		player.SetActive(false);
+		player.EnterCutscene(this.gameObject);
+		player.GetComponent<EntityShader>().Hide();
 		// save the x offset to the transition
 		float xOffset = player.transform.position.x - transform.position.x;
 		// move player dummy to player point x
@@ -186,12 +186,11 @@ public class Subway : MonoBehaviour {
 		);
 
 		// face towards subway leave direction
-		Entity playerEntity = player.GetComponent<Entity>();
 		if (leaveDirection == SubwayDirection.RIGHT) {
-			if (!playerEntity.facingRight) playerEntity.Flip();
+			if (!player.facingRight) player.Flip();
 			playerDummy.transform.localScale = new Vector3(-1, 1, 1);
 		} else {
-			if (playerEntity.facingRight) playerEntity.Flip();
+			if (player.facingRight) player.Flip();
 			playerDummy.transform.localScale = new Vector3(1, 1, 1);
 		}
 		// show player dummy
@@ -200,7 +199,8 @@ public class Subway : MonoBehaviour {
 	}
 
 	void OffboardPlayer() {
-		player.SetActive(true);
+		player.ExitCutscene(this.gameObject);
+		player.GetComponent<EntityShader>().Show();
 		playerDummy.SetActive(false);
 		holdingPlayer = false;
 	}

@@ -9,6 +9,7 @@ public class SpriteRigger : MonoBehaviour {
 	// todo: save the sprites,  then override them with the base atlas?
 	// but how do you check which one corresponds to which in the base atlas
 	// after it's already been set
+    // ohhh...Name them
 	public Texture2D baseAtlas;
 	public Texture2D overrideAtlas;
 

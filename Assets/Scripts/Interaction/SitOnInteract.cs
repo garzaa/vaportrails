@@ -13,7 +13,6 @@ public class SitOnInteract : Interactable {
 		RIGHT
 	}
 
-	// TODO: add a special looking cushion or something so people know it's a sittable area
 	// also TODO: add an event for sit start and sit end
 
 	public SitType sitType;
