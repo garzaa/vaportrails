@@ -22,20 +22,22 @@ public class AIPlayer : MonoBehaviour {
 	public bool logInputData = false;
 	
 	float startTime;
-	int lastFrame;
 
 	public float reactionTime = 1f/4f;
+
+	public bool frameOnPlay = false;
+	CameraInterface cameraInterface;
 
 	void Start() {
 		playerInput = GetComponent<PlayerInput>();
 		comControl = playerInput.comControl;
+		cameraInterface = GameObject.FindObjectOfType<CameraInterface>();
 	}
 
 	public void PlayReplay(Replay replay) {
 		playerInput.DisableHumanControl();
 		startTime = Time.time;
 		currentReplay = replay;
-		lastFrame = 0;
 	}
 
 	public void StartGhost(Ghost ghost) {
@@ -51,19 +53,20 @@ public class AIPlayer : MonoBehaviour {
 		snapshotSaver.Initialize(this.gameObject, opponent);
 		ghost = ghostFile.ghost;
 		this.opponent = opponent;
+		if (frameOnPlay) cameraInterface.AddFramingTarget(this.gameObject);
 	}
 
 	public void StopReplay() {
 		currentReplay = null;
 		comControl.Zero();
 		if (humanBeforeGhost) playerInput.EnableHumanControl();
-		lastFrame = 0;
 	}
 
 	public void StopGhost() {
 		ghost = null;
 		comControl.Zero();
 		if (humanBeforeGhost) playerInput.EnableHumanControl();
+		if (frameOnPlay) cameraInterface.RemoveFramingTarget(this.gameObject);
 	}
 
 	void Update() {
@@ -75,7 +78,6 @@ public class AIPlayer : MonoBehaviour {
 				FrameInput inputs = currentReplay.frameInputs[currentFrame];
 				SetInput(inputs);
 			}
-			lastFrame = currentFrame;
 			if (currentFrame >= currentReplay.length-1) {
 				Terminal.Log("Replay on "+gameObject.name+" finished, stopping and zeroing inputs");
 				StopReplay();
@@ -148,6 +150,6 @@ public class AIPlayer : MonoBehaviour {
 				return weightedInput.frameInput;
 			}
 		}
-		return inputs[inputs.Count-1].frameInput;
+		return inputs[^1].frameInput;
 	}
 }
