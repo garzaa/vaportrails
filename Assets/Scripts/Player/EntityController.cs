@@ -138,9 +138,13 @@ public class EntityController : Entity {
 		movingForwards = input.HasHorizontalInput() && ((facingRight && rb2d.velocity.x > 0) || (!facingRight && rb2d.velocity.x < 0));
 		airControlMod = Mathf.MoveTowards(airControlMod, 1, 0.5f * Time.deltaTime);
 
-		// allow moving during air attacks
-		if (frozeInputs && !(currentAttack!=null && !groundData.grounded)) {
-			inputX = 0;
+		if (frozeInputs) {
+			if (!(currentAttack!=null && !groundData.grounded)) {
+				// allow moving during air attacks
+				inputX = 0;
+			}
+			inputBackwards = false;
+			inputForwards = false;
 		}
 
 		if (groundData.leftGround) {
@@ -398,37 +402,37 @@ public class EntityController : Entity {
 			}
 		}
 
-		if ((!currentAttack && frozeInputs) || (currentAttack && !currentAttack.moveCancelable && !onWall)) return;
-
-		if (keepJumpSpeed && !frozeInputs) {
+		if (keepJumpSpeed) {
 			rb2d.velocity = new Vector2(
 				rb2d.velocity.x,
 				Mathf.Max(0, rb2d.velocity.y)
 			);
 		}
 
-		if (groundData.hitGround && bufferedJump && !keepJumpSpeed) {
-			// if they didn't just jump (and the groundcheck hasn't had time to update)
-            GroundJump();
-            return;
-        } else if (wallData.hitWall && bufferedJump) {
-			WallJump();
-			return;
-		}
-
-		if (input.ButtonDown(Buttons.JUMP) || (executeIfBuffered && bufferedJump && !frozeInputs)) {
-            if ((groundData.grounded || justWalkedOffCliff) && !keepJumpSpeed) {
-                if (groundData.platforms.Count > 0 && input.VerticalInput() < -0.8f) {
-					DropThroughPlatforms(groundData.platforms);
-					return;
-				}
-                GroundJump();
-            } else if (wallData.touchingWall || (justLeftWall && rb2d.velocity.y<=0 && !IsSpeeding())) {
+		if (!frozeInputs || onWall || (currentAttack?.moveCancelable ?? false)) {
+			if (groundData.hitGround && bufferedJump && !keepJumpSpeed) {
+				// if they didn't just jump (and the groundcheck hasn't had time to update)
+				GroundJump();
+				return;
+			} else if (wallData.hitWall && bufferedJump) {
 				WallJump();
-			} else if (!wallData.touchingWall && !groundData.grounded && currentAirJumps > 0) {
-				AirJump();
-            }
-        }
+				return;
+			}
+
+			if (input.ButtonDown(Buttons.JUMP) || (executeIfBuffered && bufferedJump)) {
+				if ((groundData.grounded || justWalkedOffCliff) && !keepJumpSpeed) {
+					if (groundData.platforms.Count > 0 && input.VerticalInput() < -0.8f) {
+						DropThroughPlatforms(groundData.platforms);
+						return;
+					}
+					GroundJump();
+				} else if (wallData.touchingWall || (justLeftWall && rb2d.velocity.y<=0 && !IsSpeeding())) {
+					WallJump();
+				} else if (!wallData.touchingWall && !groundData.grounded && currentAirJumps > 0) {
+					AirJump();
+				}
+			}
+		}
 	}
 
 	void BufferJump() {
