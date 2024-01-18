@@ -57,7 +57,7 @@ public class GroundCheck : MonoBehaviour {
         groundData.distance = GetGroundDistance();
 
         grounded = detecting && (leftGrounded || rightGrounded);
-        onLedge = leftGrounded ^ leftGrounded;
+        onLedge = (leftGrounded && !rightGrounded) || (!leftGrounded && rightGrounded);
 
         if (leftGrounded) groundCollider = leftHit.collider;
         else if (rightGrounded) groundCollider = rightHit.collider;

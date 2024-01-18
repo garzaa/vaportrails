@@ -164,11 +164,6 @@ public class EntityController : Entity {
 			this.WaitAndExecute(()=>justLeftWall=false, bufferDuration*2);
 		}
 
-		// stop at the end of ledges (but allow edge canceling)
-		if (groundData.ledgeStep && !speeding && !(inputForwards)) {
-			rb2d.velocity = new Vector2(0, rb2d.velocity.y);
-		}
-
 		if (
 			wallData.touchingWall
 			&& !groundData.grounded
@@ -239,6 +234,16 @@ public class EntityController : Entity {
 	}
 
 	void ApplyMovement() {
+		// stop at the end of ledges (but allow edge canceling)
+		if (groundData.ledgeStep) {
+			Debug.Log("detected ledge step");
+		}
+		if (groundData.ledgeStep && !speeding && !inputForwards) {
+			rb2d.velocity = new Vector2(0, rb2d.velocity.y);
+			// then move backwards slightly so player doesn't slip off (rounded collider edges)
+			rb2d.transform.position = rb2d.position + (Vector2.left * Forward() * collider2d.bounds.extents.x);
+		}
+
 		if (inCutscene) {
 			if (Mathf.Abs(rb2d.velocity.x) > 0.05f) {
 				SlowOnFriction();
