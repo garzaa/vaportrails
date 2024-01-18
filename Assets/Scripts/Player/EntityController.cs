@@ -235,9 +235,6 @@ public class EntityController : Entity {
 
 	void ApplyMovement() {
 		// stop at the end of ledges (but allow edge canceling)
-		if (groundData.ledgeStep) {
-			Debug.Log("detected ledge step");
-		}
 		if (groundData.ledgeStep && !speeding && !inputForwards) {
 			rb2d.velocity = new Vector2(0, rb2d.velocity.y);
 			// then move backwards slightly so player doesn't slip off (rounded collider edges)
