@@ -479,12 +479,12 @@ public class EntityController : Entity {
 			// if inputting towards wall, jump up it
 			// but always push player away from the wall
 			if (wallData.direction * inputX > 0) {
-				rb2d.velocity = new Vector2((-wallData.direction * movement.runSpeed), Mathf.Max(v, rb2d.velocity.y));
-				// animator.SetTrigger("Backflip");
+				rb2d.velocity = new Vector2((-wallData.direction * movement.runSpeed * 0.8f), Mathf.Max(v*1.1f, rb2d.velocity.y));
+				animator.SetTrigger("Backflip");
 				animator.SetTrigger("WallJump");
-				airControlMod = 0.2f;
+				airControlMod = 0.4f;
 			} else {
-				rb2d.velocity = new Vector2((-wallData.direction * movement.runSpeed)+1.5f, Mathf.Max(v, rb2d.velocity.y));
+				rb2d.velocity = new Vector2((-wallData.direction * movement.runSpeed)+1.5f, Mathf.Max(v*1.1f, rb2d.velocity.y));
 				animator.SetTrigger("WallJump");
 				airControlMod = 0.0f;
 			}

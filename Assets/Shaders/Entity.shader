@@ -117,8 +117,8 @@ Shader "Custom2D/Entity"
 				c = WhiteFlash(c);
 				c = CyanFlash(c);
 				c = ContinuousWhiteFlash(c);
-				c.rgb *= c.a;
 				c.a *= (1 - transparency);
+				c.rgb *= c.a;
 				return c;
 			}
 		ENDCG

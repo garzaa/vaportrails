@@ -9,10 +9,13 @@ public class MovePlayerToRigInState : StateMachineBehaviour {
 		Transform rig = animator.transform.Find("PlayerRig");
 		player = PlayerInput.GetPlayerOneInput().gameObject;
 		player.transform.position = rig.position;
-		player.gameObject.SetActive(false);
+		player.GetComponent<EntityShader>().Hide();
 	}
 
 	public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
-		player.gameObject.SetActive(true);
+		Transform rig = animator.transform.Find("PlayerRig");
+		player = PlayerInput.GetPlayerOneInput().gameObject;
+		player.transform.position = rig.position;
+		player.GetComponent<EntityShader>().Show();
 	}
 }

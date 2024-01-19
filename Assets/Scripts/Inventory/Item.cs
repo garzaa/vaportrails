@@ -43,7 +43,7 @@ public class Item : ScriptableObject {
 
 #if UNITY_EDITOR
 	[MenuItem("GameObject/Vapor Trails/Create Item")]
-	public static void CreateAchievement() {
+	public static void CreateItem() {
 		Item i = CreateInstance<Item>();
 		AssetDatabase.CreateAsset(i, "Assets/Resources/Runtime/Items/NewItem.asset");
 		EditorUtility.FocusProjectWindow();

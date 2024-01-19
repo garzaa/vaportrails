@@ -13,7 +13,7 @@ public class EntityShader : MonoBehaviour {
 
 	void Awake() {
 		entityMaterial = Resources.Load<Material>("Runtime/EntityMaterial");
-		renderers = new List<Renderer>(GetComponentsInChildren<SpriteRenderer>());
+		renderers = new List<Renderer>(GetComponentsInChildren<SpriteRenderer>(includeInactive: true));
 
 		for (int i=0; i<renderers.Count; i++) {
 			propertyBlocks.Add(new MaterialPropertyBlock());

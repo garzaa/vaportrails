@@ -60,6 +60,7 @@ public class HP : MonoBehaviour, IHitListener {
 
 	public void AdjustCurrent(int diff) {
 		current.Set(Mathf.Clamp(current.Get()+diff, 0, max.Get()));
+		if (sendIntToAnimator) animator.SetInteger("HP", current.Get());
 		CheckEvents();
 	}
 
