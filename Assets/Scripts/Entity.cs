@@ -195,6 +195,7 @@ public class Entity : MonoBehaviour, IHitListener {
 	}
 
 	public void CanBeHit(AttackHitbox attack) {
+		if (!takesEnvironmentDamage) Debug.LogWarning(this.name + " is set to not take env damage on the entity side");
 		if (invincible) return;
 		if (!takesEnvironmentDamage && attack is EnvironmentHitbox) return;
 	}

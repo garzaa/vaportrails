@@ -8,6 +8,7 @@ public class Hurtbox : MonoBehaviour {
 	public UnityEvent hitEvent;
 	public bool useParentTargetingPosition;
 	public bool invisibleToTargeters = false;
+	public bool takesEnvironmentDamage = true;
 	public GameObject hitmarkerOverride;
 	IHitListener[] hitListeners;
 
@@ -17,6 +18,7 @@ public class Hurtbox : MonoBehaviour {
 	}
 
 	public virtual bool VulnerableTo(AttackHitbox attack) {
+		if (attack is EnvironmentHitbox && !takesEnvironmentDamage) return false;
 		if (hitListeners != null) {
 			foreach (IHitListener h in hitListeners) {
 				if (!h.CanBeHit(attack)) {

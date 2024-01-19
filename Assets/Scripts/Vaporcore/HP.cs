@@ -29,6 +29,7 @@ public class HP : MonoBehaviour, IHitListener {
 
 	void Start() {
 		animator = GetComponent<Animator>();
+		if (sendIntToAnimator) animator.SetInteger("HP", current.Get());
 	}
 
 	IEnumerator AddHealthbar() {

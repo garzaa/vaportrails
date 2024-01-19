@@ -126,8 +126,8 @@ public class AttackHitbox : MonoBehaviour {
 		foreach (IAttackLandListener attackLandListener in attackLandListeners) {
 			attackLandListener.OnAttackLand(this, hurtbox);
 		}
-		OnAttackLand.Invoke();
 		hurtbox.OnHitConfirm(this);
+		OnAttackLand.Invoke();
 		if (data.zoomIn) cameraZoom.ZoomFor(2, data.hitstop);
 	}
 }
