@@ -495,7 +495,7 @@ public class EntityController : Entity {
 		}
 		GameObject w = Instantiate(wallJumpDust);
 		w.transform.position = new Vector2(wallData.direction > 0 ? collider2d.bounds.min.x : collider2d.bounds.max.x, transform.position.y);
-		w.transform.localScale = new Vector3(wallData.direction > 0 ? 1 : -1, 1, 1);
+		w.transform.localScale = new Vector3(wallData.direction > 0 ? -1 : 1, 1, 1);
 		canShortHop = false;
 		SetJustJumped();
 	}

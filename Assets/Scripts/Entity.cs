@@ -336,7 +336,17 @@ public class Entity : MonoBehaviour, IHitListener {
 
 	protected virtual void OnEffectGroundHit(float fallDistance) {}
 
+	// string stateNameLastFrame;
 	protected virtual void Update() {
+		// try {
+		// 	string s = animator.GetCurrentAnimatorClipInfo(0)[0].clip.name;
+		// 	if (s != stateNameLastFrame) {
+		// 		Debug.Log(s);
+		// 	}
+		// 	stateNameLastFrame = s;
+		// } catch (Exception) {
+
+		// }
 		UpdateFootfallSound();
 		if (groundData.hitGround && canGroundHitEffect && fallStart-transform.position.y > 4f/64f) {
 			if (!stunned && defaultFootfall) {
@@ -518,6 +528,7 @@ public class Entity : MonoBehaviour, IHitListener {
 	public void EnterCutscene(GameObject source) {
 		if (!gameObject.activeSelf) return;
 		GetComponent<ValCombatController>()?.DisableAttackStance();
+		GetComponent<AttackBuffer>()?.Clear();
 		rb2d.velocity = Vector2.zero;
 		EnterCutsceneNoHalt(source);
 	}

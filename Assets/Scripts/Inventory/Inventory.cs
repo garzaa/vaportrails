@@ -33,7 +33,6 @@ public class Inventory : SavedObject {
 	}
 
 	public void AddItem(Item item) {
-		Debug.Log("adding "+item.name);
 		AddItem(item, 1, false);
 	}
 

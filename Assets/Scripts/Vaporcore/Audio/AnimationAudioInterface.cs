@@ -12,7 +12,7 @@ public class AnimationAudioInterface : MonoBehaviour {
 	}
 
 	public void PlayAudioClip(AudioClip clip) {
-		if (audioSource == null) Debug.LogWarning("Audio source is null for animation interface "+this.name);
+		if (audioSource == null || clip == null) Debug.LogWarning("Audio source/clip is null for animation interface "+this.name);
 		GetComponent<AudioSource>().PlayOneShot(clip);
 	}
 }

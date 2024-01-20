@@ -9,6 +9,7 @@ using UnityEditor;
 
 public class Item : ScriptableObject {
 	public Sprite icon;
+	public Sprite worldIcon;
 	public int cost = 0;
 	public bool stackable = true;
 

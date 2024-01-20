@@ -17,8 +17,8 @@ public class SmoothSpriteChild : MonoBehaviour {
 	void LateUpdate() {
 		// if the sprites differ, get the upscaled version from spritesmoother
 		// sprites may differ every frame due to some animator keying, or they may not
-		// so for performance reasons just check every frame, and optimize the check if needed
-		if (spriteRenderer.sprite.name != spriteLastFrame) {
+		// so for performance reasons just check every frame, and optimize the check if needed later
+		if (spriteRenderer.sprite != null && spriteRenderer.sprite.name != spriteLastFrame) {
 			spriteRenderer.sprite = spriteSmoother.GetUpscaledSprite(spriteRenderer.sprite, this);
 			spriteLastFrame = spriteRenderer.sprite.name;
 		}

@@ -44,6 +44,7 @@ public class EntityShader : MonoBehaviour {
 
 	void ExecuteChange(Action<MaterialPropertyBlock> action) {
 		for (int i=0; i<renderers.Count; i++) {
+			if (renderers[i] == null) continue;
 			renderers[i].GetPropertyBlock(propertyBlocks[i]);
 			action(propertyBlocks[i]);
 			renderers[i].SetPropertyBlock(propertyBlocks[i]);
@@ -78,6 +79,13 @@ public class EntityShader : MonoBehaviour {
 		});
 	}
 
+	public void NoWave() {
+		ExecuteChange(block => {
+			block.SetFloat("noWaveTime", Time.unscaledTime);
+			block.SetFloat("_NoWaveAmt", 1);
+		});
+	}
+
 	IEnumerator StopFlinch(float duration) {
 		yield return new WaitForSeconds(duration);
 		ExecuteChange(block => {
@@ -87,7 +95,7 @@ public class EntityShader : MonoBehaviour {
 	
 	void OnDestroy() {
 		foreach (Renderer renderer in renderers) {
-			Destroy(renderer.material);	
+			if (renderer != null) Destroy(renderer.material);	
 		}
 	}
 }

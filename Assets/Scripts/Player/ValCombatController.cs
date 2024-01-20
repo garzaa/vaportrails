@@ -256,7 +256,7 @@ public class ValCombatController : CombatController, IHitListener {
 		base.CheckAttackInputs();
 		if (
 			(!player.frozeInputs || graphTraverser.InGraph())
-			&& input.ButtonDown(Buttons.SPECIAL)
+			&& (input.ButtonDown(RewiredConsts.Action.Special) || input.ButtonDown(RewiredConsts.Action.Dash))
 			&& !wallData.touchingWall
 			&& player.HasAbility(Ability.FlipKick)
 		) {

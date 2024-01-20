@@ -5,6 +5,7 @@ using UnityEngine.Events;
 
 public class FloatingItem : SavedEnabled, IPlayerEnterListener {
 	public Item item;
+	public SpriteRenderer worldSprite;
 	public Sprite takenSprite;
 	public AudioResource pickupSound;
 	public GameObject pickupEffect;
@@ -48,6 +49,10 @@ public class FloatingItem : SavedEnabled, IPlayerEnterListener {
 		player.GetComponentInChildren<Inventory>().AddItem(item);
 
 		OnPickup.Invoke();
+	}
+
+	public void OnValidate() {
+		if (worldSprite != null) worldSprite.sprite = item?.worldIcon;
 	}
 
 }
