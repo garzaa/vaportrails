@@ -52,7 +52,7 @@ public class FloatingItem : SavedEnabled, IPlayerEnterListener {
 	}
 
 	public void OnValidate() {
-		if (worldSprite != null) worldSprite.sprite = item?.worldIcon;
+		if (worldSprite != null && item?.worldIcon != null) worldSprite.sprite = item?.worldIcon;
 	}
 
 }

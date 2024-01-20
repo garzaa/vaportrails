@@ -498,6 +498,7 @@ public class EntityController : Entity {
 		w.transform.localScale = new Vector3(wallData.direction > 0 ? -1 : 1, 1, 1);
 		canShortHop = false;
 		SetJustJumped();
+		toonMotion.ForceUpdate();
 	}
 
 	void AirJump() {
