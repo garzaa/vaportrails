@@ -5,24 +5,24 @@ using System.Collections.Generic;
 public class AttackBuffer : MonoBehaviour {
 
 	EntityController player;
-    PlayerInput inputManager;
+    PlayerInput input;
     CombatController combatController;
 
 	// treat it as sort-of a queue
-    List<BufferedAttack> bufferedAttacks = new List<BufferedAttack>();
+	readonly List<BufferedAttack> bufferedAttacks = new();
 
     bool punch, kick;
     const float inputThreshold = 0.2f;
 
 	void Start() {
 		player = GetComponent<EntityController>();
-        inputManager = GetComponent<PlayerInput>();
+        input = GetComponent<PlayerInput>();
         combatController = GetComponent<CombatController>();
 	}
 
     void Update() {
-        punch = inputManager.ButtonDown(Buttons.PUNCH);
-        kick = inputManager.ButtonDown(Buttons.KICK);
+        punch = input.ButtonDown(RewiredConsts.Action.Punch);
+        kick = input.ButtonDown(RewiredConsts.Action.Kick);
         if (punch || kick) {
 			AttackType attackType;
 			Vector2Int attackDirection;
@@ -30,14 +30,14 @@ public class AttackBuffer : MonoBehaviour {
             if (punch) attackType = AttackType.PUNCH;
             else attackType = AttackType.KICK;
 
-            Vector2 ls = inputManager.LeftStick();
+            Vector2 ls = input.LeftStick();
 
             attackDirection = new Vector2Int(
-                inputManager.HasHorizontalInput() ? (int) Mathf.Sign(ls.x * player.Forward()) : 0,
+                input.HasHorizontalInput() ? (int) Mathf.Sign(ls.x * player.Forward()) : 0,
                 (int) (Mathf.Approximately(ls.y, 0) ? 0 : ClampZero(ls.y))
             );
             attackDirection *= new Vector2Int(1, 2);
-			BufferedAttack attack = new BufferedAttack(attackType, attackDirection);
+			BufferedAttack attack = new(attackType, attackDirection);
 			AddBufferedAttack(attack);
             // if it enters a graph without a buffered attack (i.e. it's read first)
             combatController.CheckAttackInputs();

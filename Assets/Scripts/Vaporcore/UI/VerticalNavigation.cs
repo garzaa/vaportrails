@@ -15,6 +15,10 @@ public class VerticalNavigation : MonoBehaviour {
 				selectOnDown = children[(i + 1) % children.Length]
 			};
 
+			if (i == 0) {
+				n.selectOnUp = children[^1];
+			}
+
 			s.navigation = n;
 		}
 	}

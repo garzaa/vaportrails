@@ -83,5 +83,6 @@ public class PauseMenu : MonoBehaviour {
 	IEnumerator AllowEscNextFrame() {
 		yield return new WaitForEndOfFrame();
 		blockEscape = false;
+		GetComponentInChildren<SelectFirstChild>()?.OnEnable();
 	}
 }

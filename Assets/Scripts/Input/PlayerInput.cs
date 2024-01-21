@@ -153,6 +153,13 @@ public class PlayerInput : MonoBehaviour {
         );
     }
 
+    public Vector2 RightStick() {
+        return new Vector2(
+            GetAxis(RewiredConsts.Action.CameraHorizontal),
+            GetAxis(RewiredConsts.Action.CameraVertical)
+        );
+    }
+
     public Vector2 MoveVector() {
         return new Vector2(HorizontalInput(), VerticalInput());
     }
