@@ -10,6 +10,7 @@ public class FloatingItem : SavedEnabled, IPlayerEnterListener {
 	public AudioResource pickupSound;
 	public GameObject pickupEffect;
 	SpriteRenderer spriteRenderer = null;
+	public bool pickupAnimation = false;
 
 	public UnityEvent OnPickup;
 
@@ -47,6 +48,10 @@ public class FloatingItem : SavedEnabled, IPlayerEnterListener {
 
 		// add to inventory
 		player.GetComponentInChildren<Inventory>().AddItem(item);
+
+		if (pickupAnimation) {
+			player.GetComponent<Animator>().Play("ValPickupAttack");
+		}
 
 		OnPickup.Invoke();
 	}

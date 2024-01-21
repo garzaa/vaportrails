@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.Animations;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Events;
 
 public class SaveShrine : SavedObject, IPlayerEnterListener {
 	bool unlocked = false;
@@ -12,6 +13,8 @@ public class SaveShrine : SavedObject, IPlayerEnterListener {
 
 	Transform playerHead;
 	Entity player;
+
+	public UnityEvent OnUnlock;
 
 	protected override void Initialize() {
 		animator = GetComponent<Animator>();
@@ -61,6 +64,7 @@ public class SaveShrine : SavedObject, IPlayerEnterListener {
 	}
 
 	public void FinishHackAnimation() {
+		OnUnlock.Invoke();
 		OnPlayerEnter(PlayerInput.GetPlayerOneInput().GetComponent<Collider2D>());
 		player.ExitCutscene(this.gameObject);
 	}
