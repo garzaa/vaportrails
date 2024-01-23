@@ -15,6 +15,9 @@ public class Achievement : ScriptableObject {
 	public bool Secret => secret;
 
 	public void Get() {
+#if STEAM
+		Debug.Log("got Steam achievement");
+#endif
 		FindObjectOfType<Achievements>(includeInactive: true).Get(this);
 	}
 
