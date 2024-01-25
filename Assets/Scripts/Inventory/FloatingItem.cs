@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.Events;
+using System.Net;
 
 public class FloatingItem : SavedEnabled, IPlayerEnterListener {
 	public Item item;
@@ -13,6 +14,7 @@ public class FloatingItem : SavedEnabled, IPlayerEnterListener {
 	public bool pickupAnimation = false;
 
 	public UnityEvent OnPickup;
+	public UnityEvent PostPickup;
 
 	protected override void Initialize() {
 		if (takenSprite && spriteRenderer == null) {
@@ -54,6 +56,33 @@ public class FloatingItem : SavedEnabled, IPlayerEnterListener {
 		}
 
 		OnPickup.Invoke();
+
+		// if there's anything that invokes a cutscene, wait until it's done and then run PostPickup
+		if (item.infoObject != null) {
+			ItemBehaviour[] ibs = item.infoObject.GetComponents<ItemBehaviour>();
+			bool hasCutscene = false;
+			for (int i=0; i<ibs.Length; i++) {
+				if (ibs[i].HasCutscene()) {
+					hasCutscene = true;
+					break;
+				}
+			}
+
+			if (hasCutscene) {
+				AddPostPickupEvent();
+			} else {
+				PostPickup.Invoke();
+			}
+		} else {
+			PostPickup.Invoke();
+		}
+	}
+
+	void AddPostPickupEvent() {
+		CutsceneQueue.Add(() => {
+			PostPickup.Invoke();
+			CutsceneQueue.OnCutsceneFinish();
+		});
 	}
 
 	public void OnValidate() {

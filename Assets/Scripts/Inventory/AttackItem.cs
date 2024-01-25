@@ -12,4 +12,8 @@ public class AttackItem : ItemBehaviour {
 			GameObject.FindObjectOfType<AttackUnlockUI>().Show(parentItem);
 		}
 	}
+
+	public override bool HasCutscene() {
+		return true;
+	}
 }

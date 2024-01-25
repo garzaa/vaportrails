@@ -133,7 +133,7 @@ public class EntityController : Entity {
 	void Move() {
 		inputX = input.HorizontalInput();
 		inputBackwards = input.HasHorizontalInput() && input.HorizontalInput()*Forward() < 0;
-		inputForwards = input.HasHorizontalInput() && !inputBackwards;
+		inputForwards = input.HasHorizontalInput() && input.HorizontalInput()*Forward() > 0;
 		movingBackwards = Mathf.Abs(rb2d.velocity.x) > 0.01 && rb2d.velocity.x * Forward() < 0;
 		movingForwards = input.HasHorizontalInput() && ((facingRight && rb2d.velocity.x > 0) || (!facingRight && rb2d.velocity.x < 0));
 		airControlMod = Mathf.MoveTowards(airControlMod, 1, 0.5f * Time.deltaTime);

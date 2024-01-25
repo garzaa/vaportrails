@@ -10,12 +10,6 @@ public class ProjectBuilder {
 
     static EditorBuildSettingsScene[] enabledScenes;
 
-    public static void BuildSteam() {
-        PlayerSettings.SetScriptingDefineSymbols(NamedBuildTarget.Standalone, "STEAM");
-        BuildWindows();
-        PlayerSettings.SetScriptingDefineSymbols(NamedBuildTarget.Standalone, "");
-    }
-
     public static void BuildAll() {
         enabledScenes = GetEnabledScenes();
         Build(BuildTarget.WebGL, "webgl");

@@ -11,4 +11,8 @@ public abstract class ItemBehaviour : MonoBehaviour {
 	public virtual string GetDescription() {
 		return extraText;
 	}
+
+	public virtual bool HasCutscene() {
+		return false;
+	}
 }

@@ -8,21 +8,27 @@ public class CutsceneQueue : MonoBehaviour {
 
 	static CutsceneQueue instance;
 
+	static Action currentCutscene = null;
+
 	void Awake() {
 		instance = this;
 	}
 
 	public static void Add(Action cutsceneAction) {
-		if (instance.cutsceneQueue.Count == 0) {
+		Debug.Log("enqueueing cutscene");
+		if (currentCutscene == null) {
+			currentCutscene = cutsceneAction;
 			cutsceneAction.Invoke();
-			return;
+		} else {
+			instance.cutsceneQueue.Enqueue(cutsceneAction);
 		}
-		instance.cutsceneQueue.Enqueue(cutsceneAction);
 	}
 
 	public static void OnCutsceneFinish() {
+		currentCutscene = null;
 		if (instance.cutsceneQueue.Count > 0) {
-			instance.cutsceneQueue.Dequeue().Invoke();
+			currentCutscene = instance.cutsceneQueue.Dequeue();
+			currentCutscene.Invoke();
 		}
 	}
 }
