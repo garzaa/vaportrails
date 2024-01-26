@@ -69,6 +69,7 @@ public class AttackHitbox : MonoBehaviour {
 		Entity e = hurtbox.GetComponentInParent<Entity>();
 		if (e && entitiesHitThisActive.Contains(e)) return false;
 		if (e && e == GetComponentInParent<Entity>()) return false;
+		if (e && e.inCutscene) return false;
 
 		return true;
 	}

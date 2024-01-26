@@ -89,25 +89,26 @@ public class DialogueUI : MonoBehaviour {
 			portraitContainer.SetActive(false);
 		}
 
-		if (!string.IsNullOrEmpty(line.speakerName) || line.character) {
-			// if speaker name is set, it takes priority - hack for Val to voice the other characters until they get their own voices
-			// in the ending cutscene
-			// TODO: take this out eventually
-			if (line.character && string.IsNullOrEmpty(line.speakerName)) {
-				speakerName.text = line.character.name;
-			} else {
-				speakerName.text = line.speakerName;
-			}
+		if (line.character) {
 			speakerNameContainer.SetActive(true);
+			speakerName.text = line.character.name;
 			speechBubbleTail.SetActive(true);
 			// make the box resize to fit the new name
 			LayoutRebuilder.ForceRebuildLayoutImmediate(speakerNameContainer.GetComponent<RectTransform>());
+			speakerNameContainer.GetComponent<ContentSizeFitter>().verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+			StartCoroutine(SetName(line.character.name));
 		} else {
 			speakerNameContainer.SetActive(false);
 			speechBubbleTail.SetActive(false);
 		}
 		if (line.eventOnLineEnd) dialogueLineEndEvent = line.callback;
 		else line.callback.Invoke();
+	}
+
+	IEnumerator SetName(string n) {
+		yield return new WaitForEndOfFrame();
+		yield return new WaitForSecondsRealtime(0.2f);
+		speakerNameContainer.GetComponent<ContentSizeFitter>().verticalFit = ContentSizeFitter.FitMode.MinSize;
 	}
 
 	public void OpenFrom(GameObject caller) {

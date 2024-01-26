@@ -15,7 +15,6 @@ public class CutsceneQueue : MonoBehaviour {
 	}
 
 	public static void Add(Action cutsceneAction) {
-		Debug.Log("enqueueing cutscene");
 		if (currentCutscene == null) {
 			currentCutscene = cutsceneAction;
 			cutsceneAction.Invoke();
