@@ -31,10 +31,10 @@ public class GameCheckpointLoader : SavedObject {
 		properties[nameof(loadedBefore)] = loadedBefore;
 	}
 
-	// don't want to always set this crap in the editor
-	// so set global namespace to true
+	// the same game checkpoint loaders can have different object names
+	// which is why we override it here
 	public override string GetObjectPath() {
-		return $"global/{name}/{GetType().Name}";
+		return $"global/{GetType().Name}";
 	}
 }
 #endif

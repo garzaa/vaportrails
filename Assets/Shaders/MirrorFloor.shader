@@ -8,6 +8,7 @@ Shader "Custom2D/MirrorFloor"
 		_Color ("Tint", Color) = (1,1,1,1)
 		[HideInInspector] _ReflectionTex ("", 2D) = "white" {}
 		_DistortAmount ("DistortionAmount", Float) = 0.5
+		_Speed ("Speed", Float) = 1
 	}
 	SubShader
 	{
@@ -54,13 +55,14 @@ Shader "Custom2D/MirrorFloor"
 			sampler2D _ReflectionTex;
 			float4 _MainTex_TexelSize;
 			float _DistortAmount;
+			float _Speed;
 
 			fixed4 SineDisplace(sampler2D _reflTex, float2 uv, v2f IN)
 			{
 				// poor man's Fresnel effect
 				float normY  = -(uv.y - _MainTex_TexelSize);
 				// distort more towards the bottom of screen
-				uv.x += sin(normY * 500) * 0.0001 * _DistortAmount * (1-pow(IN.uv.y, 2));
+				uv.x += sin(normY * 500 + (_Time.z*-1*_Speed)) * 0.0001 * _DistortAmount * (1-pow(IN.uv.y, 2));
 				fixed4 color = tex2D (_reflTex, uv) * IN.col;
 				fixed4 fade = _Color;
 				return lerp(color, fade, saturate(fade.a * (1-IN.uv.y)*3));

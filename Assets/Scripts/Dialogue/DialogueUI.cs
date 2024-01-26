@@ -96,7 +96,7 @@ public class DialogueUI : MonoBehaviour {
 			// make the box resize to fit the new name
 			LayoutRebuilder.ForceRebuildLayoutImmediate(speakerNameContainer.GetComponent<RectTransform>());
 			speakerNameContainer.GetComponent<ContentSizeFitter>().verticalFit = ContentSizeFitter.FitMode.PreferredSize;
-			StartCoroutine(SetName(line.character.name));
+			StartCoroutine(SetName());
 		} else {
 			speakerNameContainer.SetActive(false);
 			speechBubbleTail.SetActive(false);
@@ -105,8 +105,7 @@ public class DialogueUI : MonoBehaviour {
 		else line.callback.Invoke();
 	}
 
-	IEnumerator SetName(string n) {
-		yield return new WaitForEndOfFrame();
+	IEnumerator SetName() {
 		yield return new WaitForSecondsRealtime(0.2f);
 		speakerNameContainer.GetComponent<ContentSizeFitter>().verticalFit = ContentSizeFitter.FitMode.MinSize;
 	}
