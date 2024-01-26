@@ -1,12 +1,15 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Events;
 
 public class BeaconWrapper : MonoBehaviour {
 	[SerializeField] Beacon beacon;
 	public Beacon GetBeacon => beacon;
 
 	public bool faceRight;
+
+	public UnityEvent OnLoad;
 
 	public Vector3 GetPosition() {
 		Vector3 pos = transform.position;

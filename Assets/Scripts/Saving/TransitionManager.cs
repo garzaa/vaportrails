@@ -63,6 +63,7 @@ public class TransitionManager : SavedObject {
 			Entity player = PlayerInput.GetPlayerOneInput().GetComponent<Entity>();
 			player.gameObject.transform.position = beaconWrapper.GetPosition();
 			StartCoroutine(FlipPlayer(player, beaconWrapper));
+			beaconWrapper.OnLoad.Invoke();
 		}
 		
 		StartCoroutine(DisableHardLock());
