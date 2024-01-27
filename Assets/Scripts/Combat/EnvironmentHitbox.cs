@@ -7,4 +7,8 @@ public class EnvironmentHitbox : AttackHitbox {
 		base.Start();
 		singleHitPerActive = false;
 	}
+
+	protected override bool HitsInCutscene() {
+		return true;
+	}
 }

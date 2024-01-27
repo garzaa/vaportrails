@@ -69,9 +69,13 @@ public class AttackHitbox : MonoBehaviour {
 		Entity e = hurtbox.GetComponentInParent<Entity>();
 		if (e && entitiesHitThisActive.Contains(e)) return false;
 		if (e && e == GetComponentInParent<Entity>()) return false;
-		if (e && e.inCutscene) return false;
+		if (e && e.inCutscene && !HitsInCutscene()) return false;
 
 		return true;
+	}
+
+	protected virtual bool HitsInCutscene() {
+		return false;
 	}
 
 	void OnTriggerEnter2D(Collider2D other) {
