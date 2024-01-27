@@ -1,5 +1,3 @@
-# source ./set_version.sh
-
 echo "removing old demo folders"
 for i in win-exe win32-exe osx webgl gnu-linux; do
     rm -r ../demos/vaportrails-$i
