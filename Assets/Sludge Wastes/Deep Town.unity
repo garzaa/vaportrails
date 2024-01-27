@@ -159,6 +159,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   beacon: {fileID: 11400000, guid: 299439784de131d41bb8c3f5527a4fcb, type: 2}
   faceRight: 0
+  OnLoad:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!4 &27892357
 Transform:
   m_ObjectHideFlags: 0
@@ -57378,12 +57381,12 @@ GameObject:
   - component: {fileID: 315697444}
   - component: {fileID: 315697443}
   m_Layer: 0
-  m_Name: DeeptownBridgeEndDoor_1
+  m_Name: LaurenHouseDoor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!61 &315697443
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -57440,6 +57443,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   beacon: {fileID: 11400000, guid: 299439784de131d41bb8c3f5527a4fcb, type: 2}
   faceRight: 0
+  OnLoad:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!212 &315697446
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -60395,7 +60401,6 @@ MonoBehaviour:
   conversations:
   - lines:
     - character: {fileID: 11400000, guid: 7c0565a807ee9a440928615e66a5feff, type: 2}
-      speakerName: 
       portrait: {fileID: -5201521803859513143, guid: 759cc7e0e3166b249acd31d3eefa4cb5, type: 3}
       text: Care to explain why my wife would let a seven foot Valentine into town?
         Gonna sing us a song, huh? Tear out an eye or two?
@@ -60404,7 +60409,6 @@ MonoBehaviour:
           m_Calls: []
       eventOnLineEnd: 0
     - character: {fileID: 11400000, guid: 96b8ad4aa65cebf42a602ceabc639889, type: 2}
-      speakerName: 
       portrait: {fileID: -1502980541, guid: 1171058749ee757438b4f70244064702, type: 3}
       text: I don't know any songs. But she let me in because I found you some cigarettes.
         Here.
@@ -60437,7 +60441,6 @@ MonoBehaviour:
             m_CallState: 2
       eventOnLineEnd: 1
     - character: {fileID: 11400000, guid: 7c0565a807ee9a440928615e66a5feff, type: 2}
-      speakerName: 
       portrait: {fileID: -5201521803859513143, guid: 759cc7e0e3166b249acd31d3eefa4cb5, type: 3}
       text: ...
       callback:
@@ -60445,7 +60448,6 @@ MonoBehaviour:
           m_Calls: []
       eventOnLineEnd: 0
     - character: {fileID: 11400000, guid: 7c0565a807ee9a440928615e66a5feff, type: 2}
-      speakerName: 
       portrait: {fileID: -5201521803859513143, guid: 759cc7e0e3166b249acd31d3eefa4cb5, type: 3}
       text: Hmph. Try not to hurt anyone while you're here.
       callback:
@@ -60453,7 +60455,6 @@ MonoBehaviour:
           m_Calls: []
       eventOnLineEnd: 0
     - character: {fileID: 11400000, guid: 7c0565a807ee9a440928615e66a5feff, type: 2}
-      speakerName: 
       portrait: {fileID: -5201521803859513143, guid: 759cc7e0e3166b249acd31d3eefa4cb5, type: 3}
       text: And thanks for the new cigarettes. This one was almost out of flavor.
       callback:
@@ -60462,7 +60463,6 @@ MonoBehaviour:
       eventOnLineEnd: 0
   - lines:
     - character: {fileID: 11400000, guid: 96b8ad4aa65cebf42a602ceabc639889, type: 2}
-      speakerName: 
       portrait: {fileID: 1555193604, guid: 1171058749ee757438b4f70244064702, type: 3}
       text: Aren't you supposed to smoke them?
       callback:
@@ -60470,7 +60470,6 @@ MonoBehaviour:
           m_Calls: []
       eventOnLineEnd: 0
     - character: {fileID: 11400000, guid: 7c0565a807ee9a440928615e66a5feff, type: 2}
-      speakerName: 
       portrait: {fileID: -5201521803859513143, guid: 759cc7e0e3166b249acd31d3eefa4cb5, type: 3}
       text: What? Can't you see I'm busy here?
       callback:
@@ -60478,7 +60477,6 @@ MonoBehaviour:
           m_Calls: []
       eventOnLineEnd: 0
     - character: {fileID: 11400000, guid: 7c0565a807ee9a440928615e66a5feff, type: 2}
-      speakerName: 
       portrait: {fileID: -5201521803859513143, guid: 759cc7e0e3166b249acd31d3eefa4cb5, type: 3}
       text: Go bother Lauren if you want to ask stupid questions.
       callback:
@@ -60607,7 +60605,6 @@ MonoBehaviour:
   conversations:
   - lines:
     - character: {fileID: 11400000, guid: 85e4cedcf3ffaaa45869cbebdfac8bb6, type: 2}
-      speakerName: 
       portrait: {fileID: 21300000, guid: f5cf43473746aa546b614d7de170943f, type: 3}
       text: You smell like ozone. Are you a prismatic?
       callback:
@@ -60615,7 +60612,6 @@ MonoBehaviour:
           m_Calls: []
       eventOnLineEnd: 0
     - character: {fileID: 11400000, guid: 96b8ad4aa65cebf42a602ceabc639889, type: 2}
-      speakerName: 
       portrait: {fileID: 1555193604, guid: 1171058749ee757438b4f70244064702, type: 3}
       text: I am.
       callback:
@@ -60623,7 +60619,6 @@ MonoBehaviour:
           m_Calls: []
       eventOnLineEnd: 0
     - character: {fileID: 11400000, guid: 85e4cedcf3ffaaa45869cbebdfac8bb6, type: 2}
-      speakerName: 
       portrait: {fileID: 21300000, guid: f5cf43473746aa546b614d7de170943f, type: 3}
       text: Are you going to hurt my dad?
       callback:
@@ -60631,7 +60626,6 @@ MonoBehaviour:
           m_Calls: []
       eventOnLineEnd: 0
     - character: {fileID: 11400000, guid: 96b8ad4aa65cebf42a602ceabc639889, type: 2}
-      speakerName: 
       portrait: {fileID: -1502980541, guid: 1171058749ee757438b4f70244064702, type: 3}
       text: I don't think so. What did he do?
       callback:
@@ -60639,7 +60633,6 @@ MonoBehaviour:
           m_Calls: []
       eventOnLineEnd: 0
     - character: {fileID: 11400000, guid: 85e4cedcf3ffaaa45869cbebdfac8bb6, type: 2}
-      speakerName: 
       portrait: {fileID: 21300000, guid: f5cf43473746aa546b614d7de170943f, type: 3}
       text: Nothing. He told me a prismatic hurt his eye when he lived on the surface.
       callback:
@@ -60647,7 +60640,6 @@ MonoBehaviour:
           m_Calls: []
       eventOnLineEnd: 0
     - character: {fileID: 11400000, guid: 85e4cedcf3ffaaa45869cbebdfac8bb6, type: 2}
-      speakerName: 
       portrait: {fileID: 21300000, guid: f5cf43473746aa546b614d7de170943f, type: 3}
       text: She wasn't supposed to, though. She was a Valentine and they're not allowed
         to be solid.
@@ -60656,7 +60648,6 @@ MonoBehaviour:
           m_Calls: []
       eventOnLineEnd: 0
     - character: {fileID: 11400000, guid: 85e4cedcf3ffaaa45869cbebdfac8bb6, type: 2}
-      speakerName: 
       portrait: {fileID: 21300000, guid: f5cf43473746aa546b614d7de170943f, type: 3}
       text: And then they put him down here so he couldn't tell anyone.
       callback:
@@ -60665,7 +60656,6 @@ MonoBehaviour:
       eventOnLineEnd: 0
   - lines:
     - character: {fileID: 11400000, guid: 85e4cedcf3ffaaa45869cbebdfac8bb6, type: 2}
-      speakerName: 
       portrait: {fileID: 21300000, guid: f5cf43473746aa546b614d7de170943f, type: 3}
       text: You can sit with me if you want.
       callback:
@@ -60673,7 +60663,6 @@ MonoBehaviour:
           m_Calls: []
       eventOnLineEnd: 0
     - character: {fileID: 11400000, guid: 85e4cedcf3ffaaa45869cbebdfac8bb6, type: 2}
-      speakerName: 
       portrait: {fileID: 21300000, guid: f5cf43473746aa546b614d7de170943f, type: 3}
       text: I like to listen to Rob fish. Sometimes he catches things, but mostly
         he doesn't.
@@ -60682,7 +60671,6 @@ MonoBehaviour:
           m_Calls: []
       eventOnLineEnd: 0
     - character: {fileID: 11400000, guid: 85e4cedcf3ffaaa45869cbebdfac8bb6, type: 2}
-      speakerName: 
       portrait: {fileID: 21300000, guid: f5cf43473746aa546b614d7de170943f, type: 3}
       text: He never catches fish though.
       callback:
@@ -62469,6 +62457,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   beacon: {fileID: 11400000, guid: eafb8fa8da98e174e892a656a22d63e6, type: 2}
   faceRight: 0
+  OnLoad:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!4 &665647241
 Transform:
   m_ObjectHideFlags: 0
@@ -62865,6 +62856,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   beacon: {fileID: 11400000, guid: 80a6d4065dbab8a48a3f6e770ed7f54b, type: 2}
   faceRight: 1
+  OnLoad:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &770305917
 GameObject:
   m_ObjectHideFlags: 0
@@ -62941,6 +62935,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   beacon: {fileID: 11400000, guid: 299439784de131d41bb8c3f5527a4fcb, type: 2}
   faceRight: 0
+  OnLoad:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!212 &770305921
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -63342,7 +63339,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 828422679}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.000009617432, y: -0.0000007632817, z: 0}
+  m_LocalPosition: {x: -3.9442024, y: -2.17116, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -64546,11 +64543,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4160817345173324201, guid: df318d9009829a34781aaa920593e61d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 39.44196
       objectReference: {fileID: 0}
     - target: {fileID: 4160817345173324201, guid: df318d9009829a34781aaa920593e61d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 21.711584
       objectReference: {fileID: 0}
     - target: {fileID: 4164111644338651459, guid: df318d9009829a34781aaa920593e61d, type: 3}
       propertyPath: m_AnchorMax.y
@@ -65310,11 +65307,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7770972733150071081, guid: df318d9009829a34781aaa920593e61d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 39.44196
       objectReference: {fileID: 0}
     - target: {fileID: 7770972733150071081, guid: df318d9009829a34781aaa920593e61d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 21.711584
       objectReference: {fileID: 0}
     - target: {fileID: 7770972733150071081, guid: df318d9009829a34781aaa920593e61d, type: 3}
       propertyPath: m_LocalPosition.z
@@ -65714,11 +65711,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7770972734024709621, guid: df318d9009829a34781aaa920593e61d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 39.44196
       objectReference: {fileID: 0}
     - target: {fileID: 7770972734024709621, guid: df318d9009829a34781aaa920593e61d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 21.711584
       objectReference: {fileID: 0}
     - target: {fileID: 7770972734033973496, guid: df318d9009829a34781aaa920593e61d, type: 3}
       propertyPath: m_SizeDelta.y
@@ -66960,7 +66957,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1247362107}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.000019234863, y: 0.0000015265634, z: 0}
+  m_LocalPosition: {x: 7.888405, y: 4.34232, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -67382,7 +67379,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1282826678}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.000009617432, y: 0.0000007632817, z: 0}
+  m_LocalPosition: {x: 3.9442024, y: 2.17116, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -71093,7 +71090,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1310888648}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.000015150843, y: -0.0000019805018, z: 0}
+  m_LocalPosition: {x: 11.832568, y: 6.513472, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -71934,7 +71931,6 @@ MonoBehaviour:
   conversations:
   - lines:
     - character: {fileID: 11400000, guid: 3eb2a7bd2a03aa240b5bebb9052c61f3, type: 2}
-      speakerName: 
       portrait: {fileID: -295535910940424785, guid: 9896afc543eb01a41843eab6610ba298, type: 3}
       text: Just because I let you in doesn't mean we're on good terms yet. I've
         got my eye on you.
@@ -71943,7 +71939,6 @@ MonoBehaviour:
           m_Calls: []
       eventOnLineEnd: 0
     - character: {fileID: 11400000, guid: 3eb2a7bd2a03aa240b5bebb9052c61f3, type: 2}
-      speakerName: 
       portrait: {fileID: -295535910940424785, guid: 9896afc543eb01a41843eab6610ba298, type: 3}
       text: Lauren might be able to sort you out. She used to work on prismatics
         back when she lived on the surface.
@@ -85995,7 +85990,6 @@ MonoBehaviour:
   conversations:
   - lines:
     - character: {fileID: 11400000, guid: 7c0565a807ee9a440928615e66a5feff, type: 2}
-      speakerName: 
       portrait: {fileID: -5201521803859513143, guid: 759cc7e0e3166b249acd31d3eefa4cb5, type: 3}
       text: CAN'T YOU SEE I'M WORKING HERE.
       callback:
@@ -87823,7 +87817,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1591153038}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.0000000023283064, y: 1.6291324e-10, z: 0}
+  m_LocalPosition: {x: 39.44196, y: 21.711584, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -87922,7 +87916,6 @@ MonoBehaviour:
   conversations:
   - lines:
     - character: {fileID: 11400000, guid: 2d16973b77f463944a97ad34c3e37d8f, type: 2}
-      speakerName: 
       portrait: {fileID: 710809335859917248, guid: cfeaa4a13cde62e4481e6e17b2f2a2e3, type: 3}
       text: You're trying to get to the surface, right?
       callback:
@@ -87930,7 +87923,6 @@ MonoBehaviour:
           m_Calls: []
       eventOnLineEnd: 0
     - character: {fileID: 11400000, guid: 2d16973b77f463944a97ad34c3e37d8f, type: 2}
-      speakerName: 
       portrait: {fileID: 1332035380294748744, guid: cfeaa4a13cde62e4481e6e17b2f2a2e3, type: 3}
       text: A late-model Valentine chassis, but with a flight rig bolted on. And
         space for gun eyes!
@@ -87939,7 +87931,6 @@ MonoBehaviour:
           m_Calls: []
       eventOnLineEnd: 0
     - character: {fileID: 11400000, guid: 2d16973b77f463944a97ad34c3e37d8f, type: 2}
-      speakerName: 
       portrait: {fileID: -8263703269721318387, guid: cfeaa4a13cde62e4481e6e17b2f2a2e3, type: 3}
       text: I'm surprised Tara even let you into town.
       callback:
@@ -87947,7 +87938,6 @@ MonoBehaviour:
           m_Calls: []
       eventOnLineEnd: 0
     - character: {fileID: 11400000, guid: 2d16973b77f463944a97ad34c3e37d8f, type: 2}
-      speakerName: 
       portrait: {fileID: -8263703269721318387, guid: cfeaa4a13cde62e4481e6e17b2f2a2e3, type: 3}
       text: I'm Lauren. I used to design prototypes like you up in Paradise. Do you
         know why you're here?
@@ -87956,7 +87946,6 @@ MonoBehaviour:
           m_Calls: []
       eventOnLineEnd: 0
     - character: {fileID: 11400000, guid: 96b8ad4aa65cebf42a602ceabc639889, type: 2}
-      speakerName: 
       portrait: {fileID: -1502980541, guid: 1171058749ee757438b4f70244064702, type: 3}
       text: I just woke up in something called the Prismatic Graveyard. Aside from
         that, I don't know much else. I think I need to get to the surface.
@@ -87965,7 +87954,6 @@ MonoBehaviour:
           m_Calls: []
       eventOnLineEnd: 0
     - character: {fileID: 11400000, guid: 2d16973b77f463944a97ad34c3e37d8f, type: 2}
-      speakerName: 
       portrait: {fileID: -7563646172384488274, guid: cfeaa4a13cde62e4481e6e17b2f2a2e3, type: 3}
       text: Yeah, that sounds about right. Don't we all.
       callback:
@@ -87973,7 +87961,6 @@ MonoBehaviour:
           m_Calls: []
       eventOnLineEnd: 0
     - character: {fileID: 11400000, guid: 96b8ad4aa65cebf42a602ceabc639889, type: 2}
-      speakerName: 
       portrait: {fileID: 1555193604, guid: 1171058749ee757438b4f70244064702, type: 3}
       text: What's keeping you?
       callback:
@@ -87981,7 +87968,6 @@ MonoBehaviour:
           m_Calls: []
       eventOnLineEnd: 0
     - character: {fileID: 11400000, guid: 2d16973b77f463944a97ad34c3e37d8f, type: 2}
-      speakerName: 
       portrait: {fileID: 710809335859917248, guid: cfeaa4a13cde62e4481e6e17b2f2a2e3, type: 3}
       text: 'Well, across the Sludge Lake is what I''m pretty sure is one of the
         world''s oldest prismatics, and she''s a bit violent. After that there''s
@@ -87992,7 +87978,6 @@ MonoBehaviour:
           m_Calls: []
       eventOnLineEnd: 0
     - character: {fileID: 11400000, guid: 2d16973b77f463944a97ad34c3e37d8f, type: 2}
-      speakerName: 
       portrait: {fileID: 3090848601392046276, guid: cfeaa4a13cde62e4481e6e17b2f2a2e3, type: 3}
       text: There's just not enough power here for me to compile anything that could
         put a dent in that prismatic in the lake.
@@ -88001,7 +87986,6 @@ MonoBehaviour:
           m_Calls: []
       eventOnLineEnd: 0
     - character: {fileID: 11400000, guid: 2d16973b77f463944a97ad34c3e37d8f, type: 2}
-      speakerName: 
       portrait: {fileID: -8263703269721318387, guid: cfeaa4a13cde62e4481e6e17b2f2a2e3, type: 3}
       text: You, though...I saw you glowing from a mile away, down by the water when
         you got here. Maybe you could do it.
@@ -88010,7 +87994,6 @@ MonoBehaviour:
           m_Calls: []
       eventOnLineEnd: 0
     - character: {fileID: 11400000, guid: 96b8ad4aa65cebf42a602ceabc639889, type: 2}
-      speakerName: 
       portrait: {fileID: 1555193604, guid: 1171058749ee757438b4f70244064702, type: 3}
       text: So if I deal with whatever is in the lake, you'll help me get up into
         the city?
@@ -88019,7 +88002,6 @@ MonoBehaviour:
           m_Calls: []
       eventOnLineEnd: 0
     - character: {fileID: 11400000, guid: 2d16973b77f463944a97ad34c3e37d8f, type: 2}
-      speakerName: 
       portrait: {fileID: -8263703269721318387, guid: cfeaa4a13cde62e4481e6e17b2f2a2e3, type: 3}
       text: Yeah, and I'll even set you up with some gun eyes. Who knows, they might
         be useful.
@@ -88028,7 +88010,6 @@ MonoBehaviour:
           m_Calls: []
       eventOnLineEnd: 0
     - character: {fileID: 11400000, guid: 2d16973b77f463944a97ad34c3e37d8f, type: 2}
-      speakerName: 
       portrait: {fileID: 5072862459861630785, guid: cfeaa4a13cde62e4481e6e17b2f2a2e3, type: 3}
       text: I just need a bigger power source than whatever either of us are packing
         right now.
@@ -88037,7 +88018,6 @@ MonoBehaviour:
           m_Calls: []
       eventOnLineEnd: 0
     - character: {fileID: 11400000, guid: 2d16973b77f463944a97ad34c3e37d8f, type: 2}
-      speakerName: 
       portrait: {fileID: 710809335859917248, guid: cfeaa4a13cde62e4481e6e17b2f2a2e3, type: 3}
       text: So when you do no-wave that thing...
       callback:
@@ -88045,7 +88025,6 @@ MonoBehaviour:
           m_Calls: []
       eventOnLineEnd: 0
     - character: {fileID: 11400000, guid: 2d16973b77f463944a97ad34c3e37d8f, type: 2}
-      speakerName: 
       portrait: {fileID: -4659916951983067135, guid: cfeaa4a13cde62e4481e6e17b2f2a2e3, type: 3}
       text: Bring me its heart.
       callback:
@@ -88054,7 +88033,6 @@ MonoBehaviour:
       eventOnLineEnd: 0
   - lines:
     - character: {fileID: 11400000, guid: 96b8ad4aa65cebf42a602ceabc639889, type: 2}
-      speakerName: 
       portrait: {fileID: 1555193604, guid: 1171058749ee757438b4f70244064702, type: 3}
       text: So, I just bring you that lake monster's...heart?
       callback:
@@ -88062,7 +88040,6 @@ MonoBehaviour:
           m_Calls: []
       eventOnLineEnd: 0
     - character: {fileID: 11400000, guid: 2d16973b77f463944a97ad34c3e37d8f, type: 2}
-      speakerName: 
       portrait: {fileID: -8263703269721318387, guid: cfeaa4a13cde62e4481e6e17b2f2a2e3, type: 3}
       text: Yep, that's where the engine is. It should be pretty easy after you no-wave
         the body. Form retreats into the heart when it can't keep the body stable
@@ -88072,7 +88049,6 @@ MonoBehaviour:
           m_Calls: []
       eventOnLineEnd: 0
     - character: {fileID: 11400000, guid: 2d16973b77f463944a97ad34c3e37d8f, type: 2}
-      speakerName: 
       portrait: {fileID: 710809335859917248, guid: cfeaa4a13cde62e4481e6e17b2f2a2e3, type: 3}
       text: Then just grab that and bring it here so I can stabilize it and start
         pulling power.
@@ -88081,7 +88057,6 @@ MonoBehaviour:
           m_Calls: []
       eventOnLineEnd: 0
     - character: {fileID: 11400000, guid: 96b8ad4aa65cebf42a602ceabc639889, type: 2}
-      speakerName: 
       portrait: {fileID: 1555193604, guid: 1171058749ee757438b4f70244064702, type: 3}
       text: How do I get across the lake in the first place?
       callback:
@@ -88089,7 +88064,6 @@ MonoBehaviour:
           m_Calls: []
       eventOnLineEnd: 0
     - character: {fileID: 11400000, guid: 2d16973b77f463944a97ad34c3e37d8f, type: 2}
-      speakerName: 
       portrait: {fileID: -8263703269721318387, guid: cfeaa4a13cde62e4481e6e17b2f2a2e3, type: 3}
       text: There are some caves with a secret entrance somewhere around here. There's
         probably a way to bypass them somehow, but I have no idea.
@@ -88098,7 +88072,6 @@ MonoBehaviour:
           m_Calls: []
       eventOnLineEnd: 0
     - character: {fileID: 11400000, guid: 2d16973b77f463944a97ad34c3e37d8f, type: 2}
-      speakerName: 
       portrait: {fileID: 1332035380294748744, guid: cfeaa4a13cde62e4481e6e17b2f2a2e3, type: 3}
       text: Oh, and by the way...
       callback:
@@ -88106,7 +88079,6 @@ MonoBehaviour:
           m_Calls: []
       eventOnLineEnd: 0
     - character: {fileID: 11400000, guid: 2d16973b77f463944a97ad34c3e37d8f, type: 2}
-      speakerName: 
       portrait: {fileID: 710809335859917248, guid: cfeaa4a13cde62e4481e6e17b2f2a2e3, type: 3}
       text: I have a hunch the lake monster is one of the really nasty prototypes
         I know from the surface. Don't become part of her.
@@ -88115,7 +88087,6 @@ MonoBehaviour:
           m_Calls: []
       eventOnLineEnd: 0
     - character: {fileID: 11400000, guid: 96b8ad4aa65cebf42a602ceabc639889, type: 2}
-      speakerName: 
       portrait: {fileID: 1555193604, guid: 1171058749ee757438b4f70244064702, type: 3}
       text: What?
       callback:
@@ -88123,7 +88094,6 @@ MonoBehaviour:
           m_Calls: []
       eventOnLineEnd: 0
     - character: {fileID: 11400000, guid: 2d16973b77f463944a97ad34c3e37d8f, type: 2}
-      speakerName: 
       portrait: {fileID: -8263703269721318387, guid: cfeaa4a13cde62e4481e6e17b2f2a2e3, type: 3}
       text: If you've got a self-destruct or anything, you should probably use it
         if you get no-waved. I think she's been collecting things that fall down
@@ -89025,7 +88995,6 @@ MonoBehaviour:
   conversations:
   - lines:
     - character: {fileID: 11400000, guid: ef0bf0a7106d05343af56f4cefa82fe9, type: 2}
-      speakerName: 
       portrait: {fileID: -3684576334944794099, guid: f8130253eb6277342875cd1764ee5c03, type: 3}
       text: Don't go in the water...there's eyes in it...
       callback:
@@ -89033,7 +89002,6 @@ MonoBehaviour:
           m_Calls: []
       eventOnLineEnd: 0
     - character: {fileID: 11400000, guid: ef0bf0a7106d05343af56f4cefa82fe9, type: 2}
-      speakerName: 
       portrait: {fileID: 5197607250434991530, guid: f8130253eb6277342875cd1764ee5c03, type: 3}
       text: Oh, what's up? You must be new here.
       callback:
@@ -89041,7 +89009,6 @@ MonoBehaviour:
           m_Calls: []
       eventOnLineEnd: 0
     - character: {fileID: 11400000, guid: 96b8ad4aa65cebf42a602ceabc639889, type: 2}
-      speakerName: 
       portrait: {fileID: 1555193604, guid: 1171058749ee757438b4f70244064702, type: 3}
       text: I'm on my way to the surface. I heard there was a way to get there through
         this town.
@@ -89050,7 +89017,6 @@ MonoBehaviour:
           m_Calls: []
       eventOnLineEnd: 0
     - character: {fileID: 11400000, guid: ef0bf0a7106d05343af56f4cefa82fe9, type: 2}
-      speakerName: 
       portrait: {fileID: -7447906206841284833, guid: f8130253eb6277342875cd1764ee5c03, type: 3}
       text: Ehh, sorta...
       callback:
@@ -89058,7 +89024,6 @@ MonoBehaviour:
           m_Calls: []
       eventOnLineEnd: 0
     - character: {fileID: 11400000, guid: ef0bf0a7106d05343af56f4cefa82fe9, type: 2}
-      speakerName: 
       portrait: {fileID: -6533811275274510143, guid: f8130253eb6277342875cd1764ee5c03, type: 3}
       text: Across the lake is an outflow area for the sludge generated up at the
         surface. Beyond that, there's supposed to be some old machinery that connects
@@ -89068,7 +89033,6 @@ MonoBehaviour:
           m_Calls: []
       eventOnLineEnd: 0
     - character: {fileID: 11400000, guid: ef0bf0a7106d05343af56f4cefa82fe9, type: 2}
-      speakerName: 
       portrait: {fileID: 5197607250434991530, guid: f8130253eb6277342875cd1764ee5c03, type: 3}
       text: It's old rumors though. If we could cross the lake none of us would be
         here.
@@ -89077,7 +89041,6 @@ MonoBehaviour:
           m_Calls: []
       eventOnLineEnd: 0
     - character: {fileID: 11400000, guid: 96b8ad4aa65cebf42a602ceabc639889, type: 2}
-      speakerName: 
       portrait: {fileID: 1555193604, guid: 1171058749ee757438b4f70244064702, type: 3}
       text: Why can't you cross the lake?
       callback:
@@ -89085,7 +89048,6 @@ MonoBehaviour:
           m_Calls: []
       eventOnLineEnd: 0
     - character: {fileID: 11400000, guid: ef0bf0a7106d05343af56f4cefa82fe9, type: 2}
-      speakerName: 
       portrait: {fileID: -6533811275274510143, guid: f8130253eb6277342875cd1764ee5c03, type: 3}
       text: You haven't heard? There's something living in there.
       callback:
@@ -89093,7 +89055,6 @@ MonoBehaviour:
           m_Calls: []
       eventOnLineEnd: 0
     - character: {fileID: 11400000, guid: ef0bf0a7106d05343af56f4cefa82fe9, type: 2}
-      speakerName: 
       portrait: {fileID: -6533811275274510143, guid: f8130253eb6277342875cd1764ee5c03, type: 3}
       text: All I know is I've seen something moving around by the far shore. Then
         a bunch of thorns grew out over the lake.
@@ -89102,7 +89063,6 @@ MonoBehaviour:
           m_Calls: []
       eventOnLineEnd: 0
     - character: {fileID: 11400000, guid: ef0bf0a7106d05343af56f4cefa82fe9, type: 2}
-      speakerName: 
       portrait: {fileID: -7664559217091436223, guid: f8130253eb6277342875cd1764ee5c03, type: 3}
       text: Lauren's been here the longest, so she probably knows the most about
         it. She lives at the top of town.
@@ -89111,7 +89071,6 @@ MonoBehaviour:
           m_Calls: []
       eventOnLineEnd: 0
     - character: {fileID: 11400000, guid: ef0bf0a7106d05343af56f4cefa82fe9, type: 2}
-      speakerName: 
       portrait: {fileID: 5197607250434991530, guid: f8130253eb6277342875cd1764ee5c03, type: 3}
       text: It's a bit of a climb, but you could do it no problem.
       callback:
