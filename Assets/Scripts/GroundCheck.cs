@@ -120,11 +120,14 @@ public class GroundCheck : MonoBehaviour {
     }
 
     RaycastHit2D LeftGrounded() {
-        return DefaultLinecast(col.BottomLeftCorner());
+        RaycastHit2D hit = DefaultLinecast(col.BottomLeftCorner());
+        return hit;
     }
 
     RaycastHit2D RightGrounded() {
-        return DefaultLinecast(col.BottomRightCorner());
+        RaycastHit2D hit = DefaultLinecast(col.BottomRightCorner());
+
+        return hit;
     }
 
     void RefreshGroundData(GroundData groundData) {
@@ -177,11 +180,25 @@ public class GroundCheck : MonoBehaviour {
         Vector2 end = origin + (-currentNormal * 0.25f * lengthMultiplier);
 
         Debug.DrawLine(start, end, Color.red);
-        return Physics2D.Linecast(
+        RaycastHit2D hit = Physics2D.Linecast(
             start,
             end,
             defaultLayerMask
         );
+
+        // currentNormal is judged from the middle of the collider...
+        // TODO: judge the normal per-raycast?
+        // down then forwards?
+        if (hit.normal != currentNormal) {
+            end = origin + (Vector2.down * 0.25f * lengthMultiplier);
+            hit = Physics2D.Linecast(
+                start,
+                end,
+                defaultLayerMask
+            );
+        }
+
+        return hit;
     }
 
     float GetGroundDistance() {
