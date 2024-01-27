@@ -45,9 +45,6 @@ public class ExtraRuleTileCreator : MonoBehaviour {
         // need to sort this by name? hello??
         sprites = AssetDatabase.LoadAllAssetsAtPath(assetPath).Where(x => x is Sprite).Cast<Sprite>().ToList();
         sprites = sprites.OrderBy(x => int.Parse(x.name)).ToList();
-        foreach (Sprite s in sprites) {
-            print(s.name);
-        }
 
         // sprite 12 is the no-neighbor one, they're 0-indexed
         tile.m_DefaultColliderType = UnityEngine.Tilemaps.Tile.ColliderType.Grid;
