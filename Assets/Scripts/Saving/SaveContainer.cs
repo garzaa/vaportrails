@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 [CreateAssetMenu(menuName = "Data/Runtime/SaveContainer")]
 public class SaveContainer : ScriptableObject {
-	Save _save = new Save();
+	Save _save = new();
 
 	public Save save {
 		get {

@@ -21,6 +21,8 @@ public class AttackBuffer : MonoBehaviour {
 	}
 
     void Update() {
+        if (player.inCutscene) return;
+
         punch = input.ButtonDown(RewiredConsts.Action.Punch);
         kick = input.ButtonDown(RewiredConsts.Action.Kick);
         if (punch || kick) {

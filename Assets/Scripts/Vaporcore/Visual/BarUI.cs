@@ -44,7 +44,7 @@ public class BarUI : MonoBehaviour {
 
     void Redraw() {
 		if (normalizeSize && max > 0) {
-            // TODO: this doesn't work
+            // TODO: this doesn't work, it just gets long
             pixelsPerUnit = size / max;
         }
 
@@ -63,9 +63,10 @@ public class BarUI : MonoBehaviour {
     }
 
 	public void SetCurrent(int value) {
+        int oldCurrent = _current;
 		_current = value;
 		changeTime = Time.time;
-		Redraw();
+		if (_current != oldCurrent) Redraw();
 	}
 
 	public void SetMax(int value) {

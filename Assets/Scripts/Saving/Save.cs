@@ -28,6 +28,7 @@ public class Save {
 	}
 
 	public void Wipe() {
+		Debug.Log("wiping save");
 		objects.Clear();
 	}
 }

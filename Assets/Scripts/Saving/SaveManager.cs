@@ -15,12 +15,6 @@ public class SaveManager : MonoBehaviour {
 	readonly JsonSaver jsonSaver = new JsonSaver();
 	int slot = 1;
 
-	public Save save {
-		get {
-			return saveContainer.save;
-		}
-	}
-
 	void Awake() {
 		transitionManager = GameObject.FindObjectOfType<TransitionManager>();
 		// load a slot zero save if it exists
@@ -36,7 +30,7 @@ public class SaveManager : MonoBehaviour {
 		if (o.useEternalSave) {
 			return eternalSave;
 		} else {
-			return save;
+			return saveContainer.save;
 		}
 	}
 
@@ -56,8 +50,8 @@ public class SaveManager : MonoBehaviour {
 		}
 		WriteEternalSave();
 		FindObjectOfType<MapFog>()?.Save();
-		save.version = Application.version;
-		jsonSaver.SaveFile(save, slot);
+		saveContainer.save.version = Application.version;
+		jsonSaver.SaveFile(saveContainer.save, slot);
 		FindObjectOfType<TimeSinceSave>().OnSave();
 	}
 
@@ -82,7 +76,7 @@ public class SaveManager : MonoBehaviour {
     }
 
 	public void WipeSave() {
-		save.Wipe();
+		saveContainer.save.Wipe();
 	}
 
 	public void WriteEternalSave() {

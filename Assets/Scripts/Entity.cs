@@ -106,6 +106,7 @@ public class Entity : MonoBehaviour, IHitListener {
 			launchTumble.enabled = false;
 		}
 		groundSaver = new SafeGroundSaver(this);
+		groundSaver.SetStartRespawnPoint();
 		if (rigFacingRight) facingRight = true;
 	}
 
@@ -506,7 +507,7 @@ public class Entity : MonoBehaviour, IHitListener {
 
 	void ReturnToSafety() {
 		Vector3 lastPos = transform.position;
-		transform.position = groundSaver.data.lastSafeObject.transform.position + groundSaver.data.lastSafeOffset;
+		transform.position = groundSaver.GetRespawnPosition();
 		// flip so they're looking at the last position
 		if (Forward() * (lastPos.x - transform.position.x) < 0) {
 			_Flip();

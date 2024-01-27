@@ -13,7 +13,7 @@ public class GenerousJump {
 		public float time;
 	}
 	
-	const float window = 0.35f;
+	const float window = 0.1f;
 	readonly List<TimeV> times = new List<TimeV>();
 
 	public void StoreVelocity(Rigidbody2D rb2d) {

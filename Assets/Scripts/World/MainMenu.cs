@@ -22,6 +22,7 @@ public class MainMenu : MonoBehaviour {
 	
 	public void NewGame() {
 		saveManager.WipeSave();
+		FindObjectOfType<TransitionManager>().MarkSceneDirty();
 		FindObjectOfType<SpeedrunTimer>().OnNewGame();
 		FindObjectOfType<TransitionManager>().BeaconTransition(newGameBeacon);
 	}

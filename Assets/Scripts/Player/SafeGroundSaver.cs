@@ -5,12 +5,12 @@ using System.Collections.Generic;
 public class SafeGroundSaver {
 	
 	public class SafeGroundData {
-		public GameObject lastSafeObject;
+		public GameObject lastSafeObject = null;
 		public Vector3 lastSafeOffset;
 	}
 
 	Entity entity;
-	public SafeGroundData data { get; private set; }
+	SafeGroundData data;
 	Collider2D[] overlapPoints = new Collider2D[16];
 
 	public SafeGroundSaver(Entity e) {
@@ -61,5 +61,17 @@ public class SafeGroundSaver {
 	static RaycastHit2D DefaultLinecast(Vector2 start) {
 		// go an entire block down in case the player is in the air
 		return Physics2D.Linecast(start, start + Vector2.down * 1f, Layers.GroundMask);
+	}
+
+	public Vector3 GetRespawnPosition() {
+		if (data.lastSafeObject != null) {
+			return data.lastSafeObject.transform.position + data.lastSafeOffset;
+		} else {
+			return data.lastSafeOffset;
+		}
+	}
+
+	public void SetStartRespawnPoint() {
+		data.lastSafeOffset = entity.transform.position;
 	}
 }
