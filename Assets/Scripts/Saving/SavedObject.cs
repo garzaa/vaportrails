@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using Newtonsoft.Json.Linq;
 using System.Linq;
 using System;
+using Steamworks;
 
 public abstract class SavedObject : MonoBehaviour {
 	[Tooltip("Persist over ALL playthroughs and reloads (e.g. an achievement)")]
@@ -20,7 +21,6 @@ public abstract class SavedObject : MonoBehaviour {
 	Save save;
 
 	public void StartUp() {
-		Load();
 		Initialize();
 		if (HasSavedData) LoadFromProperties();
 	}
