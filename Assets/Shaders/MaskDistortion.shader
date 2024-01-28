@@ -134,7 +134,7 @@ Shader "Custom2D/MaskDistortion"
 
 				// if there's a match with either mask color
                 if (any(compareColor(c, _Mask1, 0.1) || compareColor(c, _Mask2, 0.1) || compareColor(c, _Mask3, 0.1))) {
-					offset.x = flipIfOdd(c.g);
+				offset.x = flipIfOdd(c.g);
 					offset.y = flipIfOdd(c.b);
 
 					lerpAmt = 0.5 + (_LerpMult * 0.5);

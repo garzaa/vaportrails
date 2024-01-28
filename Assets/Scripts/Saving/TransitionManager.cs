@@ -19,8 +19,6 @@ public class TransitionManager : SavedObject {
 	SaveManager saveManager;
 	SpeedrunTimer speedrunTimer;
 
-	bool sceneDirty = false;
-
 	protected override void LoadFromProperties() {}
 
 	public void LoadLastSavedScene() {
@@ -123,7 +121,7 @@ public class TransitionManager : SavedObject {
 
 	public void StraightLoad(string scenePath) {
 		transition.Clear();
-		if (!sceneDirty) saveManager.TransitionPrep();
+		saveManager.TransitionPrep();
 		SceneManager.LoadScene(scenePath);
 	}
 
@@ -138,7 +136,7 @@ public class TransitionManager : SavedObject {
 		FadeToBlack();
 		yield return new WaitForSecondsRealtime(FADE_TIME);
 
-		if (!sceneDirty) saveManager.TransitionPrep();
+		saveManager.TransitionPrep();
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
 		asyncLoad.allowSceneActivation = false; 
 		
@@ -157,9 +155,5 @@ public class TransitionManager : SavedObject {
 		originalVolume = AudioListener.volume;
 		elapsedTime = 0;
 		transitionEndTime = Time.time + FADE_TIME;
-	}
-
-	public void MarkSceneDirty() {
-		sceneDirty = true;
 	}
 }
