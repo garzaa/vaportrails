@@ -33,7 +33,6 @@ public class Entity : MonoBehaviour, IHitListener {
 	static GameObject highJumpDust;
 	protected static GameObject landDust;
 	protected static PhysicsMaterial2D bouncyStunMaterial;
-	protected static PhysicsMaterial2D frictionSlopeMaterial;
 	static GameObject footfallDust;
 	ParticleSystem stunSmoke;
 	
@@ -93,7 +92,6 @@ public class Entity : MonoBehaviour, IHitListener {
 		if (!landDust) landDust = Resources.Load<GameObject>("Runtime/LandDust");
 		if (!footfallDust) footfallDust = Resources.Load<GameObject>("Runtime/FootfallDust");
 		if (!bouncyStunMaterial) bouncyStunMaterial = Resources.Load<PhysicsMaterial2D>("Runtime/BounceEntity");
-		if (!frictionSlopeMaterial) frictionSlopeMaterial = Resources.Load<PhysicsMaterial2D>("Runtime/FullFriction");
 		defaultMaterial = rb2d.sharedMaterial;
 		stunSmoke = Instantiate(Resources.Load<GameObject>("Runtime/StunSmoke"), this.transform).GetComponent<ParticleSystem>();
 		stunSmoke.transform.localPosition = Vector3.zero;

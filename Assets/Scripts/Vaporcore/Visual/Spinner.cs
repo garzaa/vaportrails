@@ -20,9 +20,15 @@ public class Spinner : MonoBehaviour {
         float t = unscaled ? Time.unscaledTime : Time.time;
 
         // animator speed added for entity hitstop
-        bool fpsCheck = fps == 0 || (t > (lastUpdate + (1/((float)fps))));
-        if (t > lastUpdate && fpsCheck && !(animator!=null && animator.speed == 0)) {
+        // WHY DOES THIS SPEED UP FUCK
+        // fps limiter math is wrong
+        // last update + (1/24)
+        // no that works...
+        bool canUpdate = (fps == 0) || (t > (lastUpdate + (1/((float)fps))));
+
+        if (t > lastUpdate && canUpdate && !(animator!=null && animator.speed == 0)) {
             Vector3 r = transform.localRotation.eulerAngles;
+            // change it to be additive instead of the full rotation
             r.z = ((rps * t * 360)) % 360;
             transform.localRotation = Quaternion.Euler(r);
 
@@ -31,6 +37,6 @@ public class Spinner : MonoBehaviour {
     }
 
     void OnDisable() {
-        transform.localRotation = Quaternion.identity;
+        transform.localRotation = Quaternion.Euler(transform.rotation.x, transform.rotation.y, 0);
     }
 }

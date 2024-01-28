@@ -175,12 +175,10 @@ public class EntityController : Entity {
 		}
 
 		// don't slide on slopes
-		if (inputX == 0 && groundData.normalRotation != 0 && rb2d.velocity.sqrMagnitude < 2f) {
-			// make it a full-friction material
-			rb2d.sharedMaterial = frictionSlopeMaterial;
+		if (inputX == 0 && groundData.normalRotation != 0 && rb2d.velocity.sqrMagnitude < 2f && groundData.grounded && !stunned) {
+			rb2d.gravityScale = 0;
 		} else if (rb2d.sharedMaterial != bouncyStunMaterial) {
-			// otherwise make it the default material
-			rb2d.sharedMaterial = defaultMaterial;
+			rb2d.gravityScale = 1;
 		}
 	}
 
