@@ -10,11 +10,14 @@ public class SteamManager : MonoBehaviour {
 	// but also include a separate PLAYER_STEAM flag? STEAM_BUILD || PLAYER_STEAM
 	// https://stackoverflow.com/questions/27519104/several-custom-configuration-in-if-directive
 
+#if (STEAM || UNITY_EDITOR)
 	void Start() {
 		try {
 			Steamworks.SteamClient.Init(demoID, true);
+			Debug.Log("steam client started successfully");
 		} catch (System.Exception e) {
 			Debug.LogError("Steam client failed to start because: "+e.Message);
 		}
 	}
+#endif
 }
