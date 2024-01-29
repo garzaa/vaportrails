@@ -388,7 +388,7 @@ public class EntityController : Entity {
 			return;
 		}
 
-		if (input.ButtonUp(Buttons.JUMP) && rb2d.velocity.y > movement.shortHopCutoffVelocity && canShortHop && GameOptions.ShortHop) {
+		if (input.ButtonUp(Buttons.JUMP) && rb2d.velocity.y > movement.shortHopCutoffVelocity && canShortHop && GameOptions.ShortHop && !wallData.touchingWall) {
 			keepJumpSpeed = false;
 			rb2d.velocity = new Vector2(rb2d.velocity.x, movement.shortHopCutoffVelocity);
 		}

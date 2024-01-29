@@ -9,8 +9,9 @@ public class MainMenu : MonoBehaviour {
 	readonly JsonSaver jsonSaver = new();
 	SaveManager saveManager;
 
-
+#if UNITY_EDITOR
 	public GameCheckpointLoader dummyCheckpoint;
+#endif
 
 	public void Start() {
 		continueButton.SetActive(jsonSaver.HasFile(1));
@@ -25,8 +26,10 @@ public class MainMenu : MonoBehaviour {
 	
 	public void NewGame() {
 		saveManager.WipeSave();
+#if UNITY_EDITOR
 		// load a dummy checkpoint to set the flag true and keep any subsequent ones from loading
 		dummyCheckpoint.StartUp();
+#endif
 		FindObjectOfType<SpeedrunTimer>().OnNewGame();
 		FindObjectOfType<TransitionManager>().BeaconTransition(newGameBeacon);
 	}

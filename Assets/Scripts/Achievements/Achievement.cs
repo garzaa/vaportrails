@@ -15,8 +15,10 @@ public class Achievement : ScriptableObject {
 	public bool Secret => secret;
 
 	public void Get() {
-#if STEAM
+#if (STEAM || UNITY_EDITOR)
 		Debug.Log("got Steam achievement");
+		var ach = new Steamworks.Data.Achievement(name);
+		ach.Trigger();
 #endif
 		FindObjectOfType<Achievements>(includeInactive: true).Get(this);
 	}

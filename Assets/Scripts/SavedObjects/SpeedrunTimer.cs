@@ -8,11 +8,11 @@ public class SpeedrunTimer : SavedObject {
 
 	protected override void Initialize() {
 		timer = GetComponent<Timer>();
+		timer.Unpause();
 	}
 
 	protected override void LoadFromProperties() {
 		timer.SetTime(Get<float>("time"));
-		timer.Unpause();
 	}
 
 	protected override void SaveToProperties(ref Dictionary<string, object> properties) {

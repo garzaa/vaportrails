@@ -81,5 +81,8 @@ public class HydratedGlyph : MonoBehaviour {
 			layoutGroup.padding.left = padding;
 			layoutGroup.padding.right = padding;
 		}
+
+		// then rebuild the layout
+		LayoutRebuilder.ForceRebuildLayoutImmediate(GetComponent<RectTransform>());
 	}
 }

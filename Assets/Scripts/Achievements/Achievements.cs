@@ -59,9 +59,11 @@ public void Get(Achievement a) {
 	}
 
 	public void NotifyUnlock(Achievement a) {
+#if !STEAM
 		unlockTitle.text = a.GetName();
 		unlockIcon.sprite = a.Icon;
 		animator.SetTrigger("Unlock");
+#endif
 	}
 
 	public void ListAchievements() {

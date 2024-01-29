@@ -12,3 +12,18 @@ echo "building project"
     -batchmode \
     -executeMethod ProjectBuilder.BuildAll
 echo "done"
+
+
+echo "copying outputs to steam build directory..."
+
+set +x
+for i in win-exe win32-exe osx webgl gnu-linux; do
+    cp -r ../demos/vaportrails-$i "X:\steamworks_sdk\tools\ContentBuilder\content\vaportrails-$i"
+done
+set -x
+
+echo "done"
+
+echo "rendering achievements..."
+sh render_achievements.sh
+echo "done"
