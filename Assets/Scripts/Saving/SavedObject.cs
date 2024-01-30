@@ -22,6 +22,7 @@ public abstract class SavedObject : MonoBehaviour {
 
 	public void StartUp() {
 		Debug.Log(this.name+" starting");
+		Load();
 		Initialize();
 		if (HasSavedData || ForceLoadIfNoProperties()) LoadFromProperties();
 	}
