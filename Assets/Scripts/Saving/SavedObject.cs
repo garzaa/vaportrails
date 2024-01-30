@@ -21,20 +21,17 @@ public abstract class SavedObject : MonoBehaviour {
 	Save save;
 
 	public void StartUp() {
-		Debug.Log(this.name+" starting");
 		Load();
 		Initialize();
 		if (HasSavedData || ForceLoadIfNoProperties()) LoadFromProperties();
 	}
 
 	public void Load() {
-		Debug.Log(this.name + " refreshign save reference");
 		save = SaveManager.GetSaveFor(this);
 		properties = save.LoadAtPath(GetObjectPath());
 	}
 
 	public void SyncToRuntime() {
-		Debug.Log(this.name + " syncing to runtime");
 		// no this is wrong...the eternal save works
 		SaveToProperties(ref properties);
 		foreach (String s in properties.Keys.ToArray()) {

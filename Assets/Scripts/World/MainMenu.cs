@@ -27,6 +27,7 @@ public class MainMenu : MonoBehaviour {
 #if UNITY_EDITOR
 		// load a dummy checkpoint to set the flag true and keep any subsequent ones from loading
 		// need to call Load explictly to refresh the reference to the Save's properties dictionary
+		// this is all editor stuff but still
 		dummyCheckpoint.Load();
 		dummyCheckpoint.StartUp();
 #endif

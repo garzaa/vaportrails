@@ -52,7 +52,6 @@ public class Inventory : SavedObject {
 			item.OnPickup(this, true);
 		}
 		CheckItemChangeListeners();
-		Debug.Log("added items quietly");
 	}
 
 	void CheckItemChangeListeners() {

@@ -61,16 +61,13 @@ public class SaveManager : MonoBehaviour {
 
 	public static void Save() {
 		foreach (SavedObject o in FindObjectsOfType<SavedObject>(includeInactive: true)) {
-			Debug.Log("saving "+o.name);
 			o.SyncToRuntime();
 		}
-		// TODO: eternal saves work? not normal ones?????
 		WriteEternalSave();
 		FindObjectOfType<MapFog>()?.Save();
 		instance.save.version = Application.version;
 		instance.jsonSaver.SaveFile(instance.save, instance.slot);
 		FindObjectOfType<TimeSinceSave>()?.OnSave();
-		Debug.Log("game saved");
 	}
 
 	public static void Load() {

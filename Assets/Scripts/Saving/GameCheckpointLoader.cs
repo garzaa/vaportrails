@@ -16,11 +16,9 @@ public class GameCheckpointLoader : SavedObject {
 		try {
 			loadedBefore = Get<bool>(nameof(loadedBefore));
 		} catch (KeyNotFoundException) {
-			Debug.Log("key not found at path "+GetObjectPath());
 			loadedBefore = false;
 		}
 
-		Debug.Log(this.name + " loaded before: " +loadedBefore);
 		if (!loadInBuild && !Application.isEditor) return;
 		if (!loadedBefore) {
 			// then add everything
@@ -35,14 +33,12 @@ public class GameCheckpointLoader : SavedObject {
 	}
 
 	protected override void SaveToProperties(ref Dictionary<string, object> properties) {
-		Debug.Log(this.name + " saving to properties with loaded before: "+loadedBefore);
 		properties[nameof(loadedBefore)] = loadedBefore;
 	}
 
 	// the same game checkpoint loaders can have different object names
 	// which is why we override it here
 	public override string GetObjectPath() {
-		Debug.Log($"global/{GetType().Name}");
 		return $"global/{GetType().Name}";
 	}
 

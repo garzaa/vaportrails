@@ -14,7 +14,6 @@ public class JsonSaver {
         using (StreamWriter jsonWriter = new StreamWriter(GetSavePath(slot), append: false)) {
             jsonWriter.Write(JsonConvert.SerializeObject(save, Formatting.Indented));
         }
-        Debug.Log(JsonConvert.SerializeObject(save, Formatting.Indented));
     }
 
     public Save LoadFile(int slot) {
