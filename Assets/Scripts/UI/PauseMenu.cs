@@ -62,7 +62,7 @@ public class PauseMenu : MonoBehaviour {
 	}
 
 	public void Quit() {
-		FindObjectOfType<SaveManager>().WriteEternalSave();
+		SaveManager.WriteEternalSave();
 		Application.Quit();
 	}
 

@@ -52,7 +52,7 @@ public class SaveShrine : SavedObject, IPlayerEnterListener {
 			headTracker.transform.localPosition = Vector3.zero; 
 			headTracker.transform.localScale = Vector3.one;
 			headTracker.SetActive(true);
-			FindObjectOfType<SaveManager>().Save();
+			SaveManager.Save();
 			player.GetComponent<HP>().FullHeal();
 			animator.SetTrigger("PlaySaveEffect");
 		}

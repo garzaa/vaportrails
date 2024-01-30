@@ -26,12 +26,15 @@ public abstract class SavedObject : MonoBehaviour {
 		if (HasSavedData || ForceLoadIfNoProperties()) LoadFromProperties();
 	}
 
-	void Load() {
-		save = FindObjectOfType<SaveManager>().GetSaveFor(this);
+	public void Load() {
+		Debug.Log(this.name + " refreshign save reference");
+		save = SaveManager.GetSaveFor(this);
 		properties = save.LoadAtPath(GetObjectPath());
 	}
 
 	public void SyncToRuntime() {
+		Debug.Log(this.name + " syncing to runtime");
+		// no this is wrong...the eternal save works
 		SaveToProperties(ref properties);
 		foreach (String s in properties.Keys.ToArray()) {
 			if (properties[s] is Vector3) {

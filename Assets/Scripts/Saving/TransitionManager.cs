@@ -16,7 +16,6 @@ public class TransitionManager : SavedObject {
 	float elapsedTime;
 	float transitionEndTime;
 
-	SaveManager saveManager;
 	SpeedrunTimer speedrunTimer;
 
 	protected override void LoadFromProperties() {}
@@ -31,7 +30,6 @@ public class TransitionManager : SavedObject {
 	}
 
 	protected override void Initialize() {
-		saveManager = FindObjectOfType<SaveManager>();
 		speedrunTimer = FindObjectOfType<SpeedrunTimer>();
 		hardLockCamera.SetActive(true);
 		AudioListener.volume = 0;
@@ -121,7 +119,7 @@ public class TransitionManager : SavedObject {
 
 	public void StraightLoad(string scenePath) {
 		transition.Clear();
-		saveManager.TransitionPrep();
+		SaveManager.TransitionPrep();
 		SceneManager.LoadScene(scenePath);
 	}
 
@@ -136,9 +134,11 @@ public class TransitionManager : SavedObject {
 		FadeToBlack();
 		yield return new WaitForSecondsRealtime(FADE_TIME);
 
-		saveManager.TransitionPrep();
+		SaveManager.TransitionPrep();
+		SaveManager.Save();
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
 		asyncLoad.allowSceneActivation = false; 
+
 		
         // wait until the last operation fully loads to return anything
         while (!asyncLoad.isDone) {

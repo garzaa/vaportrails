@@ -36,6 +36,6 @@ public class PlayerDeath : MonoBehaviour {
 			playerAnimator.GetComponent<HP>().FullHeal();
 			return;
 		}
-		FindObjectOfType<SaveManager>().Load();
+		SaveManager.Load();
 	}
 }

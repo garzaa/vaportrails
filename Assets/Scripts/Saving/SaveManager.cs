@@ -1,9 +1,10 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class SaveManager : MonoBehaviour {
-	[SerializeField] SaveContainer saveContainer;
+	Save save = new();
 
 	// this one is persisted automatically and used by every save
 	// e.g. for things like achievements or other global settings
@@ -15,7 +16,21 @@ public class SaveManager : MonoBehaviour {
 	readonly JsonSaver jsonSaver = new JsonSaver();
 	int slot = 1;
 
+	static SaveManager instance;
+
 	void Awake() {
+		if (instance != null) {
+			Destroy(gameObject);
+			return;
+		}
+
+		instance = this;
+		transform.parent = null;
+		DontDestroyOnLoad(gameObject);
+		SceneManager.sceneLoaded += OnLevelLoad;
+	}
+
+	void OnLevelLoad(Scene scene, LoadSceneMode mode) {
 		transitionManager = GameObject.FindObjectOfType<TransitionManager>();
 		// load a slot zero save if it exists
 		if (jsonSaver.HasFile(eternalNum)) {
@@ -26,11 +41,11 @@ public class SaveManager : MonoBehaviour {
 		}
 	}
 
-	public Save GetSaveFor(SavedObject o) {
+	public static Save GetSaveFor(SavedObject o) {
 		if (o.useEternalSave) {
-			return eternalSave;
+			return instance.eternalSave;
 		} else {
-			return saveContainer.save;
+			return instance.save;
 		}
 	}
 
@@ -44,54 +59,57 @@ public class SaveManager : MonoBehaviour {
 	}
 #endif
 
-	public void Save() {
+	public static void Save() {
 		foreach (SavedObject o in FindObjectsOfType<SavedObject>(includeInactive: true)) {
+			Debug.Log("saving "+o.name);
 			o.SyncToRuntime();
 		}
+		// TODO: eternal saves work? not normal ones?????
 		WriteEternalSave();
 		FindObjectOfType<MapFog>()?.Save();
-		saveContainer.save.version = Application.version;
-		jsonSaver.SaveFile(saveContainer.save, slot);
-		FindObjectOfType<TimeSinceSave>().OnSave();
+		instance.save.version = Application.version;
+		instance.jsonSaver.SaveFile(instance.save, instance.slot);
+		FindObjectOfType<TimeSinceSave>()?.OnSave();
+		Debug.Log("game saved");
 	}
 
-	public void Load() {
+	public static void Load() {
 		WriteEternalSave();
-		StartCoroutine(FadeAndLoad());
+		instance.StartCoroutine(FadeAndLoad());
 	}
 
-	IEnumerator FadeAndLoad() {
-		transitionManager.FadeToBlack();
+	static IEnumerator FadeAndLoad() {
+		instance.transitionManager.FadeToBlack();
 		yield return new WaitForSeconds(0.5f);
-		saveContainer.SetSave(jsonSaver.LoadFile(slot));
+		instance.save = instance.jsonSaver.LoadFile(instance.slot);
 		foreach (SavedObject o in FindObjectsOfType<SavedObject>(includeInactive: true)) {
 			// when loading something like playerposition, if it's enabled don't jerk camera around
 			o.AfterDiskLoad();
 		}
-		transitionManager.LoadLastSavedScene();
+		instance.transitionManager.LoadLastSavedScene();
 	}
 
 	public string GetSaveFolderPath() {
         return jsonSaver.GetFolderPath(slot);
     }
 
-	public void WipeSave() {
-		saveContainer.save.Wipe();
+	public static void WipeSave() {
+		instance.save.Wipe();
 	}
 
-	public void WriteEternalSave() {
+	public static void WriteEternalSave() {
 		foreach (SavedObject o in FindObjectsOfType<SavedObject>(includeInactive: true)) {
 			if (o.useEternalSave) o.SyncToRuntime();
 		}
-		eternalSave.version = Application.version;
-		jsonSaver.SaveFile(eternalSave, eternalNum);
+		instance.eternalSave.version = Application.version;
+		instance.jsonSaver.SaveFile(instance.eternalSave, eternalNum);
 	}
 
 	public void OnApplicationQuit() {
 		WriteEternalSave();
 	}
 
-	public void TransitionPrep() {
+	public static void TransitionPrep() {
 		foreach (SavedObject o in FindObjectsOfType<SavedObject>(includeInactive: true)) {
 			o.SyncToRuntime();
 		}

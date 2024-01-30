@@ -11,6 +11,7 @@ public class GameFlags : SavedObject {
 	}
 
 	protected override void SaveToProperties(ref Dictionary<string, object> properties) {
+		Debug.Log("gameflags saving to properties with flags count: "+flags.Count);
 		properties[nameof(flags)] = flags;
 	}
 
