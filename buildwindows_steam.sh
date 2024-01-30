@@ -10,7 +10,7 @@ echo "building project"
 "C:\Program Files\Unity\Hub\Editor\2021.3.15f1\Editor\Unity.exe" \
     -quit \
     -batchmode \
-    -executeMethod ProjectBuilder.BuildWindows
+    -executeMethod ProjectBuilder.BuildWindowsSteam
 echo "done"
 
 echo "copying outputs to steam build directory"

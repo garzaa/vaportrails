@@ -5,15 +5,9 @@ using System.Collections.Generic;
 public class Inventory : SavedObject {
 	Dictionary<string, int> items = new Dictionary<string, int>();
 
-	bool onPlayer = false;
-	ItemChangeListener[] itemChangeListeners;
+	ItemChangeListener[] itemChangeListeners = null;
 
 	Dictionary<string, Item> itemCache = new Dictionary<string, Item>();
-
-	protected override void Initialize() {
-		onPlayer = GetComponentInParent<PlayerInput>()?.isHuman ?? false;
-		itemChangeListeners = FindObjectsOfType<ItemChangeListener>(includeInactive: true);
-	}
 
 	protected override void LoadFromProperties() {
 		items = Get<Dictionary<string, int>>("items");
@@ -58,10 +52,12 @@ public class Inventory : SavedObject {
 			item.OnPickup(this, true);
 		}
 		CheckItemChangeListeners();
+		Debug.Log("added items quietly");
 	}
 
 	void CheckItemChangeListeners() {
-		if (onPlayer) {
+		if (GetComponentInParent<PlayerInput>()?.isHuman ?? false) {
+			if (itemChangeListeners == null) itemChangeListeners = FindObjectsOfType<ItemChangeListener>(includeInactive: true);
 			for (int i=0; i<itemChangeListeners.Length; i++) {
 				itemChangeListeners[i].OnItemAdd();
 			}
@@ -80,7 +76,7 @@ public class Inventory : SavedObject {
 			}
 		}
 
-		if (onPlayer) {
+		if (GetComponentInParent<PlayerInput>()?.isHuman ?? false) {
 			for (int i=0; i<itemChangeListeners.Length; i++) {
 				itemChangeListeners[i].OnItemRemove();
 			}

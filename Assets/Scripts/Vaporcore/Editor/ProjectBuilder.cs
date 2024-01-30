@@ -24,8 +24,25 @@ public class ProjectBuilder {
         Build(BuildTarget.StandaloneWindows64, "win-exe", extension: ".exe");
     }
 
-    static void Build(BuildTarget target, string folderSuffix, string extension="") {
+    public static void BuildWindowsSteam() {
+        enabledScenes = GetEnabledScenes();
+        Build(BuildTarget.StandaloneWindows64, "win-exe", extension: ".exe", steamBuild: true);
+    }
+
+    static void Build(BuildTarget target, string folderSuffix, string extension="", bool steamBuild=false) {
         Console.WriteLine($"Starting build for {folderSuffix}");
+
+		BuildPlayerOptions buildOptions = new() {
+			scenes = enabledScenes.Select(x => x.ToString()).ToArray(),
+			locationPathName = BuildFolder(folderSuffix.ToString(), extension),
+			target = target
+		};
+
+		if (steamBuild) {
+            buildOptions.extraScriptingDefines = new string[] {"STEAM"};
+        }
+
+
         BuildReport report = BuildPipeline.BuildPlayer(enabledScenes, BuildFolder(folderSuffix.ToString(), extension), target, BuildOptions.None);
         if (report.summary.result.Equals(BuildResult.Succeeded)) {
             Console.WriteLine($"Finished! Build for {folderSuffix} succeeded with size {report.summary.totalSize}");

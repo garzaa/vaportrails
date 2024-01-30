@@ -9,11 +9,20 @@ public class GameCheckpointLoader : SavedObject {
 	public bool loadInBuild = false;
 
 	protected override void LoadFromProperties() {
-		loadedBefore = Get<bool>(nameof(loadedBefore));
+		// this needs to force a load because otherwise if there are no properties
+		// it won't be called
+		// but it needs to know there are no properties in order to load
+		// not just initialize if there's nothing
+		try {
+			loadedBefore = Get<bool>(nameof(loadedBefore));
+		} catch (KeyNotFoundException) {
+			loadedBefore = false;
+		}
+		Start();
 	}
 
 	void Start() {
-		// for things like going to the training gym
+		Debug.Log(this.name + " loaded before: " +loadedBefore);
 		if (!loadInBuild && !Application.isEditor) return;
 		if (!loadedBefore) {
 			// then add everything
@@ -35,6 +44,10 @@ public class GameCheckpointLoader : SavedObject {
 	// which is why we override it here
 	public override string GetObjectPath() {
 		return $"global/{GetType().Name}";
+	}
+
+	protected override bool ForceLoadIfNoProperties() {
+		return true;
 	}
 }
 #endif

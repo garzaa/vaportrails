@@ -16,7 +16,7 @@ public class Achievement : ScriptableObject {
 
 	public void Get() {
 #if (STEAM || UNITY_EDITOR)
-		Debug.Log("got Steam achievement");
+		Debug.Log("getting cheevo "+name);
 		var ach = new Steamworks.Data.Achievement(name);
 		ach.Trigger();
 #endif

@@ -4,11 +4,7 @@ using System.Collections.Generic;
 
 public class GameFlags : SavedObject {
 	HashSet<string> flags = new HashSet<string>();
-	GameFlagChangeListener[] changeListeners;
-
-	protected override void Initialize() {
-		changeListeners = FindObjectsOfType<GameFlagChangeListener>(includeInactive: true);
-	}
+	GameFlagChangeListener[] changeListeners = null;
 
 	protected override void LoadFromProperties() {
 		flags = GetHashSet<string>(nameof(flags));
@@ -35,6 +31,7 @@ public class GameFlags : SavedObject {
 	}
 
 	void CheckFlagChangeListeners() {
+		if (changeListeners == null) changeListeners = FindObjectsOfType<GameFlagChangeListener>(includeInactive: true);
 		for (int i=0; i<changeListeners.Length; i++) {
 			changeListeners[i].CheckEnabled();
 		}

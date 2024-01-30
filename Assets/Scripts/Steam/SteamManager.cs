@@ -2,6 +2,10 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 #if (STEAM || UNITY_EDITOR)
 using Steamworks;
 #endif
@@ -14,8 +18,6 @@ public class SteamManager : MonoBehaviour {
 
 	// only compile all this bull crap if it's a steam build!
 	// https://forum.unity.com/threads/change-scripting-define-symbols-and-build-the-player-with-a-single-button-press.1364115/
-	// but also include a separate PLAYER_STEAM flag? STEAM_BUILD || PLAYER_STEAM
-	// https://stackoverflow.com/questions/27519104/several-custom-configuration-in-if-directive
 
 #if (STEAM || UNITY_EDITOR)
 	void Awake() {
@@ -34,10 +36,26 @@ public class SteamManager : MonoBehaviour {
 		transform.parent = null;
 		DontDestroyOnLoad(this.gameObject);
 		instance = this;
+
+		#if UNITY_EDITOR
+		EditorApplication.playModeStateChanged += TerminateClient;
+		#endif
 	}
 
-	void OnDestroy() {
-		SteamClient.Shutdown();
+	// do this on application quit, ondestroy shuts it down between scenes and it's not restarted
+	void TerminateClient(PlayModeStateChange stateChange) {
+		if (stateChange == PlayModeStateChange.ExitingPlayMode) {
+			SteamClient.Shutdown();
+		}
+	}
+
+	[ContextMenu("Reset Achievements")]
+	public void ResetAchievements() {
+		Achievement[] achievements = Resources.LoadAll<Achievement>("Runtime/Achievements");
+		foreach (Achievement a in achievements) {
+			var ach = new Steamworks.Data.Achievement(a.name);
+			ach.Clear();
+		}
 	}
 #endif
 }

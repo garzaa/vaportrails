@@ -21,8 +21,9 @@ public abstract class SavedObject : MonoBehaviour {
 	Save save;
 
 	public void StartUp() {
+		Debug.Log(this.name+" starting");
 		Initialize();
-		if (HasSavedData) LoadFromProperties();
+		if (HasSavedData || ForceLoadIfNoProperties()) LoadFromProperties();
 	}
 
 	void Load() {
@@ -58,6 +59,9 @@ public abstract class SavedObject : MonoBehaviour {
 	protected virtual void Initialize() {}
 	protected abstract void LoadFromProperties();
 	protected abstract void SaveToProperties(ref Dictionary<string, object> properties);
+	protected virtual bool ForceLoadIfNoProperties() {
+		return false;
+	}
 
 	public virtual string GetObjectPath() {
 		if (useGlobalNamespace) return $"global/{name}/{GetType().Name}";
