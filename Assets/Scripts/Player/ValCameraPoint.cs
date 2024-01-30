@@ -35,10 +35,6 @@ public class ValCameraPoint : MonoBehaviour {
 		targetPos *= cameraRange;
 		targetPos *= GameOptions.Lookahead;
 
-		if (groundData.grounded && groundData.platforms.Count==0) {
-			targetPos += Vector2.up * groundOffset * GameOptions.Lookahead;
-		}
-
 		transform.localPosition = Vector2.SmoothDamp(
 			transform.localPosition,
 			targetPos,

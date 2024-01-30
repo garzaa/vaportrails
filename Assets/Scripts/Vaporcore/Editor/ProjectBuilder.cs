@@ -33,7 +33,7 @@ public class ProjectBuilder {
         Console.WriteLine($"Starting build for {folderSuffix}");
 
 		BuildPlayerOptions buildOptions = new() {
-			scenes = enabledScenes.Select(x => x.ToString()).ToArray(),
+			scenes = enabledScenes.Select(x => x.path).ToArray(),
 			locationPathName = BuildFolder(folderSuffix.ToString(), extension),
 			target = target
 		};
@@ -42,8 +42,8 @@ public class ProjectBuilder {
             buildOptions.extraScriptingDefines = new string[] {"STEAM"};
         }
 
-
-        BuildReport report = BuildPipeline.BuildPlayer(enabledScenes, BuildFolder(folderSuffix.ToString(), extension), target, BuildOptions.None);
+        // TODO: actually build with the build options lol
+        BuildReport report = BuildPipeline.BuildPlayer(buildOptions);
         if (report.summary.result.Equals(BuildResult.Succeeded)) {
             Console.WriteLine($"Finished! Build for {folderSuffix} succeeded with size {report.summary.totalSize}");
         } else {

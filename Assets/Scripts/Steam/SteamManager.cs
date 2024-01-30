@@ -43,11 +43,13 @@ public class SteamManager : MonoBehaviour {
 	}
 
 	// do this on application quit, ondestroy shuts it down between scenes and it's not restarted
+	#if UNITY_EDITOR
 	void TerminateClient(PlayModeStateChange stateChange) {
 		if (stateChange == PlayModeStateChange.ExitingPlayMode) {
 			SteamClient.Shutdown();
 		}
 	}
+	#endif
 
 	[ContextMenu("Reset Achievements")]
 	public void ResetAchievements() {
