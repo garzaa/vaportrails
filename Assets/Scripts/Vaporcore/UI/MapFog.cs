@@ -39,7 +39,7 @@ public class MapFog : MonoBehaviour {
         #if STEAM || EDITOR_STEAM
             if (Steamworks.SteamRemoteStorage.FileExists(SavedImageName())) {
                 fog.LoadImage(Steamworks.SteamRemoteStorage.FileRead(SavedImageName()));
-                Debug.Log("loaded fog at path  "+SavedImageName());
+                // Debug.Log("loaded fog at path  "+SavedImageName());
             }
         #else
             if (File.Exists(SavedImageName())) {
@@ -67,7 +67,7 @@ public class MapFog : MonoBehaviour {
         # else
             imagePath = Path.Combine(
                 saveManager.GetSaveFolderPath(),
-                // SceneManager.GetActiveScene().name+" Map Fog.png"
+                SceneManager.GetActiveScene().name+" Map Fog.png"
             );
         #endif
         return imagePath;

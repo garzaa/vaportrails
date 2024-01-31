@@ -62871,6 +62871,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   flag: {fileID: 11400000, guid: c87e0d8cad1950840ab4a97a4ad27e21, type: 2}
   disableOnFlag: 1
+  waitUntilNextLoad: 0
 --- !u!1 &300494310
 GameObject:
   m_ObjectHideFlags: 0
@@ -65306,7 +65307,6 @@ MonoBehaviour:
   conversations:
   - lines:
     - character: {fileID: 11400000, guid: 3eb2a7bd2a03aa240b5bebb9052c61f3, type: 2}
-      speakerName: 
       portrait: {fileID: 2205341023899919556, guid: 9896afc543eb01a41843eab6610ba298, type: 3}
       text: What, you want a hand-written invitation? The door's open.
       callback:
@@ -65327,6 +65327,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   flag: {fileID: 11400000, guid: a00990dd6c6700347b21f934403f8e31, type: 2}
   disableOnFlag: 0
+  waitUntilNextLoad: 0
 --- !u!1 &756093454
 GameObject:
   m_ObjectHideFlags: 0
@@ -65373,6 +65374,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   beacon: {fileID: 11400000, guid: 30211a7baabc3cd40996ba79749bba18, type: 2}
   faceRight: 1
+  OnLoad:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1001 &768835074
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -65497,7 +65501,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 828422679}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -8.854698, y: -5.757919, z: 0}
+  m_LocalPosition: {x: -8.528707, y: -5.861968, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -66411,11 +66415,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4160817345173324201, guid: df318d9009829a34781aaa920593e61d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 88.546974
+      value: 85.287155
       objectReference: {fileID: 0}
     - target: {fileID: 4160817345173324201, guid: df318d9009829a34781aaa920593e61d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 57.5792
+      value: 58.61974
       objectReference: {fileID: 0}
     - target: {fileID: 4164111644338651459, guid: df318d9009829a34781aaa920593e61d, type: 3}
       propertyPath: m_AnchorMax.y
@@ -67249,6 +67253,26 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7717891177603729874, guid: df318d9009829a34781aaa920593e61d, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7717891177603729874, guid: df318d9009829a34781aaa920593e61d, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7717891177603729874, guid: df318d9009829a34781aaa920593e61d, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7717891177603729874, guid: df318d9009829a34781aaa920593e61d, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7717891177603729874, guid: df318d9009829a34781aaa920593e61d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7757745885526597014, guid: df318d9009829a34781aaa920593e61d, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -67387,11 +67411,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7770972733150071081, guid: df318d9009829a34781aaa920593e61d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 88.546974
+      value: 85.287155
       objectReference: {fileID: 0}
     - target: {fileID: 7770972733150071081, guid: df318d9009829a34781aaa920593e61d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 57.5792
+      value: 58.61974
       objectReference: {fileID: 0}
     - target: {fileID: 7770972733150071081, guid: df318d9009829a34781aaa920593e61d, type: 3}
       propertyPath: m_LocalPosition.z
@@ -67615,11 +67639,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7770972734024709621, guid: df318d9009829a34781aaa920593e61d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 88.546974
+      value: 85.287155
       objectReference: {fileID: 0}
     - target: {fileID: 7770972734024709621, guid: df318d9009829a34781aaa920593e61d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 57.5792
+      value: 58.61974
       objectReference: {fileID: 0}
     - target: {fileID: 7770972734033973496, guid: df318d9009829a34781aaa920593e61d, type: 3}
       propertyPath: m_SizeDelta.y
@@ -68227,7 +68251,6 @@ MonoBehaviour:
   conversations:
   - lines:
     - character: {fileID: 11400000, guid: 3eb2a7bd2a03aa240b5bebb9052c61f3, type: 2}
-      speakerName: 
       portrait: {fileID: -295535910940424785, guid: 9896afc543eb01a41843eab6610ba298, type: 3}
       text: Come back when you've got cigarettes. I know there are bound to be some
         out there.
@@ -68482,7 +68505,6 @@ MonoBehaviour:
   conversations:
   - lines:
     - character: {fileID: 11400000, guid: 3eb2a7bd2a03aa240b5bebb9052c61f3, type: 2}
-      speakerName: 
       portrait: {fileID: -2552535232168721151, guid: 9896afc543eb01a41843eab6610ba298, type: 3}
       text: 'You again? Come back when you''ve...hey, you actually have some. '
       callback:
@@ -68490,7 +68512,6 @@ MonoBehaviour:
           m_Calls: []
       eventOnLineEnd: 0
     - character: {fileID: 11400000, guid: 3eb2a7bd2a03aa240b5bebb9052c61f3, type: 2}
-      speakerName: 
       portrait: {fileID: -1712159474029579437, guid: 9896afc543eb01a41843eab6610ba298, type: 3}
       text: Alright, come on through, I guess. Talk to Lester when you get into town.
       callback:
@@ -68685,6 +68706,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1259497833}
   - component: {fileID: 1259497835}
+  - component: {fileID: 1259497836}
   m_Layer: 0
   m_Name: HasCigs
   m_TagString: Untagged
@@ -68724,7 +68746,6 @@ MonoBehaviour:
   conversations:
   - lines:
     - character: {fileID: 11400000, guid: 96b8ad4aa65cebf42a602ceabc639889, type: 2}
-      speakerName: 
       portrait: {fileID: 1555193604, guid: 1171058749ee757438b4f70244064702, type: 3}
       text: I have some "Paradise Lights" here, if your husband likes those.
       callback:
@@ -68744,15 +68765,14 @@ MonoBehaviour:
             m_CallState: 2
       eventOnLineEnd: 0
     - character: {fileID: 11400000, guid: 3eb2a7bd2a03aa240b5bebb9052c61f3, type: 2}
-      speakerName: 
       portrait: {fileID: 831340633516812952, guid: 9896afc543eb01a41843eab6610ba298, type: 3}
       text: ...
       callback:
         m_PersistentCalls:
           m_Calls:
-          - m_Target: {fileID: 11400000, guid: 6047f8ca8b82a0e49bf8a8415d4b9ccd, type: 2}
-            m_TargetAssemblyTypeName: Achievement, Assembly-CSharp
-            m_MethodName: Get
+          - m_Target: {fileID: 1259497836}
+            m_TargetAssemblyTypeName: DelayedEvent, Assembly-CSharp
+            m_MethodName: Raise
             m_Mode: 1
             m_Arguments:
               m_ObjectArgument: {fileID: 0}
@@ -68764,7 +68784,6 @@ MonoBehaviour:
             m_CallState: 2
       eventOnLineEnd: 0
     - character: {fileID: 11400000, guid: 3eb2a7bd2a03aa240b5bebb9052c61f3, type: 2}
-      speakerName: 
       portrait: {fileID: -1712159474029579437, guid: 9896afc543eb01a41843eab6610ba298, type: 3}
       text: Well, come on through, I guess. Talk to Lester when you get into town.
       callback:
@@ -68819,6 +68838,36 @@ MonoBehaviour:
               m_BoolArgument: 0
             m_CallState: 2
       eventOnLineEnd: 0
+--- !u!114 &1259497836
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1259497832}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6add09ed7a4c7e2488abb6e63d1a60e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  realTime: 0
+  events:
+  - delay: 1
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 11400000, guid: 6047f8ca8b82a0e49bf8a8415d4b9ccd, type: 2}
+          m_TargetAssemblyTypeName: Achievement, Assembly-CSharp
+          m_MethodName: Get
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &1282826678
 GameObject:
   m_ObjectHideFlags: 0
@@ -68886,7 +68935,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1282826678}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8.854698, y: 5.757919, z: 0}
+  m_LocalPosition: {x: 8.528707, y: 5.861968, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -68949,7 +68998,6 @@ MonoBehaviour:
   conversations:
   - lines:
     - character: {fileID: 11400000, guid: 50ffa9503c478874999ed52157f298c4, type: 2}
-      speakerName: 
       portrait: {fileID: 21300000, guid: 2fea12cd83e18a9458ea77ac03d50e79, type: 3}
       text: There's actually a giant beast that hoards all the cigarettes so it can
         smoke them. Hell of a thing.
@@ -68970,7 +69018,6 @@ MonoBehaviour:
             m_CallState: 2
       eventOnLineEnd: 0
     - character: {fileID: 11400000, guid: 96b8ad4aa65cebf42a602ceabc639889, type: 2}
-      speakerName: 
       portrait: {fileID: -1502980541, guid: 1171058749ee757438b4f70244064702, type: 3}
       text: What?
       callback:
@@ -68990,7 +69037,6 @@ MonoBehaviour:
             m_CallState: 2
       eventOnLineEnd: 1
     - character: {fileID: 11400000, guid: 3eb2a7bd2a03aa240b5bebb9052c61f3, type: 2}
-      speakerName: 
       portrait: {fileID: -2552535232168721151, guid: 9896afc543eb01a41843eab6610ba298, type: 3}
       text: Did I stutter? Go find us some cigarettes.
       callback:
@@ -69088,7 +69134,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1310888648}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 26.564093, y: 17.273766, z: 0}
+  m_LocalPosition: {x: 25.5862, y: 17.585957, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -69146,6 +69192,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   beacon: {fileID: 11400000, guid: 9b67d63773cf4ba4eb3c0d7e8a710907, type: 2}
   faceRight: 1
+  OnLoad:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!61 &1331379544
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -69400,6 +69449,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   beacon: {fileID: 11400000, guid: 0d6b595efcc813940bf06cc960e204af, type: 2}
   faceRight: 1
+  OnLoad:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!4 &1376394508
 Transform:
   m_ObjectHideFlags: 0
@@ -69620,7 +69672,6 @@ MonoBehaviour:
   conversations:
   - lines:
     - character: {fileID: 11400000, guid: 3eb2a7bd2a03aa240b5bebb9052c61f3, type: 2}
-      speakerName: 
       portrait: {fileID: -2552535232168721151, guid: 9896afc543eb01a41843eab6610ba298, type: 3}
       text: That was your warning. Run up again and you get another AP bolt in the
         head this time. You understand me?
@@ -69629,7 +69680,6 @@ MonoBehaviour:
           m_Calls: []
       eventOnLineEnd: 0
     - character: {fileID: 11400000, guid: 96b8ad4aa65cebf42a602ceabc639889, type: 2}
-      speakerName: 
       portrait: {fileID: 1555193604, guid: 1171058749ee757438b4f70244064702, type: 3}
       text: I understand.
       callback:
@@ -69649,7 +69699,6 @@ MonoBehaviour:
             m_CallState: 2
       eventOnLineEnd: 0
     - character: {fileID: 11400000, guid: 3eb2a7bd2a03aa240b5bebb9052c61f3, type: 2}
-      speakerName: 
       portrait: {fileID: -1712159474029579437, guid: 9896afc543eb01a41843eab6610ba298, type: 3}
       text: Huh, it talks.
       callback:
@@ -69657,7 +69706,6 @@ MonoBehaviour:
           m_Calls: []
       eventOnLineEnd: 0
     - character: {fileID: 11400000, guid: 3eb2a7bd2a03aa240b5bebb9052c61f3, type: 2}
-      speakerName: 
       portrait: {fileID: -295535910940424785, guid: 9896afc543eb01a41843eab6610ba298, type: 3}
       text: What's a prismatic doing down here? Are you some kind of Valentine model?
       callback:
@@ -69665,7 +69713,6 @@ MonoBehaviour:
           m_Calls: []
       eventOnLineEnd: 0
     - character: {fileID: 11400000, guid: 96b8ad4aa65cebf42a602ceabc639889, type: 2}
-      speakerName: 
       portrait: {fileID: 1555193604, guid: 1171058749ee757438b4f70244064702, type: 3}
       text: I'm trying to get to the surface. A sludge smoking a cigarette said the
         only way was through Deep Town.
@@ -69674,7 +69721,6 @@ MonoBehaviour:
           m_Calls: []
       eventOnLineEnd: 0
     - character: {fileID: 11400000, guid: 3eb2a7bd2a03aa240b5bebb9052c61f3, type: 2}
-      speakerName: 
       portrait: {fileID: 2205341023899919556, guid: 9896afc543eb01a41843eab6610ba298, type: 3}
       text: I knew they didn't select Valentine models for brains, but wow. You must
         have caught a falling stalactite on the way from whatever pit you crawled
@@ -69696,7 +69742,6 @@ MonoBehaviour:
             m_CallState: 2
       eventOnLineEnd: 0
     - character: {fileID: 11400000, guid: 3eb2a7bd2a03aa240b5bebb9052c61f3, type: 2}
-      speakerName: 
       portrait: {fileID: -295535910940424785, guid: 9896afc543eb01a41843eab6610ba298, type: 3}
       text: Hmm, well, tell you what.
       callback:
@@ -69728,7 +69773,6 @@ MonoBehaviour:
             m_CallState: 2
       eventOnLineEnd: 1
     - character: {fileID: 11400000, guid: 3eb2a7bd2a03aa240b5bebb9052c61f3, type: 2}
-      speakerName: 
       portrait: {fileID: -295535910940424785, guid: 9896afc543eb01a41843eab6610ba298, type: 3}
       text: You find us a packet of cigarettes and I'll let you in. My husband goes
         through them like crazy when he's doing repairs, which is all the time these
@@ -73131,7 +73175,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1591153038}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 88.546974, y: 57.5792, z: 0}
+  m_LocalPosition: {x: 85.287155, y: 58.61974, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -73324,6 +73368,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   beacon: {fileID: 11400000, guid: 80a6d4065dbab8a48a3f6e770ed7f54b, type: 2}
   faceRight: 0
+  OnLoad:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!4 &1688951407
 Transform:
   m_ObjectHideFlags: 0
