@@ -28,6 +28,7 @@ public class ValCombatController : CombatController, IHitListener {
 	[SerializeField] AudioResource emptyChargeSound;
 	[SerializeField] GameObject parrySuccessEffect;
 	[SerializeField] GameObject autoParryArm;
+	[SerializeField] Animator energyBarAnimator;
 	#pragma warning restore 0649
 
 	const string fullMessage = "FULLY CHARGED";
@@ -238,6 +239,8 @@ public class ValCombatController : CombatController, IHitListener {
 			chargeIndicator.GetComponentInChildren<Text>().text = fullMessage;
 			chargeIndicator.SetActive(true);
 			fullChargeSound.PlayFrom(gameObject);
+		} else if (currentEP.Get() != maxEP.Get()) {
+			energyBarAnimator.SetTrigger("GetEnergy");
 		}
 	}
 
@@ -262,7 +265,7 @@ public class ValCombatController : CombatController, IHitListener {
 		) {
 			// dash should take priority over everything else
 			// then orca flip only if there's a sizeable up input
-			if (input.VerticalInput() > 0.5) {
+			if (input.VerticalInput() > 0.5 && (!input.ButtonDown(RewiredConsts.Action.Dash) || input.HorizontalInput() < 0.5)) {
 				FlipKick();
 			}
 

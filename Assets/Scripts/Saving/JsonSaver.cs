@@ -5,33 +5,56 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
+using System.Text;
+
+#if (STEAM || UNITY_EDITOR)
+using Steamworks;
+#endif
 
 public class JsonSaver {
     const string folder = "saves";
     const string extension = ".json";
 
     public void SaveFile(Save save, int slot) {
-        using (StreamWriter jsonWriter = new StreamWriter(GetSavePath(slot), append: false)) {
-            jsonWriter.Write(JsonConvert.SerializeObject(save, Formatting.Indented));
-        }
-    }
+        string saveString = JsonConvert.SerializeObject(save, Formatting.Indented);
+        string filePath = GetSavePath(slot);
+        #if (STEAM || UNITY_EDITOR)
+            // Debug.Log("Writing remote Steam file at path "+filePath);
+            Steamworks.SteamRemoteStorage.FileWrite(filePath, Encoding.UTF8.GetBytes(saveString));
+        #else
+            using StreamWriter jsonWriter = new StreamWriter(filePath, append: false);
+		    jsonWriter.Write(saveString);
+        #endif
+
+	}
 
     public Save LoadFile(int slot) {
-        Save save;
-        using (StreamReader r = new StreamReader(GetSavePath(slot))) {
-            string fileJson = r.ReadToEnd();
-            save = JsonConvert.DeserializeObject<Save>(fileJson);
-        }
-        return save;
+        string filePath = GetSavePath(slot);
+        string fileJson;
+        #if STEAM || UNITY_EDITOR
+            fileJson = Encoding.UTF8.GetString(Steamworks.SteamRemoteStorage.FileRead(filePath));
+            // Debug.Log("Read Steam cloud save at "+filePath);
+        #else
+            using (StreamReader r = new StreamReader(filePath) {
+                fileJson = r.ReadToEnd();
+            }
+        #endif
+        return JsonConvert.DeserializeObject<Save>(fileJson);
     }
 
     public bool HasFile(int slot) {
-        if (!File.Exists(GetSavePath(slot))) return false;
-        try {
-            if (!CompatibleVersions(slot)) {
+        string filePath = GetSavePath(slot);
+        #if STEAM || UNITY_EDITOR
+            if (!Steamworks.SteamRemoteStorage.FileExists(filePath)) {
+                // Debug.Log("No remote Steam file at path "+filePath);
                 return false;
             }
-            return true;
+        # else
+            if (!File.Exists(filePath)) return false;
+        # endif
+
+        try {
+            return CompatibleVersions(slot);
         } catch (Exception) {
             return false;
         }
@@ -42,18 +65,19 @@ public class JsonSaver {
     }
 
     public string GetFolderPath(int slot) {
-        string folderPath = Path.Combine(Application.persistentDataPath, folder, slot.ToString());
-        Directory.CreateDirectory(folderPath);
+        string folderPath;
+
+        #if STEAM || UNITY_EDITOR
+            folderPath = "";
+        # else
+            folderPath = Path.Combine(Application.persistentDataPath, folder, slot.ToString());
+            Directory.CreateDirectory(folderPath);
+        # endif 
         return folderPath;
     }
 
     public bool CompatibleVersions(int saveSlot) {
-        string version;
-
-        using (StreamReader r = new StreamReader(GetSavePath(saveSlot))) {
-            string fileJson = r.ReadToEnd();
-            version = JObject.Parse(fileJson)["version"].ToString();
-        }
+        string version = LoadFile(saveSlot).version;
 
         string[] saveVersion = version.Split('.');
         string[] currentVersion = Application.version.Split('.');

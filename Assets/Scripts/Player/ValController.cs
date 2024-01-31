@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public class ValController : EntityController {
 	[SerializeField] SpriteRenderer heldItem;
+	[SerializeField] Animator healthBarAnimator;
 
 	protected override void UpdateAnimator() {
 		base.UpdateAnimator();
@@ -55,5 +56,6 @@ public class ValController : EntityController {
 			animator.Play("ValDie");
 			FindObjectOfType<PlayerDeath>().Run(hitbox);
 		}
+		healthBarAnimator.SetTrigger("OnHit");
     }
 }

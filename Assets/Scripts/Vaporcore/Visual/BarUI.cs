@@ -5,10 +5,10 @@ using UnityEngine.UI;
 using Sirenix.OdinInspector;
 
 public class BarUI : MonoBehaviour {
-    public Image indicator;
-    public Image container;
-    public Image background;
-    public Image deltaIndicator;
+    public RectTransform indicator;
+    public RectTransform container;
+    public RectTransform background;
+    public RectTransform deltaIndicator;
     public float pixelsPerUnit;
 	public bool normalizeSize = false;
 	[ShowIf(nameof(normalizeSize))]
@@ -44,12 +44,13 @@ public class BarUI : MonoBehaviour {
 
     void Redraw() {
 		if (normalizeSize && max > 0) {
-            // TODO: this doesn't work, it just gets long
             pixelsPerUnit = size / max;
         }
 
-        if (background) ScaleImage(background, max);
-        ScaleImage(container, max);
+        if (background != null) ScaleImage(background, max);
+        if (container != null) {
+            ScaleImage(container, max);
+        }
         ScaleImage(indicator, current);
 		if (disappearAfterDelta && current!=max) {
             canvasGroup.alpha = 1;
@@ -58,8 +59,8 @@ public class BarUI : MonoBehaviour {
         }
     }
 
-    void ScaleImage(Image i, float val, int mod=0) {
-        i.rectTransform.sizeDelta = new Vector2((val*pixelsPerUnit)+mod, i.rectTransform.sizeDelta.y);
+    void ScaleImage(RectTransform r, float val, int mod=0) {
+        r.sizeDelta = new Vector2((val*pixelsPerUnit)+mod, r.sizeDelta.y);
     }
 
 	public void SetCurrent(int value) {

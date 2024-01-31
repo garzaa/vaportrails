@@ -15831,10 +15831,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79e3f1b7a1cc513449091676df4d24eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  indicator: {fileID: 621301814209398723}
-  container: {fileID: 6235876645000803953}
-  background: {fileID: 4514861137187425781}
-  deltaIndicator: {fileID: 2523476427158461203}
+  indicator: {fileID: 886690623566624885}
+  container: {fileID: 5563224478027781488}
+  background: {fileID: 5931087270734767991}
+  deltaIndicator: {fileID: 2580553165898235015}
   pixelsPerUnit: 4
   normalizeSize: 0
   size: 64
@@ -16017,10 +16017,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79e3f1b7a1cc513449091676df4d24eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  indicator: {fileID: 0}
-  container: {fileID: 0}
-  background: {fileID: 0}
-  deltaIndicator: {fileID: 0}
+  indicator: {fileID: 886690623566624885}
+  container: {fileID: 5563224478027781488}
+  background: {fileID: 5931087270734767991}
+  deltaIndicator: {fileID: 2580553165898235015}
   pixelsPerUnit: 0
   normalizeSize: 0
   size: 64
@@ -21690,6 +21690,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   humanControl: 0
+  alwaysShowMouse: 0
 --- !u!114 &8009526084400392842
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21772,6 +21773,7 @@ MonoBehaviour:
   destroyOnDeath: 0
   overrideFootfall: 0
   rigFacingRight: 0
+  dieOnEnviroDamage: 0
   jumpNoise: {fileID: 11400000, guid: 8b27eba3fe91c8d4c9b28c89a0309a77, type: 2}
   faceRightOnStart: 0
   abilities: 0000000002000000
@@ -21905,6 +21907,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   logInputData: 0
   reactionTime: 0.25
+  frameOnPlay: 0
 --- !u!114 &8009526084400392854
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21956,6 +21959,7 @@ MonoBehaviour:
       m_Calls: []
   renderHealthbar: 0
   verticalOffset: 0.8
+  sendIntToAnimator: 0
 --- !u!82 &77225588573448661
 AudioSource:
   m_ObjectHideFlags: 0
@@ -22300,6 +22304,7 @@ MonoBehaviour:
       m_Calls: []
   useParentTargetingPosition: 0
   invisibleToTargeters: 0
+  takesEnvironmentDamage: 1
   hitmarkerOverride: {fileID: 0}
 --- !u!1 &8009526084485995336
 GameObject:

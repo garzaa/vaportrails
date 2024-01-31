@@ -38,6 +38,7 @@ public class HP : MonoBehaviour, IHitListener {
 		barUI.normalizeSize = true;
 		current.OnChange.AddListener(barUI.SetCurrent);
 		max.OnChange.AddListener(barUI.SetMax);
+		barUI.SetMax(max.Get());
 		barUI.GetComponent<RectTransform>().localPosition = Vector2.up * 0.64f;
 	}
 
