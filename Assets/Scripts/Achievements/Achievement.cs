@@ -15,7 +15,7 @@ public class Achievement : ScriptableObject {
 	public bool Secret => secret;
 
 	public void Get() {
-#if (STEAM || UNITY_EDITOR)
+#if (STEAM || EDITOR_STEAM)
 		var ach = new Steamworks.Data.Achievement(name);
 		ach.Trigger();
 #endif

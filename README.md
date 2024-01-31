@@ -16,3 +16,6 @@
     "dotnet.dotnetPath": "C:\\Program Files\\dotnet\\",
     "dotnet.server.useOmnisharp": true,
 ```
+
+## steam
+steam is controlled by the `EDITOR_STEAM` define symbol in local development, just turn it off if you aren't me

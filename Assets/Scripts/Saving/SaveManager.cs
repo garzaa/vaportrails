@@ -30,6 +30,10 @@ public class SaveManager : MonoBehaviour {
 		SceneManager.sceneLoaded += OnLevelLoad;
 	}
 
+	public int GetSlot() {
+		return slot;
+	}
+
 	void OnLevelLoad(Scene scene, LoadSceneMode mode) {
 		transitionManager = GameObject.FindObjectOfType<TransitionManager>();
 		// load a slot zero save if it exists

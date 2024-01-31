@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using UnityEditor;
 #endif
 
-#if (STEAM || UNITY_EDITOR)
+#if (STEAM || EDITOR_STEAM)
 using Steamworks;
 #endif
 
@@ -19,7 +19,7 @@ public class SteamManager : MonoBehaviour {
 	// only compile all this bull crap if it's a steam build!
 	// https://forum.unity.com/threads/change-scripting-define-symbols-and-build-the-player-with-a-single-button-press.1364115/
 
-#if (STEAM || UNITY_EDITOR)
+#if (STEAM || EDITOR_STEAM)
 	void Awake() {
 		if (instance != null) {
 			Destroy(this.gameObject);

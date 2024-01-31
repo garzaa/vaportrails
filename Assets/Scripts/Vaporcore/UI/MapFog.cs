@@ -36,22 +36,41 @@ public class MapFog : MonoBehaviour {
     }
 
     void LoadIfPossible() {
-        if (File.Exists(SavedImageName())) {
-           fog.LoadImage((byte[]) File.ReadAllBytes(SavedImageName()));
-        }
+        #if STEAM || EDITOR_STEAM
+            if (Steamworks.SteamRemoteStorage.FileExists(SavedImageName())) {
+                fog.LoadImage(Steamworks.SteamRemoteStorage.FileRead(SavedImageName()));
+                Debug.Log("loaded fog at path  "+SavedImageName());
+            }
+        #else
+            if (File.Exists(SavedImageName())) {
+                fog.LoadImage(File.ReadAllBytes(SavedImageName()));
+            }
+        #endif
     }
 
     public void Save() {
         // save a.png of [area name] map fog.png to the save directory
         byte[] imageBytes = fog.EncodeToPNG();
-        File.WriteAllBytes(SavedImageName(), imageBytes);
+        string filePath = SavedImageName();
+        #if STEAM || EDITOR_STEAM
+            Steamworks.SteamRemoteStorage.FileWrite(filePath, imageBytes);
+            // Debug.Log("saved fog at path  "+SavedImageName());
+        # else
+            File.WriteAllBytes(SavedImageName(), imageBytes);
+        #endif
     }
 
     string SavedImageName() {
-        return Path.Combine(
-            saveManager.GetSaveFolderPath(),
-            SceneManager.GetActiveScene().name+" Map Fog.png"
-        );
+        string imagePath;
+        #if STEAM || EDITOR_STEAM
+            imagePath = saveManager.GetSlot()+"_"+SceneManager.GetActiveScene().name+" Map Fog.png";
+        # else
+            imagePath = Path.Combine(
+                saveManager.GetSaveFolderPath(),
+                // SceneManager.GetActiveScene().name+" Map Fog.png"
+            );
+        #endif
+        return imagePath;
     }
 
     IEnumerator MapUpdateRoutine() {

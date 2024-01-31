@@ -7,10 +7,6 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 using System.Text;
 
-#if (STEAM || UNITY_EDITOR)
-using Steamworks;
-#endif
-
 public class JsonSaver {
     const string folder = "saves";
     const string extension = ".json";
@@ -18,7 +14,7 @@ public class JsonSaver {
     public void SaveFile(Save save, int slot) {
         string saveString = JsonConvert.SerializeObject(save, Formatting.Indented);
         string filePath = GetSavePath(slot);
-        #if (STEAM || UNITY_EDITOR)
+        #if (STEAM || EDITOR_STEAM)
             // Debug.Log("Writing remote Steam file at path "+filePath);
             Steamworks.SteamRemoteStorage.FileWrite(filePath, Encoding.UTF8.GetBytes(saveString));
         #else
@@ -31,7 +27,7 @@ public class JsonSaver {
     public Save LoadFile(int slot) {
         string filePath = GetSavePath(slot);
         string fileJson;
-        #if STEAM || UNITY_EDITOR
+        #if STEAM || EDITOR_STEAM
             fileJson = Encoding.UTF8.GetString(Steamworks.SteamRemoteStorage.FileRead(filePath));
             // Debug.Log("Read Steam cloud save at "+filePath);
         #else
@@ -44,7 +40,7 @@ public class JsonSaver {
 
     public bool HasFile(int slot) {
         string filePath = GetSavePath(slot);
-        #if STEAM || UNITY_EDITOR
+        #if STEAM || EDITOR_STEAM
             if (!Steamworks.SteamRemoteStorage.FileExists(filePath)) {
                 // Debug.Log("No remote Steam file at path "+filePath);
                 return false;
@@ -67,7 +63,7 @@ public class JsonSaver {
     public string GetFolderPath(int slot) {
         string folderPath;
 
-        #if STEAM || UNITY_EDITOR
+        #if STEAM || EDITOR_STEAM
             folderPath = "";
         # else
             folderPath = Path.Combine(Application.persistentDataPath, folder, slot.ToString());
