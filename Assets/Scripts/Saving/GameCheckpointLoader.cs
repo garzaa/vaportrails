@@ -20,7 +20,7 @@ public class GameCheckpointLoader : SavedObject {
 		}
 
 		if (!loadInBuild && !Application.isEditor) return;
-		if (!loadedBefore) {
+		if (!loadedBefore || loadInBuild) {
 			// then add everything
 			Inventory inventory = PlayerInput.GetPlayerOneInput().GetComponentInChildren<Inventory>();
 			inventory.AddItemsQuietly(checkpoint.GetItems());

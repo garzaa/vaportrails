@@ -38,7 +38,7 @@ public class JsonSaver {
             fileJson = Encoding.UTF8.GetString(Steamworks.SteamRemoteStorage.FileRead(filePath));
             // Debug.Log("Read Steam cloud save at "+filePath);
         #else
-            using (StreamReader r = new StreamReader(filePath) {
+            using (StreamReader r = new StreamReader(filePath)) {
                 fileJson = r.ReadToEnd();
             }
         #endif

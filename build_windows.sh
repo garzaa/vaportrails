@@ -1,6 +1,6 @@
 echo "removing old demo folders"
 for i in win-exe; do
-    rm -r ../demos/vaportrails-steam-$i
+    rm -r ../demos/vaportrails-$i
 done
 
 code "C:\Users\Adrian\AppData\Local\Unity\Editor\Editor.log"
@@ -10,17 +10,14 @@ echo "building project"
 "C:\Program Files\Unity\Hub\Editor\2021.3.15f1\Editor\Unity.exe" \
     -quit \
     -batchmode \
-    -executeMethod ProjectBuilder.BuildWindowsSteam
+    -executeMethod ProjectBuilder.BuildWindows
 echo "done"
+echo $(cat "C:\Users\Adrian\AppData\Local\Unity\Editor\Editor.log" | grep "Build for")
 
 echo "copying outputs to steam build directory"
 
 set +x
 for i in win-exe; do
-    cp -r ../demos/vaportrails-$i "X:\steamworks_sdk\tools\ContentBuilder\content\vaportrails-steam-$i"
+    cp -r ../demos/vaportrails-$i "X:\steamworks_sdk\tools\ContentBuilder\content\vaportrails-$i"
 done
 set -x
-
-echo "rendering achievements..."
-sh render_achievements.sh
-echo "done"
