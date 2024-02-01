@@ -32,7 +32,6 @@ public abstract class SavedObject : MonoBehaviour {
 	}
 
 	public void SyncToRuntime() {
-		// no this is wrong...the eternal save works
 		SaveToProperties(ref properties);
 		foreach (String s in properties.Keys.ToArray()) {
 			if (properties[s] is Vector3) {

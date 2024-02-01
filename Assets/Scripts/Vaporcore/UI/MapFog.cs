@@ -6,6 +6,7 @@ using System.Collections;
 using UnityEngine.SceneManagement;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Threading.Tasks;
 
 public class MapFog : MonoBehaviour {
     #pragma warning disable 0649
@@ -18,6 +19,9 @@ public class MapFog : MonoBehaviour {
 
 	Color transparent;
     SaveManager saveManager;
+    string sceneName;
+
+    bool saving = false;
 
     void ResetMap() {
         Color32[] colors = new Color32[fog.width*fog.height];
@@ -32,7 +36,8 @@ public class MapFog : MonoBehaviour {
         saveManager = GameObject.FindObjectOfType<SaveManager>();
 		transparent = new Color32(0, 0, 0, 0);
 		ResetMap();
-       	StartCoroutine(MapUpdateRoutine()); 
+       	StartCoroutine(MapUpdateRoutine());
+        sceneName = SceneManager.GetActiveScene().name;
     }
 
     void LoadIfPossible() {
@@ -48,7 +53,8 @@ public class MapFog : MonoBehaviour {
         #endif
     }
 
-    public void Save() {
+    public async void Save() {
+        saving = true;
         // save a.png of [area name] map fog.png to the save directory
         byte[] imageBytes = fog.EncodeToPNG();
         string filePath = SavedImageName();
@@ -58,16 +64,18 @@ public class MapFog : MonoBehaviour {
         # else
             File.WriteAllBytes(SavedImageName(), imageBytes);
         #endif
+        saving = false;
+        await Task.Yield();
     }
 
     string SavedImageName() {
         string imagePath;
         #if STEAM || EDITOR_STEAM
-            imagePath = saveManager.GetSlot()+"_"+SceneManager.GetActiveScene().name+" Map Fog.png";
+            imagePath = saveManager.GetSlot()+"_"+sceneName+" Map Fog.png";
         # else
             imagePath = Path.Combine(
                 saveManager.GetSaveFolderPath(),
-                SceneManager.GetActiveScene().name+" Map Fog.png"
+                sceneName+" Map Fog.png"
             );
         #endif
         return imagePath;
@@ -104,7 +112,8 @@ public class MapFog : MonoBehaviour {
 					fog.SetPixel(x, y, transparent);
 				}
 			}
-			fog.Apply();
+
+			if (!saving) fog.Apply();
 
 			yield return new WaitForSeconds(updateInterval);
 		}

@@ -6,13 +6,14 @@ public class MainMenu : MonoBehaviour {
 	public Beacon newGameBeacon;
 
 	public GameObject continueButton;
-	readonly JsonSaver jsonSaver = new();
+	JsonSaver jsonSaver;
 
 #if UNITY_EDITOR
 	public GameCheckpointLoader dummyCheckpoint;
 #endif
 
 	public void Start() {
+		jsonSaver = new JsonSaver(Application.persistentDataPath);
 		continueButton.SetActive(jsonSaver.HasFile(1));
 		FindObjectOfType<SpeedrunTimer>().GetComponent<Timer>().Pause();
 		FindObjectOfType<SpeedrunTimer>().GetComponent<Timer>().ForceUpdate();

@@ -28,7 +28,9 @@ public class GameOptions : MonoBehaviour {
 		input = PlayerInput.GetPlayerOneInput();
 		Load();
 		Close();
-		savePathText.text = "Need to mess with your saves? Find them here:\n"+Application.persistentDataPath;
+		#if !STEAM || !EDITOR_STEAM
+			savePathText.text = "Need to mess with your saves? Find them here:\n"+Application.persistentDataPath;
+		#endif
 	}
 
 	public static void Load() {

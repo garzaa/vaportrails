@@ -6,12 +6,19 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 using System.Text;
+using System.Threading.Tasks;
 
 public class JsonSaver {
-    const string folder = "saves";
     const string extension = ".json";
+    // used in an ifndef statement, dw future me
+    readonly string persistentDataPath;
+    const string folder = "saves";
 
-    public void SaveFile(Save save, int slot) {
+    public JsonSaver(string datapath) {
+        persistentDataPath = datapath;
+    }
+
+    public async void SaveFile(Save save, int slot) {
         string saveString = JsonConvert.SerializeObject(save, Formatting.Indented);
         string filePath = GetSavePath(slot);
         #if (STEAM || EDITOR_STEAM)
@@ -21,7 +28,7 @@ public class JsonSaver {
             using StreamWriter jsonWriter = new StreamWriter(filePath, append: false);
 		    jsonWriter.Write(saveString);
         #endif
-
+        await Task.Yield();
 	}
 
     public Save LoadFile(int slot) {
@@ -66,7 +73,7 @@ public class JsonSaver {
         #if STEAM || EDITOR_STEAM
             folderPath = "";
         # else
-            folderPath = Path.Combine(Application.persistentDataPath, folder, slot.ToString());
+            folderPath = Path.Combine(persistentDataPath, folder, slot.ToString());
             Directory.CreateDirectory(folderPath);
         # endif 
         return folderPath;

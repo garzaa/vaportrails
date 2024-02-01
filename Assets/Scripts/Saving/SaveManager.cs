@@ -2,6 +2,8 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 
 public class SaveManager : MonoBehaviour {
 	Save save = new();
@@ -13,10 +15,15 @@ public class SaveManager : MonoBehaviour {
 
 	TransitionManager transitionManager;
 
-	readonly JsonSaver jsonSaver = new JsonSaver();
+	JsonSaver jsonSaver;
 	int slot = 1;
 
 	static SaveManager instance;
+
+	public GameObject saveIndicator;
+	MapFog mapFog;
+	SavedObject[] savedObjects;
+	string appVersion;
 
 	void Awake() {
 		if (instance != null) {
@@ -28,6 +35,11 @@ public class SaveManager : MonoBehaviour {
 		transform.parent = null;
 		DontDestroyOnLoad(gameObject);
 		SceneManager.sceneLoaded += OnLevelLoad;
+		saveIndicator.SetActive(false);
+		mapFog = GameObject.FindObjectOfType<MapFog>();
+		jsonSaver = new JsonSaver(Application.persistentDataPath);
+		appVersion = Application.version;
+		savedObjects = FindObjectsOfType<SavedObject>(includeInactive: true);
 	}
 
 	public int GetSlot() {
@@ -64,14 +76,22 @@ public class SaveManager : MonoBehaviour {
 #endif
 
 	public static void Save() {
-		foreach (SavedObject o in FindObjectsOfType<SavedObject>(includeInactive: true)) {
+		instance.AsyncSave();
+	}
+
+	async void AsyncSave() {
+		saveIndicator.SetActive(true);
+		instance.save.version = appVersion;
+		foreach (SavedObject o in savedObjects) {
 			o.SyncToRuntime();
 		}
-		WriteEternalSave();
-		FindObjectOfType<MapFog>()?.Save();
-		instance.save.version = Application.version;
-		instance.jsonSaver.SaveFile(instance.save, instance.slot);
+		await Task.Run(() => {
+			WriteEternalSave();
+			mapFog?.Save();
+			instance.jsonSaver.SaveFile(instance.save, instance.slot);
+		});
 		FindObjectOfType<TimeSinceSave>()?.OnSave();
+		saveIndicator.SetActive(false);
 	}
 
 	public static void Load() {
@@ -99,10 +119,10 @@ public class SaveManager : MonoBehaviour {
 	}
 
 	public static void WriteEternalSave() {
-		foreach (SavedObject o in FindObjectsOfType<SavedObject>(includeInactive: true)) {
+		foreach (SavedObject o in instance.savedObjects) {
 			if (o.useEternalSave) o.SyncToRuntime();
 		}
-		instance.eternalSave.version = Application.version;
+		instance.eternalSave.version = instance.appVersion;
 		instance.jsonSaver.SaveFile(instance.eternalSave, eternalNum);
 	}
 
