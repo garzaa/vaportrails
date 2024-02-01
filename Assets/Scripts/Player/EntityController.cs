@@ -175,7 +175,7 @@ public class EntityController : Entity {
 		}
 
 		// don't slide on slopes
-		if (inputX == 0 && groundData.normalRotation != 0 && rb2d.velocity.sqrMagnitude < 2f && groundData.grounded && !stunned) {
+		if (inputX == 0 && groundData.normalRotation != 0 && rb2d.velocity.sqrMagnitude < 2f && groundData.grounded && !stunned && !inAttack) {
 			rb2d.gravityScale = 0;
 		} else if (rb2d.sharedMaterial != bouncyStunMaterial) {
 			rb2d.gravityScale = 1;
@@ -233,7 +233,8 @@ public class EntityController : Entity {
 
 	void ApplyMovement() {
 		// stop at the end of ledges (but allow edge canceling)
-		if (groundData.ledgeStep && !speeding && !inputForwards) {
+		// and don't worry about slopes LOL
+		if (groundData.ledgeStep && !speeding && !inputForwards && Mathf.Approximately(groundData.normalRotation, 0)) {
 			rb2d.velocity = new Vector2(0, rb2d.velocity.y);
 			// then move backwards slightly so player doesn't slip off (rounded collider edges)
 			rb2d.transform.position = rb2d.position + (Vector2.left * Forward() * collider2d.bounds.extents.x);
@@ -262,33 +263,11 @@ public class EntityController : Entity {
 			float magnitude = Mathf.Max(Mathf.Abs(rb2d.velocity.x), movement.dashSpeed);
 			float y = groundData.grounded ? rb2d.velocity.y : Mathf.Max(rb2d.velocity.y, 0);
 			rb2d.velocity = new Vector2(magnitude * Mathf.Sign(rb2d.velocity.x), y);
-			return;
 		}
 
-        if (groundData.hitGround) {
-            // on a ground hit, rotate the velocity to the slope normal
-            // since it wasn't being rotated the previous step
-            rb2d.velocity = rb2d.velocity.Rotate(groundData.normalRotation);
-		} else if (
-			groundData.grounded && !justJumped
-			&& (angleStepDiff != 0)
-			&& (Mathf.Abs(angleStepDiff) < 225) // don't follow corners that are TOO pointy
-			&& (Time.unscaledTime - jumpTime > 0.5f)
-			&& ((Mathf.Abs(groundData.normalRotation) < 46f) || Mathf.Abs(groundData.normalRotation) > 90+46)
-		) {
-			// if moving over a convex corner of ground, then adjust velocity accordingly
-			// if moving through a concave corner, physics will handle it since friction and bounce are both 0
-			// counterclockwise is positive for angles!
-			float vx = rb2d.velocity.x;
-			bool fromUphillToFlat = (groundData.normalRotation == 0) && (
-				(vx > 0 && angleStepDiff < 0) || (vx < 0 && angleStepDiff > 0)
-			);
-			bool fromFlatToDownhill = ((vx > 0 && groundData.normalRotation < 0) || (vx < 0 && groundData.normalRotation > 0)) && (
-				(vx > 0 && angleStepDiff < 0) || (vx < 0 && angleStepDiff > 0)
-			);
-			if (fromUphillToFlat || fromFlatToDownhill) {
-				rb2d.velocity = rb2d.velocity.Rotate(angleStepDiff);
-			}
+		bool MovingDownHill() {
+			// positive angles are counterclockwise
+			return (groundData.normalRotation > 0 && rb2d.velocity.x < 0) || (groundData.normalRotation < 0 && rb2d.velocity.x > 0);
 		}
 
         if (inputX!=0) {
@@ -318,6 +297,35 @@ public class EntityController : Entity {
 				}
 			}
         }
+
+		
+		if (
+			(
+				// if grounded and didn't jump
+				(groundData.grounded && !justJumped) ||
+				// OR left the ground, didn't jump, and moving downhill
+				// player can leave the ground within a physics step frame
+				(groundData.leftGround && !justJumped && MovingDownHill())
+			)
+			&& (angleStepDiff != 0)
+			&& (Mathf.Abs(angleStepDiff) < 225) // don't follow corners that are TOO pointy
+			&& (Time.unscaledTime - jumpTime > 0.5f)
+			&& ((Mathf.Abs(groundData.normalRotation) < 46f) || Mathf.Abs(groundData.normalRotation) > 90+46)
+		) {
+			// if moving over a convex corner of ground, then adjust velocity accordingly
+			// if moving through a concave corner, physics will handle it since friction and bounce are both 0
+			// counterclockwise is positive for angles!
+			float vx = rb2d.velocity.x;
+			bool fromUphillToFlat = (groundData.normalRotation == 0) && (
+				(vx > 0 && angleStepDiff < 0) || (vx < 0 && angleStepDiff > 0)
+			);
+			bool fromFlatToDownhill = ((vx > 0 && groundData.normalRotation < 0) || (vx < 0 && groundData.normalRotation > 0)) && (
+				(vx > 0 && angleStepDiff < 0) || (vx < 0 && angleStepDiff > 0)
+			);
+			if (fromUphillToFlat || fromFlatToDownhill) {
+				rb2d.velocity = rb2d.velocity.Rotate(angleStepDiff);
+			}
+		}
 
         if (speeding) {
             SlowOnFriction();

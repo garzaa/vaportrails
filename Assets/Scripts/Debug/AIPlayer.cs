@@ -28,7 +28,7 @@ public class AIPlayer : MonoBehaviour {
 	public bool frameOnPlay = false;
 	CameraInterface cameraInterface;
 
-	void Start() {
+	public void Start() {
 		playerInput = GetComponent<PlayerInput>();
 		comControl = playerInput.comControl;
 		cameraInterface = GameObject.FindObjectOfType<CameraInterface>();

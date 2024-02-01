@@ -202,6 +202,7 @@ public class Terminal : MonoBehaviour, IPointerDownHandler {
             AIPlayer ai = puppet.GetComponent<AIPlayer>();
             if (!ai) {
                 ai = puppet.AddComponent<AIPlayer>();
+                ai.Start();
             }
             Log("Replaying "+args[1]+" on "+args[2]);
             ai.PlayReplay(replay);

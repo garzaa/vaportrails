@@ -11,10 +11,6 @@ public class ValController : EntityController {
 		if (groundData.hitGround) {
 			HairForwards();
 		}
-		if (Input.GetKeyDown(KeyCode.T)) {
-			animator.Play("ValPickupAbility");
-			this.WaitAndExecute(() => animator.SetTrigger("ResetToIdle"), 3f);
-		}
 	}
 
     protected override void OnEffectGroundHit(float fallDistance) {

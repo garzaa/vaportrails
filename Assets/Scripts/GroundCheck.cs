@@ -37,9 +37,34 @@ public class GroundCheck : MonoBehaviour {
 
     Rigidbody2D rb2d;
 
+    List<ContactPoint2D> contacts = new();
+    ContactFilter2D contactFilter = new();
+    ContactPoint2D groundHitPoint;
+
     void Awake() {
         col = GetComponent<Collider2D>();
         rb2d = GetComponent<Rigidbody2D>();
+        contactFilter.layerMask = Layers.GroundMask;
+    }
+
+    void OnCollisionEnter2D(Collision2D other) {
+        // on a ground hit, check normals
+        if (other.gameObject.layer == Layers.GroundNumber) {
+            groundHitPoint = other.GetContact(0);
+            if (Walkable(groundHitPoint)) {
+                grounded = true;
+                if (!groundData.grounded) {
+                    groundData.grounded = true;
+                    groundData.hitGround = true;
+                    groundData.groundCollider = other.collider;
+                    groundData.groundObject = other.gameObject;
+                }
+            }
+        }
+    }
+
+    bool Walkable(ContactPoint2D contact) {
+        return Vector2.Angle(Vector2.up, contact.normal) <= maxClimbAngle;
     }
 
     void FixedUpdate() {
@@ -56,7 +81,21 @@ public class GroundCheck : MonoBehaviour {
         groundData.normalRotation = Vector2.SignedAngle(Vector2.up, currentNormal);
         groundData.distance = GetGroundDistance();
 
-        grounded = detecting && (leftGrounded || rightGrounded);
+        int numContacts = col.GetContacts(contactFilter, contacts);
+        bool onGroundContacts = false;
+        if (numContacts > 0) {
+            // then look at their normals
+            for (int i=0; i<contacts.Count; i++) {
+                if (Walkable(contacts[i])) {
+                    onGroundContacts = true;
+                    groundData.groundCollider = contacts[i].collider;
+                    groundData.groundObject = contacts[i].collider.gameObject;
+                }
+            }
+        }
+
+        grounded = detecting && (onGroundContacts || leftGrounded || rightGrounded);
+
         onLedge = (leftGrounded && !rightGrounded) || (!leftGrounded && rightGrounded);
 
         if (leftGrounded) groundCollider = leftHit.collider;

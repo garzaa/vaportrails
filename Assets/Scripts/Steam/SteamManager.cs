@@ -27,7 +27,7 @@ public class SteamManager : MonoBehaviour {
 		}
 
 		try {
-			Steamworks.SteamClient.Init(mainID, true);
+			Steamworks.SteamClient.Init(demoID, true);
 		} catch (System.Exception e) {
 			Debug.LogError("Steam client failed to start because: "+e.Message);
 		}
