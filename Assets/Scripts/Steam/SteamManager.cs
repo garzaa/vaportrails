@@ -11,8 +11,11 @@ using Steamworks;
 #endif
 
 public class SteamManager : MonoBehaviour {
-	const int demoID = 2809690;
-	const int mainID = 2801630;
+	#if STEAM_DEMO
+		const int appID = 2809690;
+	#elif (STEAM || EDITOR_STEAM)
+		const int appID = 2801630;
+	#endif
 
 	static SteamManager instance = null;
 
@@ -27,7 +30,7 @@ public class SteamManager : MonoBehaviour {
 		}
 
 		try {
-			Steamworks.SteamClient.Init(demoID, true);
+			Steamworks.SteamClient.Init(appID, true);
 		} catch (System.Exception e) {
 			Debug.LogError("Steam client failed to start because: "+e.Message);
 		}

@@ -214,7 +214,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 583566702744851567, guid: df318d9009829a34781aaa920593e61d, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 436
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 583566702744851567, guid: df318d9009829a34781aaa920593e61d, type: 3}
       propertyPath: m_SizeDelta.y
@@ -370,11 +370,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4160817345173324201, guid: df318d9009829a34781aaa920593e61d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 314.2208
+      value: 101.96259
       objectReference: {fileID: 0}
     - target: {fileID: 4160817345173324201, guid: df318d9009829a34781aaa920593e61d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 193.02257
+      value: 30.3686
       objectReference: {fileID: 0}
     - target: {fileID: 4193277219278011438, guid: df318d9009829a34781aaa920593e61d, type: 3}
       propertyPath: m_AnchorMax.y
@@ -1002,11 +1002,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7770972734024709621, guid: df318d9009829a34781aaa920593e61d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 314.2208
+      value: 101.96259
       objectReference: {fileID: 0}
     - target: {fileID: 7770972734024709621, guid: df318d9009829a34781aaa920593e61d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 193.02257
+      value: 30.3686
       objectReference: {fileID: 0}
     - target: {fileID: 7770972734033973496, guid: df318d9009829a34781aaa920593e61d, type: 3}
       propertyPath: m_SizeDelta.y
@@ -1183,6 +1183,7 @@ GameObject:
   - component: {fileID: 418738967}
   - component: {fileID: 418738969}
   - component: {fileID: 418738968}
+  - component: {fileID: 418738970}
   m_Layer: 5
   m_Name: InternalText
   m_TagString: Untagged
@@ -1245,7 +1246,8 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: 'PARADISE DEEPWATER EXPERIMENTAL PLATFORM
 
-    FOR INTERNAL USE ONLY'
+    VERSION 1.2.0b // FOR INTERNAL
+    USE ONLY'
 --- !u!222 &418738969
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1254,6 +1256,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 418738966}
   m_CullTransparentMesh: 1
+--- !u!114 &418738970
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 418738966}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3610d487a877ede44a2cc6c41703d460, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &490653810 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7770972732952691555, guid: df318d9009829a34781aaa920593e61d, type: 3}

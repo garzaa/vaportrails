@@ -46,7 +46,7 @@ public class ProjectBuilder {
 		};
 
 		if (steamBuild) {
-            buildOptions.extraScriptingDefines = new string[] {"STEAM"};
+            buildOptions.extraScriptingDefines = new string[] {"STEAM", "STEAM_DEMO"};
         }
 
         BuildReport report = BuildPipeline.BuildPlayer(buildOptions);

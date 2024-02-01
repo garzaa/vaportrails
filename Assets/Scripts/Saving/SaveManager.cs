@@ -35,7 +35,6 @@ public class SaveManager : MonoBehaviour {
 		transform.parent = null;
 		DontDestroyOnLoad(gameObject);
 		SceneManager.sceneLoaded += OnLevelLoad;
-		saveIndicator.SetActive(false);
 		mapFog = GameObject.FindObjectOfType<MapFog>();
 		jsonSaver = new JsonSaver(Application.persistentDataPath);
 		appVersion = Application.version;
@@ -55,6 +54,7 @@ public class SaveManager : MonoBehaviour {
 		foreach (SavedObject o in FindObjectsOfType<SavedObject>(includeInactive: true)) {
 			o.StartUp();
 		}
+		savedObjects = FindObjectsOfType<SavedObject>(includeInactive: true);
 	}
 
 	public static Save GetSaveFor(SavedObject o) {
@@ -90,6 +90,8 @@ public class SaveManager : MonoBehaviour {
 			mapFog?.Save();
 			instance.jsonSaver.SaveFile(instance.save, instance.slot);
 		});
+		// don't just flash the save icon
+		await Task.Delay(1000);
 		FindObjectOfType<TimeSinceSave>()?.OnSave();
 		saveIndicator.SetActive(false);
 	}
