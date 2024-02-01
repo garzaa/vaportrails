@@ -561,11 +561,11 @@ public class EntityController : Entity {
 		}
 	}
 
-	protected override void StunImpact(bool hitGround) {
+	bool TechCheck() {
 		if (!techLockout && (canTech || (!input.isHuman && Random.value < movement.techChance))) {
 			TechSuccess.Invoke();
 			OnTech();
-			return;
+			return true;
 		} else if (techLockout) {
 			TechLockout.Invoke();
 		} else if (!canTech) {
@@ -575,6 +575,11 @@ public class EntityController : Entity {
 			}
 			TechMiss.Invoke();
 		}
+		return false;
+	}
+
+	protected override void StunImpact(bool hitGround) {
+		if (TechCheck()) return;
 		base.StunImpact(hitGround);
 	}
 
@@ -842,6 +847,14 @@ public class EntityController : Entity {
 
 	public List<Ability> GetAbilities() {
 		return this.abilities;
+	}
+
+	protected override void ReturnToSafety() {
+		base.ReturnToSafety();
+		// ground check won't update in time
+		if (!TechCheck()) {
+			GroundFlop();
+		}
 	}
 
 #if UNITY_EDITOR

@@ -503,14 +503,13 @@ public class Entity : MonoBehaviour, IHitListener {
 		}
 	}
 
-	void ReturnToSafety() {
+	protected virtual void ReturnToSafety() {
 		Vector3 lastPos = transform.position;
 		transform.position = groundSaver.GetRespawnPosition();
 		// flip so they're looking at the last position
 		if (Forward() * (lastPos.x - transform.position.x) < 0) {
 			_Flip();
 		}
-		GroundFlop();
 	}
 
 	public void Die() {
