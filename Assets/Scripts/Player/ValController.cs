@@ -8,6 +8,7 @@ public class ValController : EntityController {
 
 	protected override void UpdateAnimator() {
 		base.UpdateAnimator();
+		animator.SetBool("RisingThroughPlatforms", groundData.grounded && rb2d.velocity.y > 0 && groundData.platforms.Count > 0);
 		if (groundData.hitGround) {
 			HairForwards();
 		}
