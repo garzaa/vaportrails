@@ -7,11 +7,18 @@ using UnityEngine.Events;
 using System;
 
 public class SlowRenderer : MonoBehaviour {
+
+	public enum SlowRenderType {
+		LETTER = 0,
+		WORD   = 1,
+	}
+
 	Text target;
 	Coroutine renderRoutine;
 	public bool rendering => renderRoutine != null;
 	string textToRender;
-	int letterIndex;
+	string[] words;
+	int idx;
 	static readonly char[] pauses = {'.', '!', ',', '?', '\n'};
 
 	[TextArea] public string initialText = "";
@@ -20,6 +27,9 @@ public class SlowRenderer : MonoBehaviour {
 
 	public float letterDelay = 0.01f;
 	public UnityEvent RenderEnd;
+	
+	// TODO: actually implement this
+	public SlowRenderType renderType = SlowRenderType.LETTER;
 
 	void Awake() {
 		target = GetComponent<Text>();
@@ -38,11 +48,11 @@ public class SlowRenderer : MonoBehaviour {
 
 	public void Render(string t, Action wordCallback) {
 		target.text = "";
-		letterIndex = 0;
+		idx = 0;
 		textToRender = t;
-		// this happens on a dialogue line open...why
 		this.wordCallback = wordCallback;
-		renderRoutine = StartCoroutine(SlowRender());
+		if (renderType == SlowRenderType.LETTER) renderRoutine = StartCoroutine(SlowRenderLetters());
+		else renderRoutine = StartCoroutine(SlowRenderWords());
 	}
 
 	public void Complete() {
@@ -53,18 +63,18 @@ public class SlowRenderer : MonoBehaviour {
 		RenderEnd.Invoke();
 	}
 
-	IEnumerator SlowRender() {
-		if (wordCallback != null) wordCallback();
-		while (letterIndex < textToRender.Length) {
-			if (wordCallback != null && letterIndex > 0 && textToRender[letterIndex-1] == ' ') {
+	IEnumerator SlowRenderLetters() {
+		wordCallback?.Invoke();
+		while (idx < textToRender.Length) {
+			if (wordCallback != null && idx > 0 && textToRender[idx-1] == ' ') {
 				wordCallback();
 			}
-			target.text = textToRender.Substring(0, letterIndex+1) + MakeInvisibleText();
+			target.text = textToRender.Substring(0, idx+1) + MakeInvisibleText();
 			int scalar = 1;
-			if (IsPause(textToRender[letterIndex])) {
+			if (IsPause(textToRender[idx])) {
 				scalar = 7;
 			}
-			letterIndex++;
+			idx++;
 			yield return new WaitForSecondsRealtime(letterDelay * scalar);
 		}
 		renderRoutine = null;
@@ -73,12 +83,35 @@ public class SlowRenderer : MonoBehaviour {
 		yield break;
 	}
 
+	IEnumerator SlowRenderWords() {
+		wordCallback?.Invoke();
+		words = textToRender.Split(' ');
+		while (idx < words.Length) {
+			if (wordCallback != null && idx > 0) {
+				wordCallback();
+			}
+			string newText = string.Join(' ', words[..(idx+1)]);
+			// add a space afterwards if it's not the last one
+			if (idx + 1 < words.Length) {
+				newText += " ";
+			}
+			target.text = newText + MakeInvisibleText();
+			idx++;
+			yield return new WaitForSecondsRealtime(letterDelay);
+		}
+	}
+
 	bool IsPause(char c) {
 		return pauses.Contains(c);
 	}
 
 	string MakeInvisibleText() {
-		string invisText = textToRender.Substring(letterIndex+1);
+		string invisText;
+		if (renderType == SlowRenderType.LETTER) {
+			invisText = textToRender[(idx + 1)..];
+		} else {
+			invisText = string.Join(' ', words[(idx + 1)..]);
+		}
 		invisText = "<color=#00000000>" + invisText + "</color>";
 		return invisText;
 	}
