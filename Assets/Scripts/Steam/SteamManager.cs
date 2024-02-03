@@ -17,7 +17,9 @@ public class SteamManager : MonoBehaviour {
 		const int appID = 2801630;
 	#endif
 
+	#pragma warning disable 0414
 	static SteamManager instance = null;
+	#pragma warning restore 0414
 
 	// only compile all this bull crap if it's a steam build!
 	// https://forum.unity.com/threads/change-scripting-define-symbols-and-build-the-player-with-a-single-button-press.1364115/
