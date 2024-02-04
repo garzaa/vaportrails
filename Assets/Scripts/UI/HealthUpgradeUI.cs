@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class HealthUpgradeUI : MonoBehaviour {
 	Animator animator;
@@ -12,6 +13,8 @@ public class HealthUpgradeUI : MonoBehaviour {
 	HP hp;
 	Inventory playerInventory;
 	int plasmaCount;
+
+	public Text[] texts;
 
 	void Awake() {
 		animator = GetComponent<Animator>();
@@ -30,6 +33,7 @@ public class HealthUpgradeUI : MonoBehaviour {
 		plasmaCount = inventory.GetCount(healthUpgradeItem);
 		animator.SetInteger("Plasmas", plasmaCount);
 		animator.SetTrigger("OnPickup");
+		DoHealthUpgrade();
 	}
 
 	// called from animator at the end of the variable animation cycle
@@ -39,7 +43,6 @@ public class HealthUpgradeUI : MonoBehaviour {
 
 	void CloseUI() {
 		input.GetComponent<Entity>().ExitCutscene(gameObject);
-		input.GetComponent<Animator>().SetTrigger("ResetToIdle");
 		canContinue = false;
 		animator.Play("Idle");
 		CutsceneQueue.OnCutsceneFinish();
@@ -48,7 +51,6 @@ public class HealthUpgradeUI : MonoBehaviour {
 	void Update() {
 		if (canContinue && input.GenericContinueInput()) {
 			CloseUI();
-			DoHealthUpgrade();
 		}
 	}
 
@@ -57,6 +59,9 @@ public class HealthUpgradeUI : MonoBehaviour {
 			playerInventory.RemoveItem(healthUpgradeItem, 3);
 			hp.SetMax(hp.GetMax() + 4);
 			hp.FullHeal();
+			foreach (Text t in texts) {
+				t.text = "MAX HP INCREASED TO " + hp.GetCurrent();
+			}
 		}
 	}
 }
