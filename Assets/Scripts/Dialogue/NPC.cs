@@ -33,4 +33,9 @@ public class NPC : Interactable {
 		// this will default to the default conversation since it also looks at self
 		return conversationContainers[^1];
 	}
+
+	// called from events and things for cutscenes
+	public void EnterDialogueFromPlayer() {
+		OnInteract(PlayerInput.GetPlayerOneInput().GetComponent<EntityController>());
+	}
 }

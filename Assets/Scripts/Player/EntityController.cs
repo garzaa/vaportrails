@@ -589,9 +589,9 @@ public class EntityController : Entity {
 		if (!allowTech) return;
 		CancelStun();
 		animator.SetBool("Tumbling", false);
+		RefreshAirMovement();
 		if (wallData.touchingWall) {
 			rb2d.velocity = Vector2.zero;
-			RefreshAirMovement();
 			Instantiate(
 				techEffect,
 				transform.position + new Vector3(wallData.direction * collider2d.bounds.extents.x, 0, 0),
