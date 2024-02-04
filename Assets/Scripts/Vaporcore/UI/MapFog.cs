@@ -18,7 +18,6 @@ public class MapFog : MonoBehaviour {
     float updateInterval = 0.2f;
 
 	Color transparent;
-    SaveManager saveManager;
     string sceneName;
 
     bool saving = false;
@@ -33,7 +32,6 @@ public class MapFog : MonoBehaviour {
     }
 
     void Start() {
-        saveManager = GameObject.FindObjectOfType<SaveManager>();
 		transparent = new Color32(0, 0, 0, 0);
 		ResetMap();
        	StartCoroutine(MapUpdateRoutine());
@@ -74,7 +72,7 @@ public class MapFog : MonoBehaviour {
             imagePath = saveManager.GetSlot()+"_"+sceneName+" Map Fog.png";
         # else
             imagePath = Path.Combine(
-                saveManager.GetSaveFolderPath(),
+                SaveManager.GetSaveFolderPath(),
                 sceneName+" Map Fog.png"
             );
         #endif

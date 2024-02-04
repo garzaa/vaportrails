@@ -15,8 +15,8 @@ public class SaveManager : MonoBehaviour {
 
 	TransitionManager transitionManager;
 
-	JsonSaver jsonSaver;
-	int slot = 1;
+	static JsonSaver jsonSaver;
+	static int slot = 1;
 
 	static SaveManager instance;
 
@@ -88,7 +88,7 @@ public class SaveManager : MonoBehaviour {
 		await Task.Run(() => {
 			WriteEternalSave();
 			mapFog?.Save();
-			instance.jsonSaver.SaveFile(instance.save, instance.slot);
+			jsonSaver.SaveFile(instance.save, slot);
 		});
 		// don't just flash the save icon
 		await Task.Delay(1000);
@@ -104,7 +104,7 @@ public class SaveManager : MonoBehaviour {
 	static IEnumerator FadeAndLoad() {
 		instance.transitionManager.FadeToBlack();
 		yield return new WaitForSeconds(0.5f);
-		instance.save = instance.jsonSaver.LoadFile(instance.slot);
+		instance.save = jsonSaver.LoadFile(slot);
 		foreach (SavedObject o in FindObjectsOfType<SavedObject>(includeInactive: true)) {
 			// when loading something like playerposition, if it's enabled don't jerk camera around
 			o.AfterDiskLoad();
@@ -112,7 +112,7 @@ public class SaveManager : MonoBehaviour {
 		instance.transitionManager.LoadLastSavedScene();
 	}
 
-	public string GetSaveFolderPath() {
+	public static string GetSaveFolderPath() {
         return jsonSaver.GetFolderPath(slot);
     }
 
@@ -125,7 +125,7 @@ public class SaveManager : MonoBehaviour {
 			if (o.useEternalSave) o.SyncToRuntime();
 		}
 		instance.eternalSave.version = instance.appVersion;
-		instance.jsonSaver.SaveFile(instance.eternalSave, eternalNum);
+		jsonSaver.SaveFile(instance.eternalSave, eternalNum);
 	}
 
 	public void OnApplicationQuit() {
