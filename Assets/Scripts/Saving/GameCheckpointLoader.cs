@@ -1,4 +1,3 @@
-#if UNITY_EDITOR
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,6 +7,7 @@ public class GameCheckpointLoader : SavedObject {
 	public GameCheckpoint checkpoint;
 	public bool loadInBuild = false;
 
+#if UNITY_EDITOR
 	protected override void LoadFromProperties() {
 		// this needs to force a load because otherwise if there are no properties
 		// it won't be called
@@ -45,5 +45,5 @@ public class GameCheckpointLoader : SavedObject {
 	protected override bool ForceLoadIfNoProperties() {
 		return true;
 	}
-}
 #endif
+}
