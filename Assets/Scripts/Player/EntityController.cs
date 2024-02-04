@@ -176,6 +176,7 @@ public class EntityController : Entity {
 
 		// don't slide on slopes
 		if (inputX == 0 && groundData.normalRotation != 0 && rb2d.velocity.sqrMagnitude < 2f && groundData.grounded && !stunned && !inAttack) {
+			rb2d.velocity = Vector2.zero;
 			rb2d.gravityScale = 0;
 		} else if (rb2d.sharedMaterial != bouncyStunMaterial) {
 			rb2d.gravityScale = 1;
