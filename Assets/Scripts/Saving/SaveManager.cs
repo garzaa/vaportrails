@@ -133,7 +133,7 @@ public class SaveManager : MonoBehaviour {
 	}
 
 	public static void TransitionPrep() {
-		foreach (SavedObject o in FindObjectsOfType<SavedObject>(includeInactive: true)) {
+		foreach (SavedObject o in instance.savedObjects) {
 			o.SyncToRuntime();
 		}
 		WriteEternalSave();

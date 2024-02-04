@@ -41,6 +41,8 @@ public class GroundCheck : MonoBehaviour {
     ContactFilter2D contactFilter = new();
     ContactPoint2D groundHitPoint;
 
+    bool colliderHit = false;
+
     void Awake() {
         col = GetComponent<Collider2D>();
         rb2d = GetComponent<Rigidbody2D>();
@@ -54,6 +56,7 @@ public class GroundCheck : MonoBehaviour {
             if (Walkable(groundHitPoint)) {
                 grounded = true;
                 if (!groundData.grounded) {
+                    colliderHit = true;
                     groundData.grounded = true;
                     groundData.hitGround = true;
                     groundData.groundCollider = other.collider;
@@ -104,7 +107,7 @@ public class GroundCheck : MonoBehaviour {
 
         if (groundData.grounded && !grounded) {
             groundData.leftGround = true;
-        } else if (!groundData.grounded && grounded) {
+        } else if (!groundData.grounded && grounded && colliderHit) {
             if (Time.time-lastHitTime > minHitInterval) {
                 groundData.hitGround = true;
                 lastHitTime = Time.time;
@@ -125,6 +128,7 @@ public class GroundCheck : MonoBehaviour {
             groundData.groundObject = groundCollider.gameObject;
             groundData.groundCollider = groundCollider;
         }
+        colliderHit = false;
     }
 
     List<RaycastHit2D> TouchingPlatforms() {

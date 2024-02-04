@@ -21,40 +21,23 @@ public class JsonSaver {
     public async void SaveFile(Save save, int slot) {
         string saveString = JsonConvert.SerializeObject(save, Formatting.Indented);
         string filePath = GetSavePath(slot);
-        #if (STEAM || EDITOR_STEAM)
-            // Debug.Log("Writing remote Steam file at path "+filePath);
-            Steamworks.SteamRemoteStorage.FileWrite(filePath, Encoding.UTF8.GetBytes(saveString));
-        #else
-            using StreamWriter jsonWriter = new StreamWriter(filePath, append: false);
-		    jsonWriter.Write(saveString);
-        #endif
+        using StreamWriter jsonWriter = new StreamWriter(filePath, append: false);
+        jsonWriter.Write(saveString);
         await Task.Yield();
 	}
 
     public Save LoadFile(int slot) {
         string filePath = GetSavePath(slot);
         string fileJson;
-        #if STEAM || EDITOR_STEAM
-            fileJson = Encoding.UTF8.GetString(Steamworks.SteamRemoteStorage.FileRead(filePath));
-            // Debug.Log("Read Steam cloud save at "+filePath);
-        #else
-            using (StreamReader r = new StreamReader(filePath)) {
-                fileJson = r.ReadToEnd();
-            }
-        #endif
+        using (StreamReader r = new StreamReader(filePath)) {
+            fileJson = r.ReadToEnd();
+        }
         return JsonConvert.DeserializeObject<Save>(fileJson);
     }
 
     public bool HasFile(int slot) {
         string filePath = GetSavePath(slot);
-        #if STEAM || EDITOR_STEAM
-            if (!Steamworks.SteamRemoteStorage.FileExists(filePath)) {
-                // Debug.Log("No remote Steam file at path "+filePath);
-                return false;
-            }
-        # else
-            if (!File.Exists(filePath)) return false;
-        # endif
+        if (!File.Exists(filePath)) return false;
 
         try {
             return CompatibleVersions(slot);
@@ -69,13 +52,8 @@ public class JsonSaver {
 
     public string GetFolderPath(int slot) {
         string folderPath;
-
-        #if STEAM || EDITOR_STEAM
-            folderPath = "";
-        # else
-            folderPath = Path.Combine(persistentDataPath, folder, slot.ToString());
-            Directory.CreateDirectory(folderPath);
-        # endif 
+        folderPath = Path.Combine(persistentDataPath, folder, slot.ToString());
+        Directory.CreateDirectory(folderPath);
         return folderPath;
     }
 
