@@ -32,15 +32,6 @@ public class HealthUpgradeUI : MonoBehaviour {
 		animator.SetTrigger("OnPickup");
 	}
 
-	// called from animator during health animation
-	public void DoHealthUpgrade() {
-		if (plasmaCount == 3) {
-			playerInventory.RemoveItem(healthUpgradeItem, 3);
-			hp.SetMax(hp.GetMax() + 4);
-			hp.FullHeal();
-		}
-	}
-
 	// called from animator at the end of the variable animation cycle
 	public void AllowContinue() {
 		canContinue = true;
@@ -57,6 +48,15 @@ public class HealthUpgradeUI : MonoBehaviour {
 	void Update() {
 		if (canContinue && input.GenericContinueInput()) {
 			CloseUI();
+			DoHealthUpgrade();
+		}
+	}
+
+	void DoHealthUpgrade() {
+		if (plasmaCount == 3) {
+			playerInventory.RemoveItem(healthUpgradeItem, 3);
+			hp.SetMax(hp.GetMax() + 4);
+			hp.FullHeal();
 		}
 	}
 }
