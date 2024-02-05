@@ -236,7 +236,8 @@ public class EntityController : Entity {
 		// stop at the end of ledges (but allow edge canceling)
 		// and don't worry about slopes LOL
 		// also don't push them back if they're jumping up and over a ledge
-		if (groundData.ledgeStep && !speeding && !inputForwards && Mathf.Approximately(groundData.normalRotation, 0) && Mathf.Approximately(rb2d.velocity.y, 0)) {
+		// also don't let momentum from frame impulses in attacks push them over ledges
+		if (groundData.ledgeStep && (!speeding || inAttack) && !inputForwards && Mathf.Approximately(groundData.normalRotation, 0) && Mathf.Approximately(rb2d.velocity.y, 0)) {
 			rb2d.velocity = new Vector2(0, rb2d.velocity.y);
 			// then move backwards slightly so player doesn't slip off (rounded collider edges)
 			rb2d.transform.position = rb2d.position + (Vector2.left * Forward() * collider2d.bounds.extents.x);
