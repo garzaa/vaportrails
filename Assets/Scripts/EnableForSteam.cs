@@ -3,11 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class EnableForSteam : MonoBehaviour {
+	public bool setDisabled = false;
+
 	void Start() {
 		bool b = false;
 #if STEAM
 		b = true;
 #endif
-		gameObject.SetActive(b);
+		if (setDisabled) gameObject.SetActive(!b);
+		else gameObject.SetActive(b);
 	}
 }

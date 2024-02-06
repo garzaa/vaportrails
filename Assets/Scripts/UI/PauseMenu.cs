@@ -71,6 +71,11 @@ public class PauseMenu : MonoBehaviour {
 		FindObjectOfType<TransitionManager>().SceneTransition(mainMenuScene.ScenePath);
 	}
 
+	public void Desktop() {
+		Close();
+		FindObjectOfType<TransitionManager>().ExitApplication();
+	}
+
 	public void BlockEscape() {
 		blockEscape = true;
 	}
