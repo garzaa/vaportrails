@@ -128,10 +128,6 @@ public class SaveManager : MonoBehaviour {
 		jsonSaver.SaveFile(instance.eternalSave, eternalNum);
 	}
 
-	public void OnApplicationQuit() {
-		WriteEternalSave();
-	}
-
 	public static void TransitionPrep() {
 		foreach (SavedObject o in instance.savedObjects) {
 			o.SyncToRuntime();
