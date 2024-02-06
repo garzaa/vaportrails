@@ -135,7 +135,6 @@ public class TransitionManager : SavedObject {
 		yield return new WaitForSecondsRealtime(FADE_TIME);
 
 		SaveManager.TransitionPrep();
-		SaveManager.Save();
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
 		asyncLoad.allowSceneActivation = false; 
 
@@ -155,5 +154,20 @@ public class TransitionManager : SavedObject {
 		originalVolume = AudioListener.volume;
 		elapsedTime = 0;
 		transitionEndTime = Time.time + FADE_TIME;
+	}
+
+	public void ExitApplication() {
+		StartCoroutine(ExitRoutine());
+	}
+
+	IEnumerator ExitRoutine() {
+		PlayerInput.GetPlayerOneInput().GetComponent<EntityController>().EnterCutscene(this.gameObject);
+		speedrunTimer.OnTransitionStart();
+		FadeAudio(0);
+		FadeToBlack();
+		yield return new WaitForSecondsRealtime(FADE_TIME);
+
+		SaveManager.TransitionPrep();
+        Application.Quit();
 	}
 }
