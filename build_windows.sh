@@ -15,9 +15,3 @@ echo "done"
 echo $(cat "C:\Users\Adrian\AppData\Local\Unity\Editor\Editor.log" | grep "Build for")
 
 echo "copying outputs to steam build directory"
-
-set +x
-for i in win-exe; do
-    cp -r ../demos/vaportrails-$i "X:\steamworks_sdk\tools\ContentBuilder\content\vaportrails-$i"
-done
-set -x

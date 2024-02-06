@@ -591,8 +591,8 @@ public class EntityController : Entity {
 		CancelStun();
 		animator.SetBool("Tumbling", false);
 		RefreshAirMovement();
+		rb2d.velocity = Vector2.zero;
 		if (wallData.touchingWall) {
-			rb2d.velocity = Vector2.zero;
 			Instantiate(
 				techEffect,
 				transform.position + new Vector3(wallData.direction * collider2d.bounds.extents.x, 0, 0),
@@ -600,7 +600,7 @@ public class EntityController : Entity {
 				null
 			);
 			shader.FlashCyan();
-		} else if (groundData.grounded) {
+		} else {
 			rb2d.velocity = new Vector2(
 				input.HasHorizontalInput() ? movement.runSpeed * Mathf.Sign(input.HorizontalInput()) : 0,
 				0

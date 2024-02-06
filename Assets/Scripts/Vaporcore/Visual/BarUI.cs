@@ -52,10 +52,12 @@ public class BarUI : MonoBehaviour {
             ScaleImage(container, max);
         }
         ScaleImage(indicator, current);
-		if (disappearAfterDelta && current!=max) {
-            canvasGroup.alpha = 1;
-        } else if (disappearAfterDelta) {
-            canvasGroup.alpha = 0;
+        if (disappearAfterDelta) {
+            if (current!=max && Time.timeSinceLevelLoad>3) {
+                canvasGroup.alpha = 1;
+            } else {
+                canvasGroup.alpha = 0;
+            }
         }
     }
 
@@ -82,8 +84,9 @@ public class BarUI : MonoBehaviour {
     void Update() {
         if (deltaIndicator == null) {
             return;
-        } else if (currentDelta < current) {
+        } else if (currentDelta < current || (Time.timeSinceLevelLoad < 3)) {
 			// if it's going up, always snap
+            // always snap to current if it's right after the level has started
 			currentDelta = current;
 			return;
 		}

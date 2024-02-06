@@ -107,7 +107,7 @@ public class GroundCheck : MonoBehaviour {
 
         if (groundData.grounded && !grounded) {
             groundData.leftGround = true;
-        } else if (!groundData.grounded && grounded && colliderHit) {
+        } else if (!groundData.grounded && (grounded || colliderHit)) {
             if (Time.time-lastHitTime > minHitInterval) {
                 groundData.hitGround = true;
                 lastHitTime = Time.time;

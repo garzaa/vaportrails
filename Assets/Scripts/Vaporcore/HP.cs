@@ -17,7 +17,7 @@ public class HP : MonoBehaviour, IHitListener {
 	public bool sendIntToAnimator = false;
 	Animator animator;
 
-	void Awake() {
+	void Start() {
 		if (renderHealthbar) {
 			// don't have it appear from player stats modification
 			StartCoroutine(AddHealthbar());
@@ -25,9 +25,7 @@ public class HP : MonoBehaviour, IHitListener {
 
 		max.Initialize();
 		current.Initialize();
-	}
 
-	void Start() {
 		animator = GetComponent<Animator>();
 		if (sendIntToAnimator) animator.SetInteger("HP", current.Get());
 	}

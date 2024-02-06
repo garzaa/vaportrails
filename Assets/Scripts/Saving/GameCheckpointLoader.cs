@@ -7,8 +7,8 @@ public class GameCheckpointLoader : SavedObject {
 	public GameCheckpoint checkpoint;
 	public bool loadInBuild = false;
 
-#if UNITY_EDITOR
 	protected override void LoadFromProperties() {
+		if (!Application.isEditor) return;
 		// this needs to force a load because otherwise if there are no properties
 		// it won't be called
 		// but it needs to know there are no properties in order to load
@@ -33,6 +33,7 @@ public class GameCheckpointLoader : SavedObject {
 	}
 
 	protected override void SaveToProperties(ref Dictionary<string, object> properties) {
+		if (!Application.isEditor) return;
 		properties[nameof(loadedBefore)] = loadedBefore;
 	}
 
@@ -45,5 +46,4 @@ public class GameCheckpointLoader : SavedObject {
 	protected override bool ForceLoadIfNoProperties() {
 		return true;
 	}
-#endif
 }
