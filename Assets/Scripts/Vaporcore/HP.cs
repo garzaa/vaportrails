@@ -47,7 +47,7 @@ public class HP : MonoBehaviour, IHitListener {
 	}
 
 	public void SetCurrent(int i) {
-		i = Mathf.Max(i, max.Get());
+		i = Mathf.Clamp(i, 0, max.Get());
 		current.Set(i);
 		if (sendIntToAnimator) animator.SetInteger("HP", i);
 		CheckEvents();
