@@ -32,7 +32,7 @@ public class DashModule : MonoBehaviour {
 		bool inCancelableAttack = entity.inAttack && entity.GetAttack().moveCancelable;
 		if (entity.frozeInputs && !inCancelableAttack) return;
 
-		if (input.ButtonDown(RewiredConsts.Action.Dash) && entity.CanDash && Mathf.Abs(input.HorizontalInput()) > 0.5) {
+		if (input.ButtonDown(RewiredConsts.Action.Dash) && entity.CanDash && Mathf.Abs(input.HorizontalInput()) > 0.5 && input.VerticalInput() < 0.5) {
 			entity.DashIfPossible(dashSound);
 		}
 	}
