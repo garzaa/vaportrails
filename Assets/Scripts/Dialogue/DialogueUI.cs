@@ -111,7 +111,7 @@ public class DialogueUI : MonoBehaviour {
 	}
 
 	public void OpenFrom(GameObject caller) {
-		CutsceneQueue.Add(() => this.Open(caller));
+		if (!animator.GetBool("Shown")) CutsceneQueue.Add(() => this.Open(caller));
 	}
  
 	void Open(GameObject caller) {

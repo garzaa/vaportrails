@@ -31,9 +31,5 @@ public class DelayedEvent : MonoBehaviour {
 	public class TimedEvent {
 		public float delay;
 		public UnityEvent callback;
-	}	
-
-	public void Cancel() {
-		StopAllCoroutines();
 	}
 }

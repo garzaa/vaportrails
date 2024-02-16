@@ -8,12 +8,17 @@ public class TargetContainer : MonoBehaviour, IHitListener {
 
 	public bool hideAllOnStart = false;
 	public UnityEvent OnAllBreak;
+	public UnityEvent OnFirstBreak;
+	
+	bool firstBreak = true;
 
 	void Start() {
 		targets = GetComponentsInChildren<Animator>();
 
 		if (hideAllOnStart) {
 			SetTargets(false);
+		} else {
+			SetTargets(true);
 		}
 	}
 
@@ -24,6 +29,10 @@ public class TargetContainer : MonoBehaviour, IHitListener {
 	}
 
 	public void OnHit(AttackHitbox attack) {
+		if (firstBreak) {
+			OnFirstBreak.Invoke();
+			firstBreak = false;
+		}
 		StartCoroutine(CheckAll());
 	}
 
