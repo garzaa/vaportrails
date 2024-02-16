@@ -5,27 +5,41 @@ using System.Collections.Generic;
 using System.Linq;
 
 public class ShardTracker : MonoBehaviour {
-	public Text trackerText;
-	public Item shardsItem;
 
-	List<FloatingItem> shards = null;
+	[System.Serializable]
+	public class TrackedItem {
+		public Item item;
+		public Text textbox;
+	}
+
+	public List<TrackedItem> trackedItems = new();
+	Dictionary<TrackedItem, List<FloatingItem>> trackedLists = new();
+
+	bool initialized = false;
+
+	void Initialize() {
+		foreach (TrackedItem tracked in trackedItems) {
+			trackedLists[tracked] = FindObjectsOfType<FloatingItem>()
+				.Where(x => x.item.Equals(tracked.item))
+				.ToList();
+			
+			tracked.textbox.text = "??? / ???";
+		}
+		initialized = true;
+	}
 
 	void OnEnable() {
-		if (shards == null) {
-			shards = GameObject.FindObjectsOfType<FloatingItem>()
-				.Where(x => x.item.Equals(shardsItem))
-				.ToList();
-		}
-		trackerText.text = "??? / ???";
+		if (!initialized) Initialize();
 		Check();
 	}
 
 	void Check() {
-		int takenShards = 0;
-		foreach (FloatingItem shard in shards) {
-			if (!shard.IsEnabled()) takenShards++;
+		foreach (TrackedItem tracked in trackedItems) {
+			int taken = 0;
+			foreach (FloatingItem floatingItem in trackedLists[tracked]) {
+				if (!floatingItem.IsEnabled()) taken++;
+			}
+			tracked.textbox.text = $"{taken} / {trackedLists[tracked].Count}";
 		}
-
-		trackerText.text = $"{takenShards} / {shards.Count}";
 	}
 }
