@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -31,6 +32,8 @@ public class SteamManager : MonoBehaviour {
 			return;
 		}
 
+		SceneManager.sceneLoaded += OnLevelLoad;
+
 		try {
 			Steamworks.SteamClient.Init(appID, true);
 		} catch (System.Exception e) {
@@ -49,6 +52,15 @@ public class SteamManager : MonoBehaviour {
 		foreach (Achievement a in achievements) {
 			var ach = new Steamworks.Data.Achievement(a.name);
 			ach.Clear();
+		}
+	}
+
+	// https://partner.steamgames.com/doc/features/enhancedrichpresence
+	void OnLevelLoad(Scene scene, LoadSceneMode mode) {
+		if (scene.name == "Main Menu") {
+			SteamFriends.SetRichPresence("steam_display", "In "+scene.name);
+			return;
+		SteamFriends.SetRichPresence("steam_display", "Exploring "+scene.name);
 		}
 	}
 #endif

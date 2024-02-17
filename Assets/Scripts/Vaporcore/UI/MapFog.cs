@@ -69,7 +69,7 @@ public class MapFog : MonoBehaviour {
     string SavedImageName() {
         string imagePath;
         #if STEAM || EDITOR_STEAM
-            imagePath = saveManager.GetSlot()+"_"+sceneName+" Map Fog.png";
+            imagePath = SaveManager.GetSlot()+"_"+sceneName+" Map Fog.png";
         # else
             imagePath = Path.Combine(
                 SaveManager.GetSaveFolderPath(),

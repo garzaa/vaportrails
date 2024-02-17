@@ -41,7 +41,7 @@ public class SaveManager : MonoBehaviour {
 		savedObjects = FindObjectsOfType<SavedObject>(includeInactive: true);
 	}
 
-	public int GetSlot() {
+	public static int GetSlot() {
 		return slot;
 	}
 
