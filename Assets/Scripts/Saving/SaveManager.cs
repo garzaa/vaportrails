@@ -84,7 +84,6 @@ public class SaveManager : MonoBehaviour {
 		foreach (SavedObject o in savedObjects) {
 			o.SyncToRuntime();
 		}
-		Debug.Log("Synced obejtcs to runtime");
 // webgl has problem with the system.threading library
 #if !UNITY_WEBGL
 		await Task.Run(() => {
@@ -92,7 +91,6 @@ public class SaveManager : MonoBehaviour {
 			WriteEternalSave();
 			mapFog?.Save();
 			jsonSaver.SaveFile(instance.save, slot);
-			Debug.Log("save task finsihed");
 #if !UNITY_WEBGL
 		});
 		// don't just flash the save icon
@@ -132,7 +130,6 @@ public class SaveManager : MonoBehaviour {
 		}
 		instance.eternalSave.version = instance.appVersion;
 		jsonSaver.SaveFile(instance.eternalSave, eternalNum);
-		Debug.Log("Wrote eternal save");
 	}
 
 	public static void TransitionPrep() {
