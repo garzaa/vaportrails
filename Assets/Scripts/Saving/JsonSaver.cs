@@ -21,6 +21,7 @@ public class JsonSaver {
     public async void SaveFile(Save save, int slot) {
         string saveString = JsonConvert.SerializeObject(save, Formatting.Indented);
         string filePath = GetSavePath(slot);
+        Debug.Log("saving to path "+filePath);
         #if (STEAM || EDITOR_STEAM)
             // Debug.Log("Writing remote Steam file at path "+filePath);
             Steamworks.SteamRemoteStorage.FileWrite(filePath, Encoding.UTF8.GetBytes(saveString));
@@ -28,6 +29,7 @@ public class JsonSaver {
             using StreamWriter jsonWriter = new StreamWriter(filePath, append: false);
 		    jsonWriter.Write(saveString);
         #endif
+        Debug.Log("saved file to path "+filePath);
         await Task.Yield();
 	}
 

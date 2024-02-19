@@ -2,7 +2,6 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 public class SaveManager : MonoBehaviour {
@@ -65,7 +64,7 @@ public class SaveManager : MonoBehaviour {
 		}
 	}
 
-#if UNITY_EDITOR
+// #if UNITY_EDITOR
 	void Update() {
 		if (Input.GetKeyDown(KeyCode.LeftBracket)) {
 			Save();
@@ -73,7 +72,7 @@ public class SaveManager : MonoBehaviour {
 			Load();
 		}
 	}
-#endif
+// #endif
 
 	public static void Save() {
 		instance.AsyncSave();
@@ -85,13 +84,20 @@ public class SaveManager : MonoBehaviour {
 		foreach (SavedObject o in savedObjects) {
 			o.SyncToRuntime();
 		}
+		Debug.Log("Synced obejtcs to runtime");
+// webgl has problem with the system.threading library
+#if !UNITY_WEBGL
 		await Task.Run(() => {
+#endif
 			WriteEternalSave();
 			mapFog?.Save();
 			jsonSaver.SaveFile(instance.save, slot);
+			Debug.Log("save task finsihed");
+#if !UNITY_WEBGL
 		});
 		// don't just flash the save icon
 		await Task.Delay(1000);
+#endif
 		FindObjectOfType<TimeSinceSave>()?.OnSave();
 		saveIndicator.SetActive(false);
 	}
@@ -126,6 +132,7 @@ public class SaveManager : MonoBehaviour {
 		}
 		instance.eternalSave.version = instance.appVersion;
 		jsonSaver.SaveFile(instance.eternalSave, eternalNum);
+		Debug.Log("Wrote eternal save");
 	}
 
 	public static void TransitionPrep() {
