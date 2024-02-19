@@ -64,7 +64,7 @@ public class SaveManager : MonoBehaviour {
 		}
 	}
 
-// #if UNITY_EDITOR
+#if UNITY_EDITOR
 	void Update() {
 		if (Input.GetKeyDown(KeyCode.LeftBracket)) {
 			Save();
@@ -72,7 +72,7 @@ public class SaveManager : MonoBehaviour {
 			Load();
 		}
 	}
-// #endif
+#endif
 
 	public static void Save() {
 		instance.AsyncSave();
