@@ -11887,7 +11887,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialText: 
-  letterDelay: 0.0001
+  letterDelay: 0.1
   RenderEnd:
     m_PersistentCalls:
       m_Calls:
@@ -11915,7 +11915,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  renderType: 0
+  renderType: 1
 --- !u!1 &5488096980111736495
 GameObject:
   m_ObjectHideFlags: 0
@@ -12083,7 +12083,7 @@ AudioSource:
   m_GameObject: {fileID: 5502684828704281068}
   m_Enabled: 0
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 6148399298927349144, guid: f1bfa512c739c0a449af9a57a2c553de, type: 2}
   m_audioClip: {fileID: 8300000, guid: 65ac78f09a3070849b0caebcfce3d5bb, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.5
@@ -19814,7 +19814,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7770972733150071080}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 7.8742595, y: 15.326158, z: -10}
+  m_LocalPosition: {x: 23.6182, y: 5.810884, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -19949,6 +19949,7 @@ MonoBehaviour:
   editorCameraPoint: {fileID: 9133618981818065003}
   originalPlayerTarget: {fileID: 7770972733216077784}
   targetGroupFollow: {fileID: 7770972733216076838}
+  hardLockCamera: {fileID: 4808969519340015859}
 --- !u!1 &7770972733155103880
 GameObject:
   m_ObjectHideFlags: 0
@@ -22250,7 +22251,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7770972734024709620}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 7.8742595, y: 15.326158, z: -10}
+  m_LocalPosition: {x: 23.6182, y: 5.810884, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -24841,7 +24842,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9133618981818065003}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.8742595, y: 15.326158, z: 0}
+  m_LocalPosition: {x: 23.6182, y: 5.810884, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -26262,7 +26263,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1674674098262563639, guid: 5de3b9c7461ca32498b7596a76ddfe22, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.49999386
+      value: -0.499992
       objectReference: {fileID: 0}
     - target: {fileID: 1674674098262563639, guid: 5de3b9c7461ca32498b7596a76ddfe22, type: 3}
       propertyPath: m_LocalRotation.x

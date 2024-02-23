@@ -13,6 +13,7 @@ public class CameraInterface : MonoBehaviour {
 	[SerializeField] GameObject editorCameraPoint;
 	[SerializeField] GameObject originalPlayerTarget;
 	[SerializeField] CinemachineTargetGroup targetGroupFollow;
+	[SerializeField] GameObject hardLockCamera;
 	#pragma warning restore 0649
 
 
@@ -68,5 +69,10 @@ public class CameraInterface : MonoBehaviour {
 
 	public void StopFollowingPlayer() {
 		SetMainTarget(null);
+	}
+
+	public void HardLockFor(float seconds) {
+		hardLockCamera.SetActive(true);
+		this.WaitAndExecute(() => hardLockCamera.SetActive(false), seconds);
 	}
 }
