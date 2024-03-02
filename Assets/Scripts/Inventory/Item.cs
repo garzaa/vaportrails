@@ -47,7 +47,6 @@ public class Item : ScriptableObject {
 	public static void CreateItem() {
 		Item i = CreateInstance<Item>();
 		AssetDatabase.CreateAsset(i, "Assets/Resources/Runtime/Items/NewItem.asset");
-		EditorUtility.FocusProjectWindow();
 		Selection.activeObject = i;
 	}
 #endif
