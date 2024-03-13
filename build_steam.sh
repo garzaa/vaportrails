@@ -12,14 +12,15 @@ echo "building project"
     -batchmode \
     -executeMethod ProjectBuilder.BuildAllSteam
 echo "done"
+cat "C:\Users\Adrian\AppData\Local\Unity\Editor\Editor.log" | grep -i "build for"
 
 
 echo "copying outputs to steam build directory..."
 
-set +x
+set -x
 for i in win-exe osx gnu-linux; do
 cp -r ../demos/vaportrails-steam-$i "X:\steamworks_sdk\tools\ContentBuilder\content\vaportrails-steam-$i"
 done
-set -x
+set +x
 
 echo "done"

@@ -35,7 +35,8 @@ public class PlayerDeath : MonoBehaviour {
 			playerAnimator.updateMode = AnimatorUpdateMode.Normal;
 			playerAnimator.GetComponent<HP>().FullHeal();
 			return;
+		} else {
+			SaveManager.Load();
 		}
-		SaveManager.Load();
 	}
 }

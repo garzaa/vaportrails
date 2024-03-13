@@ -99,6 +99,10 @@ public class SlowRenderer : MonoBehaviour {
 			idx++;
 			yield return new WaitForSecondsRealtime(letterDelay);
 		}
+		renderRoutine = null;
+		wordCallback = null;
+		RenderEnd.Invoke();
+		yield break;
 	}
 
 	bool IsPause(char c) {
