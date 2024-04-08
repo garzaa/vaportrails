@@ -554,6 +554,13 @@ public class EntityController : Entity {
 		keepJumpSpeedRoutine = StartCoroutine(KeepJumpSpeedRoutine());
 	}
 
+	public void ResetJustJumped() {
+		if (keepJumpSpeedRoutine != null) {
+			StopCoroutine(keepJumpSpeedRoutine);
+		}
+		keepJumpSpeed = false;
+	}
+
 	void UpdateTechInputs() {
 		if (input.TechInput()) {
 			if (!techLockout && !canTech && stunned) {

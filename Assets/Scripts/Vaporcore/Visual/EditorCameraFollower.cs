@@ -1,6 +1,7 @@
 #if UNITY_EDITOR
 using UnityEngine;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 
 [ExecuteInEditMode]
 public class EditorCameraFollower : MonoBehaviour {
@@ -20,6 +21,8 @@ public class EditorCameraFollower : MonoBehaviour {
             !Application.isPlaying
             && Camera.current != null
             && Camera.current.transform != null
+            // don't run this if in prefab mode (and then dirty it/make a save confirm dialog)
+            && PrefabStageUtility.GetCurrentPrefabStage() == null
         );
     }
 

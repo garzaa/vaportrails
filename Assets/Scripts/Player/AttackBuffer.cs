@@ -44,6 +44,12 @@ public class AttackBuffer : MonoBehaviour {
             // if it enters a graph without a buffered attack (i.e. it's read first)
             combatController.CheckAttackInputs();
         }
+        if (input.ButtonDown(RewiredConsts.Action.Divekick)) {
+            // stop the headbump routine
+            player.ResetJustJumped();
+            AddBufferedAttack(new BufferedAttack(AttackType.KICK, Vector2Int.down * new Vector2Int(1, 2)));
+            combatController.CheckAttackInputs();
+        }
     }
 
     public void AddBufferedAttack(BufferedAttack attack) {
