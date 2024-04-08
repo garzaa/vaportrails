@@ -11,7 +11,7 @@ public class AnimationVibrationInterface : MonoBehaviour {
 	}
 	
 	public void Vibrate(VibrationPreset preset) {
-		if (!PlayerInput.usingKeyboard) {
+		if (!PlayerInput.usingKeyboard && GameOptions.Rumble) {
 			player.SetVibration(0, preset.strength, preset.duration);
 			player.SetVibration(1, preset.strength, preset.duration);
 		}

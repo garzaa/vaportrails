@@ -20,6 +20,7 @@ public class GameOptions : MonoBehaviour {
 	public static bool SecondWind { get; private set; }
 	public static float Lookahead { get; private set; }
 	public static bool ReduceCameraShake { get; private set; }
+	public static bool Rumble { get; private set; }
 
 	public UnityEvent OnClose;
 
@@ -43,10 +44,11 @@ public class GameOptions : MonoBehaviour {
 		Application.runInBackground = LoadBool("Run in Background");
 		FindObjectOfType<FPSCounter>(includeInactive: true).gameObject.SetActive(LoadBool("FPSCounter"));
 		timer.SetActive(LoadBool("Speedrun Timer"));
+		Rumble = LoadBool("Rumble", true);
 	}
 
-	static bool LoadBool(string name) {
-		return PlayerPrefs.GetInt(name, 0) == 1;
+	static bool LoadBool(string name, bool defaultValue = false) {
+		return PlayerPrefs.GetInt(name, defaultValue ? 1 : 0) == 1;
 	}
 
 	public void Open() {

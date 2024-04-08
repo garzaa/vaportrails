@@ -572,7 +572,7 @@ public class EntityController : Entity {
 		} else if (techLockout) {
 			TechLockout.Invoke();
 		} else if (!canTech) {
-			if (input.isHuman && !PlayerInput.usingKeyboard) {
+			if (input.isHuman && !PlayerInput.usingKeyboard && GameOptions.Rumble) {
 				rewiredPlayer.SetVibration(0, 1f, 0.5f);
 				rewiredPlayer.SetVibration(1, 1f, 0.5f);
 			}
@@ -724,13 +724,13 @@ public class EntityController : Entity {
 		// vibrate a bit on both motors
 		if (fallDistance > 7f) {
 			cameraShake.Shake(Vector2.up * 0.5f);
-			if (!PlayerInput.usingKeyboard) {
+			if (!PlayerInput.usingKeyboard && GameOptions.Rumble) {
 				rewiredPlayer.SetVibration(0, 1f, 0.5f);
 				rewiredPlayer.SetVibration(1, 1f, 0.5f);
 			}
 		}
 		else if (fallDistance > 2f) {
-			if (!PlayerInput.usingKeyboard) {
+			if (!PlayerInput.usingKeyboard && GameOptions.Rumble) {
 				rewiredPlayer.SetVibration(0, 0.5f, 0.2f);
 				rewiredPlayer.SetVibration(1, 0.5f, 0.2f);
 			}
@@ -741,7 +741,7 @@ public class EntityController : Entity {
 		base.OnHit(hitbox);
 		if (hitbox is EnvironmentHitbox) {
 			if (input.isHuman) cameraShake.Shake(Vector2.up * 0.5f);
-			if (!PlayerInput.usingKeyboard) {
+			if (!PlayerInput.usingKeyboard && GameOptions.Rumble) {
 				rewiredPlayer.SetVibration(0, 1f, 0.5f);
 				rewiredPlayer.SetVibration(1, 1f, 0.5f);
 			}
