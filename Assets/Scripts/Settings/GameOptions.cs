@@ -42,6 +42,7 @@ public class GameOptions : MonoBehaviour {
 		Lookahead = PlayerPrefs.GetInt("Lookahead", 5) / 5f;
 		ReduceCameraShake = LoadBool("ReduceCameraShake");
 		Application.runInBackground = LoadBool("Run in Background");
+		QualitySettings.vSyncCount = LoadBool("VSync") ? 1 : 0;
 		FindObjectOfType<FPSCounter>(includeInactive: true).gameObject.SetActive(LoadBool("FPSCounter"));
 		timer.SetActive(LoadBool("Speedrun Timer"));
 		Rumble = LoadBool("Rumble", true);
